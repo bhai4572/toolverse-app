@@ -1,3 +1,4 @@
+# Standard IETF RFC 9309 Compliant Robots.txt for ToolVerse
 User-agent: *
 Allow: /
 Allow: /tools/
@@ -7,5 +8,22 @@ Allow: /jobs/
 Allow: /legal/
 Disallow: /scratch/
 
+# Block AI Data Scrapers via Standard User-Agent Rules
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+# Priority Canonical Sitemap & Host Index
 Host: https://toolverse.baby
 Sitemap: https://toolverse.baby/sitemap.xml
