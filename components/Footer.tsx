@@ -53,6 +53,21 @@ export function Footer() {
             </ul>
           </div>
 
+          {/* Popular Tools & Jobs (Bing Keyword Anchors) */}
+          <div>
+            <h4 className="text-white font-semibold text-sm mb-4">Popular Tools & Jobs</h4>
+            <ul className="space-y-2 text-xs">
+              <li><Link href="/tools/pdf-merge" className="hover:text-white transition-colors">Merge PDF Online</Link></li>
+              <li><Link href="/tools/pdf-split" className="hover:text-white transition-colors">Split PDF Pages</Link></li>
+              <li><Link href="/tools/compress-image-target-size" className="hover:text-white transition-colors">Compress Image to 50KB</Link></li>
+              <li><Link href="/tools/barcode-generator" className="hover:text-white transition-colors">Barcode Generator (Code 128)</Link></li>
+              <li><Link href="/tools/pakistan-salary-tax-estimator" className="hover:text-white transition-colors">Pakistan Salary Tax Estimator</Link></li>
+              <li><Link href="/jobs/remote-jobs" className="hover:text-white transition-colors">Remote Jobs Worldwide</Link></li>
+              <li><Link href="/jobs/usa-jobs" className="hover:text-white transition-colors">Jobs in USA</Link></li>
+              <li><Link href="/blog" className="hover:text-white transition-colors">SEO Guides & Blog</Link></li>
+            </ul>
+          </div>
+
           {/* Legal & Trust */}
           <div>
             <h4 className="text-white font-semibold text-sm mb-4">Trust & Legal</h4>
