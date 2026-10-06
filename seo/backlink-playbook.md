@@ -1,5 +1,7 @@
 # ToolVerse Backlink Playbook (White-Hat Only)
 
+> **Asaan plan (2025–2026):** start with [`seo/easy-backlinks-guide.md`](./easy-backlinks-guide.md) — prioritized places, click steps, copy-paste drafts, weekly 3-actions/day. Yeh file = longer templates + checklist.
+
 Site: [https://toolverse.baby](https://toolverse.baby) · Pitch: **~95 free online tools, no signup, privacy-first (browser-side), Pakistan salary tax + Zakat niche**
 
 **Hard no:** PBNs, bought links, link farms, fake reviews, cloaking, comment spam, mass guest-post networks.
