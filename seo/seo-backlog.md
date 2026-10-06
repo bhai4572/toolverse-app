@@ -1,6 +1,6 @@
 # ToolVerse SEO / AEO / GEO Backlog
 
-Last updated: 2026-10-07 (wave 7 — **on-site SEO complete for now**). White-hat only. Do not invent rankings or traffic claims.
+Last updated: 2026-10-07 (wave 8 — **per-tool how-to guides**). White-hat only. Do not invent rankings or traffic claims.
 
 ## Status
 
@@ -9,14 +9,25 @@ Last updated: 2026-10-07 (wave 7 — **on-site SEO complete for now**). White-ha
 | Tool page SEO | **88 / 88** done |
 | Category pillars | **13 / 13** — sections + featured tools + related blogs |
 | Job landings | **5 / 5** thickened + related links |
-| Guides | **9** (UTM guide added wave 7) |
+| Guides | **9 pillars + 81 generated tool how-tos** (88 tools covered; 7 map to pillars) |
+| Blog hub | Category filters + pagination (12/page) |
+| Internal links | Blog↔tool bidirectional; category auto-guides |
 | Prerender / CF middleware | Live (`x-toolverse-shell`) |
 | AEO homepage FAQ + entity | Done |
-| Internal links / breadcrumbs | Done |
-| `llms.txt` / sitemap / robots | Fresh (wave 7 AEO crawler allow) |
+| `llms.txt` / sitemap / robots | Wave 8: tool-guide summary in llms; sitemap includes `/blog/how-to-*` |
 | E-E-A-T legal pages | Done |
 
-**Verdict:** All high-impact **on-site** SEO/AEO/GEO items that can be shipped in code/content are complete. Remaining work is **user offline** (deploy secrets, outreach) or **monitoring**.
+**Verdict:** On-site SEO now includes a maintainable **guide per live tool** via `lib/blog/toolGuides.ts` (not 88 hand-copied doorway pages). Remaining work is **user offline** (deploy secrets, outreach) or **monitoring**.
+
+## Done — wave 8 (tool guides)
+
+- Generator: `lib/blog/toolGuides.ts` builds unique how-to posts from registry + `TOOL_PAGE_CONTENT`
+- Pillar overrides for 7 tools already covered by deep guides (no duplicate cannibalization)
+- Tool pages: “Read the full guide” CTA → matching blog
+- Blog posts: primary CTA → `/tools/{id}` + related tools/category
+- Category pages: curated pillars + auto tool guides
+- Blog listing: pagination + expanded categories
+- Sitemap + prerender pick up all guide routes; `llms.txt` summarizes (no URL dump)
 
 ## Done — wave 7 (completion pass)
 
@@ -40,6 +51,7 @@ Last updated: 2026-10-07 (wave 7 — **on-site SEO complete for now**). White-ha
 4. **Digital PR / backlinks:** follow `seo/easy-backlinks-guide.md` + `seo/backlink-playbook.md` (AlternativeTo, directories, guest posts — offline).
 5. **GSC / Bing / Yandex:** weekly check impressions, queries, CWV field data, coverage — no ranking claims without data.
 6. **Optional product later:** real ZIP tools under `file-archive-utilities`; self-host Inter if Lighthouse still flags fonts.
+7. **Optional editorial later:** deepen highest-traffic tool guides into hand-written pillars when GSC shows demand (keep generator for the long tail).
 
 ## Weekly loop (user)
 
@@ -52,4 +64,5 @@ Last updated: 2026-10-07 (wave 7 — **on-site SEO complete for now**). White-ha
 
 - Fake AggregateRating / doorway pages / PBNs / buy links / unverifiable traffic claims
 - Spammy competitor bash posts
+- Near-duplicate AI fluff or keyword stuffing across tool guides
 - Re-enriching all 88 tools without evidence of gaps

@@ -1,19 +1,13 @@
-export interface BlogPost {
-  slug: string;
-  title: string;
-  description: string;
-  category: 'Career & Jobs' | 'Image & PDF Tools' | 'Developers & SEO' | 'Finance & Calculators';
-  author: string;
-  publishDate: string;
-  readTimeMinutes: number;
-  featuredImage: string;
-  keywords: string[];
-  relatedToolSlug?: string;
-  contentMarkdown: string;
-  faqs: { question: string; answer: string }[];
-}
+import type { BlogPost } from './types';
+import { generateToolGuidePosts, getGuideSlugForTool } from './toolGuides';
+import { getToolsByCategory } from '@/lib/tools/registry';
 
-export const BLOG_POSTS: BlogPost[] = [
+export type { BlogPost } from './types';
+export { BLOG_HUB_CATEGORIES } from './types';
+export { getGuideSlugForTool, PILLAR_GUIDE_BY_TOOL, toolHasPillarGuide } from './toolGuides';
+
+/** Hand-written pillar / cluster posts (unique research angles). */
+const PILLAR_POSTS: BlogPost[] = [
   {
     slug: 'best-free-privacy-first-online-tools-2026',
     title: 'Best Free Privacy-First Online Tools in 2026 (No Signup, No File Uploads)',
@@ -922,6 +916,36 @@ Retail and packaging teams often need **Code 128 / EAN** labels — see the [bar
   }
 ];
 
+/** Pillar posts + one how-to guide per live tool (minus tools already covered by pillars). */
+export const BLOG_POSTS: BlogPost[] = [...PILLAR_POSTS, ...generateToolGuidePosts()];
+
 export function getBlogPostBySlug(slug: string): BlogPost | undefined {
-  return BLOG_POSTS.find(p => p.slug === slug);
+  return BLOG_POSTS.find((p) => p.slug === slug);
+}
+
+export function getPillarPosts(): BlogPost[] {
+  return BLOG_POSTS.filter((p) => !p.isToolGuide);
+}
+
+export function getToolGuidePosts(): BlogPost[] {
+  return BLOG_POSTS.filter((p) => p.isToolGuide);
+}
+
+/** Resolve the guide post for a tool slug (pillar override or generated how-to). */
+export function getGuidePostForTool(toolSlug: string): BlogPost | undefined {
+  return getBlogPostBySlug(getGuideSlugForTool(toolSlug));
+}
+
+export function getGuidesForCategory(categorySlug: string, limit = 12): BlogPost[] {
+  const tools = getToolsByCategory(categorySlug);
+  const seen = new Set<string>();
+  const out: BlogPost[] = [];
+  for (const tool of tools) {
+    const post = getGuidePostForTool(tool.slug);
+    if (!post || seen.has(post.slug)) continue;
+    seen.add(post.slug);
+    out.push(post);
+    if (out.length >= limit) break;
+  }
+  return out;
 }

@@ -1,22 +1,42 @@
-import React, { useState } from 'react';
-import { BLOG_POSTS } from '@/lib/blog/posts';
+import React, { useMemo, useState } from 'react';
+import { BLOG_POSTS, getPillarPosts } from '@/lib/blog/posts';
+import { BLOG_HUB_CATEGORIES } from '@/lib/blog/types';
 import { AdSlot } from '@/components/AdSlot';
 import { Breadcrumb } from '@/components/Breadcrumb';
 
+const PAGE_SIZE = 12;
+
 export default function BlogHubPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [page, setPage] = useState(1);
 
-  const categories = ['All', 'Career & Jobs', 'Image & PDF Tools', 'Developers & SEO', 'Finance & Calculators'];
+  const pillars = useMemo(() => getPillarPosts(), []);
 
-  const filteredPosts = selectedCategory === 'All'
-    ? BLOG_POSTS
-    : BLOG_POSTS.filter(post => post.category === selectedCategory);
+  const filteredPosts = useMemo(() => {
+    const list =
+      selectedCategory === 'All'
+        ? BLOG_POSTS
+        : BLOG_POSTS.filter((post) => post.category === selectedCategory);
+    // Pillars first, then tool guides alphabetically by title
+    return [...list].sort((a, b) => {
+      if (!!a.isToolGuide !== !!b.isToolGuide) return a.isToolGuide ? 1 : -1;
+      return a.title.localeCompare(b.title);
+    });
+  }, [selectedCategory]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredPosts.length / PAGE_SIZE));
+  const safePage = Math.min(page, totalPages);
+  const pagePosts = filteredPosts.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
+
+  const onCategory = (cat: string) => {
+    setSelectedCategory(cat);
+    setPage(1);
+  };
 
   return (
     <div className="space-y-10 py-4 max-w-6xl mx-auto">
       <Breadcrumb items={[{ label: 'Blog' }]} />
 
-      {/* Hero Header */}
       <header className="text-center space-y-4 max-w-3xl mx-auto">
         <span className="px-3 py-1 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 rounded-full text-xs font-semibold uppercase tracking-wider">
           ToolVerse Knowledge Hub
@@ -25,18 +45,23 @@ export default function BlogHubPage() {
           Guides for Tools, Careers & Privacy
         </h1>
         <p className="text-slate-600 dark:text-slate-400 text-lg leading-relaxed">
-          Practical guides on image compression, private PDF workflows, barcodes, remote jobs, and Pakistan salary tax — with links to free ToolVerse utilities.
+          Pillar guides plus a how-to for every live ToolVerse utility — with clear CTAs back to the free tools.
+          Filter by topic or browse page by page.
+        </p>
+        <p className="text-sm text-slate-500">
+          {BLOG_POSTS.length} articles · {pillars.length} pillar guides · {BLOG_POSTS.length - pillars.length} tool
+          how-tos
         </p>
       </header>
 
       <AdSlot placement="header" />
 
-      {/* Category Filter Pills */}
       <div className="flex flex-wrap gap-2 justify-center pb-2">
-        {categories.map(cat => (
+        {BLOG_HUB_CATEGORIES.map((cat) => (
           <button
             key={cat}
-            onClick={() => setSelectedCategory(cat)}
+            type="button"
+            onClick={() => onCategory(cat)}
             className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
               selectedCategory === cat
                 ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/25'
@@ -48,9 +73,8 @@ export default function BlogHubPage() {
         ))}
       </div>
 
-      {/* Blog Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {filteredPosts.map(post => (
+        {pagePosts.map((post) => (
           <article
             key={post.slug}
             className="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
@@ -65,10 +89,15 @@ export default function BlogHubPage() {
                 loading="lazy"
                 decoding="async"
               />
-              <div className="absolute top-3 left-3">
+              <div className="absolute top-3 left-3 flex gap-2">
                 <span className="px-2.5 py-1 bg-slate-900/80 backdrop-blur-md text-white text-xs font-semibold rounded-md">
                   {post.category}
                 </span>
+                {post.isToolGuide && (
+                  <span className="px-2.5 py-1 bg-emerald-700/90 text-white text-xs font-semibold rounded-md">
+                    Tool guide
+                  </span>
+                )}
               </div>
             </div>
 
@@ -88,9 +117,7 @@ export default function BlogHubPage() {
               </div>
 
               <div className="pt-4 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between">
-                <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
-                  By {post.author}
-                </span>
+                <span className="text-xs font-medium text-slate-500 dark:text-slate-400">By {post.author}</span>
                 <a
                   href={`/blog/${post.slug}`}
                   className="inline-flex items-center text-sm font-semibold text-indigo-600 dark:text-indigo-400 group-hover:translate-x-1 transition-transform"
@@ -102,6 +129,30 @@ export default function BlogHubPage() {
           </article>
         ))}
       </div>
+
+      {totalPages > 1 && (
+        <nav className="flex flex-wrap items-center justify-center gap-3" aria-label="Blog pagination">
+          <button
+            type="button"
+            disabled={safePage <= 1}
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            className="px-4 py-2 rounded-xl text-sm font-medium border border-slate-200 dark:border-slate-700 disabled:opacity-40"
+          >
+            Previous
+          </button>
+          <span className="text-sm text-slate-600 dark:text-slate-400">
+            Page {safePage} of {totalPages}
+          </span>
+          <button
+            type="button"
+            disabled={safePage >= totalPages}
+            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            className="px-4 py-2 rounded-xl text-sm font-medium border border-slate-200 dark:border-slate-700 disabled:opacity-40"
+          >
+            Next
+          </button>
+        </nav>
+      )}
 
       <AdSlot placement="footer" />
     </div>

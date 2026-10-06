@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { CATEGORIES, getToolsByCategory, getToolBySlug } from '@/lib/tools/registry';
 import { getCategoryPageContent } from '@/lib/seo/categoryPageContent';
-import { getBlogPostBySlug } from '@/lib/blog/posts';
+import { getBlogPostBySlug, getGuidesForCategory } from '@/lib/blog/posts';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import { ArrowRight } from 'lucide-react';
 import type { Metadata } from 'next';
@@ -57,9 +57,20 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
 
   const categoryTools = getToolsByCategory(cat.slug);
   const pageContent = getCategoryPageContent(cat.slug);
-  const relatedPosts = (pageContent?.relatedBlogSlugs || [])
+  const curatedPosts = (pageContent?.relatedBlogSlugs || [])
     .map((slug) => getBlogPostBySlug(slug))
     .filter((p): p is NonNullable<typeof p> => Boolean(p));
+  const autoGuides = getGuidesForCategory(cat.slug, 8);
+  const relatedPosts = (() => {
+    const seen = new Set<string>();
+    const out: typeof curatedPosts = [];
+    for (const p of [...curatedPosts, ...autoGuides]) {
+      if (seen.has(p.slug)) continue;
+      seen.add(p.slug);
+      out.push(p);
+    }
+    return out.slice(0, 10);
+  })();
   const relatedCategories = (pageContent?.relatedCategorySlugs || [])
     .map((slug) => CATEGORIES.find((c) => c.slug === slug))
     .filter((c): c is NonNullable<typeof c> => Boolean(c));

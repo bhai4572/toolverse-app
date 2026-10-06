@@ -2,10 +2,11 @@ import React from 'react';
 import Link from 'next/link';
 import { getToolBySlug, getToolById, getToolsByCategory, TOOLS } from '@/lib/tools/registry';
 import { getToolPageContent } from '@/lib/seo/toolPageContent';
+import { getGuidePostForTool } from '@/lib/blog/posts';
 import { ToolRenderer } from '@/features/tools/ToolRenderer';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import { AdSlot } from '@/components/AdSlot';
-import { ShieldCheck, Info, CheckCircle2, HelpCircle, ArrowRight } from 'lucide-react';
+import { ShieldCheck, Info, CheckCircle2, HelpCircle, ArrowRight, BookOpen } from 'lucide-react';
 import type { Metadata } from 'next';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://toolverse.baby';
@@ -64,6 +65,7 @@ export default function ToolPage({ params }: { params: { slug: string } }) {
   }
 
   const pageContent = getToolPageContent(tool.slug);
+  const guidePost = getGuidePostForTool(tool.slug);
 
   const relatedFromIds = (tool.relatedToolIds || [])
     .map((id) => getToolById(id))
@@ -122,6 +124,25 @@ export default function ToolPage({ params }: { params: { slug: string } }) {
       <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm">
         <ToolRenderer tool={tool} />
       </div>
+
+      {guidePost && (
+        <aside className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl border border-brand-200/70 dark:border-brand-800/60 bg-brand-50/80 dark:bg-brand-950/40 px-4 py-3">
+          <div className="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
+            <BookOpen className="w-4 h-4 mt-0.5 text-brand-600 shrink-0" />
+            <p>
+              New to this workflow?{' '}
+              <span className="font-medium text-slate-900 dark:text-white">Read the full guide</span> for steps,
+              when not to use it, and common mistakes.
+            </p>
+          </div>
+          <Link
+            href={`/blog/${guidePost.slug}`}
+            className="inline-flex items-center justify-center gap-1 text-sm font-semibold text-brand-700 dark:text-brand-300 whitespace-nowrap hover:underline"
+          >
+            {guidePost.isToolGuide ? 'How-to guide' : 'Full guide'} <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </aside>
+      )}
 
       <AdSlot slotId="tool-middle-ad" />
 

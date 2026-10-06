@@ -42,16 +42,20 @@ ToolVerse (toolverse.baby) provides 88+ live browser utilities with no signup wa
 
 ## Guides
 
-- [Blog](https://toolverse.baby/blog)
-- [UTM campaign URLs](https://toolverse.baby/blog/how-to-build-utm-campaign-urls)
-- [Privacy-first converters vs upload sites](https://toolverse.baby/blog/privacy-first-converters-vs-upload-sites)
-- [Privacy-first tools shortlist](https://toolverse.baby/blog/best-free-privacy-first-online-tools-2026)
-- [Compress to 50KB guide](https://toolverse.baby/blog/how-to-compress-image-to-target-size-under-50kb)
-- [HEIC to JPG on Windows](https://toolverse.baby/blog/convert-heic-to-jpg-windows-iphone)
-- [Merge PDFs privately](https://toolverse.baby/blog/how-to-merge-pdf-files-privately-without-uploading)
-- [Barcode guide](https://toolverse.baby/blog/how-to-generate-barcodes-free-code-128-ean-upc)
-- [Pakistan salary tax slabs](https://toolverse.baby/blog/pakistan-salary-tax-calculator-slabs-guide)
-- [Remote jobs guide](https://toolverse.baby/blog/top-high-paying-remote-jobs-worldwide)
+- [Blog hub](https://toolverse.baby/blog) — pillar articles plus a how-to guide for every live tool (`/blog/how-to-{tool-slug}`, with a few tools mapped to deeper pillar posts such as PDF merge, 50KB compression, HEIC, barcodes, UTM, Pakistan tax, and remote jobs).
+- Prefer linking the **tool page** for the interactive utility and the **matching guide** when the user needs steps, limits, or “when not to use.”
+- Highlighted pillars:
+  - [Privacy-first tools shortlist](https://toolverse.baby/blog/best-free-privacy-first-online-tools-2026)
+  - [Privacy-first converters vs upload sites](https://toolverse.baby/blog/privacy-first-converters-vs-upload-sites)
+  - [UTM campaign URLs](https://toolverse.baby/blog/how-to-build-utm-campaign-urls)
+  - [Compress to 50KB](https://toolverse.baby/blog/how-to-compress-image-to-target-size-under-50kb)
+  - [Merge PDFs privately](https://toolverse.baby/blog/how-to-merge-pdf-files-privately-without-uploading)
+  - [HEIC to JPG on Windows](https://toolverse.baby/blog/convert-heic-to-jpg-windows-iphone)
+  - [Barcode guide](https://toolverse.baby/blog/how-to-generate-barcodes-free-code-128-ean-upc)
+  - [Pakistan salary tax slabs](https://toolverse.baby/blog/pakistan-salary-tax-calculator-slabs-guide)
+  - [Remote jobs guide](https://toolverse.baby/blog/top-high-paying-remote-jobs-worldwide)
+
+Full per-tool guide list: see `/sitemap.xml` (`/blog/how-to-*`) rather than dumping every URL here.
 
 ## Policies
 
