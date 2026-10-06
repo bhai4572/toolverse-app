@@ -9,7 +9,7 @@ export interface PageMetadata {
   jsonLd?: Record<string, any>[];
 }
 
-const DEFAULT_SITE_URL = 'https://toolverse-app.pages.dev';
+const DEFAULT_SITE_URL = 'https://toolverse.baby';
 
 export function getSiteUrl(): string {
   if (typeof window !== 'undefined' && window.location.origin) {
@@ -235,7 +235,7 @@ export function updateDOMMetadata(meta: PageMetadata) {
   // Single Canonical Tag
   setLinkTag('canonical', null, meta.canonicalUrl);
 
-  // Hreflang Tags (Fixes Hreflang Red Flags!)
+  // Hreflang Tags
   setLinkTag('alternate', 'en', meta.canonicalUrl);
   setLinkTag('alternate', 'x-default', meta.canonicalUrl);
 

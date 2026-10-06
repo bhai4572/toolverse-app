@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 
 # Priority Search Engine Sitemap
-Sitemap: https://toolverse-app.pages.dev/sitemap.xml
+Sitemap: https://toolverse.baby/sitemap.xml
