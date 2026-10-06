@@ -13,7 +13,7 @@ import {
   Search, MapPin, Briefcase, Landmark, Globe, RefreshCw, 
   Sparkles, Clock, CheckCircle2, Building2, Flame, Share2, 
   Bookmark, BookmarkCheck, DollarSign, ChevronRight, X, 
-  MessageCircle, Copy, Linkedin, Facebook 
+  MessageSquare, Copy, Linkedin, Facebook 
 } from 'lucide-react';
 
 const POPULAR_COUNTRIES = [
@@ -742,7 +742,7 @@ function JobFinderContent() {
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 p-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shadow-sm transition"
               >
-                <MessageCircle className="w-4 h-4" /> Share WhatsApp
+                <MessageSquare className="w-4 h-4" /> Share WhatsApp
               </a>
 
               <button
@@ -777,11 +777,12 @@ function JobFinderContent() {
   );
 }
 
-export default function JobTools() {
+export function JobFinderTool() {
   return (
     <JobErrorBoundary>
       <JobFinderContent />
     </JobErrorBoundary>
   );
 }
-export { JobTools as JobFinderTool };
+
+export default JobFinderTool;
