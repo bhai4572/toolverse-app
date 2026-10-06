@@ -64,7 +64,7 @@ export function QrCodeGeneratorTool() {
 
         {qrDataUrl && (
           <div className="flex flex-col items-center justify-center p-6 bg-slate-50 dark:bg-slate-800/60 rounded-xl space-y-4">
-            <img src={qrDataUrl} alt="QR Code" className="w-56 h-56 border rounded-lg shadow-sm bg-white p-2" />
+            <img src={qrDataUrl} alt="Generated QR code preview" className="w-56 h-56 border rounded-lg shadow-sm bg-white p-2" />
             <a
               href={qrDataUrl}
               download="qrcode.png"

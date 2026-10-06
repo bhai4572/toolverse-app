@@ -1,10 +1,10 @@
 # ToolVerse (`https://toolverse.baby/`)
 
-> ToolVerse is a privacy-first free online tools platform for PDFs, images, calculators, writing/academic helpers, SEO utilities, developer tools, regional Pakistan finance estimates, and multi-source job discovery. Most file tools process data in the browser (Canvas / WebAssembly / Web Crypto) without uploading documents to ToolVerse servers.
+> ToolVerse is a privacy-first free online tools platform for PDFs, images, calculators, writing/academic helpers, SEO utilities, developer tools, regional Pakistan finance estimates, and multi-source job discovery. Most file tools process data in the browser (Canvas / WebAssembly / Web Crypto) without uploading documents to ToolVerse servers for conversion.
 
 ## What is ToolVerse?
 
-ToolVerse (toolverse.baby) provides 88+ live browser utilities with no signup wall for core workflows. Contact: support@toolverse.baby. About: https://toolverse.baby/legal/about
+ToolVerse (toolverse.baby) provides 88+ live browser utilities with no signup wall for core workflows. Contact: support@toolverse.baby. About: https://toolverse.baby/legal/about · Editorial: https://toolverse.baby/legal/editorial-policy
 
 ## High-intent tools
 
@@ -23,19 +23,25 @@ ToolVerse (toolverse.baby) provides 88+ live browser utilities with no signup wa
 - [Calculators](https://toolverse.baby/category/calculators-converters)
 - [Pakistan & regional](https://toolverse.baby/category/country-regional-tools)
 - [Developer tools](https://toolverse.baby/category/developer-cybersecurity-tools)
+- [File & archive helpers](https://toolverse.baby/category/file-archive-utilities)
+- [Creator tools](https://toolverse.baby/category/creator-social-tools)
 - [Career / jobs](https://toolverse.baby/category/career-jobs-employment-engine)
 
 ## Guides
 
 - [Blog](https://toolverse.baby/blog)
+- [Privacy-first converters vs upload sites](https://toolverse.baby/blog/privacy-first-converters-vs-upload-sites)
+- [Privacy-first tools shortlist](https://toolverse.baby/blog/best-free-privacy-first-online-tools-2026)
 - [Compress to 50KB guide](https://toolverse.baby/blog/how-to-compress-image-to-target-size-under-50kb)
 - [HEIC to JPG on Windows](https://toolverse.baby/blog/convert-heic-to-jpg-windows-iphone)
 - [Merge PDFs privately](https://toolverse.baby/blog/how-to-merge-pdf-files-privately-without-uploading)
 - [Pakistan salary tax slabs](https://toolverse.baby/blog/pakistan-salary-tax-calculator-slabs-guide)
-- [Privacy-first tools shortlist](https://toolverse.baby/blog/best-free-privacy-first-online-tools-2026)
 
 ## Policies
 
 - [Privacy Policy](https://toolverse.baby/legal/privacy-policy)
+- [About](https://toolverse.baby/legal/about)
+- [Contact](https://toolverse.baby/legal/contact)
+- [Editorial Policy](https://toolverse.baby/legal/editorial-policy)
 - [Terms of Use](https://toolverse.baby/legal/terms-of-use)
 - [Sitemap](https://toolverse.baby/sitemap.xml)

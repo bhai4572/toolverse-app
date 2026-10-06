@@ -32,6 +32,7 @@ export const CATEGORY_PAGE_CONTENT: Record<string, CategoryPageContent> = {
     relatedCategorySlugs: ['image-design-tools', 'business-finance-tools', 'career-jobs-employment-engine'],
     relatedBlogSlugs: [
       'how-to-merge-pdf-files-privately-without-uploading',
+      'privacy-first-converters-vs-upload-sites',
       'best-free-privacy-first-online-tools-2026',
     ],
   },
@@ -57,6 +58,7 @@ export const CATEGORY_PAGE_CONTENT: Record<string, CategoryPageContent> = {
     relatedBlogSlugs: [
       'how-to-compress-image-to-target-size-under-50kb',
       'convert-heic-to-jpg-windows-iphone',
+      'privacy-first-converters-vs-upload-sites',
       'best-free-privacy-first-online-tools-2026',
     ],
   },
@@ -116,6 +118,16 @@ export const CATEGORY_PAGE_CONTENT: Record<string, CategoryPageContent> = {
       'Creator-focused utilities including YouTube earnings estimates and social helpers for day-to-day publishing work.',
     intro:
       'Creator & Social Media Tools support quick estimates and formatting helpers for publishing workflows — treat earnings tools as directional, not payout guarantees.',
+    sections: [
+      {
+        heading: 'Estimates vs payouts',
+        body: 'YouTube earnings calculators model ranges from public CPM assumptions. Use them for planning, not tax or contract decisions. Pair tag and chapter helpers with your actual upload checklist on YouTube Studio.',
+      },
+      {
+        heading: 'Creative + SEO companion tools',
+        body: 'Resize thumbnails and posts with Social Image Presets, then build campaign URLs with UTM Builder or preview metadata with Meta Tag Generator before you publish.',
+      },
+    ],
     featuredToolSlugs: [
       'youtube-earnings-estimator',
       'youtube-tag-formatter',
@@ -152,12 +164,24 @@ export const CATEGORY_PAGE_CONTENT: Record<string, CategoryPageContent> = {
     ],
   },
   'file-archive-utilities': {
-    seoTitle: 'File & Archive Utilities | ToolVerse',
+    seoTitle: 'File & Archive Utilities — ZIP, CSV, Checksums | ToolVerse',
     seoDescription:
-      'ZIP, CSV, checksum, and file utility helpers that run in your browser for everyday ops tasks.',
+      'Browser-side helpers for everyday file ops: CSV conversion, hashes/checksums, and Base64 — plus links to private PDF packaging workflows.',
     intro:
-      'File & Archive Utilities cover packaging, CSV cleanup, and checksum-style checks for everyday file ops.',
+      'File & Archive Utilities cover everyday packaging and verification jobs. ToolVerse currently surfaces adjacent client-side helpers (CSV, hash, Base64) here alongside PDF workflows when you need a private document pack before sharing.',
+    sections: [
+      {
+        heading: 'Verify before you share',
+        body: 'Use Hash Generator to fingerprint a download after transfer, and Base64 Encoder/Decoder when APIs expect encoded payloads. Prefer local checks over pasting secrets into unknown paste sites.',
+      },
+      {
+        heading: 'Documents still belong in PDF tools',
+        body: 'For application packs and scans, finish merges and splits in PDF Tools first. Pair with image compression when portals enforce KB limits, then archive on your own device.',
+      },
+    ],
+    featuredToolSlugs: ['hash-generator', 'json-to-csv', 'base64-encoder-decoder'],
     relatedCategorySlugs: ['developer-cybersecurity-tools', 'pdf-document-tools'],
+    relatedBlogSlugs: ['privacy-first-converters-vs-upload-sites'],
   },
   'country-regional-tools': {
     seoTitle: 'Pakistan & Regional Tools — Tax, Zakat, GST | ToolVerse',

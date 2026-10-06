@@ -97,7 +97,7 @@ export function ImageCompressorTool({ isTargetKbMode = false }: { isTargetKbMode
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pb-4 border-b border-slate-200 dark:border-slate-800">
             <div className="flex items-center gap-3">
               {previewUrl && (
-                <img src={previewUrl} alt="Original" className="w-14 h-14 object-cover rounded-lg border" />
+                <img src={previewUrl} alt="Uploaded image preview before compression" className="w-14 h-14 object-cover rounded-lg border" />
               )}
               <div>
                 <div className="font-semibold text-slate-900 dark:text-white truncate max-w-xs">{file.name}</div>

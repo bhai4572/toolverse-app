@@ -127,7 +127,7 @@ export function UrlShortenerTool() {
 
             {qrCodeUrl && (
               <div className="pt-3 border-t border-emerald-200/60 dark:border-emerald-800/60 flex items-center gap-4">
-                <img src={qrCodeUrl} alt="QR Code" className="w-20 h-20 border rounded bg-white p-1" />
+                <img src={qrCodeUrl} alt="QR code linking to shortened URL" className="w-20 h-20 border rounded bg-white p-1" />
                 <div className="text-xs text-slate-600 dark:text-slate-300">
                   QR Code automatically generated for print and scan sharing.
                 </div>

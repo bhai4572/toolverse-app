@@ -79,6 +79,7 @@ export function Footer() {
               <li><Link href="/legal/dmca" className="hover:text-white transition-colors">DMCA / Copyright</Link></li>
               <li><Link href="/legal/security" className="hover:text-white transition-colors">Security & Responsible Disclosure</Link></li>
               <li><Link href="/legal/about" className="hover:text-white transition-colors">About ToolVerse</Link></li>
+              <li><Link href="/legal/editorial-policy" className="hover:text-white transition-colors">Editorial Policy</Link></li>
               <li><Link href="/legal/contact" className="hover:text-white transition-colors">Contact Support</Link></li>
             </ul>
           </div>

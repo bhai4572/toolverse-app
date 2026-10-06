@@ -85,7 +85,7 @@ export function PassportPhotoMakerTool() {
             {previewUrl && (
               <div className="text-center">
                 <div className="text-xs text-slate-500 mb-2">Selected Photo</div>
-                <img src={previewUrl} alt="Passport Headshot" className="w-32 h-32 object-cover rounded-lg border shadow-sm mx-auto" />
+                <img src={previewUrl} alt="Passport-size headshot preview from uploaded photo" className="w-32 h-32 object-cover rounded-lg border shadow-sm mx-auto" />
               </div>
             )}
           </div>

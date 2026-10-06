@@ -91,26 +91,33 @@ const LEGAL_PAGES: Record<string, { title: string; content: string }> = {
     title: 'About ToolVerse',
     content: `
       <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-6 mb-2">What is ToolVerse?</h2>
-      <p class="leading-relaxed"><strong>ToolVerse</strong> (https://toolverse.baby) is a privacy-first suite of 95+ free online utilities for PDFs, images, calculators, writing, SEO helpers, developer tools, and regional finance estimates. Most file tools process data in your browser with Canvas, WebAssembly, and Web Crypto — so sensitive documents do not need to be uploaded for core conversions.</p>
+      <p class="leading-relaxed"><strong>ToolVerse</strong> (https://toolverse.baby) is a privacy-first suite of 88+ free online utilities for PDFs, images, calculators, writing, SEO helpers, developer tools, and regional finance estimates. Most file tools process data in your browser with Canvas, WebAssembly, and Web Crypto — so sensitive documents do not need to be uploaded for core conversions.</p>
 
       <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-6 mb-2">Our Mission</h2>
       <p class="leading-relaxed">Everyday conversions and calculators should be free, fast, and private. We focus on practical tools people actually search for — target-size image compression, PDF merge/split, QR and barcodes, Pakistan salary tax estimates, and more — without signup walls for basic use.</p>
 
-      <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-6 mb-2">Privacy & Security First</h2>
-      <p class="leading-relaxed">Unlike upload-first converter sites, ToolVerse is designed so client-side tools keep files in browser memory for that session. Advertising partners (such as Google AdSense) may use cookies as described in our Privacy Policy. Contact: <a href="mailto:support@toolverse.baby" class="text-brand-600 font-semibold underline">support@toolverse.baby</a>.</p>
+      <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-6 mb-2">Privacy &amp; Security First</h2>
+      <p class="leading-relaxed">Unlike upload-first converter sites, ToolVerse is designed so client-side tools keep files in browser memory for that session. Advertising partners (such as Google AdSense) may use cookies as described in our <a href="/legal/privacy-policy" class="text-brand-600 font-semibold underline">Privacy Policy</a>. For how we write guides and tool copy, see our <a href="/legal/editorial-policy" class="text-brand-600 font-semibold underline">Editorial &amp; Quality Policy</a>.</p>
+
+      <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-6 mb-2">Contact &amp; accountability</h2>
+      <p class="leading-relaxed">Questions, corrections, or feature requests: <a href="mailto:support@toolverse.baby" class="text-brand-600 font-semibold underline">support@toolverse.baby</a> — also listed on our <a href="/legal/contact" class="text-brand-600 font-semibold underline">Contact</a> page. Security reports: see <a href="/legal/security" class="text-brand-600 font-semibold underline">Security &amp; Responsible Disclosure</a>.</p>
     `,
   },
   'contact': {
     title: 'Contact Support',
     content: `
       <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-6 mb-2">Get in Touch</h2>
-      <p class="leading-relaxed">Have questions, feedback, or tool feature requests? We would love to hear from you!</p>
+      <p class="leading-relaxed">Have questions, feedback, tool feature requests, or a correction for a guide? Email is the primary channel — we do not require an account to contact us.</p>
       
       <div class="p-6 bg-slate-100 dark:bg-slate-800 rounded-xl my-6 space-y-3">
         <div><strong class="text-slate-900 dark:text-white">Official Support Email:</strong> <a href="mailto:support@toolverse.baby" class="text-brand-600 font-semibold underline">support@toolverse.baby</a></div>
-        <div><strong class="text-slate-900 dark:text-white">Response Time:</strong> Within 24-48 business hours</div>
-        <div><strong class="text-slate-900 dark:text-white">Primary Domain:</strong> https://toolverse.baby</div>
+        <div><strong class="text-slate-900 dark:text-white">Privacy / data inquiries:</strong> same address (see <a href="/legal/privacy-policy" class="text-brand-600 underline">Privacy Policy</a>)</div>
+        <div><strong class="text-slate-900 dark:text-white">Security reports:</strong> see <a href="/legal/security" class="text-brand-600 underline">Responsible Disclosure</a></div>
+        <div><strong class="text-slate-900 dark:text-white">Response Time:</strong> Within 24–48 business hours</div>
+        <div><strong class="text-slate-900 dark:text-white">Primary Domain:</strong> <a href="https://toolverse.baby/" class="text-brand-600 underline">https://toolverse.baby</a></div>
       </div>
+
+      <p class="leading-relaxed">Learn who we are on <a href="/legal/about" class="text-brand-600 font-semibold underline">About ToolVerse</a>. Guides live on the <a href="/blog" class="text-brand-600 font-semibold underline">Blog</a>.</p>
     `,
   },
   'editorial-policy': {
