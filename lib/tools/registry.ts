@@ -1323,7 +1323,7 @@ export const TOOLS: ToolDefinition[] = [
     privacyMessage: 'Links are stored safely in Cloudflare D1 key-value storage. Malicious links are automatically blocked.',
     limitations: ['Rate limited to 5 guest links per hour per IP to prevent spam.'],
     keywords: ['url shortener', 'shorten link', 'tinyurl maker', 'custom short link'],
-    relatedToolIds: ['qr-code-generator', 'utm-builder'],
+    relatedToolIds: ['qr-code-generator', 'utm-builder', 'meta-tag-generator'],
     featured: true,
     popular: true,
     processingMode: 'worker',

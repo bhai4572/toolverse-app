@@ -56,8 +56,11 @@ export default function BlogHubPage() {
               <img
                 src={post.featuredImage}
                 alt={post.title}
+                width={640}
+                height={192}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 loading="lazy"
+                decoding="async"
               />
               <div className="absolute top-3 left-3">
                 <span className="px-2.5 py-1 bg-slate-900/80 backdrop-blur-md text-white text-xs font-semibold rounded-md">

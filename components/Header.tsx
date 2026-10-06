@@ -54,8 +54,8 @@ export function Header() {
     <header className="sticky top-0 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 font-bold text-xl tracking-tight text-slate-900 dark:text-white">
-          <div className="w-9 h-9 rounded-lg bg-brand-600 flex items-center justify-center text-white shadow-sm">
+        <Link href="/" className="flex items-center gap-2 font-bold text-xl tracking-tight text-slate-900 dark:text-white" aria-label="ToolVerse home">
+          <div className="w-9 h-9 rounded-lg bg-brand-600 flex items-center justify-center text-white shadow-sm" aria-hidden="true">
             <Wrench className="w-5 h-5" />
           </div>
           <span>Tool<span className="text-brand-600 dark:text-brand-500">Verse</span></span>
@@ -70,6 +70,7 @@ export function Header() {
               value={query}
               onChange={handleSearch}
               placeholder="Search tools (e.g., photo 100kb, pdf merge, json)..."
+              aria-label="Search ToolVerse tools"
               className="w-full pl-10 pr-4 py-2 text-sm bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand-500 rounded-lg outline-none transition-all dark:text-white"
             />
           </div>

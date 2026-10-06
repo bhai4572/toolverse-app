@@ -75,6 +75,10 @@ export default function BlogPostPage({ params }: Props) {
         <img
           src={post.featuredImage}
           alt={post.title}
+          width={1200}
+          height={400}
+          loading="eager"
+          decoding="async"
           className="w-full h-[400px] object-cover"
         />
       </div>

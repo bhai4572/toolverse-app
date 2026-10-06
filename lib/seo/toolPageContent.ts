@@ -837,6 +837,501 @@ export const TOOL_PAGE_CONTENT: Record<string, ToolPageContent> = {
       },
     ],
   },
+
+  'pdf-rotate': {
+    answerFirst:
+      'Rotate PDF Pages turns selected pages 90°, 180°, or 270° in your browser so sideways scans become readable before you send or print.',
+    seoTitle: 'Rotate PDF Pages Online Free | ToolVerse',
+    seoDescription:
+      'Rotate PDF pages left or right without uploading. Fix phone scans and landscape pages privately in your browser.',
+    sections: [
+      {
+        heading: 'Fix sideways phone scans',
+        body: 'Camera-captured PDFs often land sideways. Rotate pages before merging into an application pack or emailing a client.',
+      },
+      {
+        heading: 'Combine with reorder and merge',
+        body: 'After rotation, use Reorder PDF Pages or Merge PDF if you still need a different sequence or a multi-file pack.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can I rotate only some pages?',
+        answer:
+          'Yes — select the pages that need rotation, choose the angle, then download the updated PDF.',
+      },
+      {
+        question: 'Is the PDF uploaded?',
+        answer: 'No. Rotation runs in your browser for this tool.',
+      },
+    ],
+  },
+
+  'pdf-reorder-pages': {
+    answerFirst:
+      'Reorder PDF Pages lets you drag pages into a new sequence and download a fixed PDF — useful when scans or merges landed out of order.',
+    seoTitle: 'Reorder PDF Pages Online | ToolVerse',
+    seoDescription:
+      'Rearrange PDF page order in your browser. Drag pages into place, then download — no cloud upload for this tool.',
+    sections: [
+      {
+        heading: 'When merge order was wrong',
+        body: 'If you merged files in the wrong sequence, reorder pages here instead of starting over from scratch.',
+      },
+      {
+        heading: 'Check once before submitting',
+        body: 'Open the downloaded PDF and flip through quickly — page order mistakes are common on multi-scan jobs.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Does reordering upload my file?',
+        answer: 'No. Page order is updated locally in your browser.',
+      },
+      {
+        question: 'Can I delete pages here?',
+        answer:
+          'This tool focuses on order. To drop pages, extract what you need with Split PDF, then merge.',
+      },
+    ],
+  },
+
+  'image-resizer': {
+    answerFirst:
+      'Image Resizer changes width and height of a photo or graphic in your browser — for thumbnails, banners, and dimension-limited uploads.',
+    seoTitle: 'Image Resizer Online — Width & Height | ToolVerse',
+    seoDescription:
+      'Resize images to exact pixel dimensions without uploading. Keep aspect ratio or set custom width and height.',
+    sections: [
+      {
+        heading: 'Pixels vs file size',
+        body: 'Resizing dimensions and compressing bytes are different jobs. Shrink pixels here first, then use Image Compressor or Target Size if a portal still rejects the file for KB limits.',
+      },
+      {
+        heading: 'Social presets',
+        body: 'For Instagram, YouTube, or LinkedIn sizes, Social Media Image Resizer applies common presets faster than typing pixels each time.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Will resizing crop my image?',
+        answer:
+          'Resizing scales dimensions. For a tight crop first, use Image Cropper, then resize.',
+      },
+      {
+        question: 'Is my image uploaded?',
+        answer: 'No. Resizing runs in your browser.',
+      },
+    ],
+  },
+
+  'social-media-image-resizer': {
+    answerFirst:
+      'Social Media Image Resizer scales images to common platform sizes (Instagram, YouTube, TikTok, LinkedIn, Facebook) so posts are not awkward-cropped after upload.',
+    seoTitle: 'Social Media Image Resizer (IG, YouTube, LinkedIn) | ToolVerse',
+    seoDescription:
+      'Resize creatives to Instagram, YouTube, TikTok, LinkedIn, and Facebook dimensions in your browser — free presets, no account.',
+    sections: [
+      {
+        heading: 'Match the platform canvas',
+        body: 'Each network crops differently. Presets reduce trial-and-error when exporting from a phone camera roll or design export.',
+      },
+      {
+        heading: 'Export then compress if needed',
+        body: 'Large PNG exports can still be heavy. After resizing, compress for faster uploads when quality allows.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Are presets exact forever?',
+        answer:
+          'Platforms change recommended sizes occasionally. Treat presets as practical defaults and confirm in the latest creator docs if a launch is critical.',
+      },
+      {
+        question: 'Do you store my creatives?',
+        answer: 'No. Processing stays in your browser for this tool.',
+      },
+    ],
+  },
+
+  'image-cropper': {
+    answerFirst:
+      'Image Cropper trims a photo to the area you select — useful before compression, passport sizing, or social uploads.',
+    seoTitle: 'Crop Image Online Free | ToolVerse',
+    seoDescription:
+      'Crop photos in your browser without uploading. Trim to a subject or square frame, then download the result.',
+    sections: [
+      {
+        heading: 'Crop before aggressive compression',
+        body: 'Removing empty background first means fewer pixels to encode — target-KB tools produce clearer faces when you crop tightly first.',
+      },
+      {
+        heading: 'Square and profile frames',
+        body: 'For profile-style squares, crop to the face area, then resize if a platform expects a specific pixel size.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is cropping lossless?',
+        answer:
+          'You download a new image of the selected region. Re-encoding format depends on the export type.',
+      },
+      {
+        question: 'Are photos uploaded?',
+        answer: 'No. Cropping runs locally in your browser.',
+      },
+    ],
+  },
+
+  'jpg-to-webp': {
+    answerFirst:
+      'JPG/PNG to WebP Converter creates smaller WebP images for modern websites while conversion stays in your browser.',
+    seoTitle: 'JPG/PNG to WebP Converter Online | ToolVerse',
+    seoDescription:
+      'Convert JPG or PNG to WebP for faster pages. Private browser conversion — download and use in your CMS.',
+    sections: [
+      {
+        heading: 'Why WebP for the web',
+        body: 'WebP often beats JPEG at similar visual quality for photos on the web, which helps page weight and load time.',
+      },
+      {
+        heading: 'Fallback formats',
+        body: 'Some email clients and older apps still prefer JPG. Keep a JPG copy when interoperability matters more than bytes.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Will every browser open WebP?',
+        answer:
+          'Modern browsers do. If you must support very old clients, keep JPG/PNG alternatives.',
+      },
+      {
+        question: 'Is the image uploaded?',
+        answer: 'No. Conversion runs in your browser.',
+      },
+    ],
+  },
+
+  'webp-to-jpg': {
+    answerFirst:
+      'WebP to JPG Converter turns WebP images into widely compatible JPG files for forms, email, and older software.',
+    seoTitle: 'WebP to JPG Converter Online | ToolVerse',
+    seoDescription:
+      'Convert WebP images to JPG in your browser when a portal or app rejects WebP uploads.',
+    sections: [
+      {
+        heading: 'When portals reject WebP',
+        body: 'Many government and ATS forms still whitelist JPG/PNG only. Convert once, then compress if a KB cap applies.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Does conversion reduce quality?',
+        answer:
+          'JPG is lossy. Use a high-quality setting when you need clarity for ID-style photos.',
+      },
+      {
+        question: 'Is my file uploaded?',
+        answer: 'No. Conversion is local in the browser.',
+      },
+    ],
+  },
+
+  'character-counter': {
+    answerFirst:
+      'Character Counter tracks exact character counts (with and without spaces) against common caps like SMS, tweets, and meta titles.',
+    seoTitle: 'Character Counter Online (SMS, Tweets, Meta) | ToolVerse',
+    seoDescription:
+      'Count characters for SMS, social captions, and SEO titles. Live totals in your browser — private and free.',
+    sections: [
+      {
+        heading: 'Platform limits vs word count',
+        body: 'Social ads and SMS care about characters, not words. Use this tool for hard caps; use Word Counter for essays and articles.',
+      },
+      {
+        heading: 'Emojis and special characters',
+        body: 'Some platforms count emojis as more than one unit. Treat the counter as a guide and preview in the target app when the limit is tight.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Does this count words too?',
+        answer:
+          'It focuses on characters and common platform limits. For full writing stats, open Word Counter.',
+      },
+      {
+        question: 'Is my copy stored?',
+        answer: 'No. Counting runs locally in your browser.',
+      },
+    ],
+  },
+
+  'text-case-converter': {
+    answerFirst:
+      'Text Case Converter switches text between UPPERCASE, lowercase, Title Case, and related styles without retyping.',
+    seoTitle: 'Text Case Converter (Upper, Lower, Title) | ToolVerse',
+    seoDescription:
+      'Convert text to upper, lower, or title case instantly in your browser. Handy for headlines and messy pasted copy.',
+    sections: [
+      {
+        heading: 'Cleanup for headlines and data',
+        body: 'Paste messy ALL CAPS lists or lowercase titles, convert once, then copy into docs or CMS fields.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Does Title Case follow a style guide?',
+        answer:
+          'It applies a practical title-style transform. Publishing houses may still want manual tweaks for short words.',
+      },
+      {
+        question: 'Is text uploaded?',
+        answer: 'No. Conversion stays in your browser.',
+      },
+    ],
+  },
+
+  'remove-duplicate-lines': {
+    answerFirst:
+      'Remove Duplicate Lines dedupes pasted lists so each line appears once — useful for emails, SKUs, and messy exports.',
+    seoTitle: 'Remove Duplicate Lines Online | ToolVerse',
+    seoDescription:
+      'Deduplicate text lines in your browser. Clean email lists, SKUs, and exports without a spreadsheet.',
+    sections: [
+      {
+        heading: 'Lists without spreadsheet churn',
+        body: 'Paste a column of values, remove duplicates, and copy the unique set back — faster than filtering in Excel for small jobs.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is matching case-sensitive?',
+        answer:
+          'Follow the tool options if available. When in doubt, normalize case first with Text Case Converter.',
+      },
+      {
+        question: 'Is my list uploaded?',
+        answer: 'No. Deduping runs locally.',
+      },
+    ],
+  },
+
+  'discount-calculator': {
+    answerFirst:
+      'Discount & Sale Price Calculator turns a list price and discount percent into the final price and amount saved.',
+    seoTitle: 'Discount Calculator — Sale Price & Savings | ToolVerse',
+    seoDescription:
+      'Calculate sale price and savings from a discount percent. Quick shopping and promo math in your browser.',
+    sections: [
+      {
+        heading: 'Stacking and tax',
+        body: 'This tool handles a straightforward discount. Stacked coupons or tax-inclusive pricing may need an extra step — pair with VAT/GST Calculator when tax is separate.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'How do I find the sale price?',
+        answer:
+          'Enter the original price and discount percent. The tool returns the discounted price and savings.',
+      },
+      {
+        question: 'Are amounts stored?',
+        answer: 'No. Math runs in your browser.',
+      },
+    ],
+  },
+
+  'compound-interest-calculator': {
+    answerFirst:
+      'Compound Interest Calculator estimates future value from principal, rate, compounding frequency, and time — for planning, not investment advice.',
+    seoTitle: 'Compound Interest Calculator Online | ToolVerse',
+    seoDescription:
+      'Estimate compound growth from principal, rate, and time. Educational calculator — verify with your bank or advisor for real products.',
+    sections: [
+      {
+        heading: 'What compounding assumes',
+        body: 'Results assume the rate and schedule you enter. Real products may change rates, charge fees, or compound on different day-count rules.',
+      },
+      {
+        heading: 'Loans vs investments',
+        body: 'For monthly loan payments, use EMI Calculator. This tool focuses on growth-style compound interest estimates.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is this financial advice?',
+        answer:
+          'No. It is an educational estimate. Confirm product terms with your provider.',
+      },
+      {
+        question: 'Are my numbers stored?',
+        answer: 'No. Calculations stay in your browser.',
+      },
+    ],
+  },
+
+  'gpa-calculator': {
+    answerFirst:
+      'GPA & CGPA Calculator converts course grades and credit hours into a grade-point average for semester planning.',
+    seoTitle: 'GPA & CGPA Calculator Online | ToolVerse',
+    seoDescription:
+      'Calculate GPA or CGPA from grades and credits. Student planning tool — confirm scale rules with your school.',
+    sections: [
+      {
+        heading: 'Know your scale',
+        body: 'Schools use 4.0, 4.3, percentage, or letter maps differently. Enter grades the way your transcript defines them, or convert first.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Does this match my university formula?',
+        answer:
+          'It follows a standard credit-weighted approach. Always verify against your registrar’s rules.',
+      },
+      {
+        question: 'Is my data stored?',
+        answer: 'No. Calculations run locally.',
+      },
+    ],
+  },
+
+  'url-shortener': {
+    answerFirst:
+      'Privacy URL Shortener creates shorter links for sharing when you need a compact URL for bios, print, or QR destinations.',
+    seoTitle: 'URL Shortener Online | ToolVerse',
+    seoDescription:
+      'Shorten long links for sharing. Use with UTM Builder and QR Code Generator for campaign-friendly URLs.',
+    sections: [
+      {
+        heading: 'Short links and tracking',
+        body: 'Build campaign parameters with UTM Builder first, then shorten the full tracking URL if you need a compact form for print or social bios.',
+      },
+      {
+        heading: 'Trust and destinations',
+        body: 'Only shorten URLs you control or trust. Recipients should know where a short link leads.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Do short links expire?',
+        answer:
+          'Retention depends on how the shortener stores mappings. Keep your own backup of the destination URL for important campaigns.',
+      },
+      {
+        question: 'Can I QR a short link?',
+        answer:
+          'Yes — paste the short URL into QR Code Generator for posters and packaging.',
+      },
+    ],
+  },
+
+  'vat-gst-calculator': {
+    answerFirst:
+      'VAT & GST Calculator adds or removes tax from a net or gross amount using the rate you enter — handy for invoices and quotes.',
+    seoTitle: 'VAT & GST Calculator Online | ToolVerse',
+    seoDescription:
+      'Add or remove VAT/GST from prices with a custom rate. Useful for quotes and invoices — confirm your local tax rules.',
+    sections: [
+      {
+        heading: 'Net vs gross',
+        body: 'Some prices are tax-exclusive; others already include tax. Choose the direction that matches how you quote clients.',
+      },
+      {
+        heading: 'Not a filing tool',
+        body: 'Rates and rules differ by country and product type. Use this for arithmetic, then confirm with your accountant or tax authority.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Which VAT rate should I use?',
+        answer:
+          'Enter the rate that applies to your jurisdiction and goods/services. The calculator does not pick the legal rate for you.',
+      },
+      {
+        question: 'Are figures stored?',
+        answer: 'No. Math runs in your browser.',
+      },
+    ],
+  },
+
+  'hash-generator': {
+    answerFirst:
+      'Hash Generator creates checksums (such as SHA-256) from text in your browser — useful for quick integrity checks and learning hashes.',
+    seoTitle: 'Hash Generator (SHA) Online | ToolVerse',
+    seoDescription:
+      'Generate cryptographic hashes from text locally with Web Crypto. Handy for checksums and developer workflows.',
+    sections: [
+      {
+        heading: 'Hashes are one-way',
+        body: 'A hash verifies integrity or compares values; it is not encryption. Never hash passwords with a raw SHA alone for storage — use a proper password hashing scheme in your app.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is my text uploaded?',
+        answer: 'No. Hashing uses browser crypto APIs locally.',
+      },
+      {
+        question: 'Can I reverse a hash?',
+        answer:
+          'Not practically for strong algorithms. Hashes are designed to be one-way.',
+      },
+    ],
+  },
+
+  'uuid-generator': {
+    answerFirst:
+      'UUID / GUID Generator creates random version-4 UUIDs individually or in bulk for IDs, tests, and correlation keys.',
+    seoTitle: 'UUID Generator (GUID v4) Online | ToolVerse',
+    seoDescription:
+      'Generate RFC 4122 UUID v4 values in your browser — single or bulk — with Web Crypto randomness.',
+    sections: [
+      {
+        heading: 'Good for keys, not secrets alone',
+        body: 'UUIDs are unique identifiers. For passwords or API secrets, prefer Password Generator or your platform’s secret tooling.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Are UUIDs stored on ToolVerse?',
+        answer: 'No. They are generated in your browser session.',
+      },
+      {
+        question: 'Is UUID v4 safe for database primary keys?',
+        answer:
+          'Many systems use v4 UUIDs successfully. Consider index and storage trade-offs for your database.',
+      },
+    ],
+  },
+
+  'profit-margin-calculator': {
+    answerFirst:
+      'Profit Margin Calculator estimates margin and markup from cost and selling price — useful for pricing drafts and freelance quotes.',
+    seoTitle: 'Profit Margin Calculator Online | ToolVerse',
+    seoDescription:
+      'Calculate profit margin and markup from cost and price. Quick pricing math for shops and freelancers.',
+    sections: [
+      {
+        heading: 'Margin vs markup',
+        body: 'Margin is profit divided by selling price; markup is profit divided by cost. Mixing them up leads to underpricing — check which your team uses.',
+      },
+      {
+        heading: 'Pair with invoices',
+        body: 'Once price is set, generate a PDF invoice for the client with Invoice Generator.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Does this include tax?',
+        answer:
+          'Enter amounts consistently (tax-in or tax-out). Use VAT/GST Calculator when you need to separate tax.',
+      },
+      {
+        question: 'Are numbers stored?',
+        answer: 'No. Calculations run locally.',
+      },
+    ],
+  },
 };
 
 export function getToolPageContent(slug: string): ToolPageContent | undefined {
