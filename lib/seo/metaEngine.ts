@@ -44,13 +44,21 @@ export function getMetadataForPath(pathname: string): PageMetadata {
           '@context': 'https://schema.org',
           '@type': 'WebSite',
           name: 'ToolVerse',
-          url: baseUrl,
+          url: `${baseUrl}/`,
           description: '100+ Free Online Tools for Everyday Work',
+          inLanguage: 'en',
           potentialAction: {
             '@type': 'SearchAction',
             target: `${baseUrl}/?q={search_term_string}`,
             'query-input': 'required name=search_term_string'
           }
+        },
+        {
+          '@context': 'https://schema.org',
+          '@type': 'Organization',
+          name: 'ToolVerse',
+          url: `${baseUrl}/`,
+          logo: `${baseUrl}/favicon.svg`
         }
       ]
     };
@@ -70,6 +78,8 @@ export function getMetadataForPath(pathname: string): PageMetadata {
         name: tool.canonicalName,
         operatingSystem: 'Any (Web Browser)',
         applicationCategory: tool.category,
+        inLanguage: 'en',
+        isAccessibleForFree: true,
         aggregateRating: {
           '@type': 'AggregateRating',
           ratingValue: '4.9',
@@ -91,7 +101,7 @@ export function getMetadataForPath(pathname: string): PageMetadata {
             '@type': 'ListItem',
             position: 1,
             name: 'Home',
-            item: baseUrl,
+            item: `${baseUrl}/`,
           },
           {
             '@type': 'ListItem',
@@ -159,7 +169,8 @@ export function getMetadataForPath(pathname: string): PageMetadata {
             '@type': 'CollectionPage',
             name: category.name,
             description: category.description,
-            url: canonicalUrl
+            url: canonicalUrl,
+            inLanguage: 'en'
           }
         ]
       };
@@ -179,9 +190,9 @@ export function getMetadataForPath(pathname: string): PageMetadata {
 
   // Fallback
   return {
-    title: 'ToolVerse — Free Privacy-First Online Tools',
+    title: 'ToolVerse — 100+ Free Online Tools for Everyday Work',
     description: '100+ Free, Fast, and Privacy-First Online Tools.',
-    canonicalUrl: baseUrl,
+    canonicalUrl: `${baseUrl}/`,
     ogType: 'website'
   };
 }
@@ -203,14 +214,30 @@ export function updateDOMMetadata(meta: PageMetadata) {
     el.setAttribute('content', content);
   };
 
-  // Helper for link rel="canonical"
-  let canonicalEl = document.querySelector('link[rel="canonical"]');
-  if (!canonicalEl) {
-    canonicalEl = document.createElement('link');
-    canonicalEl.setAttribute('rel', 'canonical');
-    document.head.appendChild(canonicalEl);
-  }
-  canonicalEl.setAttribute('href', meta.canonicalUrl);
+  // Helper to set or create link tag
+  const setLinkTag = (relVal: string, hreflangVal: string | null, hrefVal: string) => {
+    const selector = hreflangVal 
+      ? `link[rel="${relVal}"][hreflang="${hreflangVal}"]` 
+      : `link[rel="${relVal}"]:not([hreflang])`;
+    let el = document.querySelector(selector);
+    if (!el) {
+      el = document.createElement('link');
+      el.setAttribute('rel', relVal);
+      if (hreflangVal) el.setAttribute('hreflang', hreflangVal);
+      document.head.appendChild(el);
+    }
+    el.setAttribute('href', hrefVal);
+  };
+
+  // Robots Tag (INDEX, FOLLOW - NO NOINDEX!)
+  setMetaTag('meta[name="robots"]', 'name', 'robots', 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1');
+
+  // Single Canonical Tag
+  setLinkTag('canonical', null, meta.canonicalUrl);
+
+  // Hreflang Tags (Fixes Hreflang Red Flags!)
+  setLinkTag('alternate', 'en', meta.canonicalUrl);
+  setLinkTag('alternate', 'x-default', meta.canonicalUrl);
 
   // Description & Keywords
   setMetaTag('meta[name="description"]', 'name', 'description', meta.description);
