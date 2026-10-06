@@ -90,11 +90,14 @@ const LEGAL_PAGES: Record<string, { title: string; content: string }> = {
   'about': {
     title: 'About ToolVerse',
     content: `
+      <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-6 mb-2">What is ToolVerse?</h2>
+      <p class="leading-relaxed"><strong>ToolVerse</strong> (https://toolverse.baby) is a privacy-first suite of 95+ free online utilities for PDFs, images, calculators, writing, SEO helpers, developer tools, and regional finance estimates. Most file tools process data in your browser with Canvas, WebAssembly, and Web Crypto — so sensitive documents do not need to be uploaded for core conversions.</p>
+
       <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-6 mb-2">Our Mission</h2>
-      <p class="leading-relaxed">ToolVerse was founded to deliver a world-class, lightning-fast, and 100% privacy-first utility platform. We believe everyday file conversions, image editing, PDF operations, tax estimations, and developer utilities should be completely free, effortless, and private.</p>
+      <p class="leading-relaxed">Everyday conversions and calculators should be free, fast, and private. We focus on practical tools people actually search for — target-size image compression, PDF merge/split, QR and barcodes, Pakistan salary tax estimates, and more — without signup walls for basic use.</p>
 
       <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-6 mb-2">Privacy & Security First</h2>
-      <p class="leading-relaxed">Unlike traditional websites that upload your personal documents to remote servers, ToolVerse utilizes WebAssembly (WASM), HTML5 Canvas, and Web Crypto APIs to process data directly inside your browser memory. Zero files are stored on cloud databases.</p>
+      <p class="leading-relaxed">Unlike upload-first converter sites, ToolVerse is designed so client-side tools keep files in browser memory for that session. Advertising partners (such as Google AdSense) may use cookies as described in our Privacy Policy. Contact: <a href="mailto:support@toolverse.baby" class="text-brand-600 font-semibold underline">support@toolverse.baby</a>.</p>
     `,
   },
   'contact': {

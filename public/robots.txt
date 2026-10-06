@@ -1,9 +1,14 @@
 # ToolVerse robots.txt — https://toolverse.baby
 User-agent: *
 Allow: /
+Allow: /tools/
+Allow: /category/
+Allow: /blog/
+Allow: /jobs/
+Allow: /legal/
 Disallow: /scratch/
 
-# Optional AI training crawler blocks (discovery still available via llms.txt)
+# AI training / scraping bots (standard UA rules)
 User-agent: GPTBot
 Disallow: /
 
@@ -19,4 +24,8 @@ Disallow: /
 User-agent: Bytespider
 Disallow: /
 
+User-agent: Google-Extended
+Disallow: /
+
+Host: https://toolverse.baby
 Sitemap: https://toolverse.baby/sitemap.xml

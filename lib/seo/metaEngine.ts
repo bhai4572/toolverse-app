@@ -1,6 +1,7 @@
 import { getToolBySlug, CATEGORIES } from '@/lib/tools/registry';
 import { getBlogPostBySlug } from '@/lib/blog/posts';
 import { getToolPageContent } from '@/lib/seo/toolPageContent';
+import { getCategoryPageContent } from '@/lib/seo/categoryPageContent';
 
 export interface PageMetadata {
   title: string;
@@ -62,6 +63,10 @@ export function getMetadataForPath(pathname: string): PageMetadata {
           name: 'ToolVerse',
           url: `${baseUrl}/`,
           logo: `${baseUrl}/favicon.svg`,
+          description:
+            'Privacy-first free online tools for PDFs, images, calculators, writing, developers, and job search.',
+          email: 'support@toolverse.baby',
+          foundingDate: '2025',
         },
       ],
     };
@@ -71,8 +76,12 @@ export function getMetadataForPath(pathname: string): PageMetadata {
     const tool = getToolBySlug(parts[1]);
     if (tool) {
       const canonicalUrl = `${baseUrl}/tools/${tool.slug}`;
-      const pageTitle = `${tool.canonicalName} — Free Online Tool | ToolVerse`;
-      const pageDesc = `${tool.shortDescription} Free, fast, and private — processed locally in your browser.`;
+      const pageSeo = getToolPageContent(tool.slug);
+      const pageTitle =
+        pageSeo?.seoTitle ?? `${tool.canonicalName} — Free Online Tool | ToolVerse`;
+      const pageDesc =
+        pageSeo?.seoDescription ??
+        `${tool.shortDescription} Free, fast, and private — processed locally in your browser.`;
 
       const softwareAppSchema = {
         '@context': 'https://schema.org',
@@ -87,7 +96,7 @@ export function getMetadataForPath(pathname: string): PageMetadata {
           price: '0',
           priceCurrency: 'USD',
         },
-        description: tool.shortDescription,
+        description: pageSeo?.answerFirst || tool.shortDescription,
         url: canonicalUrl,
       };
 
@@ -116,24 +125,28 @@ export function getMetadataForPath(pathname: string): PageMetadata {
         ],
       };
 
-      const pageFaqs = getToolPageContent(tool.slug)?.faqs;
+      // FAQ schema mirrors visible FAQ block on the tool page
+      const pageFaqs =
+        pageSeo?.faqs ??
+        ([
+          {
+            question: `Is ${tool.canonicalName} completely free to use?`,
+            answer: `Yes, ${tool.canonicalName} is free with unlimited usage. No hidden fees or sign-up required.`,
+          },
+          {
+            question: `Is my data safe and private when using ${tool.canonicalName}?`,
+            answer: `${tool.privacyMessage} Client-side tools process data in your browser where possible.`,
+          },
+          {
+            question: `Does ${tool.canonicalName} work on mobile phones and tablets?`,
+            answer: `Yes. ${tool.canonicalName} is responsive and works on phones, tablets, and desktops.`,
+          },
+        ] as const);
+
       const faqSchema = {
         '@context': 'https://schema.org',
         '@type': 'FAQPage',
-        mainEntity: (pageFaqs ?? [
-          {
-            question: `Is ${tool.canonicalName} completely free?`,
-            answer: `Yes, ${tool.canonicalName} is free to use with no sign-up required.`,
-          },
-          {
-            question: `Is my data safe when using ${tool.canonicalName}?`,
-            answer: `${tool.privacyMessage} Processing runs in your browser where possible.`,
-          },
-          {
-            question: `Does ${tool.canonicalName} work on mobile?`,
-            answer: `Yes. ${tool.canonicalName} is responsive and works on phones, tablets, and desktops.`,
-          },
-        ]).map((faq) => ({
+        mainEntity: pageFaqs.map((faq) => ({
           '@type': 'Question',
           name: faq.question,
           acceptedAnswer: {
@@ -159,9 +172,12 @@ export function getMetadataForPath(pathname: string): PageMetadata {
     const category = CATEGORIES.find((c) => c.slug === parts[1]);
     if (category) {
       const canonicalUrl = `${baseUrl}/category/${category.slug}`;
+      const catSeo = getCategoryPageContent(category.slug);
       return {
-        title: `${category.name} — Free Online Tools | ToolVerse`,
-        description: `${category.description} Free, fast, privacy-first browser utilities.`,
+        title: catSeo?.seoTitle ?? `${category.name} — Free Online Tools | ToolVerse`,
+        description:
+          catSeo?.seoDescription ??
+          `${category.description} Free, fast, privacy-first browser utilities.`,
         keywords: [category.name.toLowerCase(), 'free online tools', 'toolverse'],
         canonicalUrl,
         ogType: 'website',
@@ -171,9 +187,32 @@ export function getMetadataForPath(pathname: string): PageMetadata {
             '@context': 'https://schema.org',
             '@type': 'CollectionPage',
             name: category.name,
-            description: category.description,
+            description: catSeo?.intro || category.description,
             url: canonicalUrl,
             inLanguage: 'en',
+            isPartOf: {
+              '@type': 'WebSite',
+              name: 'ToolVerse',
+              url: `${baseUrl}/`,
+            },
+          },
+          {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              {
+                '@type': 'ListItem',
+                position: 1,
+                name: 'Home',
+                item: `${baseUrl}/`,
+              },
+              {
+                '@type': 'ListItem',
+                position: 2,
+                name: category.name,
+                item: canonicalUrl,
+              },
+            ],
           },
         ],
       };

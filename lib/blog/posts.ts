@@ -516,6 +516,111 @@ ToolVerse uses **WebAssembly (WASM)** and client-side JavaScript binary manipula
 - [Split PDF Pages](/tools/pdf-split)
 - [Word & Character Counter](/tools/word-counter)
     `
+  },
+  {
+    slug: 'convert-heic-to-jpg-windows-iphone',
+    title: 'Convert HEIC to JPG on Windows (iPhone Photos Without iCloud)',
+    description:
+      'iPhone photos saved as HEIC often will not open on Windows or upload forms. Learn a private in-browser HEIC to JPG conversion workflow, then compress if a portal has a KB limit.',
+    category: 'Image & PDF Tools',
+    author: 'ToolVerse Editorial Team',
+    publishDate: '2026-10-06',
+    readTimeMinutes: 7,
+    featuredImage: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=1200&q=80',
+    keywords: [
+      'heic to jpg',
+      'convert heic to jpg windows',
+      'iphone photo to jpg',
+      'heic converter online',
+      'heif to jpeg',
+    ],
+    relatedToolSlug: 'heic-to-jpg',
+    faqs: [
+      {
+        question: 'Why won’t my iPhone photo open on Windows?',
+        answer:
+          'Many iPhones save photos as HEIC/HEIF. Older Windows apps and some web forms only accept JPG or PNG, so the file looks broken or “unsupported.”',
+      },
+      {
+        question: 'Do I need iCloud or iTunes to convert HEIC?',
+        answer:
+          'No. You can convert HEIC to JPG in the browser with a local decoder, then download the JPG to your PC.',
+      },
+      {
+        question: 'What if a job portal still rejects the JPG for size?',
+        answer:
+          'After conversion, compress to the portal’s KB limit (often 20KB–100KB) with a target-size compressor before uploading.',
+      },
+    ],
+    contentMarkdown: `
+# Convert HEIC to JPG on Windows (iPhone Photos Without iCloud)
+
+If you transfer photos from an iPhone to a Windows PC — or try to upload them to a job portal — you may see a file named something like \`IMG_1234.HEIC\` that will not preview. That is normal: **HEIC** is Apple’s efficient camera format, but many Windows apps and HTML upload fields still expect **JPG**.
+
+This guide covers a practical, privacy-minded path: convert HEIC to JPG in the browser, then compress only if a site enforces a file-size cap.
+
+---
+
+## Quick answer
+
+1. Open the [HEIC to JPG Converter](/tools/heic-to-jpg) on ToolVerse.
+2. Select the \`.HEIC\` file from your phone or PC.
+3. Convert and download the \`.JPG\`.
+4. If a form rejects the file for size (not format), use [Compress Image to Target Size](/tools/compress-image-target-size).
+
+Conversion for this tool runs in your browser session — you do not need to install iTunes or upload the photo to iCloud just to change formats.
+
+---
+
+## Why HEIC shows up
+
+Apple uses HEIC to keep high visual quality at smaller sizes than older JPEG defaults. When you email, AirDrop to a Mac, or sync with “Most Compatible,” you may already get JPG. When you copy the original file to Windows via cable, cloud folder, or messaging apps that preserve the original container, you often get HEIC.
+
+Symptoms:
+
+- Thumbnail missing in File Explorer
+- “Unsupported format” on university or government forms
+- Email clients that refuse the attachment preview
+
+---
+
+## Browser conversion vs installing codecs
+
+Windows can add HEIF extensions from the Microsoft Store, and desktop apps can batch-convert. Those are fine for power users. Browser conversion is useful when:
+
+- You are on a locked work PC
+- You only need one or two photos for a form today
+- You prefer not to grant a random website a permanent cloud copy of ID or passport photos
+
+Prefer tools that process **client-side**. Open DevTools → Network while converting: you should not see a large multipart upload of your image for a local converter.
+
+---
+
+## Step-by-step on ToolVerse
+
+1. Go to [HEIC to JPG Converter](/tools/heic-to-jpg).
+2. Upload the HEIC file.
+3. Click convert and download the JPG.
+4. Open the JPG once on Windows to confirm it previews.
+5. Optional: crop with [Image Cropper](/tools/image-cropper) or size a passport photo with [Passport Photo Maker](/tools/passport-photo-maker).
+6. Optional: hit an exact KB limit with [Compress Image to Target Size](/tools/compress-image-target-size) (common for 20KB / 50KB portals).
+
+---
+
+## Quality and metadata notes
+
+Re-encoding can change file size and may alter or drop some metadata. For casual sharing and most form uploads that only need a recognizable face photo, JPG is the right interoperability choice. Keep the original HEIC as your archive if you care about maximum fidelity.
+
+Large phone photos may still be several megabytes after conversion. Format success ≠ size success. Always read the portal’s **maximum file size** line.
+
+---
+
+## Related ToolVerse guides
+
+- [Compress images to 20KB / 50KB / 100KB](/blog/how-to-compress-image-to-target-size-under-50kb)
+- [Privacy-first online tools shortlist](/blog/best-free-privacy-first-online-tools-2026)
+- [Merge PDFs without uploading](/blog/how-to-merge-pdf-files-privately-without-uploading)
+    `
   }
 ];
 

@@ -12,6 +12,7 @@
 - [Free QR Code Generator](https://toolverse.baby/tools/qr-code-generator): Create SVG and PNG QR codes for WiFi, links, and text.
 - [Zakat Calculator](https://toolverse.baby/tools/zakat-calculator): Calculate Zakat obligation on gold, silver, cash, and investments.
 - [HEIC to JPG Converter](https://toolverse.baby/tools/heic-to-jpg): Convert Apple iPhone HEIC images to standard JPG format.
+- [HEIC to JPG on Windows guide](https://toolverse.baby/blog/convert-heic-to-jpg-windows-iphone): Practical conversion + KB compression workflow.
 
 ## Documentation & Guides
 
