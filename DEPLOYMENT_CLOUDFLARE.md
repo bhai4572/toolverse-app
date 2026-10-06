@@ -1,24 +1,33 @@
 # ToolVerse — Cloudflare Deployment Guide
 
-This document outlines deployment steps for **Cloudflare Pages** (frontend static & SSR output) and **Cloudflare Workers** (URL Shortener backend with D1 and KV).
+## Cloudflare Pages (frontend) — Vite SPA
+
+Project name: **toolverse-app** (custom domain `toolverse.baby`).
+
+| Setting | Required value |
+|---|---|
+| Framework preset | None / Vite |
+| Build command | `npm run build` |
+| Output directory | `dist` |
+| Node.js version | 20 |
+
+Do **not** use `npx @cloudflare/next-on-pages` or `.vercel/output/static` — this app builds with Vite.
+
+### SEO prerender + SPA fallback
+
+- `npm run build` runs sitemap → `vite build` → `scripts/prerender.mjs` (writes `dist/<route>/index.html`).
+- `functions/_middleware.js` serves prerendered shells from ASSETS; falls back to `/index.html` on 404.
+- Never add `/* /index.html 200` to `_redirects` (CF evaluates redirects before static files).
+
+### Manual deploy
+
+```bash
+npm run deploy:pages
+```
 
 ---
 
-## 1. Cloudflare Pages Deployment
-
-1. Log into your **Cloudflare Dashboard** and select **Workers & Pages** > **Create Application** > **Pages**.
-2. Connect your Git Repository (`ToolVerse`).
-3. Set project settings:
-   - **Framework Preset:** Next.js
-   - **Build Command:** `npx @cloudflare/next-on-pages` (or `npm run build`)
-   - **Build Output Directory:** `.vercel/output/static` (or `.next`)
-4. Configure Environment Variables:
-   - `NEXT_PUBLIC_SITE_URL` = `https://toolverse.com`
-   - `NEXT_PUBLIC_ENABLE_ADS` = `false`
-
----
-
-## 2. Cloudflare Worker + D1 Setup (URL Shortener)
+## Cloudflare Worker + D1 (URL Shortener)
 
 ### Step 1: Create D1 Database
 ```bash
@@ -26,7 +35,6 @@ npx wrangler d1 create toolverse-db
 ```
 
 ### Step 2: Create D1 Migration Table
-Run SQL migration script:
 ```sql
 CREATE TABLE IF NOT EXISTS short_links (
   id INTEGER PRIMARY KEY AUTOINCREMENT,

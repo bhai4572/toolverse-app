@@ -1897,6 +1897,732 @@ export const TOOL_PAGE_CONTENT: Record<string, ToolPageContent> = {
       },
     ],
   },
+
+  'quotation-generator': {
+    answerFirst:
+      'Quotation & Estimate Generator builds a client-ready price estimate PDF from your line items, totals, and business details.',
+    seoTitle: 'Quotation & Estimate PDF Generator | ToolVerse',
+    seoDescription:
+      'Create formal quotation and estimate PDFs for client proposals. Pair with invoices when the job is won.',
+    sections: [
+      {
+        heading: 'Quote then invoice',
+        body: 'Send a clear estimate first. When accepted, convert agreed totals into an invoice with Invoice Generator so numbering stays consistent.',
+      },
+      {
+        heading: 'Pricing sanity checks',
+        body: 'Use Profit Margin Calculator before you lock discounts so quotes stay profitable.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is this a signed contract?',
+        answer:
+          'No. It is a document helper. Add your own terms and legal review when needed.',
+      },
+      {
+        question: 'Are client details stored on ToolVerse?',
+        answer: 'PDF generation for this tool runs in your browser session.',
+      },
+    ],
+  },
+
+  'thesis-statement-checker': {
+    answerFirst:
+      'Thesis Statement Checklist helps you review length, clarity, and claim focus so your thesis is specific enough to guide an essay.',
+    seoTitle: 'Thesis Statement Checker & Checklist | ToolVerse',
+    seoDescription:
+      'Evaluate thesis clarity and focus before you draft. Educational checklist — follow your assignment rubric.',
+    sections: [
+      {
+        heading: 'Specific beats vague',
+        body: 'A strong thesis takes a clear position and sets scope. If it could fit any paper, tighten the claim.',
+      },
+      {
+        heading: 'Next writing steps',
+        body: 'After the thesis holds, Essay Structure Checker and Academic Tone Checker help with organization and register.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Will this write my thesis for me?',
+        answer:
+          'No. It is a review checklist. You write and revise your own claim.',
+      },
+      {
+        question: 'Is my text uploaded?',
+        answer: 'No. Checking runs in your browser.',
+      },
+    ],
+  },
+
+  'transition-word-helper': {
+    answerFirst:
+      'Transition Word & Phrase Helper lists connectors for addition, contrast, cause/effect, and conclusions so paragraphs flow more clearly.',
+    seoTitle: 'Transition Words & Phrases Helper | ToolVerse',
+    seoDescription:
+      'Browse linking words by category with example usage for essays and reports. Browser-based writing aid.',
+    sections: [
+      {
+        heading: 'Choose meaning, not decoration',
+        body: 'Pick transitions that match the logical relationship. Overusing “however” or “moreover” makes prose stiff.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can I paste these into any essay style?',
+        answer:
+          'Yes as a vocabulary aid. Match tone to your discipline and instructor preferences.',
+      },
+      {
+        question: 'Is anything stored?',
+        answer: 'No. The helper runs locally in your browser.',
+      },
+    ],
+  },
+
+  'email-proofreading-checklist': {
+    answerFirst:
+      'Email Proofreading & Tone Checklist walks through subject, greeting, CTA, attachments, and tone before you hit send.',
+    seoTitle: 'Email Proofreading Checklist Online | ToolVerse',
+    seoDescription:
+      'Proofread professional emails with a practical checklist for subject lines, tone, and attachments.',
+    sections: [
+      {
+        heading: 'Subject and ask',
+        body: 'Clear subjects and one obvious next step reduce follow-up loops. Soften or formalize tone with Formal Tone Converter when needed.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Does this send email for me?',
+        answer: 'No. It is a pre-send checklist only.',
+      },
+      {
+        question: 'Is email content uploaded?',
+        answer: 'No. The checklist runs in your browser.',
+      },
+    ],
+  },
+
+  'assignment-submission-checklist': {
+    answerFirst:
+      'Assignment Submission Checklist helps you verify format, IDs, citations, margins, and deadlines before you upload coursework.',
+    seoTitle: 'Assignment Submission Checklist | ToolVerse',
+    seoDescription:
+      'Check file format, cover details, citations, and deadlines before submitting homework or term papers.',
+    sections: [
+      {
+        heading: 'Portal upload failures',
+        body: 'If PDFs or photos fail size checks, use PDF Merge / Compress Image to Target Size, then re-upload.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Does this submit to my university?',
+        answer: 'No. You still upload through your school’s portal.',
+      },
+      {
+        question: 'Is my assignment stored?',
+        answer: 'No. The checklist is local.',
+      },
+    ],
+  },
+
+  'originality-checklist': {
+    answerFirst:
+      'Ethical Originality & Citation Checklist is a self-review for quotes, paraphrases, and source logging — not a plagiarism score or Turnitin bypass.',
+    seoTitle: 'Originality & Citation Ethics Checklist | ToolVerse',
+    seoDescription:
+      'Ethical self-check for citations and quotations. No fake plagiarism scores — follow your institution’s integrity rules.',
+    sections: [
+      {
+        heading: 'What this is not',
+        body: 'It does not scan the web, evade detectors, or guarantee a similarity percentage. Use it to catch missing citations before submission.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is this a plagiarism detector?',
+        answer:
+          'No. It is an integrity checklist for your own process.',
+      },
+      {
+        question: 'Are drafts uploaded?',
+        answer: 'No. Review stays in your browser.',
+      },
+    ],
+  },
+
+  'equation-solver': {
+    answerFirst:
+      'Quadratic & Linear Equation Solver finds roots for ax²+bx+c=0 and simple linear forms, with discriminant-aware handling for homework checks.',
+    seoTitle: 'Quadratic & Linear Equation Solver | ToolVerse',
+    seoDescription:
+      'Solve quadratic and linear equations online. See roots from standard coefficients — educational math helper.',
+    sections: [
+      {
+        heading: 'Check your algebra steps',
+        body: 'Use the solver to verify answers after you attempt the work. For matrices, open Matrix & Vector Calculator.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Does it show every school method?',
+        answer:
+          'It focuses on standard root results. Write full working as your teacher requires.',
+      },
+      {
+        question: 'Are equations stored?',
+        answer: 'No. Solving runs locally.',
+      },
+    ],
+  },
+
+  'matrix-vector-calculator': {
+    answerFirst:
+      'Matrix & Vector Calculator computes 2×2/3×3 determinants, transpose, and related vector operations for linear-algebra practice.',
+    seoTitle: 'Matrix Determinant & Vector Calculator | ToolVerse',
+    seoDescription:
+      'Calculate 2x2 and 3x3 determinants, transpose, and vector products in your browser.',
+    sections: [
+      {
+        heading: 'Small matrices, clear checks',
+        body: 'Handy for verifying homework on 2×2 and 3×3 systems. Larger systems need dedicated CAS software.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can it invert every matrix?',
+        answer:
+          'Singular matrices have no inverse. The tool reports what the inputs allow.',
+      },
+      {
+        question: 'Is input stored?',
+        answer: 'No. Calculations are local.',
+      },
+    ],
+  },
+
+  'target-cgpa-calculator': {
+    answerFirst:
+      'Target CGPA Calculator estimates the semester GPA you need next to reach a graduation CGPA goal.',
+    seoTitle: 'Target CGPA & Required GPA Calculator | ToolVerse',
+    seoDescription:
+      'Find the GPA you need next semester to hit a target CGPA. Planning aid — confirm with your registrar’s formula.',
+    sections: [
+      {
+        heading: 'Credits matter',
+        body: 'Required GPA depends on remaining credit hours. Enter realistic credit loads for upcoming terms.',
+      },
+      {
+        heading: 'Pair with current GPA',
+        body: 'Compute current standing with GPA Calculator, then plan the target here.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Does every university use the same formula?',
+        answer:
+          'No. Credit weighting differs. Verify against your transcript rules.',
+      },
+      {
+        question: 'Is data stored?',
+        answer: 'No. Math runs in your browser.',
+      },
+    ],
+  },
+
+  'attendance-calculator': {
+    answerFirst:
+      'Attendance Calculator estimates how many classes you can miss — or must attend — to stay above a target like 75%.',
+    seoTitle: 'Attendance Calculator (75% Target) | ToolVerse',
+    seoDescription:
+      'Calculate classes you can bunk or must attend to reach your attendance percentage target.',
+    sections: [
+      {
+        heading: 'Policies differ',
+        body: 'Some schools count labs separately or freeze attendance early. Treat this as arithmetic, then confirm with your department.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is 75% universal?',
+        answer:
+          'No. Enter your required percentage. Many institutions use 75%, but yours may differ.',
+      },
+      {
+        question: 'Are numbers stored?',
+        answer: 'No. Calculations are local.',
+      },
+    ],
+  },
+
+  'ats-resume-checker': {
+    answerFirst:
+      'ATS Resume & Action Verb Checklist reviews formatting cues and suggests stronger verbs so your resume is easier for applicant-tracking systems to parse.',
+    seoTitle: 'ATS Resume Checker & Action Verbs | ToolVerse',
+    seoDescription:
+      'Check resume structure cues and browse action verbs. Pair with Cover Letter Generator for applications.',
+    sections: [
+      {
+        heading: 'ATS-friendly habits',
+        body: 'Simple headings, standard section names, and text (not only icons) improve parse rates. Always tailor keywords to the job ad.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Does this guarantee interviews?',
+        answer:
+          'No. It is a formatting and language aid. Experience and fit matter most.',
+      },
+      {
+        question: 'Is my resume uploaded?',
+        answer: 'No. Review runs in your browser for this tool.',
+      },
+    ],
+  },
+
+  'cover-letter-generator': {
+    answerFirst:
+      'Cover Letter Builder helps you assemble a professional job or internship cover letter PDF from your details and role context.',
+    seoTitle: 'Cover Letter Generator (PDF) | ToolVerse',
+    seoDescription:
+      'Build a personalized cover letter PDF for job applications. Edit carefully before you send.',
+    sections: [
+      {
+        heading: 'Customize every time',
+        body: 'Generic letters underperform. Name the role, company, and one concrete match to the posting.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can I reuse one letter everywhere?',
+        answer:
+          'Better to adapt each letter. Keep a base draft, then customize the middle paragraph.',
+      },
+      {
+        question: 'Is content stored on servers?',
+        answer: 'Generation for this tool runs in your browser session.',
+      },
+    ],
+  },
+
+  'leave-application-generator': {
+    answerFirst:
+      'Leave Application Generator drafts formal school or workplace leave/sick letters you can copy or export.',
+    seoTitle: 'Leave Application Letter Generator | ToolVerse',
+    seoDescription:
+      'Generate formal leave or sick application letters for school, university, or office use.',
+    sections: [
+      {
+        heading: 'Include the essentials',
+        body: 'Dates, reason at an appropriate detail level, and a polite close. Follow your org’s template if one exists.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is this legally binding?',
+        answer:
+          'No. It is a writing helper. Follow HR or school submission rules.',
+      },
+      {
+        question: 'Is my letter stored?',
+        answer: 'No. Drafting runs locally in your browser.',
+      },
+    ],
+  },
+
+  'youtube-tag-formatter': {
+    answerFirst:
+      'YouTube Tags & Keyword Formatter turns keyword lists into comma-separated tags with a practical length counter for the upload form.',
+    seoTitle: 'YouTube Tags Formatter Online | ToolVerse',
+    seoDescription:
+      'Format YouTube video tags and watch character limits. Pair with chapters and earnings estimators for creators.',
+    sections: [
+      {
+        heading: 'Tags follow titles and content',
+        body: 'Irrelevant tag stuffing does not help. Prefer phrases that match what the video actually covers.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Do tags still matter?',
+        answer:
+          'They are one signal among many. Titles, thumbnails, and watch time matter more.',
+      },
+      {
+        question: 'Are keywords uploaded?',
+        answer: 'No. Formatting is local.',
+      },
+    ],
+  },
+
+  'instagram-grid-splitter': {
+    answerFirst:
+      'Instagram Grid Splitter crops one image into 3×1 or 3×3 tiles for carousel or puzzle-grid posts.',
+    seoTitle: 'Instagram Grid Splitter Online | ToolVerse',
+    seoDescription:
+      'Split images into Instagram grid tiles in your browser. Use with Social Media Image Resizer for platform sizes.',
+    sections: [
+      {
+        heading: 'Upload order',
+        body: 'Post tiles in the correct sequence so the grid rebuilds on your profile. Preview on mobile before publishing.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is my photo uploaded?',
+        answer: 'No. Splitting runs in your browser.',
+      },
+      {
+        question: 'Does Instagram keep exact pixels?',
+        answer:
+          'Instagram may recompress. Start from a sharp source image.',
+      },
+    ],
+  },
+
+  'youtube-chapters-generator': {
+    answerFirst:
+      'YouTube Chapters Generator formats timestamp lines (00:00 Intro) for your description so viewers can jump between sections.',
+    seoTitle: 'YouTube Chapters & Timestamp Generator | ToolVerse',
+    seoDescription:
+      'Create YouTube chapter timestamps for descriptions. Start with 00:00 and keep times ascending.',
+    sections: [
+      {
+        heading: 'Chapter rules of thumb',
+        body: 'First stamp must be 00:00. Use clear labels. Pair with Tag Formatter when you finalize the upload package.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Why aren’t chapters showing?',
+        answer:
+          'Check 00:00 start, ascending times, and enough chapter length. YouTube may take time to process.',
+      },
+      {
+        question: 'Is text stored?',
+        answer: 'No. Formatting is local.',
+      },
+    ],
+  },
+
+  'css-gradient-shadow-generator': {
+    answerFirst:
+      'CSS Box-Shadow & Gradient Generator builds copy-paste CSS for linear gradients and layered shadows for UI polish.',
+    seoTitle: 'CSS Gradient & Box-Shadow Generator | ToolVerse',
+    seoDescription:
+      'Generate CSS gradients and box-shadow snippets with live-friendly copy output for front-end work.',
+    sections: [
+      {
+        heading: 'Keep contrast accessible',
+        body: 'Fancy gradients still need readable text. Check contrast when placing copy on colorful backgrounds.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Does this write full layouts?',
+        answer:
+          'No. It focuses on gradient and shadow CSS you paste into your stylesheet.',
+      },
+      {
+        question: 'Is code uploaded?',
+        answer: 'No. Generation runs in your browser.',
+      },
+    ],
+  },
+
+  'jwt-decoder': {
+    answerFirst:
+      'JWT Decoder inspects header and payload claims (including expiry) from a token you paste — decode only tokens you are allowed to handle.',
+    seoTitle: 'JWT Decoder & Expiry Inspector | ToolVerse',
+    seoDescription:
+      'Decode JWT header/payload and check expiry locally. Do not paste production secrets into untrusted sites.',
+    sections: [
+      {
+        heading: 'Decode ≠ verify signature',
+        body: 'Viewing claims is not cryptographic verification. Validate signatures in your backend with trusted keys.',
+      },
+      {
+        heading: 'Privacy caution',
+        body: 'Tokens can contain PII. Prefer local decoding. Clear the page after debugging on shared machines.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is my JWT uploaded?',
+        answer: 'No. Decoding runs in your browser for this tool.',
+      },
+      {
+        question: 'Can it forge tokens?',
+        answer:
+          'It inspects existing tokens. Issuing valid signed JWTs requires your secret/private key elsewhere.',
+      },
+    ],
+  },
+
+  'sql-formatter': {
+    answerFirst:
+      'SQL Formatter beautifies queries with clearer keyword casing and indentation so reviews and debugging are easier.',
+    seoTitle: 'SQL Formatter & Beautifier Online | ToolVerse',
+    seoDescription:
+      'Format and minify SQL in your browser. Handy for query reviews without pasting production data into unknown hosts.',
+    sections: [
+      {
+        heading: 'Avoid pasting sensitive rows',
+        body: 'Format structure, not confidential customer data. Prefer redacted samples when sharing with teammates.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Does it run SQL against a database?',
+        answer: 'No. It only formats text.',
+      },
+      {
+        question: 'Is my query uploaded?',
+        answer: 'No. Formatting is local.',
+      },
+    ],
+  },
+
+  'regex-tester': {
+    answerFirst:
+      'Regex Tester lets you try regular expressions against sample text with match feedback for debugging patterns.',
+    seoTitle: 'Regex Tester Online | ToolVerse',
+    seoDescription:
+      'Test regular expressions with live matches in your browser. Great for form validation and text cleanup patterns.',
+    sections: [
+      {
+        heading: 'Flavor differences',
+        body: 'JavaScript regex differs from some server flavors. Confirm patterns in the runtime you will ship.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is sample text uploaded?',
+        answer: 'No. Testing runs locally.',
+      },
+      {
+        question: 'Can bad regex freeze the tab?',
+        answer:
+          'Pathological patterns can be slow. Start simple and build up.',
+      },
+    ],
+  },
+
+  'cron-expression-generator': {
+    answerFirst:
+      'Cron Expression Reader translates five-field cron schedules into plain-language timing so jobs are easier to audit.',
+    seoTitle: 'Cron Expression Reader & Translator | ToolVerse',
+    seoDescription:
+      'Read cron schedules in plain English. Useful for DevOps and scheduled job reviews.',
+    sections: [
+      {
+        heading: 'Timezones still matter',
+        body: 'Cron strings do not carry timezone. Confirm the host timezone before trusting “every Monday at 9.”',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Do you support seconds fields?',
+        answer:
+          'Focus on common five-field expressions. Some systems add seconds — check your platform docs.',
+      },
+      {
+        question: 'Is input stored?',
+        answer: 'No. Translation is local.',
+      },
+    ],
+  },
+
+  'subnet-calculator': {
+    answerFirst:
+      'IPv4 Subnet Calculator derives mask, network, broadcast, and usable host ranges from an IP and CIDR prefix.',
+    seoTitle: 'IPv4 Subnet & CIDR Calculator | ToolVerse',
+    seoDescription:
+      'Calculate subnet mask, network/broadcast addresses, and usable IP ranges from CIDR notation.',
+    sections: [
+      {
+        heading: 'Plan before you allocate',
+        body: 'Use the calculator to size VLANs and avoid overlapping ranges. Double-check against your IPAM source of truth.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Does this support IPv6?',
+        answer:
+          'This tool focuses on IPv4 CIDR math. Use dedicated IPv6 planners for v6.',
+      },
+      {
+        question: 'Are addresses stored?',
+        answer: 'No. Calculations run in your browser.',
+      },
+    ],
+  },
+
+  'daraz-profit-calculator': {
+    answerFirst:
+      'Daraz & E-Commerce Seller Profit Calculator estimates fees, tax-like deductions, and net profit so pricing stays realistic.',
+    seoTitle: 'Daraz Seller Profit & Fee Calculator | ToolVerse',
+    seoDescription:
+      'Estimate Daraz-style commissions, fees, and net profit. Educational — confirm live fee tables on the marketplace.',
+    sections: [
+      {
+        heading: 'Fees change',
+        body: 'Marketplace fee schedules update. Re-check official seller center rates before large inventory buys.',
+      },
+      {
+        heading: 'Break-even view',
+        body: 'Pair with Break-Even Calculator when fixed costs (ads, packaging) matter.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is this an official Daraz tool?',
+        answer:
+          'No. It is an independent estimate. Seller Center figures win.',
+      },
+      {
+        question: 'Are numbers stored?',
+        answer: 'No. Math is local.',
+      },
+    ],
+  },
+
+  'shipping-label-generator': {
+    answerFirst:
+      'Shipping Label & Packing Slip Maker creates printable PDF labels with sender/recipient details and optional tracking QR.',
+    seoTitle: 'Shipping Label & Packing Slip PDF Maker | ToolVerse',
+    seoDescription:
+      'Generate printable shipping labels and packing slips as PDFs in your browser for small-seller fulfillment.',
+    sections: [
+      {
+        heading: 'Carrier rules',
+        body: 'Some carriers require their own label formats. Use this for packing slips or when your workflow allows custom PDFs.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Does this book a shipment?',
+        answer:
+          'No. It creates documents. Book pickup/drop-off with your carrier.',
+      },
+      {
+        question: 'Is address data stored?',
+        answer: 'PDF creation for this tool runs in your browser session.',
+      },
+    ],
+  },
+
+  'break-even-calculator': {
+    answerFirst:
+      'Break-Even Calculator estimates units and revenue needed to cover fixed costs given price and variable cost per unit.',
+    seoTitle: 'Break-Even Point Calculator Online | ToolVerse',
+    seoDescription:
+      'Calculate break-even sales units and revenue from fixed costs, price, and variable cost. Planning aid for sellers.',
+    sections: [
+      {
+        heading: 'Simple model',
+        body: 'Assumes linear costs. Real businesses add tiers, returns, and ads — stress-test multiple scenarios.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Does it include tax?',
+        answer:
+          'Enter costs consistently. Use VAT/GST tools if you need tax separation.',
+      },
+      {
+        question: 'Are figures stored?',
+        answer: 'No. Calculations are local.',
+      },
+    ],
+  },
+
+  'pakistan-electricity-bill-estimator': {
+    answerFirst:
+      'Pakistan Electricity Bill Estimator approximates monthly PKR cost from units consumed using typical DISCO-style slab logic — confirm with your bill.',
+    seoTitle: 'Pakistan Electricity Bill Estimator (LESCO/KE) | ToolVerse',
+    seoDescription:
+      'Estimate LESCO/K-Electric/FESCO-style bills from units. Educational slabs — official tariff notifications prevail.',
+    sections: [
+      {
+        heading: 'Tariffs change',
+        body: 'Fuel adjustments, taxes, and protected vs unprotected rates alter totals. Use this for planning, then trust the DISCO bill.',
+      },
+      {
+        heading: 'Solar planning',
+        body: 'If you are sizing panels, continue with Solar Panel Calculator using your real load profile.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is this an official LESCO calculator?',
+        answer:
+          'No. Independent estimate only. Official bills and apps are authoritative.',
+      },
+      {
+        question: 'Are readings stored?',
+        answer: 'No. Estimates run in your browser.',
+      },
+    ],
+  },
+
+  'solar-panel-calculator': {
+    answerFirst:
+      'Solar Panel Calculator estimates panel kW, inverter size, and battery needs from daily appliance load for rough off-grid/hybrid planning.',
+    seoTitle: 'Solar Panel & Inverter Size Calculator | ToolVerse',
+    seoDescription:
+      'Estimate solar kW, inverter, and battery Ah from load. Planning aid — get a site survey before buying hardware.',
+    sections: [
+      {
+        heading: 'Sun hours and losses',
+        body: 'Real yield depends on location, tilt, shade, and temperature. Vendor quotes should include derating.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can I buy hardware from these numbers alone?',
+        answer:
+          'Use them as a starting point. Confirm with a qualified installer and local net-metering rules.',
+      },
+      {
+        question: 'Is load data stored?',
+        answer: 'No. Calculations are local.',
+      },
+    ],
+  },
+
+  'global-job-finder': {
+    answerFirst:
+      'Global Job Finder searches multi-source listings by keyword and location so you can discover roles, then apply on the original employer or board site.',
+    seoTitle: 'Global Job Finder — Multi-Source Search | ToolVerse',
+    seoDescription:
+      'Search tech, remote, and local jobs from multiple sources. Always verify employers and apply on official postings.',
+    sections: [
+      {
+        heading: 'Discovery, not employment',
+        body: 'ToolVerse is not the hiring company. Open the source link, confirm the employer, and never pay for a job offer.',
+      },
+      {
+        heading: 'Application kit',
+        body: 'Prep resume and letters with ATS Resume Checker and Cover Letter Generator. Compress portal photos with target-KB tools when needed.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Do you submit applications for me?',
+        answer:
+          'No. You apply on the original posting site.',
+      },
+      {
+        question: 'Are results complete?',
+        answer:
+          'Coverage depends on sources and filters. Cross-check major boards for critical searches.',
+      },
+    ],
+  },
 };
 
 export function getToolPageContent(slug: string): ToolPageContent | undefined {

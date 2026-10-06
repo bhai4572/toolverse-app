@@ -69,16 +69,26 @@ npm test
 
 ## 📦 Production Build & Deployment
 
-### Build Next.js Static / SSR Bundle
+ToolVerse ships as a **Vite + React SPA** with build-time SEO prerender into `dist/`.
+
 ```bash
 npm run build
+# runs: sitemap → vite build → scripts/prerender.mjs
 ```
 
-### Cloudflare Pages Deployment
-1. Connect repository to Cloudflare Pages.
-2. Set Build Command: `npx @cloudflare/next-on-pages` or `npm run build`.
-3. Set Output Directory: `.vercel/output/static` or `.next`.
-4. Configure Environment Variables from `.env.example`.
+### Cloudflare Pages (project: toolverse-app)
+
+Required dashboard settings (wrong Next.js output breaks deploys):
+
+| Setting | Value |
+|---|---|
+| Build command | `npm run build` |
+| Build output directory | `dist` |
+| Root directory | `/` (repo root) |
+| Node version | `20` (or `.node-version`) |
+
+- SPA fallback: `functions/_middleware.js` (do **not** use `/* /index.html 200` in `_redirects` — CF applies redirects before assets).
+- Direct deploy: `npm run deploy:pages`
 
 ---
 

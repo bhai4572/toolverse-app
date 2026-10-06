@@ -1,39 +1,33 @@
 # ToolVerse SEO / AEO / GEO Backlog
 
-Last updated: 2026-10-07 (wave 3). White-hat only. Do not invent rankings or traffic claims.
+Last updated: 2026-10-07 (wave 4). White-hat only. Do not invent rankings or traffic claims.
 
-## Primary keyword map (high-intent)
+## Coverage
 
-| Primary intent | Canonical URL | Notes |
-|---|---|---|
-| compress image 50kb / 20kb | `/tools/compress-image-target-size` | ≠ Image Compressor |
-| jpg/png/webp convert | format converter tools | one primary KW each |
-| adsense / youtube earnings | estimator tools | educational estimates only |
-| readability / passive / citations | writing cluster | no plagiarism claims |
-| remote / USA / PK govt jobs | `/jobs/*` | discovery only; apply on source |
-| merge/split/rotate pdf | PDF tools | |
+| Metric | Value |
+|---|---|
+| Live tools | 88 |
+| `TOOL_PAGE_CONTENT` enriched | **88 / 88** (100% of live) |
+| Disabled / admin tools | not enriched (out of catalog scope) |
+| Category pillars | 13 |
+| Job landings | 5 thickened |
+| Prerender shells | ~124 routes at build |
 
-## Done — wave 3 (this commit)
+## Deploy / prerender status
 
-### P0 prod prerender fix
-- **Root cause:** Cloudflare Pages applies `_redirects` **before** static files. `/* → /index.html 200` overwrote all prerendered `dist/tools/*/index.html` (prod curl still showed homepage title/canonical).
-- **Fix:** Removed SPA catch-all from `public/_redirects`. Added `functions/_middleware.ts` to serve `index.html` only on **404** (non-asset paths). Added `public/_routes.json` to skip the worker for `/assets/*` and static SEO files.
-- Build-time prerender (`scripts/prerender.mjs`) unchanged — still required.
+- **Prod curl (pre-fix):** `/tools/pdf-rotate` still homepage title/canonical — CF Pages production stuck on older deploy.
+- **Root cause of stale prod:** Cloudflare Pages deployments for commits `26a0c782` … `fd438c2` show **Failure**. Live site never received prerender/`_redirects` fix.
+- Likely misconfig: dashboard still aimed at Next.js output (see old README). Correct: build `npm run build`, output `dist`.
+- Middleware is now plain `functions/_middleware.js` (explicit ASSETS fetch for `/path/index.html`).
+- Direct publish: `npm run deploy:pages` → project `toolverse-app`.
 
-### P1 content
-- `TOOL_PAGE_CONTENT` expanded again (format converters, AdSense/YT, writing cluster, base64, lorem, unit converter, json-to-csv, etc.).
-- Jobs landings: richer intro/FAQ/sections + internal links via `lib/seo/jobPageContent.ts`.
+## Next priorities
 
-## Next actions
-
-1. **Verify prod after deploy:** curl `/tools/pdf-rotate` — expect tool title + canonical (not homepage). If still wrong, check CF Pages Functions enabled for the project.
-2. **More enrichments:** remaining writing checklists, `global-job-finder`, `thesis-statement-checker`, equation/matrix tools as useful.
-3. **Authority:** execute backlink playbooks offline.
-4. **Measurement:** GSC CTR on prerendered URLs after indexing.
-
-## Authority playbooks
-
-- `seo/backlink-playbook.md` / `seo/easy-backlinks-guide.md` — outreach pending
+1. Confirm CF dashboard build command + output dir = Vite `dist`; re-curl tool URLs for `x-toolverse-shell` / correct title.
+2. AEO polish: answer-first on thin leftover surfaces; FAQ only where visible.
+3. Internal links: blog ↔ tools spot-checks; orphan scan.
+4. Authority outreach offline (`seo/backlink-playbook.md`, `seo/easy-backlinks-guide.md`).
+5. Measurement in GSC after successful deploy (no fake ranking claims).
 
 ## Do not do
 
