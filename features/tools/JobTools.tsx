@@ -4,32 +4,10 @@ import React, { useState, useEffect } from 'react';
 import { 
   JobListing, 
   JobFilterParams, 
-  GLOBAL_MASTER_JOBS_DATABASE 
+  GLOBAL_MASTER_JOBS_DATABASE,
+  fetchLiveCrawledJobs,
+  generateExpandedGlobalJobs
 } from '@/lib/jobs/jobEngine';
-import { 
-  Search, 
-  MapPin, 
-  Globe, 
-  Briefcase, 
-  Building2, 
-  Sparkles, 
-  ExternalLink, 
-  Bookmark, 
-  BookmarkCheck, 
-  Share2, 
-  DollarSign, 
-  Clock, 
-  RefreshCw, 
-  CheckCircle2, 
-  X, 
-  ChevronRight, 
-  Flame, 
-  Landmark,
-  Copy,
-  MessageCircle,
-  Linkedin,
-  Facebook
-} from 'lucide-react';
 
 const POPULAR_COUNTRIES = [
   { code: 'all', name: 'All Countries 🌐' },
@@ -69,7 +47,13 @@ export function JobFinderTool() {
   const [isGovernmentOnly, setIsGovernmentOnly] = useState(false);
   const [sortBy, setSortBy] = useState<'latest' | 'relevance'>('latest');
 
-  const [jobs, setJobs] = useState<JobListing[]>(GLOBAL_MASTER_JOBS_DATABASE || []);
+  const [jobs, setJobs] = useState<JobListing[]>(() => {
+    try {
+      return [...generateExpandedGlobalJobs(), ...GLOBAL_MASTER_JOBS_DATABASE];
+    } catch (e) {
+      return GLOBAL_MASTER_JOBS_DATABASE || [];
+    }
+  });
   const [visibleCount, setVisibleCount] = useState(35);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedJob, setSelectedJob] = useState<JobListing | null>(null);
@@ -94,15 +78,15 @@ export function JobFinderTool() {
       const searchParams = new URLSearchParams(window.location.search);
       const sharedJobId = searchParams.get('job') || searchParams.get('id');
       if (sharedJobId) {
-        const found = GLOBAL_MASTER_JOBS_DATABASE.find(j => j.id === sharedJobId);
+        const found = jobs.find(j => j.id === sharedJobId) || GLOBAL_MASTER_JOBS_DATABASE.find(j => j.id === sharedJobId);
         if (found) {
           setSelectedJob(found);
         }
       }
     }
-  }, []);
+  }, [jobs]);
 
-  // Fetch jobs from server API
+  // Fetch live crawled jobs directly from client JS engine
   const handleSearch = async (overrideParams?: Partial<JobFilterParams>) => {
     setIsLoading(true);
     try {
@@ -114,17 +98,22 @@ export function JobFinderTool() {
       const rem = overrideParams?.isRemoteOnly !== undefined ? overrideParams.isRemoteOnly : isRemoteOnly;
       const gov = overrideParams?.isGovernmentOnly !== undefined ? overrideParams.isGovernmentOnly : isGovernmentOnly;
 
-      const url = `/api/jobs?q=${encodeURIComponent(q)}&city=${encodeURIComponent(c)}&country=${encodeURIComponent(cntry)}&sector=${encodeURIComponent(sec)}&jobType=${encodeURIComponent(jt)}&isRemoteOnly=${rem}&isGovernmentOnly=${gov}&sortBy=${sortBy}`;
-      
-      const res = await fetch(url);
-      if (res.ok) {
-        const data = await res.json();
-        if (data.jobs && Array.isArray(data.jobs)) {
-          setJobs(data.jobs);
-        }
+      const liveResults = await fetchLiveCrawledJobs({
+        query: q,
+        city: c,
+        country: cntry,
+        sector: sec,
+        jobType: jt,
+        isRemoteOnly: rem,
+        isGovernmentOnly: gov,
+        sortBy: sortBy
+      });
+
+      if (Array.isArray(liveResults) && liveResults.length > 0) {
+        setJobs(liveResults);
       }
     } catch (err) {
-      console.error('Job fetch error:', err);
+      console.error('Job engine fetch error:', err);
     } finally {
       setIsLoading(false);
       setLastRefreshed(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));

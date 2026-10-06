@@ -315,7 +315,7 @@ function capitalize(str: string): string {
 }
 
 // 1000+ Expanded Jobs Catalog Generator across Cities, Countries & Sectors
-function generateExpandedGlobalJobs(): JobListing[] {
+export function generateExpandedGlobalJobs(): JobListing[] {
   const expanded: JobListing[] = [];
 
   const citiesPakistan = ['Lahore', 'Karachi', 'Islamabad', 'Rawalpindi', 'Faisalabad', 'Multan', 'Peshawar', 'Quetta', 'Sialkot', 'Gujranwala', 'Hyderabad'];
