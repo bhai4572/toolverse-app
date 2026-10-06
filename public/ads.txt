@@ -1,3 +1,2 @@
-# ToolVerse Google AdSense Publisher verification
-# Replace pub-0000000000000000 with your actual Google AdSense Publisher ID
-google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
+# ToolVerse Official Google AdSense Authorized Digital Sellers (ads.txt)
+google.com, pub-8847204746483890, DIRECT, f08c47fec0942fa0
