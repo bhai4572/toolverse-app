@@ -408,20 +408,20 @@ export function JobFinderTool() {
                         {job.companyLogo ? (
                           <img 
                             src={job.companyLogo} 
-                            alt={job.company} 
+                            alt={job?.company || 'Company'} 
                             className="w-10 h-10 rounded-lg object-contain bg-slate-100 dark:bg-slate-800 p-1 border border-slate-200 dark:border-slate-700" 
                             onError={(e) => { (e.target as HTMLElement).style.display = 'none'; }}
                           />
                         ) : (
                           <div className="w-10 h-10 rounded-lg bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-400 border border-brand-200 dark:border-brand-800 flex items-center justify-center font-bold text-base shrink-0">
-                            {job.company.charAt(0).toUpperCase()}
+                            {(job?.company || 'C').charAt(0).toUpperCase()}
                           </div>
                         )}
 
                         <div>
                           <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
                             <Building2 className="w-3 h-3" />
-                            <span>{job.company}</span>
+                            <span>{job?.company || 'Verified Employer'}</span>
 
                             {job.isGovernment && (
                               <span className="px-1.5 py-0.5 rounded bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 font-extrabold text-[10px]">
@@ -531,14 +531,14 @@ export function JobFinderTool() {
             <div className="p-6 border-b border-slate-200 dark:border-slate-800 flex items-start justify-between gap-4 bg-slate-50/50 dark:bg-slate-900/50">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-xl bg-brand-600 text-white font-bold text-xl flex items-center justify-center shrink-0 shadow-md">
-                  {selectedJob.company.charAt(0).toUpperCase()}
+                  {(selectedJob?.company || 'C').charAt(0).toUpperCase()}
                 </div>
                 <div>
                   <h2 className="text-lg font-extrabold text-slate-900 dark:text-white leading-snug">
-                    {selectedJob.title}
+                    {selectedJob?.title || 'Job Details'}
                   </h2>
                   <p className="text-xs text-slate-600 dark:text-slate-400 font-medium flex items-center gap-2 mt-1">
-                    <span>{selectedJob.company}</span>
+                    <span>{selectedJob?.company || 'Employer'}</span>
                     <span>•</span>
                     <span className="flex items-center gap-1"><MapPin className="w-3 h-3 text-brand-500" />{selectedJob.location}</span>
                   </p>
@@ -672,11 +672,11 @@ export function JobFinderTool() {
             <div className="p-4 rounded-xl bg-gradient-to-br from-slate-900 to-brand-950 text-white space-y-2 border border-brand-800/40 shadow-inner">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-lg bg-brand-600 text-white font-bold text-sm flex items-center justify-center shrink-0">
-                  {shareModalJob.company.charAt(0).toUpperCase()}
+                  {(shareModalJob?.company || 'C').charAt(0).toUpperCase()}
                 </div>
                 <div className="min-w-0">
-                  <div className="text-[11px] text-brand-300 font-semibold">{shareModalJob.company}</div>
-                  <h4 className="text-xs font-bold truncate">{shareModalJob.title}</h4>
+                  <div className="text-[11px] text-brand-300 font-semibold">{shareModalJob?.company || 'Employer'}</div>
+                  <h4 className="text-xs font-bold truncate">{shareModalJob?.title || 'Job Opportunity'}</h4>
                 </div>
               </div>
 
