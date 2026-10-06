@@ -807,6 +807,117 @@ Client-side conversion means **your document is not the ad payload**. Sites may 
 - [Merge PDFs privately without uploading](/blog/how-to-merge-pdf-files-privately-without-uploading)
 - [Compress images to 20KB / 50KB / 100KB](/blog/how-to-compress-image-to-target-size-under-50kb)
 - [Convert HEIC to JPG on Windows](/blog/convert-heic-to-jpg-windows-iphone)
+- [How to build UTM campaign URLs](/blog/how-to-build-utm-campaign-urls)
+    `
+  },
+  {
+    slug: 'how-to-build-utm-campaign-urls',
+    title: 'How to Build UTM Campaign URLs (Clean Tracking Without Broken Links)',
+    description:
+      'A practical guide to utm_source, utm_medium, and utm_campaign — naming conventions that keep Analytics readable, common mistakes, and a free browser UTM builder.',
+    category: 'Developers & SEO',
+    author: 'ToolVerse Editorial Team',
+    publishDate: '2026-10-07',
+    readTimeMinutes: 8,
+    featuredImage: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80',
+    keywords: [
+      'utm builder',
+      'utm campaign url',
+      'utm_source utm_medium',
+      'google analytics utm',
+      'campaign tracking links'
+    ],
+    relatedToolSlug: 'utm-builder',
+    faqs: [
+      {
+        question: 'What is a UTM parameter?',
+        answer:
+          'UTM parameters are query-string tags (utm_source, utm_medium, utm_campaign, and optional utm_term / utm_content) appended to a URL so analytics tools can attribute visits to a specific campaign.'
+      },
+      {
+        question: 'Do UTM links change the page that loads?',
+        answer:
+          'No. The landing page is the same. Parameters are ignored by most sites and read by analytics scripts. Keep the base URL correct; only append tags.'
+      },
+      {
+        question: 'Should I put personal data in UTM values?',
+        answer:
+          'No. Avoid emails, phone numbers, or unique user IDs in UTM strings. Prefer campaign names like spring_sale or newsletter_oct.'
+      },
+      {
+        question: 'Where can I build UTMs on ToolVerse?',
+        answer:
+          'Use the free UTM Builder at /tools/utm-builder. Pair with Meta Tag Generator for titles/descriptions and QR Code Generator for print-to-URL campaigns.'
+      }
+    ],
+    contentMarkdown: `
+# How to Build UTM Campaign URLs (Clean Tracking Without Broken Links)
+
+**UTM parameters** let you see which newsletter, ad, or social post drove a visit — without changing the destination page. Done well, Analytics reports stay readable. Done poorly, you get dozens of near-duplicate sources and broken shortened links.
+
+This guide covers the five standard fields, a naming convention that scales, mistakes to avoid, and a free browser [UTM Builder](/tools/utm-builder) on ToolVerse.
+
+---
+
+## Answer first: the five UTM fields
+
+| Parameter | Purpose | Example |
+|---|---|---|
+| \`utm_source\` | Where traffic came from | \`newsletter\`, \`linkedin\`, \`google\` |
+| \`utm_medium\` | Channel type | \`email\`, \`cpc\`, \`social\`, \`referral\` |
+| \`utm_campaign\` | Campaign name | \`launch_oct\`, \`webinar_q4\` |
+| \`utm_term\` | Paid keyword (optional) | \`pdf+merge\` |
+| \`utm_content\` | Creative variant (optional) | \`header_cta\` vs \`footer_cta\` |
+
+Minimum useful set for most teams: **source + medium + campaign**.
+
+Example:
+
+\`https://toolverse.baby/tools/pdf-merge?utm_source=newsletter&utm_medium=email&utm_campaign=launch_oct\`
+
+---
+
+## Naming rules that keep reports clean
+
+1. **Lowercase everything** — \`LinkedIn\` and \`linkedin\` split into two sources.
+2. **Use underscores or hyphens, not spaces** — spaces become \`%20\` and look messy.
+3. **One vocabulary list** — agree that social posts use \`utm_medium=social\`, not \`organic_social\` one week and \`soc\` the next.
+4. **Campaign names describe the initiative**, not the whole sentence — \`black_friday_2026\` beats \`click_here_now\`.
+5. **Never put PII** in UTMs (email, phone, employee id).
+
+---
+
+## Common mistakes
+
+- **Tagging internal links** (nav, footer) — pollutes acquisition reports; reserve UTMs for external campaigns.
+- **Double-tagging after a shortener** — if the shortener already wraps a UTM URL, do not add a second set.
+- **Broken base URLs** — UTMs cannot fix a typo in the path. Test the naked URL first.
+- **Using \`utm_source\` for the campaign name** — keep roles separate so you can filter by source *and* campaign.
+
+---
+
+## Step-by-step with ToolVerse UTM Builder
+
+1. Open [UTM Builder](/tools/utm-builder).
+2. Paste your clean destination URL (tool page, blog post, or landing page).
+3. Fill source, medium, and campaign using your naming list.
+4. Copy the final URL into your email tool, ad platform, or bio link.
+5. Optional: generate a scan target with [QR Code Generator](/tools/qr-code-generator) for print flyers.
+6. Optional: align title/description with [Meta Tag Generator](/tools/meta-tag-generator) before you publish the landing page.
+
+---
+
+## When you also need barcodes or short links
+
+Retail and packaging teams often need **Code 128 / EAN** labels — see the [barcode generation guide](/blog/how-to-generate-barcodes-free-code-128-ean-upc). Marketers who need compact URLs for SMS can use [URL Shortener](/tools/url-shortener) after the UTM URL is final (so the short link encodes the full tagged destination).
+
+---
+
+## Related ToolVerse guides
+
+- [Barcode generation: Code 128, EAN-13, UPC](/blog/how-to-generate-barcodes-free-code-128-ean-upc)
+- [Privacy-first tools shortlist](/blog/best-free-privacy-first-online-tools-2026)
+- [Privacy-first converters vs upload sites](/blog/privacy-first-converters-vs-upload-sites)
     `
   }
 ];

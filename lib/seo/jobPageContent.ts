@@ -83,6 +83,10 @@ export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
       },
     ],
     relatedToolSlugs: ['global-job-finder', 'pdf-merge', 'jpg-to-pdf'],
+    relatedBlogSlugs: [
+      'top-high-paying-remote-jobs-worldwide',
+      'how-to-merge-pdf-files-privately-without-uploading',
+    ],
     initialCountry: 'United States',
   },
   'software-engineer-jobs': {
@@ -152,6 +156,10 @@ export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
       },
     ],
     relatedToolSlugs: ['global-job-finder', 'word-counter', 'text-case-converter'],
+    relatedBlogSlugs: [
+      'top-high-paying-remote-jobs-worldwide',
+      'how-to-compress-image-to-target-size-under-50kb',
+    ],
     initialQuery: 'Data Entry',
   },
   'pakistan-govt-jobs': {

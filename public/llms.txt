@@ -12,30 +12,46 @@ ToolVerse (toolverse.baby) provides 88+ live browser utilities with no signup wa
 - [Merge PDF Files](https://toolverse.baby/tools/pdf-merge): Private client-side PDF combine.
 - [HEIC to JPG](https://toolverse.baby/tools/heic-to-jpg): iPhone photos for Windows/forms.
 - [QR Code Generator](https://toolverse.baby/tools/qr-code-generator) / [Barcode Generator](https://toolverse.baby/tools/barcode-generator)
+- [UTM Builder](https://toolverse.baby/tools/utm-builder) / [Meta Tag Generator](https://toolverse.baby/tools/meta-tag-generator)
 - [Pakistan Salary Tax Estimator](https://toolverse.baby/tools/pakistan-salary-tax-estimator) / [Zakat Calculator](https://toolverse.baby/tools/zakat-calculator)
 - [Global Job Finder](https://toolverse.baby/tools/global-job-finder): Discovery only — apply on original postings.
-- [Meta Tag Generator](https://toolverse.baby/tools/meta-tag-generator) / [UTM Builder](https://toolverse.baby/tools/utm-builder)
 
 ## Category hubs
 
 - [PDF tools](https://toolverse.baby/category/pdf-document-tools)
 - [Image tools](https://toolverse.baby/category/image-design-tools)
+- [Social image presets](https://toolverse.baby/category/social-image-presets)
+- [Text & student](https://toolverse.baby/category/text-writing-student-tools)
 - [Calculators](https://toolverse.baby/category/calculators-converters)
-- [Pakistan & regional](https://toolverse.baby/category/country-regional-tools)
+- [Business & freelance](https://toolverse.baby/category/business-finance-tools)
+- [Creator tools](https://toolverse.baby/category/creator-social-tools)
+- [SEO & URL](https://toolverse.baby/category/seo-url-tools)
 - [Developer tools](https://toolverse.baby/category/developer-cybersecurity-tools)
 - [File & archive helpers](https://toolverse.baby/category/file-archive-utilities)
-- [Creator tools](https://toolverse.baby/category/creator-social-tools)
+- [Pakistan & regional](https://toolverse.baby/category/country-regional-tools)
+- [Writing & academic integrity](https://toolverse.baby/category/writing-grammar-academic-integrity-tools)
 - [Career / jobs](https://toolverse.baby/category/career-jobs-employment-engine)
+
+## Job landings
+
+- [Remote jobs](https://toolverse.baby/jobs/remote-jobs)
+- [USA jobs](https://toolverse.baby/jobs/usa-jobs)
+- [Software engineer jobs](https://toolverse.baby/jobs/software-engineer-jobs)
+- [Data entry jobs](https://toolverse.baby/jobs/data-entry-jobs)
+- [Pakistan govt jobs](https://toolverse.baby/jobs/pakistan-govt-jobs)
 
 ## Guides
 
 - [Blog](https://toolverse.baby/blog)
+- [UTM campaign URLs](https://toolverse.baby/blog/how-to-build-utm-campaign-urls)
 - [Privacy-first converters vs upload sites](https://toolverse.baby/blog/privacy-first-converters-vs-upload-sites)
 - [Privacy-first tools shortlist](https://toolverse.baby/blog/best-free-privacy-first-online-tools-2026)
 - [Compress to 50KB guide](https://toolverse.baby/blog/how-to-compress-image-to-target-size-under-50kb)
 - [HEIC to JPG on Windows](https://toolverse.baby/blog/convert-heic-to-jpg-windows-iphone)
 - [Merge PDFs privately](https://toolverse.baby/blog/how-to-merge-pdf-files-privately-without-uploading)
+- [Barcode guide](https://toolverse.baby/blog/how-to-generate-barcodes-free-code-128-ean-upc)
 - [Pakistan salary tax slabs](https://toolverse.baby/blog/pakistan-salary-tax-calculator-slabs-guide)
+- [Remote jobs guide](https://toolverse.baby/blog/top-high-paying-remote-jobs-worldwide)
 
 ## Policies
 

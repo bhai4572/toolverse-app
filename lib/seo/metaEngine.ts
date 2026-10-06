@@ -69,6 +69,13 @@ export function getMetadataForPath(pathname: string): PageMetadata {
             'Privacy-first free online tools for PDFs, images, calculators, writing, developers, and job search.',
           email: 'support@toolverse.baby',
           foundingDate: '2025',
+          contactPoint: {
+            '@type': 'ContactPoint',
+            email: 'support@toolverse.baby',
+            contactType: 'customer support',
+            url: `${baseUrl}/legal/contact`,
+            availableLanguage: ['English'],
+          },
         },
         {
           '@context': 'https://schema.org',

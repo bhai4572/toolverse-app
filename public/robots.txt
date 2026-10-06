@@ -8,23 +8,36 @@ Allow: /jobs/
 Allow: /legal/
 Disallow: /scratch/
 
-# AI training / scraping bots (standard UA rules)
+# Training scrapers (disallow). Answer-engine fetchers allowed below for AEO/GEO citations.
 User-agent: GPTBot
 Disallow: /
 
-User-agent: ChatGPT-User
+User-agent: Google-Extended
 Disallow: /
 
 User-agent: CCBot
 Disallow: /
 
-User-agent: ClaudeBot
-Disallow: /
-
 User-agent: Bytespider
 Disallow: /
 
-User-agent: Google-Extended
+# Allow answer / browse fetchers so assistants can cite ToolVerse pages
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Applebot-Extended
 Disallow: /
 
 Host: https://toolverse.baby

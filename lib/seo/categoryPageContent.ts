@@ -27,6 +27,10 @@ export const CATEGORY_PAGE_CONTENT: Record<string, CategoryPageContent> = {
         heading: 'Private PDF workflows',
         body: 'Start with Merge PDF for application packs, Split PDF to extract a single page, and JPG/Images to PDF when your phone camera is the scanner. Pair with image tools when scans need compression first.',
       },
+      {
+        heading: 'When to prefer browser-side merge',
+        body: 'Use local PDF tools for contracts, bank statements, and unpublished drafts. Cloud converters can still make sense for heavy OCR or team collaboration — match the tool to the sensitivity of the file.',
+      },
     ],
     featuredToolSlugs: ['pdf-merge', 'pdf-split', 'jpg-to-pdf', 'pdf-rotate'],
     relatedCategorySlugs: ['image-design-tools', 'business-finance-tools', 'career-jobs-employment-engine'],
@@ -46,6 +50,10 @@ export const CATEGORY_PAGE_CONTENT: Record<string, CategoryPageContent> = {
       {
         heading: 'Portal photos and web performance',
         body: 'Use Compress Image to Target Size for 20KB/50KB form limits, Image Compressor for general web optimization, and HEIC to JPG when iPhone photos will not open on Windows.',
+      },
+      {
+        heading: 'ID and passport-style crops',
+        body: 'Passport Photo Maker helps you size a headshot for common form dimensions. Always keep the original file; re-encoding can change metadata and file size.',
       },
     ],
     featuredToolSlugs: [
@@ -68,9 +76,22 @@ export const CATEGORY_PAGE_CONTENT: Record<string, CategoryPageContent> = {
       'Resize images to Instagram, YouTube, TikTok, LinkedIn, and Facebook dimensions with free browser presets.',
     intro:
       'Social Media Image Presets resize creatives to common platform dimensions so posts are not cropped awkwardly after upload.',
+    sections: [
+      {
+        heading: 'Match platform aspect ratios first',
+        body: 'Start with Social Media Image Resizer for feed, story, and thumbnail sizes. Crop tightly with Image Cropper when the subject must stay centered after platform auto-crop.',
+      },
+      {
+        heading: 'Creators and campaign assets',
+        body: 'After resizing, pair with YouTube tag/chapter helpers or UTM Builder when the creative points to a landing page you need to measure.',
+      },
+    ],
     featuredToolSlugs: ['social-media-image-resizer', 'instagram-grid-splitter', 'image-cropper'],
     relatedCategorySlugs: ['image-design-tools', 'creator-social-tools'],
-    relatedBlogSlugs: ['best-free-privacy-first-online-tools-2026'],
+    relatedBlogSlugs: [
+      'how-to-build-utm-campaign-urls',
+      'best-free-privacy-first-online-tools-2026',
+    ],
   },
   'text-writing-student-tools': {
     seoTitle: 'Free Text & Student Tools — Word Counter, Case, Diff | ToolVerse',
@@ -78,11 +99,22 @@ export const CATEGORY_PAGE_CONTENT: Record<string, CategoryPageContent> = {
       'Word counter, character limits, case converter, duplicate-line remover, GPA tools, and text diff — private browser utilities for students and writers.',
     intro:
       'Text, Writing & Student Tools give you live word counts, case conversion, deduped lists, GPA math, and diff checks without pasting essays into unknown sites.',
+    sections: [
+      {
+        heading: 'Portal limits and drafts',
+        body: 'Word Counter and Character Counter help you hit application, abstract, and social caption limits before submit. Keep drafts local when the text is unpublished coursework.',
+      },
+      {
+        heading: 'Revision helpers',
+        body: 'Text Diff Checker compares two versions side by side. Case converters and list cleaners speed up bibliography and spreadsheet paste jobs. For deeper writing checks, open the Academic Integrity category.',
+      },
+    ],
     featuredToolSlugs: ['word-counter', 'character-counter', 'gpa-calculator', 'text-diff-checker'],
     relatedCategorySlugs: [
       'writing-grammar-academic-integrity-tools',
       'calculators-converters',
     ],
+    relatedBlogSlugs: ['best-free-privacy-first-online-tools-2026'],
   },
   'calculators-converters': {
     seoTitle: 'Free Calculators — Percentage, EMI, Age & More | ToolVerse',
@@ -90,6 +122,16 @@ export const CATEGORY_PAGE_CONTENT: Record<string, CategoryPageContent> = {
       'Percentage, discount, compound interest, loan EMI, age, VAT/GST, and everyday converters — fast estimates in your browser.',
     intro:
       'Calculators & Converters cover everyday math: percentages, discounts, EMI, compound interest, age, and tax-style estimates for quick planning.',
+    sections: [
+      {
+        heading: 'Money math without a spreadsheet',
+        body: 'Percentage and discount tools handle sale pricing. EMI and compound interest calculators are for planning — confirm bank figures before signing.',
+      },
+      {
+        heading: 'Regional tax and invoices',
+        body: 'For Pakistan salary tax or Zakat estimates, use Country & Regional tools. Freelancers who need PDF invoices can jump to Business & Finance tools next.',
+      },
+    ],
     featuredToolSlugs: [
       'percentage-calculator',
       'emi-calculator',
@@ -97,6 +139,7 @@ export const CATEGORY_PAGE_CONTENT: Record<string, CategoryPageContent> = {
       'unit-converter-suite',
     ],
     relatedCategorySlugs: ['business-finance-tools', 'country-regional-tools'],
+    relatedBlogSlugs: ['pakistan-salary-tax-calculator-slabs-guide'],
   },
   'business-finance-tools': {
     seoTitle: 'Business & Freelance Tools — Invoice, Margin, Revenue | ToolVerse',
@@ -104,6 +147,16 @@ export const CATEGORY_PAGE_CONTENT: Record<string, CategoryPageContent> = {
       'PDF invoice generator, profit margin, AdSense revenue estimates, and freelance-friendly finance utilities.',
     intro:
       'Business, Finance & Freelance tools help you invoice clients, estimate margins, and model simple revenue scenarios without a heavyweight accounting suite.',
+    sections: [
+      {
+        heading: 'Invoices and quotations',
+        body: 'Generate a clean PDF invoice or quotation for clients, then merge supporting docs with PDF tools when you need one attachment.',
+      },
+      {
+        heading: 'Margins and break-even',
+        body: 'Profit margin and break-even calculators are planning helpers — not bookkeeping software. Pair with everyday Calculators for percentage and EMI math.',
+      },
+    ],
     featuredToolSlugs: [
       'invoice-generator',
       'quotation-generator',
@@ -111,6 +164,7 @@ export const CATEGORY_PAGE_CONTENT: Record<string, CategoryPageContent> = {
       'break-even-calculator',
     ],
     relatedCategorySlugs: ['pdf-document-tools', 'calculators-converters', 'creator-social-tools'],
+    relatedBlogSlugs: ['how-to-merge-pdf-files-privately-without-uploading'],
   },
   'creator-social-tools': {
     seoTitle: 'Creator Tools — YouTube Earnings & Social Helpers | ToolVerse',
@@ -134,6 +188,7 @@ export const CATEGORY_PAGE_CONTENT: Record<string, CategoryPageContent> = {
       'youtube-chapters-generator',
     ],
     relatedCategorySlugs: ['social-image-presets', 'seo-url-tools', 'business-finance-tools'],
+    relatedBlogSlugs: ['how-to-build-utm-campaign-urls'],
   },
   'seo-url-tools': {
     seoTitle: 'SEO & Marketing Tools — UTM, Meta Tags, Short Links | ToolVerse',
@@ -141,8 +196,22 @@ export const CATEGORY_PAGE_CONTENT: Record<string, CategoryPageContent> = {
       'Build UTM campaign URLs, generate meta/Open Graph tags, and shorten links with ToolVerse SEO utilities.',
     intro:
       'SEO, Marketing & URL Tools help you build UTM links, draft meta tags with a SERP-style preview, and create short links for campaigns.',
+    sections: [
+      {
+        heading: 'Campaign tracking that stays readable',
+        body: 'UTM Builder adds source, medium, and campaign parameters consistently so Analytics reports stay clean. Prefer lowercase snake_case values and avoid stuffing PII into UTMs.',
+      },
+      {
+        heading: 'Meta tags and share previews',
+        body: 'Meta Tag Generator drafts title, description, and Open Graph fields with a SERP-style preview. Pair with QR Code Generator when you need a print-to-URL bridge.',
+      },
+    ],
     featuredToolSlugs: ['meta-tag-generator', 'utm-builder', 'url-shortener', 'qr-code-generator'],
     relatedCategorySlugs: ['developer-cybersecurity-tools', 'creator-social-tools'],
+    relatedBlogSlugs: [
+      'how-to-build-utm-campaign-urls',
+      'how-to-generate-barcodes-free-code-128-ean-upc',
+    ],
   },
   'developer-cybersecurity-tools': {
     seoTitle: 'Developer Tools — JSON, QR, Barcode, Passwords | ToolVerse',
@@ -150,6 +219,16 @@ export const CATEGORY_PAGE_CONTENT: Record<string, CategoryPageContent> = {
       'JSON formatter, QR and barcode generators, password and UUID tools — client-side utilities for developers and operators.',
     intro:
       'Developer & Cybersecurity utilities format JSON, generate QR/barcodes, and create passwords or UUIDs with browser crypto where applicable.',
+    sections: [
+      {
+        heading: 'Everyday API and payload helpers',
+        body: 'JSON Formatter and JWT Decoder help you inspect payloads locally. Prefer them over pasting production secrets into unknown pastebins.',
+      },
+      {
+        heading: 'Codes, passwords, and ops checks',
+        body: 'QR and barcode generators cover print and packaging labels. Password Generator and Hash Generator support local credential and checksum workflows — not a substitute for a password manager vault.',
+      },
+    ],
     featuredToolSlugs: [
       'json-formatter',
       'qr-code-generator',
@@ -161,6 +240,7 @@ export const CATEGORY_PAGE_CONTENT: Record<string, CategoryPageContent> = {
     relatedBlogSlugs: [
       'how-to-generate-barcodes-free-code-128-ean-upc',
       'best-free-privacy-first-online-tools-2026',
+      'privacy-first-converters-vs-upload-sites',
     ],
   },
   'file-archive-utilities': {
@@ -189,6 +269,16 @@ export const CATEGORY_PAGE_CONTENT: Record<string, CategoryPageContent> = {
       'Pakistan salary tax estimates, Zakat calculator, VAT/GST helpers, and regional utilities for planning (not official filing).',
     intro:
       'Pakistan, India & Regional Tools include salary tax estimates, Zakat math, and VAT/GST helpers. Figures are educational estimates — confirm filings with official sources or advisors.',
+    sections: [
+      {
+        heading: 'Salary tax and Zakat estimates',
+        body: 'Pakistan Salary Tax Estimator models published FBR-style slabs for planning. Zakat Calculator helps with wealth math — neither replaces a tax advisor or official e-filing portal.',
+      },
+      {
+        heading: 'Bills, solar, and job-form photos',
+        body: 'Electricity and solar helpers are directional. For PPSC/FPSC photo and document size limits, use Image and PDF tools before portal week.',
+      },
+    ],
     featuredToolSlugs: [
       'pakistan-salary-tax-estimator',
       'zakat-calculator',
@@ -196,7 +286,10 @@ export const CATEGORY_PAGE_CONTENT: Record<string, CategoryPageContent> = {
       'solar-panel-calculator',
     ],
     relatedCategorySlugs: ['calculators-converters', 'image-design-tools', 'career-jobs-employment-engine'],
-    relatedBlogSlugs: ['pakistan-salary-tax-calculator-slabs-guide'],
+    relatedBlogSlugs: [
+      'pakistan-salary-tax-calculator-slabs-guide',
+      'how-to-compress-image-to-target-size-under-50kb',
+    ],
   },
   'writing-grammar-academic-integrity-tools': {
     seoTitle: 'Writing & Academic Integrity Tools | ToolVerse',
@@ -204,6 +297,16 @@ export const CATEGORY_PAGE_CONTENT: Record<string, CategoryPageContent> = {
       'Readability scores, repeated-word checks, citation helpers, and ethical writing utilities for clearer drafts.',
     intro:
       'Writing, Grammar & Academic Integrity tools highlight readability, repetition, and structure so you can revise intentionally — they are helpers, not a substitute for your own judgment or institutional rules.',
+    sections: [
+      {
+        heading: 'Revise with signals, not shortcuts',
+        body: 'Readability and tone checkers surface patterns to edit. They do not “bypass” plagiarism systems and should not be marketed that way — use them to clarify your own writing.',
+      },
+      {
+        heading: 'Citations and student workflows',
+        body: 'Citation helpers speed bibliography drafts. Pair with Word Counter and Text Diff in the student tools category when portals enforce length limits.',
+      },
+    ],
     featuredToolSlugs: [
       'readability-score',
       'citation-generator',
@@ -211,6 +314,7 @@ export const CATEGORY_PAGE_CONTENT: Record<string, CategoryPageContent> = {
       'originality-checklist',
     ],
     relatedCategorySlugs: ['text-writing-student-tools'],
+    relatedBlogSlugs: ['best-free-privacy-first-online-tools-2026'],
   },
   'career-jobs-employment-engine': {
     seoTitle: 'Job Search Tools — Remote & Multi-Country Finder | ToolVerse',
@@ -218,6 +322,16 @@ export const CATEGORY_PAGE_CONTENT: Record<string, CategoryPageContent> = {
       'Browse multi-source job listings including remote and regional roles. Always apply on the original employer or board site.',
     intro:
       'Career & Jobs tools help you discover listings across sources. Always verify employers and apply on the original posting site.',
+    sections: [
+      {
+        heading: 'Discover here, apply on the source',
+        body: 'Global Job Finder aggregates leads for browsing. ToolVerse is not the employer — open the original board, verify the company domain, and never pay upfront “recruiting fees.”',
+      },
+      {
+        heading: 'Prep your PDF and photo pack',
+        body: 'Merge resume pages with PDF Merge, hit portal KB limits with Compress Image to Target Size, and use Word Counter for summary length caps before you submit.',
+      },
+    ],
     featuredToolSlugs: [
       'global-job-finder',
       'ats-resume-checker',
@@ -225,7 +339,11 @@ export const CATEGORY_PAGE_CONTENT: Record<string, CategoryPageContent> = {
       'pdf-merge',
     ],
     relatedCategorySlugs: ['pdf-document-tools', 'image-design-tools', 'country-regional-tools'],
-    relatedBlogSlugs: ['top-high-paying-remote-jobs-worldwide'],
+    relatedBlogSlugs: [
+      'top-high-paying-remote-jobs-worldwide',
+      'how-to-merge-pdf-files-privately-without-uploading',
+      'how-to-compress-image-to-target-size-under-50kb',
+    ],
   },
 };
 
