@@ -29,15 +29,17 @@ export default function HomePage() {
         </h1>
 
         <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
-          Files, PDFs, images, calculators, writing &amp; academic tools, student utilities, creator tools, SEO and developer helpers — 100% free, fast, and processed directly in your browser.
+          <strong className="font-semibold text-slate-800 dark:text-slate-200">ToolVerse</strong> is a
+          privacy-first suite of free browser utilities for PDFs, images, calculators, writing, SEO helpers,
+          developers, and job search — most file tools process locally on your device with no signup wall.
         </p>
 
         {/* Global Search Input */}
         <div className="max-w-xl mx-auto relative">
           <div className="relative shadow-lg rounded-xl overflow-hidden">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" aria-hidden="true" />
             <input
-              type="text"
+              type="search"
               value={searchQuery}
               onChange={(e) => {
                 const value = e.target.value;
@@ -50,6 +52,7 @@ export default function HomePage() {
                 }
               }}
               placeholder="Search any tool (e.g. photo 100kb, pdf merge, url shortener)..."
+              aria-label="Search ToolVerse tools"
               className="w-full pl-12 pr-4 py-4 text-base bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 outline-none focus:border-brand-500 dark:text-white"
             />
           </div>
@@ -119,12 +122,41 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Answer-first workflows (AEO + internal links) */}
+      <section className="space-y-4 max-w-4xl mx-auto" aria-labelledby="workflows-heading">
+        <h2 id="workflows-heading" className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white text-center sm:text-left">
+          Common workflows
+        </h2>
+        <ul className="grid sm:grid-cols-2 gap-3 text-sm text-slate-600 dark:text-slate-300">
+          <li className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+            Need a <Link className="text-brand-600 font-medium hover:underline" href="/tools/compress-image-target-size">photo under 50KB</Link> for a job portal? Compress locally, then convert{' '}
+            <Link className="text-brand-600 font-medium hover:underline" href="/tools/heic-to-jpg">HEIC to JPG</Link> if needed.
+          </li>
+          <li className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+            Building an application packet?{' '}
+            <Link className="text-brand-600 font-medium hover:underline" href="/tools/pdf-merge">Merge PDFs</Link>,{' '}
+            <Link className="text-brand-600 font-medium hover:underline" href="/tools/pdf-split">split pages</Link>, or start from{' '}
+            <Link className="text-brand-600 font-medium hover:underline" href="/category/pdf-document-tools">PDF tools</Link>.
+          </li>
+          <li className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+            Planning take-home pay in Pakistan? Try the{' '}
+            <Link className="text-brand-600 font-medium hover:underline" href="/tools/pakistan-salary-tax-estimator">salary tax estimator</Link> and{' '}
+            <Link className="text-brand-600 font-medium hover:underline" href="/tools/zakat-calculator">Zakat calculator</Link>.
+          </li>
+          <li className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+            Job hunting? Open the{' '}
+            <Link className="text-brand-600 font-medium hover:underline" href="/tools/global-job-finder">job finder</Link> or browse{' '}
+            <Link className="text-brand-600 font-medium hover:underline" href="/jobs/remote-jobs">remote jobs</Link>, then prep files with PDF/image tools.
+          </li>
+        </ul>
+      </section>
+
       {/* Popular Tools Grid */}
       <section className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Most Popular Tools</h2>
-            <p className="text-xs text-slate-500">Frequently used utilities by millions of users daily.</p>
+            <p className="text-xs text-slate-500">High-intent utilities people open most often for forms, PDFs, and daily work.</p>
           </div>
         </div>
 
@@ -184,6 +216,52 @@ export default function HomePage() {
             </Link>
           ))}
         </div>
+      </section>
+
+      {/* Visible FAQ — matches homepage FAQ schema */}
+      <section className="max-w-3xl mx-auto space-y-4" aria-labelledby="home-faq-heading">
+        <h2 id="home-faq-heading" className="text-xl font-bold text-slate-900 dark:text-white">
+          Frequently asked questions
+        </h2>
+        <div className="space-y-3">
+          <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+            <h3 className="text-sm font-semibold text-slate-900 dark:text-white">Are ToolVerse tools free?</h3>
+            <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
+              Yes. Core utilities are free to use in your browser without creating an account for basic workflows.
+            </p>
+          </div>
+          <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+            <h3 className="text-sm font-semibold text-slate-900 dark:text-white">Do you upload my PDFs or photos?</h3>
+            <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
+              Client-side tools process files in your browser memory. Your documents are not uploaded to ToolVerse servers for those tools.
+            </p>
+          </div>
+          <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+            <h3 className="text-sm font-semibold text-slate-900 dark:text-white">Where should I start?</h3>
+            <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
+              Use search above, pick a category, or open popular tools like{' '}
+              <Link href="/tools/compress-image-target-size" className="text-brand-600 hover:underline">
+                target-size image compression
+              </Link>
+              ,{' '}
+              <Link href="/tools/pdf-merge" className="text-brand-600 hover:underline">
+                PDF merge
+              </Link>
+              , or the{' '}
+              <Link href="/blog" className="text-brand-600 hover:underline">
+                guides blog
+              </Link>
+              .
+            </p>
+          </div>
+        </div>
+        <p className="text-xs text-slate-500">
+          Learn more on{' '}
+          <Link href="/legal/about" className="text-brand-600 hover:underline font-medium">
+            About ToolVerse
+          </Link>
+          .
+        </p>
       </section>
     </div>
   );

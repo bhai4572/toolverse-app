@@ -1,34 +1,40 @@
 # ToolVerse SEO / AEO / GEO Backlog
 
-Last updated: 2026-10-07 (wave 4). White-hat only. Do not invent rankings or traffic claims.
+Last updated: 2026-10-07 (wave 5). White-hat only. Do not invent rankings or traffic claims.
 
 ## Coverage
 
 | Metric | Value |
 |---|---|
-| Live tools | 88 |
-| `TOOL_PAGE_CONTENT` enriched | **88 / 88** (100% of live) |
-| Disabled / admin tools | not enriched (out of catalog scope) |
-| Category pillars | 13 |
-| Job landings | 5 thickened |
-| Prerender shells | ~124 routes at build |
+| Live tools enriched | **88 / 88** |
+| Category pillars + cross-links | 13 |
+| Job landings | 5 |
+| Prerender | Live OK (`x-toolverse-shell`) |
 
-## Deploy / prerender status
+## Done — wave 5
 
-- **Prod curl (pre-fix):** `/tools/pdf-rotate` still homepage title/canonical — CF Pages production stuck on older deploy.
-- **Root cause of stale prod:** Cloudflare Pages deployments for commits `26a0c782` … `fd438c2` show **Failure**. Live site never received prerender/`_redirects` fix.
-- Likely misconfig: dashboard still aimed at Next.js output (see old README). Correct: build `npm run build`, output `dist`.
-- Middleware is now plain `functions/_middleware.js` (explicit ASSETS fetch for `/path/index.html`).
-- Direct publish: `npm run deploy:pages` → project `toolverse-app`.
+- Deploy harden: `wrangler.toml` → project `toolverse-app`, `engines` node 20, `deploy:pages`, GitHub Action `.github/workflows/deploy-pages.yml` (needs `CLOUDFLARE_API_TOKEN`)
+- Docs: README + DEPLOYMENT already point to Vite `dist`
+- AEO: homepage entity definition, workflow links, visible FAQ matching FAQ schema
+- Internal links: category featured tools + related categories; tool page fills related to 3 via category siblings
+- Breadcrumbs: semantic `<ol>` + aria; blog/jobs use shared Breadcrumb
+- `llms.txt` refreshed for entity + hubs
+- Skipped TinyWow-style comparison blog (spam risk) — optional careful draft later
+
+## Deploy note
+
+- Cloudflare **Git** builds for recent commits still show **Failure** in dashboard if Build/Output are wrong.
+- Production was fixed via `wrangler pages deploy` / keep using Action or `npm run deploy:pages`.
+- Dashboard must be: Build = `npm run build`, Output = `dist`, Node 20.
 
 ## Next priorities
 
-1. Confirm CF dashboard build command + output dir = Vite `dist`; re-curl tool URLs for `x-toolverse-shell` / correct title.
-2. AEO polish: answer-first on thin leftover surfaces; FAQ only where visible.
-3. Internal links: blog ↔ tools spot-checks; orphan scan.
-4. Authority outreach offline (`seo/backlink-playbook.md`, `seo/easy-backlinks-guide.md`).
-5. Measurement in GSC after successful deploy (no fake ranking claims).
+1. Add `CLOUDFLARE_API_TOKEN` (+ optional account id) so GitHub Action auto-deploys on main.
+2. Confirm CF dashboard build settings once; then Git deploys should stop failing.
+3. Soft AEO: expand thin category sections still short (file-archive, creator) if traffic warrants.
+4. Authority outreach offline (backlink playbooks).
+5. Optional careful “privacy-first converters vs upload sites” guide (not brand-bashing spam).
 
 ## Do not do
 
-- Fake AggregateRating / doorway pages / PBNs / ranking claims without data
+- Fake AggregateRating / doorway pages / PBNs / unverifiable traffic claims

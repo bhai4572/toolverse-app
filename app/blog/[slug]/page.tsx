@@ -2,6 +2,7 @@ import React from 'react';
 import { getBlogPostBySlug, BLOG_POSTS } from '@/lib/blog/posts';
 import { getToolBySlug } from '@/lib/tools/registry';
 import { AdSlot } from '@/components/AdSlot';
+import { Breadcrumb } from '@/components/Breadcrumb';
 
 interface Props {
   params: {
@@ -29,14 +30,7 @@ export default function BlogPostPage({ params }: Props) {
 
   return (
     <article className="max-w-4xl mx-auto py-6 space-y-10">
-      {/* Breadcrumbs */}
-      <nav className="flex items-center text-sm text-slate-500 dark:text-slate-400 space-x-2">
-        <a href="/" className="hover:text-indigo-600 dark:hover:text-indigo-400">Home</a>
-        <span>/</span>
-        <a href="/blog" className="hover:text-indigo-600 dark:hover:text-indigo-400">Blog</a>
-        <span>/</span>
-        <span className="text-slate-900 dark:text-white font-medium truncate">{post.title}</span>
-      </nav>
+      <Breadcrumb items={[{ label: 'Blog', href: '/blog' }, { label: post.title }]} />
 
       {/* Article Header */}
       <header className="space-y-6 text-center sm:text-left">

@@ -5,6 +5,7 @@ import { AdSlot } from '@/components/AdSlot';
 import { getJobPageContent } from '@/lib/seo/jobPageContent';
 import { getBlogPostBySlug } from '@/lib/blog/posts';
 import { getToolBySlug } from '@/lib/tools/registry';
+import { Breadcrumb } from '@/components/Breadcrumb';
 
 interface Props {
   params: {
@@ -45,7 +46,9 @@ export default function JobCategoryPage({ params }: Props) {
 
   return (
     <div className="space-y-8 py-4 max-w-5xl mx-auto">
-      <div className="space-y-3">
+      <Breadcrumb items={[{ label: 'Jobs', href: '/tools/global-job-finder' }, { label: config.title }]} />
+
+      <header className="space-y-3">
         <p className="text-xs font-semibold uppercase tracking-wider text-brand-600">ToolVerse Job Finder</p>
         <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
           {config.title}
@@ -54,7 +57,7 @@ export default function JobCategoryPage({ params }: Props) {
           {config.subtitle}
         </p>
         <p className="text-sm text-slate-600 dark:text-slate-400 max-w-3xl leading-relaxed">{config.intro}</p>
-      </div>
+      </header>
 
       <AdSlot placement="header" />
 

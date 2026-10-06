@@ -50,7 +50,8 @@ export function getMetadataForPath(pathname: string): PageMetadata {
           '@type': 'WebSite',
           name: 'ToolVerse',
           url: `${baseUrl}/`,
-          description: 'Free privacy-first online tools for everyday work',
+          description:
+            'Privacy-first free online tools for PDFs, images, calculators, writing, developers, and job search.',
           inLanguage: 'en',
           potentialAction: {
             '@type': 'SearchAction',
@@ -68,6 +69,36 @@ export function getMetadataForPath(pathname: string): PageMetadata {
             'Privacy-first free online tools for PDFs, images, calculators, writing, developers, and job search.',
           email: 'support@toolverse.baby',
           foundingDate: '2025',
+        },
+        {
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: [
+            {
+              '@type': 'Question',
+              name: 'Are ToolVerse tools free?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: 'Yes. Core utilities are free to use in your browser without creating an account for basic workflows.',
+              },
+            },
+            {
+              '@type': 'Question',
+              name: 'Do you upload my PDFs or photos?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: 'Client-side tools process files in your browser memory. Your documents are not uploaded to ToolVerse servers for those tools.',
+              },
+            },
+            {
+              '@type': 'Question',
+              name: 'Where should I start?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: 'Use site search, pick a category, or open popular tools like target-size image compression, PDF merge, or the guides blog.',
+              },
+            },
+          ],
         },
       ],
     };

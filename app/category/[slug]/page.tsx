@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { CATEGORIES, getToolsByCategory } from '@/lib/tools/registry';
+import { CATEGORIES, getToolsByCategory, getToolBySlug } from '@/lib/tools/registry';
 import { getCategoryPageContent } from '@/lib/seo/categoryPageContent';
 import { getBlogPostBySlug } from '@/lib/blog/posts';
 import { Breadcrumb } from '@/components/Breadcrumb';
@@ -60,17 +60,43 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
   const relatedPosts = (pageContent?.relatedBlogSlugs || [])
     .map((slug) => getBlogPostBySlug(slug))
     .filter((p): p is NonNullable<typeof p> => Boolean(p));
+  const relatedCategories = (pageContent?.relatedCategorySlugs || [])
+    .map((slug) => CATEGORIES.find((c) => c.slug === slug))
+    .filter((c): c is NonNullable<typeof c> => Boolean(c));
+  const featuredTools = (pageContent?.featuredToolSlugs || [])
+    .map((slug) => getToolBySlug(slug))
+    .filter((t): t is NonNullable<typeof t> => Boolean(t) && t.status === 'live');
 
   return (
     <div className="space-y-8 max-w-6xl mx-auto py-4">
       <Breadcrumb items={[{ label: cat.name }]} />
 
-      <div className="space-y-3 max-w-3xl">
+      <header className="space-y-3 max-w-3xl">
         <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white">{cat.name}</h1>
         <p className="text-base text-slate-600 dark:text-slate-400">
           {pageContent?.intro || cat.description}
         </p>
-      </div>
+      </header>
+
+      {featuredTools.length > 0 && (
+        <section className="space-y-3" aria-labelledby="featured-tools-heading">
+          <h2 id="featured-tools-heading" className="text-lg font-bold text-slate-900 dark:text-white">
+            Start with these tools
+          </h2>
+          <ul className="flex flex-wrap gap-2">
+            {featuredTools.map((tool) => (
+              <li key={tool.slug}>
+                <Link
+                  href={`/tools/${tool.slug}`}
+                  className="inline-flex text-sm font-medium text-brand-700 dark:text-brand-300 bg-brand-50 dark:bg-brand-950/40 border border-brand-200/60 dark:border-brand-800/60 px-3 py-1.5 rounded-lg hover:bg-brand-100 dark:hover:bg-brand-900/40"
+                >
+                  {tool.canonicalName}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {categoryTools.map((tool) => (
@@ -100,8 +126,24 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
         </section>
       ))}
 
-      {relatedPosts.length > 0 && (
+      {relatedCategories.length > 0 && (
         <section className="space-y-3 pt-4 border-t border-slate-200 dark:border-slate-800">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white">Related categories</h2>
+          <ul className="grid sm:grid-cols-3 gap-3">
+            {relatedCategories.map((rel) => (
+              <li key={rel.slug}>
+                <Link href={`/category/${rel.slug}`} className="tool-card block p-3">
+                  <div className="text-sm font-semibold text-slate-900 dark:text-white">{rel.name}</div>
+                  <p className="text-xs text-slate-500 mt-1 line-clamp-2">{rel.description}</p>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {relatedPosts.length > 0 && (
+        <section className="space-y-3 pt-2">
           <h2 className="text-lg font-bold text-slate-900 dark:text-white">Related guides</h2>
           <ul className="space-y-2">
             {relatedPosts.map((post) => (

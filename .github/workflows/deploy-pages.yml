@@ -1,0 +1,48 @@
+# Deploy ToolVerse to Cloudflare Pages when Git-connected CF builds are misconfigured.
+# Requires repo secret: CLOUDFLARE_API_TOKEN (Account → API Tokens → Edit Cloudflare Workers)
+# Optional: CLOUDFLARE_ACCOUNT_ID=30116589b83f97ca068714c3cd195351
+
+name: Deploy Cloudflare Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Build (sitemap + vite + prerender)
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SITE_URL: https://toolverse.baby
+
+      - name: Deploy to Pages (toolverse-app)
+        if: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=toolverse-app --commit-dirty=true
+
+      - name: Skip deploy notice
+        if: ${{ secrets.CLOUDFLARE_API_TOKEN == '' }}
+        run: |
+          echo "CLOUDFLARE_API_TOKEN secret not set — build verified only."
+          echo "Add the secret, or run locally: npm run deploy:pages"
+          ls -la dist/tools/pdf-rotate/index.html

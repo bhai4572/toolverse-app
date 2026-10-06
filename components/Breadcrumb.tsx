@@ -9,23 +9,32 @@ export interface BreadcrumbItem {
 
 export function Breadcrumb({ items }: { items: BreadcrumbItem[] }) {
   return (
-    <nav className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 mb-6 flex-wrap">
-      <Link href="/" className="hover:text-brand-600 dark:hover:text-brand-400 flex items-center gap-1">
-        <Home className="w-3.5 h-3.5" />
-        <span>Home</span>
-      </Link>
-      {items.map((item, idx) => (
-        <React.Fragment key={idx}>
-          <ChevronRight className="w-3 h-3 text-slate-300 dark:text-slate-600 flex-shrink-0" />
-          {item.href ? (
-            <Link href={item.href} className="hover:text-brand-600 dark:hover:text-brand-400">
-              {item.label}
-            </Link>
-          ) : (
-            <span className="text-slate-900 dark:text-slate-200 font-medium">{item.label}</span>
-          )}
-        </React.Fragment>
-      ))}
+    <nav aria-label="Breadcrumb" className="mb-6">
+      <ol className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 flex-wrap">
+        <li className="flex items-center gap-1.5">
+          <Link href="/" className="hover:text-brand-600 dark:hover:text-brand-400 flex items-center gap-1">
+            <Home className="w-3.5 h-3.5" aria-hidden="true" />
+            <span>Home</span>
+          </Link>
+        </li>
+        {items.map((item, idx) => {
+          const isLast = idx === items.length - 1;
+          return (
+            <li key={`${item.label}-${idx}`} className="flex items-center gap-1.5">
+              <ChevronRight className="w-3 h-3 text-slate-300 dark:text-slate-600 flex-shrink-0" aria-hidden="true" />
+              {item.href && !isLast ? (
+                <Link href={item.href} className="hover:text-brand-600 dark:hover:text-brand-400">
+                  {item.label}
+                </Link>
+              ) : (
+                <span className="text-slate-900 dark:text-slate-200 font-medium" aria-current={isLast ? 'page' : undefined}>
+                  {item.label}
+                </span>
+              )}
+            </li>
+          );
+        })}
+      </ol>
     </nav>
   );
 }

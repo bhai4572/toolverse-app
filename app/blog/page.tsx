@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BLOG_POSTS } from '@/lib/blog/posts';
 import { AdSlot } from '@/components/AdSlot';
+import { Breadcrumb } from '@/components/Breadcrumb';
 
 export default function BlogHubPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
@@ -13,18 +14,20 @@ export default function BlogHubPage() {
 
   return (
     <div className="space-y-10 py-4 max-w-6xl mx-auto">
+      <Breadcrumb items={[{ label: 'Blog' }]} />
+
       {/* Hero Header */}
-      <div className="text-center space-y-4 max-w-3xl mx-auto">
+      <header className="text-center space-y-4 max-w-3xl mx-auto">
         <span className="px-3 py-1 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 rounded-full text-xs font-semibold uppercase tracking-wider">
-          ToolVerse Knowledge & Career Hub
+          ToolVerse Knowledge Hub
         </span>
         <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-          SEO Guides, Career Advice & Tech Tutorials
+          Guides for Tools, Careers & Privacy
         </h1>
         <p className="text-slate-600 dark:text-slate-400 text-lg leading-relaxed">
-          In-depth guides on remote job hunting, browser privacy, barcode standards, image compression, and taxation. Written by experts to help you get work done faster.
+          Practical guides on image compression, private PDF workflows, barcodes, remote jobs, and Pakistan salary tax — with links to free ToolVerse utilities.
         </p>
-      </div>
+      </header>
 
       <AdSlot placement="header" />
 

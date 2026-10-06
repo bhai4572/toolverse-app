@@ -1,7 +1,15 @@
-name = "toolverse"
+# ToolVerse — Cloudflare Pages (Vite SPA)
+# Project: toolverse-app (custom domain toolverse.baby)
+name = "toolverse-app"
 compatibility_date = "2025-01-01"
 pages_build_output_dir = "dist"
 
+# Public build-time / runtime vars for Pages
 [vars]
-# Public environment variables
 NEXT_PUBLIC_SITE_URL = "https://toolverse.baby"
+
+# NOTE:
+# Cloudflare Git-connected builds still read Build command + Output directory from the
+# dashboard. Set them to:  Build command = "npm run build"  |  Output directory = "dist"
+# Direct/CLI deploys: npm run deploy:pages
+# Optional CI: .github/workflows/deploy-pages.yml (needs CLOUDFLARE_API_TOKEN secret)

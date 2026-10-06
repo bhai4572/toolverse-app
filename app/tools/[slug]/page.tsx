@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { getToolBySlug, getToolById, TOOLS } from '@/lib/tools/registry';
+import { getToolBySlug, getToolById, getToolsByCategory, TOOLS } from '@/lib/tools/registry';
 import { getToolPageContent } from '@/lib/seo/toolPageContent';
 import { ToolRenderer } from '@/features/tools/ToolRenderer';
 import { Breadcrumb } from '@/components/Breadcrumb';
@@ -65,9 +65,20 @@ export default function ToolPage({ params }: { params: { slug: string } }) {
 
   const pageContent = getToolPageContent(tool.slug);
 
-  const relatedTools = (tool.relatedToolIds || [])
+  const relatedFromIds = (tool.relatedToolIds || [])
     .map((id) => getToolById(id))
     .filter((t): t is NonNullable<typeof t> => t !== undefined);
+
+  // Fill to 3 with same-category siblings for denser internal links
+  const relatedTools = [...relatedFromIds];
+  if (relatedTools.length < 3) {
+    for (const sibling of getToolsByCategory(tool.categorySlug)) {
+      if (sibling.slug === tool.slug) continue;
+      if (relatedTools.some((r) => r.slug === sibling.slug)) continue;
+      relatedTools.push(sibling);
+      if (relatedTools.length >= 3) break;
+    }
+  }
 
   const faqList = pageContent?.faqs ?? [
     {
