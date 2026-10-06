@@ -75,7 +75,14 @@ function replaceJsonLd(html, schemas) {
 }
 
 function buildBodyMain(pathname, meta, deps) {
-  const { TOOLS, CATEGORIES, getToolPageContent, getCategoryPageContent, getBlogPostBySlug } = deps;
+  const {
+    TOOLS,
+    CATEGORIES,
+    getToolPageContent,
+    getCategoryPageContent,
+    getBlogPostBySlug,
+    getJobPageContent,
+  } = deps;
   const parts = pathname.replace(/\/$/, '').split('/').filter(Boolean);
   let h1 = meta.title.replace(/\s*[—|].*$/, '').trim() || meta.title;
   let intro = meta.description;
@@ -107,6 +114,12 @@ function buildBodyMain(pathname, meta, deps) {
     }
   } else if (parts[0] === 'blog') {
     h1 = 'ToolVerse Blog';
+  } else if (parts[0] === 'jobs' && parts[1]) {
+    const job = getJobPageContent?.(parts[1]);
+    if (job) {
+      h1 = job.title;
+      intro = job.intro || job.subtitle;
+    }
   } else if (parts.length === 0) {
     h1 = '100+ Free Online Tools for Everyday Work';
   }
@@ -189,8 +202,16 @@ async function main() {
     const { BLOG_POSTS, getBlogPostBySlug } = await vite.ssrLoadModule('/lib/blog/posts.ts');
     const { getToolPageContent } = await vite.ssrLoadModule('/lib/seo/toolPageContent.ts');
     const { getCategoryPageContent } = await vite.ssrLoadModule('/lib/seo/categoryPageContent.ts');
+    const { getJobPageContent } = await vite.ssrLoadModule('/lib/seo/jobPageContent.ts');
 
-    const deps = { TOOLS, CATEGORIES, getToolPageContent, getCategoryPageContent, getBlogPostBySlug };
+    const deps = {
+      TOOLS,
+      CATEGORIES,
+      getToolPageContent,
+      getCategoryPageContent,
+      getBlogPostBySlug,
+      getJobPageContent,
+    };
     const template = fs.readFileSync(templatePath, 'utf8');
 
     const routes = ['/'];

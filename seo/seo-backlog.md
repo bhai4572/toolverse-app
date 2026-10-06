@@ -1,61 +1,40 @@
 # ToolVerse SEO / AEO / GEO Backlog
 
-Last updated: 2026-10-07. White-hat only. Do not invent rankings or traffic claims.
+Last updated: 2026-10-07 (wave 3). White-hat only. Do not invent rankings or traffic claims.
 
 ## Primary keyword map (high-intent)
 
 | Primary intent | Canonical URL | Notes |
 |---|---|---|
-| compress image 50kb / 20kb | `/tools/compress-image-target-size` | Do not target same KW on Image Compressor |
-| image compressor (quality) | `/tools/image-compressor` | Quality slider intent |
-| merge pdf online | `/tools/pdf-merge` | Blog supports, not cannibalizes |
-| split / rotate / reorder pdf | `/tools/pdf-split`, `/tools/pdf-rotate`, `/tools/pdf-reorder-pages` | |
-| jpg to pdf / images to pdf | `/tools/jpg-to-pdf`, `/tools/images-to-pdf` | Split: single vs bulk |
-| heic to jpg | `/tools/heic-to-jpg` | Blog: convert-heic-to-jpg-windows-iphone |
-| resize / social image / crop | `/tools/image-resizer`, `/tools/social-media-image-resizer`, `/tools/image-cropper` | |
-| webp convert | `/tools/jpg-to-webp`, `/tools/webp-to-jpg` | |
-| qr / barcode | `/tools/qr-code-generator`, `/tools/barcode-generator` | |
-| pakistan salary tax | `/tools/pakistan-salary-tax-estimator` | Estimate disclaimer |
-| zakat / emi / compound / discount / vat | matching calculators | |
-| word vs character counter | `/tools/word-counter` vs `/tools/character-counter` | Split intents |
-| utm / meta / url shortener | SEO tool cluster | |
-| password / uuid / hash | security cluster | |
+| compress image 50kb / 20kb | `/tools/compress-image-target-size` | ≠ Image Compressor |
+| jpg/png/webp convert | format converter tools | one primary KW each |
+| adsense / youtube earnings | estimator tools | educational estimates only |
+| readability / passive / citations | writing cluster | no plagiarism claims |
+| remote / USA / PK govt jobs | `/jobs/*` | discovery only; apply on source |
+| merge/split/rotate pdf | PDF tools | |
 
-Categories own **hub** intents (e.g. “pdf tools online” → `/category/pdf-document-tools`).
+## Done — wave 3 (this commit)
 
-## Done — 2026-10-07 wave
+### P0 prod prerender fix
+- **Root cause:** Cloudflare Pages applies `_redirects` **before** static files. `/* → /index.html 200` overwrote all prerendered `dist/tools/*/index.html` (prod curl still showed homepage title/canonical).
+- **Fix:** Removed SPA catch-all from `public/_redirects`. Added `functions/_middleware.ts` to serve `index.html` only on **404** (non-asset paths). Added `public/_routes.json` to skip the worker for `/assets/*` and static SEO files.
+- Build-time prerender (`scripts/prerender.mjs`) unchanged — still required.
 
-### P0 SPA prerender (implemented)
-- Build step: `vite build && node scripts/prerender.mjs`
-- Writes `dist/<route>/index.html` for all live tools, categories, blog, legal, jobs (+ updates root)
-- Injects correct `<title>`, description, canonical, OG/Twitter, JSON-LD, and crawler H1/intro
-- Cloudflare Pages: real files win over `/* /index.html 200` SPA fallback (no `!` force)
-- **Caveat:** This is meta + static HTML shell prerender (not full React SSR). Tool UIs still hydrate client-side. Unknown paths still fall back to SPA shell.
+### P1 content
+- `TOOL_PAGE_CONTENT` expanded again (format converters, AdSense/YT, writing cluster, base64, lorem, unit converter, json-to-csv, etc.).
+- Jobs landings: richer intro/FAQ/sections + internal links via `lib/seo/jobPageContent.ts`.
 
-### P1 tool content
-- `TOOL_PAGE_CONTENT` expanded again (~39 tools total) with answer-first, H2, FAQs, seoTitle/Description
-- Related links: url-shortener → meta-tag-generator
+## Next actions
 
-### P2
-- Blog featured images: width/height + decoding; header logo `aria-label`
-- No extra blog this wave (HEIC/compress/merge/tax already cover top intents)
+1. **Verify prod after deploy:** curl `/tools/pdf-rotate` — expect tool title + canonical (not homepage). If still wrong, check CF Pages Functions enabled for the project.
+2. **More enrichments:** remaining writing checklists, `global-job-finder`, `thesis-statement-checker`, equation/matrix tools as useful.
+3. **Authority:** execute backlink playbooks offline.
+4. **Measurement:** GSC CTR on prerendered URLs after indexing.
 
-## Next actions (priority)
+## Authority playbooks
 
-1. **P1 — More `toolPageContent`:** `jpg-to-png`, `png-to-jpg`, `adsense-revenue-calculator`, `youtube-earnings-estimator`, `text-diff-checker`, `readability-score`, writing-tool cluster as needed.
-2. **P1 — Verify prod:** After deploy, `curl` a tool URL and confirm title/canonical in raw HTML (not homepage).
-3. **P2 — Jobs landing:** Stronger unique copy per `/jobs/*` slug.
-4. **P2 — Authority:** Execute backlink playbooks offline — no PBNs.
-5. **P2 — Measurement:** GSC impressions/CTR on enriched + prerendered URLs.
-
-## Authority playbooks status
-
-- `seo/backlink-playbook.md` — written; execution is offline/outreach
-- `seo/easy-backlinks-guide.md` — written; execution is offline/outreach
+- `seo/backlink-playbook.md` / `seo/easy-backlinks-guide.md` — outreach pending
 
 ## Do not do
 
-- Fake AggregateRating / review schema
-- Doorway pages or spun thin tool clones
-- Bought links / PBNs
-- Claiming #1 rankings without GSC/analytics proof
+- Fake AggregateRating / doorway pages / PBNs / ranking claims without data

@@ -1332,6 +1332,571 @@ export const TOOL_PAGE_CONTENT: Record<string, ToolPageContent> = {
       },
     ],
   },
+
+  'jpg-to-png': {
+    answerFirst:
+      'JPG to PNG Converter turns JPEG photos into PNG files when you need transparency support or a lossless-style export for graphics workflows.',
+    seoTitle: 'JPG to PNG Converter Online Free | ToolVerse',
+    seoDescription:
+      'Convert JPG/JPEG images to PNG in your browser. Useful before editing graphics — no upload required for this tool.',
+    sections: [
+      {
+        heading: 'When PNG helps',
+        body: 'PNG is better for flat graphics, screenshots with text, and workflows that expect PNG. Photos often stay smaller as JPG or WebP.',
+      },
+      {
+        heading: 'Size trade-off',
+        body: 'PNG from a photo can be larger than the original JPG. Compress or convert to WebP if page weight matters more than format.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Does JPG to PNG improve photo quality?',
+        answer:
+          'No. You cannot recover detail lost in JPG compression. PNG mainly changes the container/format.',
+      },
+      {
+        question: 'Is my image uploaded?',
+        answer: 'No. Conversion runs in your browser.',
+      },
+    ],
+  },
+
+  'png-to-jpg': {
+    answerFirst:
+      'PNG to JPG Converter creates JPEG files from PNGs for smaller photo uploads and forms that reject PNG.',
+    seoTitle: 'PNG to JPG Converter Online Free | ToolVerse',
+    seoDescription:
+      'Convert PNG images to JPG privately in your browser. Handy for portals and email that prefer JPEG.',
+    sections: [
+      {
+        heading: 'Transparency becomes a background',
+        body: 'JPG has no alpha channel. Transparent PNG areas typically flatten to a solid background during conversion.',
+      },
+      {
+        heading: 'After conversion',
+        body: 'If a portal caps file size, run the JPG through Image Compressor or Compress Image to Target Size.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Will text look softer as JPG?',
+        answer:
+          'Heavy JPEG compression can blur sharp edges. Keep quality high for screenshots with text.',
+      },
+      {
+        question: 'Is the file uploaded?',
+        answer: 'No. Conversion is local in your browser.',
+      },
+    ],
+  },
+
+  'json-to-csv': {
+    answerFirst:
+      'JSON to CSV Converter turns JSON arrays/objects into spreadsheet-friendly CSV so you can open data in Excel or Sheets.',
+    seoTitle: 'JSON to CSV Converter Online | ToolVerse',
+    seoDescription:
+      'Convert JSON to CSV in your browser for Excel/Sheets. Validate messy JSON first with JSON Formatter if needed.',
+    sections: [
+      {
+        heading: 'Nested JSON caveats',
+        body: 'Deeply nested objects may need flattening. Start with valid JSON — use JSON Formatter if parse errors appear.',
+      },
+      {
+        heading: 'Privacy for API dumps',
+        body: 'Staging payloads can contain tokens. Convert locally instead of pasting into hosted converters you do not trust.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can every JSON become CSV?',
+        answer:
+          'Arrays of similar objects work best. Irregular trees may need cleanup before a clean table export.',
+      },
+      {
+        question: 'Is my JSON uploaded?',
+        answer: 'No. Conversion runs in your browser.',
+      },
+    ],
+  },
+
+  'adsense-revenue-calculator': {
+    answerFirst:
+      'AdSense & Website Revenue Calculator estimates earnings from traffic, CTR, and CPC/RPM inputs — directional planning, not a payout guarantee.',
+    seoTitle: 'AdSense Revenue Calculator (Estimate) | ToolVerse',
+    seoDescription:
+      'Estimate website or AdSense revenue from pageviews, CTR, and CPC/RPM. Educational only — real earnings vary by niche and geo.',
+    sections: [
+      {
+        heading: 'RPM vs CPC models',
+        body: 'Some publishers think in RPM (revenue per thousand pageviews); others model clicks × CPC. Use the inputs that match how you review Analytics.',
+      },
+      {
+        heading: 'Why estimates miss real payouts',
+        body: 'Seasonality, geo mix, ad viewability, and policy issues change results. Treat this as a scenario tool, then compare with your AdSense reports.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is this official Google AdSense math?',
+        answer:
+          'No. It is an independent estimate for planning. Your AdSense dashboard is the source of truth.',
+      },
+      {
+        question: 'Are my traffic numbers stored?',
+        answer: 'No. Calculations run locally in your browser.',
+      },
+    ],
+  },
+
+  'youtube-earnings-estimator': {
+    answerFirst:
+      'YouTube Earnings Estimator sketches income ranges from views and assumed CPM — useful for rough planning, not a promise of AdSense payouts.',
+    seoTitle: 'YouTube Earnings Estimator (CPM Range) | ToolVerse',
+    seoDescription:
+      'Estimate YouTube revenue from views and CPM assumptions. Educational ranges only — actual RPM depends on niche, geo, and season.',
+    sections: [
+      {
+        heading: 'CPM is not take-home',
+        body: 'Creators are paid a share after Google’s cut, and RPM differs from advertiser CPM. Memberships, Super Thanks, and brand deals are separate.',
+      },
+      {
+        heading: 'Use ranges, not single numbers',
+        body: 'Try low/mid/high CPM assumptions. Compare with your YouTube Analytics revenue tab when monetized.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can I rely on this for taxes?',
+        answer:
+          'No. Use official payout statements and a tax professional for filings.',
+      },
+      {
+        question: 'Are channel stats uploaded?',
+        answer: 'No. Estimates run in your browser.',
+      },
+    ],
+  },
+
+  'text-diff-checker': {
+    answerFirst:
+      'Text & Code Diff Checker compares two text blocks and highlights differences — useful for drafts, configs, and code snippets.',
+    seoTitle: 'Text Diff Checker Online (Compare Two Texts) | ToolVerse',
+    seoDescription:
+      'Compare two texts side by side and spot changes instantly. Private in-browser diff for writing and code snippets.',
+    sections: [
+      {
+        heading: 'Draft revisions without Word trackers',
+        body: 'Paste an old paragraph and a new one to see what changed before you publish or submit.',
+      },
+      {
+        heading: 'Config and JSON peeks',
+        body: 'For structured JSON, format both sides with JSON Formatter first so diffs are readable.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is my text uploaded?',
+        answer: 'No. Diffing runs locally in your browser.',
+      },
+      {
+        question: 'Does it support file upload?',
+        answer:
+          'Paste text directly. For large files, copy the sections you need to compare.',
+      },
+    ],
+  },
+
+  'readability-score': {
+    answerFirst:
+      'Readability Score Checker estimates how easy a passage is to read (for example Flesch-style metrics) so you can simplify dense drafts.',
+    seoTitle: 'Readability Score Checker Online | ToolVerse',
+    seoDescription:
+      'Check reading ease and grade-level style scores for your text. Private browser analysis for clearer writing.',
+    sections: [
+      {
+        heading: 'Scores are guides, not grades',
+        body: 'Academic papers and legal text score “hard” on purpose. Match readability to your audience instead of chasing one number.',
+      },
+      {
+        heading: 'Pair with sentence length checks',
+        body: 'If scores look tough, Sentence Length Checker and Simple English Converter help you find long or dense lines to revise.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Which formula do you use?',
+        answer:
+          'The tool reports common readability-style metrics from your text. Formulas vary slightly by implementation.',
+      },
+      {
+        question: 'Is my essay stored?',
+        answer: 'No. Analysis runs in your browser.',
+      },
+    ],
+  },
+
+  'repeated-word-finder': {
+    answerFirst:
+      'Repeated Word & Frequency Finder lists words you reuse often so you can vary vocabulary in essays and posts.',
+    seoTitle: 'Repeated Word Finder Online | ToolVerse',
+    seoDescription:
+      'Find overused words and frequency counts in your draft. Browser-private helper for clearer writing.',
+    sections: [
+      {
+        heading: 'Frequency is a signal, not a rule',
+        body: 'Some repetition is normal (articles, topic nouns). Focus on content words that make prose feel stuck.',
+      },
+      {
+        heading: 'Phrases vs words',
+        body: 'For multi-word echoes, use Duplicate Phrase Finder after you clean single-word overuse.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Does it ignore stop words?',
+        answer:
+          'Behavior depends on the tool filters. Skim the list and ignore tiny function words if they dominate.',
+      },
+      {
+        question: 'Is text uploaded?',
+        answer: 'No. Counting runs locally.',
+      },
+    ],
+  },
+
+  'duplicate-phrase-finder': {
+    answerFirst:
+      'Duplicate Phrase Finder highlights repeated multi-word phrases so you can tighten essays and reports.',
+    seoTitle: 'Duplicate Phrase Finder Online | ToolVerse',
+    seoDescription:
+      'Detect repeated phrases in your writing. Useful for essays and reports — private in-browser scan.',
+    sections: [
+      {
+        heading: 'Catch copy-paste leftovers',
+        body: 'Long drafts often reuse the same transition phrases. Spot them here, then rewrite once.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is this a plagiarism checker?',
+        answer:
+          'No. It finds repetition inside your own text. It does not search the open web.',
+      },
+      {
+        question: 'Is my draft uploaded?',
+        answer: 'No. Scanning runs in your browser.',
+      },
+    ],
+  },
+
+  'passive-voice-finder': {
+    answerFirst:
+      'Passive Voice Finder highlights likely passive constructions so you can decide where active voice reads clearer.',
+    seoTitle: 'Passive Voice Finder Online | ToolVerse',
+    seoDescription:
+      'Highlight passive voice in your draft. A writing aid — not every passive sentence needs changing.',
+    sections: [
+      {
+        heading: 'Passive is sometimes correct',
+        body: 'Methods sections and formal reports use passive voice on purpose. Change sentences only when clarity improves.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is detection perfect?',
+        answer:
+          'Heuristics can miss or over-flag edge cases. Use matches as review prompts.',
+      },
+      {
+        question: 'Is text stored?',
+        answer: 'No. Analysis is local in your browser.',
+      },
+    ],
+  },
+
+  'sentence-length-checker': {
+    answerFirst:
+      'Sentence Length Checker flags long sentences so you can split dense lines for readability.',
+    seoTitle: 'Sentence Length Checker Online | ToolVerse',
+    seoDescription:
+      'Find long sentences in your draft and tighten them. Pairs well with Readability Score Checker.',
+    sections: [
+      {
+        heading: 'Length vs clarity',
+        body: 'A long sentence can still be clear. Use the list to spot piles of clauses that slow readers down.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'What counts as “long”?',
+        answer:
+          'The tool uses practical length thresholds. Adjust your rewriting to audience and genre.',
+      },
+      {
+        question: 'Is my text uploaded?',
+        answer: 'No. Checking runs in your browser.',
+      },
+    ],
+  },
+
+  'academic-tone-checker': {
+    answerFirst:
+      'Academic Tone Checker flags casual phrasing that may not fit formal essays so you can revise toward a more academic style.',
+    seoTitle: 'Academic Tone Checker Online | ToolVerse',
+    seoDescription:
+      'Review your draft for casual tone vs academic style. Educational writing helper — follow your school’s guide.',
+    sections: [
+      {
+        heading: 'Tone is contextual',
+        body: 'Blog posts and reflective journals allow a warmer voice. Coursework often wants a more formal register — match the assignment.',
+      },
+      {
+        heading: 'Next steps',
+        body: 'Try Formal Tone Converter for phrasing experiments, then re-check readability so sentences do not become bloated.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Will this guarantee a higher grade?',
+        answer:
+          'No. It is a revision aid. Rubrics, sources, and argument quality matter more.',
+      },
+      {
+        question: 'Is my essay uploaded?',
+        answer: 'No. Analysis runs locally.',
+      },
+    ],
+  },
+
+  'citation-generator': {
+    answerFirst:
+      'Citation Generator builds draft reference entries (for example APA-style fields) from the details you enter — always verify against your style guide.',
+    seoTitle: 'Citation Generator Online (APA-Style Draft) | ToolVerse',
+    seoDescription:
+      'Generate draft citations from source details. Verify punctuation and rules with your required style manual.',
+    sections: [
+      {
+        heading: 'Draft, then verify',
+        body: 'Style manuals change and edge cases abound. Use the output as a starting point, then check your handbook or librarian guidance.',
+      },
+      {
+        heading: 'Alphabetize the list',
+        body: 'After you collect entries, Reference List Alphabetizer helps sort a bibliography draft.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Do you support every citation style?',
+        answer:
+          'Focus on common academic formats available in the tool. Confirm required style with your instructor.',
+      },
+      {
+        question: 'Is source data stored?',
+        answer: 'No. Generation runs in your browser session.',
+      },
+    ],
+  },
+
+  'citation-checklist': {
+    answerFirst:
+      'Citation Checklist helps you spot missing citation elements before you submit a paper.',
+    seoTitle: 'Citation Checklist for Essays | ToolVerse',
+    seoDescription:
+      'Walk through a practical citation checklist so drafts are less likely to miss authors, dates, or links.',
+    sections: [
+      {
+        heading: 'Common misses',
+        body: 'Forgotten access dates, missing DOIs, and mismatched in-text vs reference list entries cause avoidable revision rounds.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is this plagiarism detection?',
+        answer:
+          'No. It is a completeness checklist for your own sources.',
+      },
+      {
+        question: 'Are my notes uploaded?',
+        answer: 'No. The checklist runs in your browser.',
+      },
+    ],
+  },
+
+  'reference-list-alphabetizer': {
+    answerFirst:
+      'Reference List Alphabetizer sorts bibliography lines A–Z so your reference list is easier to finish.',
+    seoTitle: 'Alphabetize Reference List Online | ToolVerse',
+    seoDescription:
+      'Sort bibliography or reference lines alphabetically in your browser before final formatting.',
+    sections: [
+      {
+        heading: 'Sort then style',
+        body: 'Alphabetize first, then fix hanging indents and italics in your word processor per your style guide.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Does it format APA hanging indents?',
+        answer:
+          'It focuses on order. Apply hanging indents in Word/Docs afterward.',
+      },
+      {
+        question: 'Is my list uploaded?',
+        answer: 'No. Sorting is local.',
+      },
+    ],
+  },
+
+  'formal-tone-converter': {
+    answerFirst:
+      'Formal Tone Converter suggests a more formal rewrite of casual sentences for emails and academic drafts.',
+    seoTitle: 'Formal Tone Converter Online | ToolVerse',
+    seoDescription:
+      'Rewrite casual text toward a more formal tone. Review suggestions before you send or submit.',
+    sections: [
+      {
+        heading: 'Keep your meaning',
+        body: 'Automatic tone shifts can sound stiff. Edit for your voice and the relationship with the reader.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is output ready to submit as-is?',
+        answer:
+          'Treat it as a draft. Proofread for accuracy and natural phrasing.',
+      },
+      {
+        question: 'Is my text uploaded?',
+        answer: 'No. Conversion runs in your browser for this tool.',
+      },
+    ],
+  },
+
+  'simple-english-converter': {
+    answerFirst:
+      'Simple English Converter helps simplify dense wording so more readers can follow your point.',
+    seoTitle: 'Simple English Converter Online | ToolVerse',
+    seoDescription:
+      'Simplify complex sentences toward clearer English. Pair with Readability Score Checker to measure progress.',
+    sections: [
+      {
+        heading: 'Clarity without dumbing down',
+        body: 'Keep necessary technical terms; explain them. Simplify structure and filler first.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Will it remove technical vocabulary?',
+        answer:
+          'Review the output. You may need to restore field-specific terms your audience expects.',
+      },
+      {
+        question: 'Is text stored?',
+        answer: 'No. Processing is local in your browser.',
+      },
+    ],
+  },
+
+  'essay-structure-checker': {
+    answerFirst:
+      'Essay Structure Checker reviews whether a draft has basic pieces (intro, body progression, conclusion cues) so you can reorganize before polishing sentences.',
+    seoTitle: 'Essay Structure Checker Online | ToolVerse',
+    seoDescription:
+      'Check essay structure cues before you polish wording. A planning aid — follow your assignment rubric.',
+    sections: [
+      {
+        heading: 'Structure before style',
+        body: 'Fix missing thesis or weak section flow first. Then use readability and tone tools for sentence-level edits.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Does this write my essay?',
+        answer:
+          'No. It helps you inspect structure. You still write and cite your own work.',
+      },
+      {
+        question: 'Is my draft uploaded?',
+        answer: 'No. Checking runs in your browser.',
+      },
+    ],
+  },
+
+  'base64-encoder-decoder': {
+    answerFirst:
+      'Base64 Encoder & Decoder converts text to Base64 and back in your browser — handy for data URLs and quick debugging.',
+    seoTitle: 'Base64 Encoder Decoder Online | ToolVerse',
+    seoDescription:
+      'Encode or decode Base64 locally. Useful for developers debugging data URLs and tokens — do not paste production secrets into random sites.',
+    sections: [
+      {
+        heading: 'Not encryption',
+        body: 'Base64 is encoding, not secrecy. Anyone can decode it. Prefer real encryption and secret managers for sensitive values.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is my string uploaded?',
+        answer: 'No. Encoding/decoding runs in your browser.',
+      },
+      {
+        question: 'Can I encode files?',
+        answer:
+          'This tool focuses on text strings. For large binaries, use dedicated local tooling.',
+      },
+    ],
+  },
+
+  'lorem-ipsum-generator': {
+    answerFirst:
+      'Lorem Ipsum Generator creates placeholder text for mockups and layouts so designers can test typography without real copy.',
+    seoTitle: 'Lorem Ipsum Generator Online | ToolVerse',
+    seoDescription:
+      'Generate dummy lorem ipsum text for wireframes and design drafts. Free, fast, browser-based.',
+    sections: [
+      {
+        heading: 'Use for layout, not content',
+        body: 'Replace placeholder text before publish. Accessibility reviews need real headings and meaningful copy.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can I set paragraph count?',
+        answer:
+          'Yes — use the controls to choose how much placeholder text you need.',
+      },
+      {
+        question: 'Is anything stored?',
+        answer: 'No. Generation is local.',
+      },
+    ],
+  },
+
+  'unit-converter-suite': {
+    answerFirst:
+      'Unit Converter Suite converts common measurements (length, weight, temperature, energy, and more) for homework and everyday checks.',
+    seoTitle: 'Unit Converter Online (Length, Weight, Temp) | ToolVerse',
+    seoDescription:
+      'Convert units for length, mass, temperature, and more in your browser. Quick educational converter for school and daily use.',
+    sections: [
+      {
+        heading: 'Precision and rounding',
+        body: 'Scientific work may need more decimal places than everyday cooking conversions. Check significant figures for lab reports.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Are conversions exact?',
+        answer:
+          'They use standard factors with normal floating-point limits. For legal metrology, use certified references.',
+      },
+      {
+        question: 'Is input stored?',
+        answer: 'No. Math runs locally.',
+      },
+    ],
+  },
 };
 
 export function getToolPageContent(slug: string): ToolPageContent | undefined {

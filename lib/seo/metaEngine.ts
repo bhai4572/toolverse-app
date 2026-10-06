@@ -2,6 +2,7 @@ import { getToolBySlug, CATEGORIES } from '@/lib/tools/registry';
 import { getBlogPostBySlug } from '@/lib/blog/posts';
 import { getToolPageContent } from '@/lib/seo/toolPageContent';
 import { getCategoryPageContent } from '@/lib/seo/categoryPageContent';
+import { getJobPageContent } from '@/lib/seo/jobPageContent';
 
 export interface PageMetadata {
   title: string;
@@ -300,19 +301,54 @@ export function getMetadataForPath(pathname: string): PageMetadata {
   }
 
   if (parts[0] === 'jobs' && parts[1]) {
+    const job = getJobPageContent(parts[1]);
     const canonicalUrl = `${baseUrl}/jobs/${parts[1]}`;
     const formattedTitle = parts[1]
       .split('-')
       .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
       .join(' ');
 
+    const pageTitle = job?.seoTitle ?? `${formattedTitle} (2026) — ToolVerse Job Finder`;
+    const pageDesc =
+      job?.seoDescription ??
+      `Browse ${formattedTitle.toLowerCase()} listings. Filter remote, government, and tech roles and apply on the original posting sites.`;
+
+    const jsonLd: Record<string, unknown>[] = [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'CollectionPage',
+        name: job?.title ?? formattedTitle,
+        description: pageDesc,
+        url: canonicalUrl,
+        inLanguage: 'en',
+        isPartOf: {
+          '@type': 'WebSite',
+          name: 'ToolVerse',
+          url: `${baseUrl}/`,
+        },
+      },
+    ];
+
+    if (job?.faqs?.length) {
+      jsonLd.push({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: job.faqs.map((faq) => ({
+          '@type': 'Question',
+          name: faq.question,
+          acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+        })),
+      });
+    }
+
     return {
-      title: `${formattedTitle} (2026) — ToolVerse Job Finder`,
-      description: `Browse ${formattedTitle.toLowerCase()} listings. Filter remote, government, and tech roles and apply on the original posting sites.`,
+      title: pageTitle,
+      description: pageDesc,
       keywords: [parts[1].replace(/-/g, ' '), 'toolverse jobs', 'remote jobs'],
       canonicalUrl,
       ogType: 'website',
       ogImage: DEFAULT_OG_IMAGE,
+      jsonLd,
     };
   }
 
