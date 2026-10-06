@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { ShieldCheck, Wrench, Lock, Heart } from 'lucide-react';
 import { CATEGORIES, TOOLS } from '@/lib/tools/registry';
+import { AdSlot } from './AdSlot';
 
 export function Footer() {
   return (
@@ -67,6 +68,9 @@ export function Footer() {
             </ul>
           </div>
         </div>
+
+        {/* Footer Ad Banner Box */}
+        <AdSlot slotId="footer-banner" className="my-6" />
 
         <div className="pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
           <div>
