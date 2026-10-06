@@ -36,9 +36,10 @@ Last updated: 2026-10-07 (wave 7 — **on-site SEO complete for now**). White-ha
 
 1. **Cloudflare:** add `CLOUDFLARE_API_TOKEN` (+ optional account id) to GitHub Actions so `main` auto-deploys.
 2. **CF dashboard:** Build = `npm run build`, Output = `dist`, Node **20** (Git builds fail if wrong).
-3. **Digital PR / backlinks:** follow `seo/easy-backlinks-guide.md` + `seo/backlink-playbook.md` (AlternativeTo, directories, guest posts — offline).
-4. **GSC / Bing / Yandex:** weekly check impressions, queries, CWV field data, coverage — no ranking claims without data.
-5. **Optional product later:** real ZIP tools under `file-archive-utilities`; self-host Inter if Lighthouse still flags fonts.
+3. **CF AI Crawl Control / managed robots:** Cloudflare currently **prepends** managed rules that `Disallow` ChatGPT-User, Claude-User, Perplexity-User, etc. Our `public/robots.txt` allows answer fetchers, but CF managed block wins for many bots — turn off or relax those agent blocks in the CF dashboard if you want AEO citations.
+4. **Digital PR / backlinks:** follow `seo/easy-backlinks-guide.md` + `seo/backlink-playbook.md` (AlternativeTo, directories, guest posts — offline).
+5. **GSC / Bing / Yandex:** weekly check impressions, queries, CWV field data, coverage — no ranking claims without data.
+6. **Optional product later:** real ZIP tools under `file-archive-utilities`; self-host Inter if Lighthouse still flags fonts.
 
 ## Weekly loop (user)
 
