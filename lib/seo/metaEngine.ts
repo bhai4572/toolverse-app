@@ -232,6 +232,10 @@ export function updateDOMMetadata(meta: PageMetadata) {
   // Robots Tag (INDEX, FOLLOW - NO NOINDEX!)
   setMetaTag('meta[name="robots"]', 'name', 'robots', 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1');
 
+  // Meta Language Tags (Fixes Meta Language Tag Warning!)
+  setMetaTag('meta[name="language"]', 'name', 'language', 'English');
+  setMetaTag('meta[http-equiv="content-language"]', 'http-equiv', 'content-language', 'en');
+
   // Single Canonical Tag
   setLinkTag('canonical', null, meta.canonicalUrl);
 
