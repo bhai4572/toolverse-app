@@ -15,6 +15,7 @@ import { TextCaseConverterTool } from './TextCaseConverterTool';
 import { RemoveDuplicateLinesTool } from './RemoveDuplicateLinesTool';
 import { JsonFormatterTool } from './JsonFormatterTool';
 import { QrCodeGeneratorTool } from './QrCodeGeneratorTool';
+import { BarcodeGeneratorTool } from './BarcodeGeneratorTool';
 import { PasswordGeneratorTool } from './PasswordGeneratorTool';
 import { PercentageCalculatorTool } from './PercentageCalculatorTool';
 import { ZakatCalculatorTool } from './ZakatCalculatorTool';
@@ -103,6 +104,8 @@ export function ToolRenderer({ tool }: { tool: ToolDefinition }) {
       return <JsonFormatterTool />;
     case 'qr-code-generator':
       return <QrCodeGeneratorTool />;
+    case 'barcode-generator':
+      return <BarcodeGeneratorTool />;
     case 'password-generator':
     case 'uuid-generator':
       return <PasswordGeneratorTool />;

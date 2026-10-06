@@ -811,6 +811,36 @@ export const TOOLS: ToolDefinition[] = [
     icon: 'QrCode',
   },
   {
+    id: 'barcode-generator',
+    slug: 'barcode-generator',
+    canonicalName: 'Barcode Generator',
+    aliases: ['make barcode', 'create barcode', 'code128 generator', 'ean13 generator', 'upc barcode maker'],
+    category: 'Developer & Cybersecurity',
+    categorySlug: 'developer-cybersecurity-tools',
+    shortDescription: 'Generate Code 128, Code 39, EAN-13, EAN-8, UPC, and ITF-14 barcodes instantly in your browser.',
+    longDescription: 'Create custom vector and PNG barcodes for retail products, shipping labels, inventory management, and ISBN book codes with adjustable colors, bar width, height, and label display options.',
+    instructions: [
+      'Choose your target barcode symbology (Code 128, Code 39, EAN-13, EAN-8, UPC-A, ITF-14).',
+      'Enter the alphanumeric text or numerical digits to encode.',
+      'Customize bar width, height, color, and background.',
+      'Click "Download PNG Barcode" or copy the image directly to your clipboard.'
+    ],
+    useCases: [
+      'Generate EAN-13 / UPC barcodes for retail products and e-commerce stores.',
+      'Create Code 128 inventory and asset tracking labels.',
+      'Format ITF-14 barcodes for shipping containers and cartons.'
+    ],
+    privacyMessage: 'Barcode graphics rendered 100% locally using HTML5 Canvas API.',
+    limitations: ['Ensure exact digit count compliance for structured formats like EAN-13 (13 digits) and UPC (12 digits).'],
+    keywords: ['barcode generator', 'code 128 generator', 'ean 13 generator', 'upc barcode generator', 'free barcode maker'],
+    relatedToolIds: ['qr-code-generator', 'url-shortener', 'shipping-label-generator'],
+    featured: true,
+    popular: true,
+    processingMode: 'client',
+    status: 'live',
+    icon: 'Barcode',
+  },
+  {
     id: 'password-generator',
     slug: 'password-generator',
     canonicalName: 'Secure Password Generator',
