@@ -1,5 +1,11 @@
 User-agent: *
 Allow: /
+Allow: /tools/
+Allow: /category/
+Allow: /blog/
+Allow: /jobs/
+Allow: /legal/
+Disallow: /scratch/
 
-# Priority Search Engine Sitemap
+Host: https://toolverse.baby
 Sitemap: https://toolverse.baby/sitemap.xml

@@ -336,9 +336,9 @@ export function updateDOMMetadata(meta: PageMetadata) {
   // Single Canonical Tag
   setLinkTag('canonical', null, meta.canonicalUrl);
 
-  // Hreflang Tags
-  setLinkTag('alternate', 'en', meta.canonicalUrl);
-  setLinkTag('alternate', 'x-default', meta.canonicalUrl);
+  // Clean up any stale hreflang links to prevent Bing Hreflang Conflict Error (Issue 24)
+  const staleHreflangs = document.querySelectorAll('link[rel="alternate"][hreflang]');
+  staleHreflangs.forEach(el => el.remove());
 
   // Description & Keywords
   setMetaTag('meta[name="description"]', 'name', 'description', meta.description);

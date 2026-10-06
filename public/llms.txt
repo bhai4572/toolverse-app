@@ -1,0 +1,21 @@
+# ToolVerse (`https://toolverse.baby/`)
+
+> ToolVerse is a privacy-first web application platform providing 100+ free online utility tools (PDF converters, image compressors, barcode generators, tax calculators, SEO tools) and a Global Multi-Country Job Finder indexing over 1,000 active vacancies. All file processing runs 100% locally inside client browser memory using HTML5 Canvas & WebAssembly (WASM) without uploading files to remote servers.
+
+## Core Features & Verticals
+
+- [Global Job Finder Engine](https://toolverse.baby/tools/global-job-finder): Browse 1,000+ active jobs across USA, Pakistan, UAE, UK, and remote global vacancies.
+- [Compress Image to Target Size](https://toolverse.baby/tools/compress-image-target-size): Compress JPG, PNG, and WebP photos to exact file sizes (20KB, 50KB, 100KB, 1MB) for job portals and official forms.
+- [Free Barcode Generator](https://toolverse.baby/tools/barcode-generator): Generate printable Code 128, Code 39, EAN-13, EAN-8, UPC-A, and ITF-14 vector barcodes.
+- [Merge PDF Files Privately](https://toolverse.baby/tools/pdf-merge): Combine multiple PDF documents locally inside browser memory.
+- [Pakistan Salary Tax Estimator](https://toolverse.baby/tools/pakistan-salary-tax-estimator): Calculate monthly net income and FBR salary tax deductions.
+- [Free QR Code Generator](https://toolverse.baby/tools/qr-code-generator): Create SVG and PNG QR codes for WiFi, links, and text.
+- [Zakat Calculator](https://toolverse.baby/tools/zakat-calculator): Calculate Zakat obligation on gold, silver, cash, and investments.
+- [HEIC to JPG Converter](https://toolverse.baby/tools/heic-to-jpg): Convert Apple iPhone HEIC images to standard JPG format.
+
+## Documentation & Guides
+
+- [ToolVerse SEO & Career Blog](https://toolverse.baby/blog): Articles on remote job hunting, WebAssembly browser privacy, barcode standards, image compression, and taxation.
+- [Privacy Policy](https://toolverse.baby/legal/privacy-policy): GDPR, CCPA, and COPPA compliance declaration.
+- [Terms of Use](https://toolverse.baby/legal/terms-of-use): Platform usage terms.
+- [Sitemap](https://toolverse.baby/sitemap.xml): Complete URL index.
