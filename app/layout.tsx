@@ -3,7 +3,7 @@ import './globals.css';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://toolverse.com';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://toolverse.baby';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

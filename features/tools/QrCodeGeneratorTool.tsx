@@ -5,7 +5,7 @@ import { QrCode, Download, Copy, Check } from 'lucide-react';
 import { generateQrCodeDataUrl } from '@/lib/developer/engine';
 
 export function QrCodeGeneratorTool() {
-  const [text, setText] = useState('https://toolverse.com');
+  const [text, setText] = useState('https://toolverse.baby');
   const [darkColor, setDarkColor] = useState('#000000');
   const [lightColor, setLightColor] = useState('#ffffff');
   const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);

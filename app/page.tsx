@@ -6,30 +6,17 @@ import { Search, ShieldCheck, Zap, Lock, Sparkles, ArrowRight, Layers, Minimize2
 import { TOOLS, CATEGORIES, getPopularTools, getFeaturedTools, searchTools, ToolDefinition } from '@/lib/tools/registry';
 
 export default function HomePage() {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(() => {
+    if (typeof window === 'undefined') return '';
+    return new URLSearchParams(window.location.search).get('q') || '';
+  });
   const popularTools = getPopularTools();
   const featuredTools = getFeaturedTools();
 
   const searchResults = searchQuery.trim() ? searchTools(searchQuery) : [];
 
-  const websiteSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: 'ToolVerse',
-    url: 'https://toolverse.com',
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: 'https://toolverse.com/?q={search_term_string}',
-      'query-input': 'required name=search_term_string'
-    }
-  };
-
   return (
     <div className="space-y-16 py-6">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
-      />
       {/* Hero Section */}
       <section className="text-center space-y-6 max-w-4xl mx-auto pt-6">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-50 dark:bg-brand-950/60 border border-brand-200/60 dark:border-brand-800/60 text-brand-700 dark:text-brand-300 text-xs font-semibold">
@@ -52,7 +39,16 @@ export default function HomePage() {
             <input
               type="text"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value;
+                setSearchQuery(value);
+                if (typeof window !== 'undefined') {
+                  const url = new URL(window.location.href);
+                  if (value.trim()) url.searchParams.set('q', value);
+                  else url.searchParams.delete('q');
+                  window.history.replaceState({}, '', url.pathname + url.search);
+                }
+              }}
               placeholder="Search any tool (e.g. photo 100kb, pdf merge, url shortener)..."
               className="w-full pl-12 pr-4 py-4 text-base bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 outline-none focus:border-brand-500 dark:text-white"
             />

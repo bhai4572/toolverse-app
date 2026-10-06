@@ -8,7 +8,7 @@ import { AdSlot } from '@/components/AdSlot';
 import { ShieldCheck, Info, CheckCircle2, HelpCircle, ArrowRight } from 'lucide-react';
 import type { Metadata } from 'next';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://toolverse.com';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://toolverse.baby';
 
 export async function generateStaticParams() {
   return TOOLS.map((tool) => ({
@@ -64,97 +64,23 @@ export default function ToolPage({ params }: { params: { slug: string } }) {
     .map((id) => getToolById(id))
     .filter((t): t is NonNullable<typeof t> => t !== undefined);
 
-  // 1. SoftwareApplication Schema
-  const softwareAppSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'SoftwareApplication',
-    name: tool.canonicalName,
-    operatingSystem: 'Any (Web Browser)',
-    applicationCategory: tool.category,
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.9',
-      reviewCount: '1420',
-    },
-    offers: {
-      '@type': 'Offer',
-      price: '0',
-      priceCurrency: 'USD',
-    },
-    description: tool.shortDescription,
-  };
-
-  // 2. BreadcrumbList Schema
-  const breadcrumbSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      {
-        '@type': 'ListItem',
-        position: 1,
-        name: 'Home',
-        item: siteUrl,
-      },
-      {
-        '@type': 'ListItem',
-        position: 2,
-        name: tool.category,
-        item: `${siteUrl}/category/${tool.categorySlug}`,
-      },
-      {
-        '@type': 'ListItem',
-        position: 3,
-        name: tool.canonicalName,
-        item: `${siteUrl}/tools/${tool.slug}`,
-      },
-    ],
-  };
-
-  // 3. FAQPage Schema
   const faqList = [
     {
       question: `Is ${tool.canonicalName} completely free to use?`,
-      answer: `Yes, ${tool.canonicalName} is 100% free with unlimited usage. There are no hidden fees, signups, or subscription requirements.`
+      answer: `Yes, ${tool.canonicalName} is free with unlimited usage. No hidden fees or sign-up required.`,
     },
     {
       question: `Is my data safe and private when using ${tool.canonicalName}?`,
-      answer: `${tool.privacyMessage} Your privacy is guaranteed because operations run locally inside your device browser memory.`
+      answer: `${tool.privacyMessage} Client-side tools process data in your browser where possible.`,
     },
     {
       question: `Does ${tool.canonicalName} work on mobile phones and tablets?`,
-      answer: `Yes! ${tool.canonicalName} is fully responsive and optimized for iPhones, iPads, Android devices, Mac, and Windows PCs.`
-    }
+      answer: `Yes. ${tool.canonicalName} is responsive and works on phones, tablets, and desktops.`,
+    },
   ];
-
-  const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqList.map((faq) => ({
-      '@type': 'Question',
-      name: faq.question,
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: faq.answer,
-      },
-    })),
-  };
 
   return (
     <div className="space-y-10 max-w-4xl mx-auto py-4">
-      {/* Schema Injection */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
-
       {/* Header section */}
       <div className="space-y-3">
         <Breadcrumb

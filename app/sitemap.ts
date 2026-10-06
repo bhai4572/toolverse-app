@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { TOOLS, CATEGORIES } from '@/lib/tools/registry';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://toolverse.com';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://toolverse.baby';
   const currentDate = new Date().toISOString();
 
   // Static core pages

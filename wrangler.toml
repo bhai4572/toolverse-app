@@ -4,4 +4,4 @@ pages_build_output_dir = "dist"
 
 [vars]
 # Public environment variables
-NEXT_PUBLIC_SITE_URL = "https://toolverse.pages.dev"
+NEXT_PUBLIC_SITE_URL = "https://toolverse.baby"

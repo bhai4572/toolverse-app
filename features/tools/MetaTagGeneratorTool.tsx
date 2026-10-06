@@ -6,8 +6,8 @@ import { Copy, Check, Search, Share2 } from 'lucide-react';
 export function MetaTagGeneratorTool() {
   const [title, setTitle] = useState('ToolVerse — Fast, Free & Private Online Utilities');
   const [description, setDescription] = useState('Process PDFs, compress images, calculate loan EMI, convert formats, and create short links 100% privately in your browser.');
-  const [url, setUrl] = useState('https://toolverse.com');
-  const [ogImage, setOgImage] = useState('https://toolverse.com/og-banner.png');
+  const [url, setUrl] = useState('https://toolverse.baby');
+  const [ogImage, setOgImage] = useState('https://toolverse.baby/og-image.png');
   const [copied, setCopied] = useState(false);
 
   const generatedTags = `<!-- Primary Meta Tags -->

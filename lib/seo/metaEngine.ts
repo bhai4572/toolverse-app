@@ -1,4 +1,6 @@
-import { ToolDefinition, getToolBySlug, CATEGORIES, CategoryDefinition } from '@/lib/tools/registry';
+import { getToolBySlug, CATEGORIES } from '@/lib/tools/registry';
+import { getBlogPostBySlug } from '@/lib/blog/posts';
+import { getToolPageContent } from '@/lib/seo/toolPageContent';
 
 export interface PageMetadata {
   title: string;
@@ -6,28 +8,28 @@ export interface PageMetadata {
   keywords?: string[];
   canonicalUrl: string;
   ogType?: string;
-  jsonLd?: Record<string, any>[];
+  ogImage?: string;
+  jsonLd?: Record<string, unknown>[];
 }
 
-const DEFAULT_SITE_URL = 'https://toolverse.baby';
+/** Always use the live production domain for canonicals/schema (not preview hosts). */
+export const SITE_URL = 'https://toolverse.baby';
+const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.png`;
 
 export function getSiteUrl(): string {
-  if (typeof window !== 'undefined' && window.location.origin) {
-    return window.location.origin;
-  }
-  return DEFAULT_SITE_URL;
+  return SITE_URL;
 }
 
 export function getMetadataForPath(pathname: string): PageMetadata {
-  const baseUrl = getSiteUrl();
+  const baseUrl = SITE_URL;
   const cleanPath = pathname.replace(/\/$/, '') || '/';
   const parts = cleanPath.split('/').filter(Boolean);
 
-  // Home Page SEO
   if (parts.length === 0) {
     return {
       title: 'ToolVerse — 100+ Free Online Tools for Everyday Work | Privacy-First',
-      description: '100+ Free, Fast, and Privacy-First Online Tools for PDFs, Images, Calculators, Developers, Writing, SEO, and Social Media. No sign-up required.',
+      description:
+        'Free privacy-first online tools for PDFs, images, calculators, writing, developers, and job search. Most tools run locally in your browser — no sign-up required.',
       keywords: [
         'free online tools',
         'pdf tools',
@@ -35,62 +37,58 @@ export function getMetadataForPath(pathname: string): PageMetadata {
         'word counter',
         'zakat calculator',
         'privacy first tools',
-        'toolverse'
+        'toolverse',
       ],
       canonicalUrl: `${baseUrl}/`,
       ogType: 'website',
+      ogImage: DEFAULT_OG_IMAGE,
       jsonLd: [
         {
           '@context': 'https://schema.org',
           '@type': 'WebSite',
           name: 'ToolVerse',
           url: `${baseUrl}/`,
-          description: '100+ Free Online Tools for Everyday Work',
+          description: 'Free privacy-first online tools for everyday work',
           inLanguage: 'en',
           potentialAction: {
             '@type': 'SearchAction',
             target: `${baseUrl}/?q={search_term_string}`,
-            'query-input': 'required name=search_term_string'
-          }
+            'query-input': 'required name=search_term_string',
+          },
         },
         {
           '@context': 'https://schema.org',
           '@type': 'Organization',
           name: 'ToolVerse',
           url: `${baseUrl}/`,
-          logo: `${baseUrl}/favicon.svg`
-        }
-      ]
+          logo: `${baseUrl}/favicon.svg`,
+        },
+      ],
     };
   }
 
-  // Tool Detail Page SEO
   if (parts[0] === 'tools' && parts[1]) {
     const tool = getToolBySlug(parts[1]);
     if (tool) {
       const canonicalUrl = `${baseUrl}/tools/${tool.slug}`;
       const pageTitle = `${tool.canonicalName} — Free Online Tool | ToolVerse`;
-      const pageDesc = `${tool.shortDescription} 100% free, fast, and processed 100% locally in your browser memory.`;
+      const pageDesc = `${tool.shortDescription} Free, fast, and private — processed locally in your browser.`;
 
       const softwareAppSchema = {
         '@context': 'https://schema.org',
         '@type': 'SoftwareApplication',
         name: tool.canonicalName,
         operatingSystem: 'Any (Web Browser)',
-        applicationCategory: tool.category,
+        applicationCategory: 'UtilitiesApplication',
         inLanguage: 'en',
         isAccessibleForFree: true,
-        aggregateRating: {
-          '@type': 'AggregateRating',
-          ratingValue: '4.9',
-          reviewCount: '1540',
-        },
         offers: {
           '@type': 'Offer',
           price: '0',
           priceCurrency: 'USD',
         },
         description: tool.shortDescription,
+        url: canonicalUrl,
       };
 
       const breadcrumbSchema = {
@@ -118,27 +116,31 @@ export function getMetadataForPath(pathname: string): PageMetadata {
         ],
       };
 
+      const pageFaqs = getToolPageContent(tool.slug)?.faqs;
       const faqSchema = {
         '@context': 'https://schema.org',
         '@type': 'FAQPage',
-        mainEntity: [
+        mainEntity: (pageFaqs ?? [
           {
-            '@type': 'Question',
-            name: `Is ${tool.canonicalName} completely free?`,
-            acceptedAnswer: {
-              '@type': 'Answer',
-              text: `Yes, ${tool.canonicalName} is 100% free with unlimited usage and no hidden fees or sign-up.`,
-            },
+            question: `Is ${tool.canonicalName} completely free?`,
+            answer: `Yes, ${tool.canonicalName} is free to use with no sign-up required.`,
           },
           {
-            '@type': 'Question',
-            name: `Is my data safe when using ${tool.canonicalName}?`,
-            acceptedAnswer: {
-              '@type': 'Answer',
-              text: `${tool.privacyMessage} All processing runs locally inside your device browser.`,
-            },
+            question: `Is my data safe when using ${tool.canonicalName}?`,
+            answer: `${tool.privacyMessage} Processing runs in your browser where possible.`,
           },
-        ],
+          {
+            question: `Does ${tool.canonicalName} work on mobile?`,
+            answer: `Yes. ${tool.canonicalName} is responsive and works on phones, tablets, and desktops.`,
+          },
+        ]).map((faq) => ({
+          '@type': 'Question',
+          name: faq.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: faq.answer,
+          },
+        })),
       };
 
       return {
@@ -146,23 +148,24 @@ export function getMetadataForPath(pathname: string): PageMetadata {
         description: pageDesc,
         keywords: tool.keywords,
         canonicalUrl,
-        ogType: 'article',
-        jsonLd: [softwareAppSchema, breadcrumbSchema, faqSchema]
+        ogType: 'website',
+        ogImage: DEFAULT_OG_IMAGE,
+        jsonLd: [softwareAppSchema, breadcrumbSchema, faqSchema],
       };
     }
   }
 
-  // Category Page SEO
   if (parts[0] === 'category' && parts[1]) {
-    const category = CATEGORIES.find(c => c.slug === parts[1]);
+    const category = CATEGORIES.find((c) => c.slug === parts[1]);
     if (category) {
       const canonicalUrl = `${baseUrl}/category/${category.slug}`;
       return {
-        title: `${category.name} — Free Online Tools Suite | ToolVerse`,
-        description: `${category.description} Free, fast, and privacy-first browser utilities.`,
-        keywords: [category.name.toLowerCase(), category.slug, 'free web tools', 'toolverse'],
+        title: `${category.name} — Free Online Tools | ToolVerse`,
+        description: `${category.description} Free, fast, privacy-first browser utilities.`,
+        keywords: [category.name.toLowerCase(), 'free online tools', 'toolverse'],
         canonicalUrl,
         ogType: 'website',
+        ogImage: DEFAULT_OG_IMAGE,
         jsonLd: [
           {
             '@context': 'https://schema.org',
@@ -170,26 +173,25 @@ export function getMetadataForPath(pathname: string): PageMetadata {
             name: category.name,
             description: category.description,
             url: canonicalUrl,
-            inLanguage: 'en'
-          }
-        ]
+            inLanguage: 'en',
+          },
+        ],
       };
     }
   }
 
-  // Blog Hub SEO
   if (parts[0] === 'blog') {
     if (parts[1]) {
-      // Single Blog Article SEO
       const post = getBlogPostBySlug(parts[1]);
       if (post) {
         const canonicalUrl = `${baseUrl}/blog/${post.slug}`;
+        const ogImage = post.featuredImage || DEFAULT_OG_IMAGE;
         const blogSchema = {
           '@context': 'https://schema.org',
           '@type': 'BlogPosting',
           headline: post.title,
           description: post.description,
-          image: [post.featuredImage],
+          image: [ogImage],
           datePublished: post.publishDate,
           dateModified: post.publishDate,
           author: {
@@ -241,68 +243,70 @@ export function getMetadataForPath(pathname: string): PageMetadata {
           keywords: post.keywords,
           canonicalUrl,
           ogType: 'article',
+          ogImage,
           jsonLd: [blogSchema, breadcrumbSchema],
         };
       }
     }
 
-    // Blog Index SEO
-    const canonicalUrl = `${baseUrl}/blog`;
     return {
-      title: 'ToolVerse Blog — Free Guides, Tech Tutorials & Career Tips',
-      description: 'Read in-depth guides on finding remote jobs, WebAssembly file privacy, barcode generation, image compression, and taxation.',
-      keywords: ['toolverse blog', 'career guides', 'remote jobs guide', 'pdf tutorial', 'barcode guide'],
-      canonicalUrl,
+      title: 'ToolVerse Blog — Guides for Tools, Careers & Privacy',
+      description:
+        'Practical guides on image compression, PDF privacy, barcodes, remote jobs, and Pakistan salary tax — with links to free ToolVerse utilities.',
+      keywords: ['toolverse blog', 'career guides', 'remote jobs guide', 'pdf tutorial'],
+      canonicalUrl: `${baseUrl}/blog`,
       ogType: 'website',
+      ogImage: DEFAULT_OG_IMAGE,
     };
   }
 
-  // Job Category Landing Pages SEO
   if (parts[0] === 'jobs' && parts[1]) {
     const canonicalUrl = `${baseUrl}/jobs/${parts[1]}`;
     const formattedTitle = parts[1]
       .split('-')
-      .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
       .join(' ');
-    
+
     return {
-      title: `Find ${formattedTitle} (2026) — ToolVerse Job Engine`,
-      description: `Search verified ${formattedTitle}. Browse 1,000+ active government, remote, tech, and administrative vacancies. Apply online directly.`,
-      keywords: [parts[1].replace(/-/g, ' '), 'toolverse jobs', 'apply online jobs', 'remote vacancies'],
+      title: `${formattedTitle} (2026) — ToolVerse Job Finder`,
+      description: `Browse ${formattedTitle.toLowerCase()} listings. Filter remote, government, and tech roles and apply on the original posting sites.`,
+      keywords: [parts[1].replace(/-/g, ' '), 'toolverse jobs', 'remote jobs'],
       canonicalUrl,
       ogType: 'website',
+      ogImage: DEFAULT_OG_IMAGE,
     };
   }
 
-  // Legal / Information Pages SEO
   if (parts[0] === 'legal' && parts[1]) {
-    const pageTitle = `${parts[1].split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')} — ToolVerse`;
+    const pageTitle = `${parts[1]
+      .split('-')
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(' ')} — ToolVerse`;
     return {
       title: pageTitle,
-      description: `Read our official ${parts[1]} and platform policies.`,
+      description: `Official ToolVerse ${parts[1].replace(/-/g, ' ')}.`,
       canonicalUrl: `${baseUrl}/legal/${parts[1]}`,
-      ogType: 'website'
+      ogType: 'website',
+      ogImage: DEFAULT_OG_IMAGE,
     };
   }
 
-  // Fallback
   return {
-    title: 'ToolVerse — 100+ Free Online Tools for Everyday Work',
-    description: '100+ Free, Fast, and Privacy-First Online Tools.',
+    title: 'ToolVerse — Free Online Tools',
+    description: 'Free, fast, privacy-first online tools for everyday work.',
     canonicalUrl: `${baseUrl}/`,
-    ogType: 'website'
+    ogType: 'website',
+    ogImage: DEFAULT_OG_IMAGE,
   };
 }
 
 export function updateDOMMetadata(meta: PageMetadata) {
   if (typeof document === 'undefined') return;
 
-  // Title
   document.title = meta.title;
 
-  // Helper to set or create meta tag
   const setMetaTag = (selector: string, attrName: string, attrVal: string, content: string) => {
-    let el = document.querySelector(selector);
+    let el = document.querySelector(selector) as HTMLMetaElement | null;
     if (!el) {
       el = document.createElement('meta');
       el.setAttribute(attrName, attrVal);
@@ -311,59 +315,53 @@ export function updateDOMMetadata(meta: PageMetadata) {
     el.setAttribute('content', content);
   };
 
-  // Helper to set or create link tag
-  const setLinkTag = (relVal: string, hreflangVal: string | null, hrefVal: string) => {
-    const selector = hreflangVal 
-      ? `link[rel="${relVal}"][hreflang="${hreflangVal}"]` 
-      : `link[rel="${relVal}"]:not([hreflang])`;
-    let el = document.querySelector(selector);
+  const setLinkTag = (relVal: string, hrefVal: string) => {
+    let el = document.querySelector(`link[rel="${relVal}"]:not([hreflang])`) as HTMLLinkElement | null;
     if (!el) {
       el = document.createElement('link');
       el.setAttribute('rel', relVal);
-      if (hreflangVal) el.setAttribute('hreflang', hreflangVal);
       document.head.appendChild(el);
     }
     el.setAttribute('href', hrefVal);
   };
 
-  // Robots Tag (INDEX, FOLLOW - NO NOINDEX!)
-  setMetaTag('meta[name="robots"]', 'name', 'robots', 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1');
+  setMetaTag(
+    'meta[name="robots"]',
+    'name',
+    'robots',
+    'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
+  );
 
-  // Meta Language Tags (Fixes Meta Language Tag Warning!)
-  setMetaTag('meta[name="language"]', 'name', 'language', 'English');
-  setMetaTag('meta[http-equiv="content-language"]', 'http-equiv', 'content-language', 'en');
+  setLinkTag('canonical', meta.canonicalUrl);
 
-  // Single Canonical Tag
-  setLinkTag('canonical', null, meta.canonicalUrl);
+  // Remove stale hreflang (single-language site — avoid Bing conflicts)
+  document.querySelectorAll('link[rel="alternate"][hreflang]').forEach((el) => el.remove());
 
-  // Clean up any stale hreflang links to prevent Bing Hreflang Conflict Error (Issue 24)
-  const staleHreflangs = document.querySelectorAll('link[rel="alternate"][hreflang]');
-  staleHreflangs.forEach(el => el.remove());
-
-  // Description & Keywords
   setMetaTag('meta[name="description"]', 'name', 'description', meta.description);
-  if (meta.keywords && meta.keywords.length > 0) {
+  if (meta.keywords?.length) {
     setMetaTag('meta[name="keywords"]', 'name', 'keywords', meta.keywords.join(', '));
   }
 
-  // Open Graph
+  const ogImage = meta.ogImage || DEFAULT_OG_IMAGE;
+
   setMetaTag('meta[property="og:title"]', 'property', 'og:title', meta.title);
   setMetaTag('meta[property="og:description"]', 'property', 'og:description', meta.description);
   setMetaTag('meta[property="og:url"]', 'property', 'og:url', meta.canonicalUrl);
   setMetaTag('meta[property="og:type"]', 'property', 'og:type', meta.ogType || 'website');
   setMetaTag('meta[property="og:site_name"]', 'property', 'og:site_name', 'ToolVerse');
+  setMetaTag('meta[property="og:image"]', 'property', 'og:image', ogImage);
+  setMetaTag('meta[property="og:locale"]', 'property', 'og:locale', 'en_US');
 
-  // Twitter Cards
   setMetaTag('meta[name="twitter:card"]', 'name', 'twitter:card', 'summary_large_image');
   setMetaTag('meta[name="twitter:title"]', 'name', 'twitter:title', meta.title);
   setMetaTag('meta[name="twitter:description"]', 'name', 'twitter:description', meta.description);
+  setMetaTag('meta[name="twitter:image"]', 'name', 'twitter:image', ogImage);
 
-  // Update Dynamic JSON-LD Structured Data
-  const existingScripts = document.querySelectorAll('script[data-dynamic-seo="true"]');
-  existingScripts.forEach(script => script.remove());
+  // Replace all JSON-LD so static index.html schema does not duplicate after SPA navigation
+  document.querySelectorAll('script[type="application/ld+json"]').forEach((script) => script.remove());
 
   if (meta.jsonLd) {
-    meta.jsonLd.forEach(schemaData => {
+    meta.jsonLd.forEach((schemaData) => {
       const script = document.createElement('script');
       script.type = 'application/ld+json';
       script.setAttribute('data-dynamic-seo', 'true');
