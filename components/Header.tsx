@@ -111,6 +111,13 @@ export function Header() {
             <span>Find Jobs 💼</span>
           </Link>
 
+          <Link
+            href="/blog"
+            className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-brand-600 dark:hover:text-brand-400 px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-800 transition-colors"
+          >
+            <span>Blog & Guides 📚</span>
+          </Link>
+
           <div className="flex items-center gap-1.5 text-xs font-bold text-brand-700 dark:text-brand-300 bg-brand-50 dark:bg-brand-950/60 px-3 py-1.5 rounded-full border border-brand-200/60 dark:border-brand-800/60">
             <Sparkles className="w-3.5 h-3.5 text-brand-600 dark:text-brand-400" />
             <span>{TOOLS.length}+ Free Tools</span>
@@ -150,6 +157,13 @@ export function Header() {
           >
             <Briefcase className="w-4 h-4" />
             <span>Find Jobs Engine 💼</span>
+          </Link>
+          <Link
+            href="/blog"
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center justify-center gap-2 text-sm font-bold text-slate-800 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 py-2.5 px-4 rounded-xl transition"
+          >
+            <span>Blog & SEO Guides 📚</span>
           </Link>
           <div className="relative">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />

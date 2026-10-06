@@ -177,6 +177,103 @@ export function getMetadataForPath(pathname: string): PageMetadata {
     }
   }
 
+  // Blog Hub SEO
+  if (parts[0] === 'blog') {
+    if (parts[1]) {
+      // Single Blog Article SEO
+      const post = getBlogPostBySlug(parts[1]);
+      if (post) {
+        const canonicalUrl = `${baseUrl}/blog/${post.slug}`;
+        const blogSchema = {
+          '@context': 'https://schema.org',
+          '@type': 'BlogPosting',
+          headline: post.title,
+          description: post.description,
+          image: [post.featuredImage],
+          datePublished: post.publishDate,
+          dateModified: post.publishDate,
+          author: {
+            '@type': 'Person',
+            name: post.author,
+          },
+          publisher: {
+            '@type': 'Organization',
+            name: 'ToolVerse',
+            logo: {
+              '@type': 'ImageObject',
+              url: `${baseUrl}/favicon.svg`,
+            },
+          },
+          mainEntityOfPage: {
+            '@type': 'WebPage',
+            '@id': canonicalUrl,
+          },
+        };
+
+        const breadcrumbSchema = {
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            {
+              '@type': 'ListItem',
+              position: 1,
+              name: 'Home',
+              item: `${baseUrl}/`,
+            },
+            {
+              '@type': 'ListItem',
+              position: 2,
+              name: 'Blog',
+              item: `${baseUrl}/blog`,
+            },
+            {
+              '@type': 'ListItem',
+              position: 3,
+              name: post.title,
+              item: canonicalUrl,
+            },
+          ],
+        };
+
+        return {
+          title: `${post.title} — ToolVerse`,
+          description: post.description,
+          keywords: post.keywords,
+          canonicalUrl,
+          ogType: 'article',
+          jsonLd: [blogSchema, breadcrumbSchema],
+        };
+      }
+    }
+
+    // Blog Index SEO
+    const canonicalUrl = `${baseUrl}/blog`;
+    return {
+      title: 'ToolVerse Blog — Free Guides, Tech Tutorials & Career Tips',
+      description: 'Read in-depth guides on finding remote jobs, WebAssembly file privacy, barcode generation, image compression, and taxation.',
+      keywords: ['toolverse blog', 'career guides', 'remote jobs guide', 'pdf tutorial', 'barcode guide'],
+      canonicalUrl,
+      ogType: 'website',
+    };
+  }
+
+  // Job Category Landing Pages SEO
+  if (parts[0] === 'jobs' && parts[1]) {
+    const canonicalUrl = `${baseUrl}/jobs/${parts[1]}`;
+    const formattedTitle = parts[1]
+      .split('-')
+      .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(' ');
+    
+    return {
+      title: `Find ${formattedTitle} (2026) — ToolVerse Job Engine`,
+      description: `Search verified ${formattedTitle}. Browse 1,000+ active government, remote, tech, and administrative vacancies. Apply online directly.`,
+      keywords: [parts[1].replace(/-/g, ' '), 'toolverse jobs', 'apply online jobs', 'remote vacancies'],
+      canonicalUrl,
+      ogType: 'website',
+    };
+  }
+
   // Legal / Information Pages SEO
   if (parts[0] === 'legal' && parts[1]) {
     const pageTitle = `${parts[1].split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')} — ToolVerse`;

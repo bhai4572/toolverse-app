@@ -3,6 +3,9 @@ import HomePage from '../app/page';
 import ToolPage from '../app/tools/[slug]/page';
 import CategoryPage from '../app/category/[slug]/page';
 import LegalPage from '../app/legal/[slug]/page';
+import BlogHubPage from '../app/blog/page';
+import BlogPostPage from '../app/blog/[slug]/page';
+import JobCategoryPage from '../app/jobs/[slug]/page';
 import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
 import { SEOHead } from './components/SEOHead';
@@ -39,6 +42,17 @@ export default function App() {
 
     if (parts[0] === 'legal' && parts[1]) {
       return <LegalPage params={{ slug: parts[1] }} />;
+    }
+
+    if (parts[0] === 'blog') {
+      if (parts[1]) {
+        return <BlogPostPage params={{ slug: parts[1] }} />;
+      }
+      return <BlogHubPage />;
+    }
+
+    if (parts[0] === 'jobs' && parts[1]) {
+      return <JobCategoryPage params={{ slug: parts[1] }} />;
     }
 
     // Default fallback to home
