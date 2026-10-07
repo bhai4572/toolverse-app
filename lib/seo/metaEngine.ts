@@ -18,8 +18,156 @@ export interface PageMetadata {
 export const SITE_URL = 'https://toolverse.baby';
 const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.png`;
 
+export const ORGANIZATION_ID = `${SITE_URL}/#organization`;
+export const WEBSITE_ID = `${SITE_URL}/#website`;
+export const LOGO_ID = `${SITE_URL}/#logo`;
+
 export function getSiteUrl(): string {
   return SITE_URL;
+}
+
+/** Standard brand/entity node for ToolVerse */
+export function buildOrganizationNode(): Record<string, unknown> {
+  return {
+    '@type': 'Organization',
+    '@id': ORGANIZATION_ID,
+    name: 'ToolVerse',
+    url: `${SITE_URL}/`,
+    logo: {
+      '@type': 'ImageObject',
+      '@id': LOGO_ID,
+      url: `${SITE_URL}/favicon.svg`,
+      contentUrl: `${SITE_URL}/favicon.svg`,
+      caption: 'ToolVerse Logo',
+      inLanguage: 'en-US',
+    },
+    image: { '@id': LOGO_ID },
+    description:
+      'Privacy-first free online tools for PDFs, images, calculators, writing, developers, and job search. Most tools process data locally in your browser memory.',
+    email: 'support@toolverse.baby',
+    foundingDate: '2025',
+    contactPoint: [
+      {
+        '@type': 'ContactPoint',
+        contactType: 'customer support',
+        email: 'support@toolverse.baby',
+        url: `${SITE_URL}/legal/contact`,
+        availableLanguage: ['English'],
+      },
+    ],
+  };
+}
+
+/** Root WebSite node with official search action pointing to real search query parameter */
+export function buildWebSiteNode(): Record<string, unknown> {
+  return {
+    '@type': 'WebSite',
+    '@id': WEBSITE_ID,
+    url: `${SITE_URL}/`,
+    name: 'ToolVerse',
+    description:
+      'Free privacy-first online tools for PDFs, images, calculators, writing, developers, and job search.',
+    publisher: { '@id': ORGANIZATION_ID },
+    inLanguage: 'en-US',
+    potentialAction: [
+      {
+        '@type': 'SearchAction',
+        target: {
+          '@type': 'EntryPoint',
+          urlTemplate: `${SITE_URL}/?q={search_term_string}`,
+        },
+        'query-input': 'required name=search_term_string',
+      },
+    ],
+  };
+}
+
+/** BreadcrumbList node matching visible breadcrumb navigation */
+export function buildBreadcrumbNode(
+  canonicalUrl: string,
+  items: { name: string; url: string }[]
+): Record<string, unknown> {
+  return {
+    '@type': 'BreadcrumbList',
+    '@id': `${canonicalUrl}#breadcrumb`,
+    itemListElement: items.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name,
+      item: item.url,
+    })),
+  };
+}
+
+/** WebPage / ItemPage / CollectionPage / AboutPage / ContactPage node */
+export function buildWebPageNode(params: {
+  canonicalUrl: string;
+  name: string;
+  description: string;
+  type?: string;
+  hasBreadcrumbs?: boolean;
+  mainEntityId?: string;
+}): Record<string, unknown> {
+  const node: Record<string, unknown> = {
+    '@type': params.type || 'WebPage',
+    '@id': `${params.canonicalUrl}#webpage`,
+    url: params.canonicalUrl,
+    name: params.name,
+    description: params.description,
+    isPartOf: { '@id': WEBSITE_ID },
+    about: { '@id': ORGANIZATION_ID },
+    inLanguage: 'en-US',
+  };
+
+  if (params.hasBreadcrumbs) {
+    node.breadcrumb = { '@id': `${params.canonicalUrl}#breadcrumb` };
+  }
+
+  if (params.mainEntityId) {
+    node.mainEntity = { '@id': params.mainEntityId };
+  }
+
+  return node;
+}
+
+/** Maps ToolVerse internal category slug to Schema.org standard applicationCategory */
+export function mapCategoryToApplicationCategory(categorySlug: string): string {
+  switch (categorySlug) {
+    case 'pdf-document-tools':
+    case 'file-archive-utilities':
+      return 'UtilitiesApplication';
+    case 'image-design-tools':
+    case 'social-image-presets':
+      return 'DesignApplication';
+    case 'developer-cybersecurity-tools':
+      return 'DeveloperApplication';
+    case 'seo-url-tools':
+      return 'UtilitiesApplication';
+    case 'calculators-converters':
+      return 'UtilitiesApplication';
+    case 'business-finance-tools':
+    case 'country-regional-tools':
+    case 'career-jobs-employment-engine':
+      return 'BusinessApplication';
+    case 'text-writing-student-tools':
+    case 'writing-grammar-academic-integrity-tools':
+      return 'EducationalApplication';
+    case 'creator-social-tools':
+      return 'SocialNetworkingApplication';
+    default:
+      return 'UtilitiesApplication';
+  }
+}
+
+/** Wraps a list of connected Schema.org graph nodes into a unified JSON-LD graph envelope. */
+export function wrapInGraph(nodes: (Record<string, unknown> | null | undefined)[]): Record<string, unknown>[] {
+  const validNodes = nodes.filter((n): n is Record<string, unknown> => Boolean(n));
+  return [
+    {
+      '@context': 'https://schema.org',
+      '@graph': validNodes,
+    },
+  ];
 }
 
 export function getMetadataForPath(pathname: string): PageMetadata {
@@ -27,11 +175,54 @@ export function getMetadataForPath(pathname: string): PageMetadata {
   const cleanPath = pathname.replace(/\/$/, '') || '/';
   const parts = cleanPath.split('/').filter(Boolean);
 
+  // 1. Homepage (/)
   if (parts.length === 0) {
+    const canonicalUrl = `${baseUrl}/`;
+    const title = 'ToolVerse — 100+ Free Online Tools for Everyday Work | Privacy-First';
+    const description =
+      'Free privacy-first online tools for PDFs, images, calculators, writing, developers, and job search. Most tools run locally in your browser — no sign-up required.';
+
+    const pageFaqs = [
+      {
+        question: 'Are ToolVerse tools free?',
+        answer: 'Yes. Core utilities are free to use in your browser without creating an account for basic workflows.',
+      },
+      {
+        question: 'Do you upload my PDFs or photos?',
+        answer: 'Client-side tools process files in your browser memory. Your documents are not uploaded to ToolVerse servers for those tools.',
+      },
+      {
+        question: 'Where should I start?',
+        answer: 'Use site search, pick a category, or open popular tools like target-size image compression, PDF merge, or the guides blog.',
+      },
+    ];
+
+    const graph = [
+      buildOrganizationNode(),
+      buildWebSiteNode(),
+      buildWebPageNode({
+        canonicalUrl,
+        name: title,
+        description,
+        type: 'WebPage',
+      }),
+      {
+        '@type': 'FAQPage',
+        '@id': `${canonicalUrl}#faq`,
+        mainEntity: pageFaqs.map((faq) => ({
+          '@type': 'Question',
+          name: faq.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: faq.answer,
+          },
+        })),
+      },
+    ];
+
     return {
-      title: 'ToolVerse — 100+ Free Online Tools for Everyday Work | Privacy-First',
-      description:
-        'Free privacy-first online tools for PDFs, images, calculators, writing, developers, and job search. Most tools run locally in your browser — no sign-up required.',
+      title,
+      description,
       keywords: [
         'free online tools',
         'pdf tools',
@@ -41,76 +232,14 @@ export function getMetadataForPath(pathname: string): PageMetadata {
         'privacy first tools',
         'toolverse',
       ],
-      canonicalUrl: `${baseUrl}/`,
+      canonicalUrl,
       ogType: 'website',
       ogImage: DEFAULT_OG_IMAGE,
-      jsonLd: [
-        {
-          '@context': 'https://schema.org',
-          '@type': 'WebSite',
-          name: 'ToolVerse',
-          url: `${baseUrl}/`,
-          description:
-            'Privacy-first free online tools for PDFs, images, calculators, writing, developers, and job search.',
-          inLanguage: 'en',
-          potentialAction: {
-            '@type': 'SearchAction',
-            target: `${baseUrl}/?q={search_term_string}`,
-            'query-input': 'required name=search_term_string',
-          },
-        },
-        {
-          '@context': 'https://schema.org',
-          '@type': 'Organization',
-          name: 'ToolVerse',
-          url: `${baseUrl}/`,
-          logo: `${baseUrl}/favicon.svg`,
-          description:
-            'Privacy-first free online tools for PDFs, images, calculators, writing, developers, and job search.',
-          email: 'support@toolverse.baby',
-          foundingDate: '2025',
-          contactPoint: {
-            '@type': 'ContactPoint',
-            email: 'support@toolverse.baby',
-            contactType: 'customer support',
-            url: `${baseUrl}/legal/contact`,
-            availableLanguage: ['English'],
-          },
-        },
-        {
-          '@context': 'https://schema.org',
-          '@type': 'FAQPage',
-          mainEntity: [
-            {
-              '@type': 'Question',
-              name: 'Are ToolVerse tools free?',
-              acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'Yes. Core utilities are free to use in your browser without creating an account for basic workflows.',
-              },
-            },
-            {
-              '@type': 'Question',
-              name: 'Do you upload my PDFs or photos?',
-              acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'Client-side tools process files in your browser memory. Your documents are not uploaded to ToolVerse servers for those tools.',
-              },
-            },
-            {
-              '@type': 'Question',
-              name: 'Where should I start?',
-              acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'Use site search, pick a category, or open popular tools like target-size image compression, PDF merge, or the guides blog.',
-              },
-            },
-          ],
-        },
-      ],
+      jsonLd: wrapInGraph(graph),
     };
   }
 
+  // 2. Tool Pages (/tools/[slug])
   if (parts[0] === 'tools' && parts[1]) {
     const tool = getToolBySlug(parts[1]);
     if (tool) {
@@ -122,49 +251,48 @@ export function getMetadataForPath(pathname: string): PageMetadata {
         pageSeo?.seoDescription ??
         `${tool.shortDescription} Free, fast, and private — processed locally in your browser.`;
 
-      const softwareAppSchema = {
-        '@context': 'https://schema.org',
-        '@type': 'SoftwareApplication',
+      const webAppId = `${canonicalUrl}#software`;
+
+      const webAppSchema: Record<string, unknown> = {
+        '@type': ['WebApplication', 'SoftwareApplication'],
+        '@id': webAppId,
         name: tool.canonicalName,
-        operatingSystem: 'Any (Web Browser)',
-        applicationCategory: 'UtilitiesApplication',
-        inLanguage: 'en',
+        url: canonicalUrl,
+        description: pageSeo?.answerFirst || tool.shortDescription,
+        applicationCategory: mapCategoryToApplicationCategory(tool.categorySlug),
+        operatingSystem: 'All (Web Browser)',
+        browserRequirements: 'Requires JavaScript. Requires HTML5.',
         isAccessibleForFree: true,
         offers: {
           '@type': 'Offer',
           price: '0',
           priceCurrency: 'USD',
+          availability: 'https://schema.org/InStock',
         },
-        description: pageSeo?.answerFirst || tool.shortDescription,
-        url: canonicalUrl,
+        publisher: { '@id': ORGANIZATION_ID },
+        author: { '@id': ORGANIZATION_ID },
+        inLanguage: 'en-US',
       };
 
-      const breadcrumbSchema = {
-        '@context': 'https://schema.org',
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          {
-            '@type': 'ListItem',
-            position: 1,
-            name: 'Home',
-            item: `${baseUrl}/`,
-          },
-          {
-            '@type': 'ListItem',
-            position: 2,
-            name: tool.category,
-            item: `${baseUrl}/category/${tool.categorySlug}`,
-          },
-          {
-            '@type': 'ListItem',
-            position: 3,
-            name: tool.canonicalName,
-            item: canonicalUrl,
-          },
-        ],
-      };
+      if (tool.instructions && tool.instructions.length > 0) {
+        webAppSchema.featureList = tool.instructions;
+      }
 
-      // FAQ schema mirrors visible FAQ block on the tool page
+      const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+        { name: 'Home', url: `${baseUrl}/` },
+        { name: tool.category, url: `${baseUrl}/category/${tool.categorySlug}` },
+        { name: tool.canonicalName, url: canonicalUrl },
+      ]);
+
+      const pageNode = buildWebPageNode({
+        canonicalUrl,
+        name: pageTitle,
+        description: pageDesc,
+        type: 'ItemPage',
+        hasBreadcrumbs: true,
+        mainEntityId: webAppId,
+      });
+
       const pageFaqs =
         pageSeo?.faqs ??
         ([
@@ -182,9 +310,9 @@ export function getMetadataForPath(pathname: string): PageMetadata {
           },
         ] as const);
 
-      const faqSchema = {
-        '@context': 'https://schema.org',
+      const faqNode = {
         '@type': 'FAQPage',
+        '@id': `${canonicalUrl}#faq`,
         mainEntity: pageFaqs.map((faq) => ({
           '@type': 'Question',
           name: faq.question,
@@ -195,18 +323,31 @@ export function getMetadataForPath(pathname: string): PageMetadata {
         })),
       };
 
-      const howToSchema = tool.instructions && tool.instructions.length > 0 ? {
-        '@context': 'https://schema.org',
-        '@type': 'HowTo',
-        name: `How to Use ${tool.canonicalName}`,
-        description: pageSeo?.answerFirst || tool.shortDescription,
-        step: tool.instructions.map((inst, index) => ({
-          '@type': 'HowToStep',
-          position: index + 1,
-          name: `Step ${index + 1}`,
-          text: inst,
-        })),
-      } : null;
+      const howToNode =
+        tool.instructions && tool.instructions.length >= 2
+          ? {
+              '@type': 'HowTo',
+              '@id': `${canonicalUrl}#howto`,
+              name: `How to Use ${tool.canonicalName}`,
+              description: pageSeo?.answerFirst || tool.shortDescription,
+              step: tool.instructions.map((inst, index) => ({
+                '@type': 'HowToStep',
+                position: index + 1,
+                name: `Step ${index + 1}`,
+                text: inst,
+              })),
+            }
+          : null;
+
+      const graph = [
+        buildOrganizationNode(),
+        buildWebSiteNode(),
+        pageNode,
+        breadcrumbs,
+        webAppSchema,
+        faqNode,
+        howToNode,
+      ];
 
       return {
         title: pageTitle,
@@ -215,20 +356,28 @@ export function getMetadataForPath(pathname: string): PageMetadata {
         canonicalUrl,
         ogType: 'website',
         ogImage: DEFAULT_OG_IMAGE,
-        jsonLd: [softwareAppSchema, breadcrumbSchema, faqSchema, ...(howToSchema ? [howToSchema] : [])],
+        jsonLd: wrapInGraph(graph),
       };
     }
   }
 
+  // 3. Category Pages (/category/[slug])
   if (parts[0] === 'category' && parts[1]) {
     const category = CATEGORIES.find((c) => c.slug === parts[1]);
     if (category) {
       const canonicalUrl = `${baseUrl}/category/${category.slug}`;
       const catSeo = getCategoryPageContent(category.slug);
       const catTools = getToolsByCategory(category.slug);
-      const itemListSchema = {
-        '@context': 'https://schema.org',
+      const pageTitle = catSeo?.seoTitle ?? `${category.name} — Free Online Tools | ToolVerse`;
+      const pageDesc =
+        catSeo?.seoDescription ??
+        `${category.description} Free, fast, privacy-first browser utilities.`;
+
+      const itemListId = `${canonicalUrl}#itemlist`;
+
+      const itemListNode: Record<string, unknown> = {
         '@type': 'ItemList',
+        '@id': itemListId,
         name: `${category.name} Tools Collection`,
         description: catSeo?.intro || category.description,
         numberOfItems: catTools.length,
@@ -241,149 +390,173 @@ export function getMetadataForPath(pathname: string): PageMetadata {
         })),
       };
 
+      const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+        { name: 'Home', url: `${baseUrl}/` },
+        { name: category.name, url: canonicalUrl },
+      ]);
+
+      const pageNode = buildWebPageNode({
+        canonicalUrl,
+        name: pageTitle,
+        description: pageDesc,
+        type: 'CollectionPage',
+        hasBreadcrumbs: true,
+        mainEntityId: itemListId,
+      });
+
+      const graph = [
+        buildOrganizationNode(),
+        buildWebSiteNode(),
+        pageNode,
+        breadcrumbs,
+        itemListNode,
+      ];
+
       return {
-        title: catSeo?.seoTitle ?? `${category.name} — Free Online Tools | ToolVerse`,
-        description:
-          catSeo?.seoDescription ??
-          `${category.description} Free, fast, privacy-first browser utilities.`,
+        title: pageTitle,
+        description: pageDesc,
         keywords: [category.name.toLowerCase(), 'free online tools', 'toolverse'],
         canonicalUrl,
         ogType: 'website',
         ogImage: DEFAULT_OG_IMAGE,
-        jsonLd: [
-            {
-              '@context': 'https://schema.org',
-              '@type': 'CollectionPage',
-              name: category.name,
-              description: catSeo?.intro || category.description,
-              url: canonicalUrl,
-              inLanguage: 'en',
-              isPartOf: {
-                '@type': 'WebSite',
-                name: 'ToolVerse',
-                url: `${baseUrl}/`,
-              },
-            },
-            {
-              '@context': 'https://schema.org',
-              '@type': 'BreadcrumbList',
-              itemListElement: [
-                {
-                  '@type': 'ListItem',
-                  position: 1,
-                  name: 'Home',
-                  item: `${baseUrl}/`,
-                },
-                {
-                  '@type': 'ListItem',
-                  position: 2,
-                  name: category.name,
-                  item: canonicalUrl,
-                },
-              ],
-            },
-            itemListSchema,
-          ],
+        jsonLd: wrapInGraph(graph),
+      };
+    }
+  }
+
+  // 4. Blog Posts & Blog Index (/blog and /blog/[slug])
+  if (parts[0] === 'blog') {
+    if (parts[1]) {
+      const post = getBlogPostBySlug(parts[1]);
+      if (post) {
+        const canonicalUrl = `${baseUrl}/blog/${post.slug}`;
+        const ogImage = post.featuredImage || DEFAULT_OG_IMAGE;
+        const pageTitle = `${post.title} — ToolVerse`;
+        const articleId = `${canonicalUrl}#article`;
+
+        const isEditorialTeam =
+          post.author.toLowerCase().includes('editorial') ||
+          post.author.toLowerCase().includes('team') ||
+          post.author.toLowerCase().includes('toolverse');
+
+        const authorNode: Record<string, unknown> = isEditorialTeam
+          ? {
+              '@type': 'Organization',
+              '@id': ORGANIZATION_ID,
+              name: post.author,
+              url: `${baseUrl}/legal/about`,
+            }
+          : {
+              '@type': 'Person',
+              name: post.author,
+              worksFor: { '@id': ORGANIZATION_ID },
+            };
+
+        const blogPostingNode: Record<string, unknown> = {
+          '@type': 'BlogPosting',
+          '@id': articleId,
+          headline: post.title,
+          description: post.description,
+          image: [ogImage],
+          datePublished: post.publishDate,
+          dateModified: post.publishDate,
+          mainEntityOfPage: { '@id': `${canonicalUrl}#webpage` },
+          isPartOf: { '@id': `${canonicalUrl}#webpage` },
+          publisher: { '@id': ORGANIZATION_ID },
+          author: authorNode,
+          inLanguage: 'en-US',
+        };
+
+        const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+          { name: 'Home', url: `${baseUrl}/` },
+          { name: 'Guides & Blog', url: `${baseUrl}/blog` },
+          { name: post.title, url: canonicalUrl },
+        ]);
+
+        const pageNode = buildWebPageNode({
+          canonicalUrl,
+          name: pageTitle,
+          description: post.description,
+          type: 'ItemPage',
+          hasBreadcrumbs: true,
+          mainEntityId: articleId,
+        });
+
+        const faqNode =
+          post.faqs && post.faqs.length > 0
+            ? {
+                '@type': 'FAQPage',
+                '@id': `${canonicalUrl}#faq`,
+                mainEntity: post.faqs.map((faq) => ({
+                  '@type': 'Question',
+                  name: faq.question,
+                  acceptedAnswer: {
+                    '@type': 'Answer',
+                    text: faq.answer,
+                  },
+                })),
+              }
+            : null;
+
+        const graph = [
+          buildOrganizationNode(),
+          buildWebSiteNode(),
+          pageNode,
+          breadcrumbs,
+          blogPostingNode,
+          faqNode,
+        ];
+
+        return {
+          title: pageTitle,
+          description: post.description,
+          keywords: post.keywords,
+          canonicalUrl,
+          ogType: 'article',
+          ogImage,
+          jsonLd: wrapInGraph(graph),
         };
       }
     }
 
-    if (parts[0] === 'blog') {
-      if (parts[1]) {
-        const post = getBlogPostBySlug(parts[1]);
-        if (post) {
-          const canonicalUrl = `${baseUrl}/blog/${post.slug}`;
-          const ogImage = post.featuredImage || DEFAULT_OG_IMAGE;
-          const blogSchema = {
-            '@context': 'https://schema.org',
-            '@type': 'BlogPosting',
-            headline: post.title,
-            description: post.description,
-            image: [ogImage],
-            datePublished: post.publishDate,
-            dateModified: post.publishDate,
-            author: {
-              '@type': 'Person',
-              name: post.author,
-            },
-            publisher: {
-              '@type': 'Organization',
-              name: 'ToolVerse',
-              logo: {
-                '@type': 'ImageObject',
-                url: `${baseUrl}/favicon.svg`,
-              },
-            },
-            mainEntityOfPage: {
-              '@type': 'WebPage',
-              '@id': canonicalUrl,
-            },
-          };
+    // Blog Index (/blog)
+    const canonicalUrl = `${baseUrl}/blog`;
+    const title = 'ToolVerse Blog — Practical Guides for Tools, Careers & Privacy';
+    const description =
+      'Practical guides on image compression, PDF privacy, barcodes, remote jobs, and Pakistan salary tax — with links to free ToolVerse utilities.';
 
-          const breadcrumbSchema = {
-            '@context': 'https://schema.org',
-            '@type': 'BreadcrumbList',
-            itemListElement: [
-              {
-                '@type': 'ListItem',
-                position: 1,
-                name: 'Home',
-                item: `${baseUrl}/`,
-              },
-              {
-                '@type': 'ListItem',
-                position: 2,
-                name: 'Blog',
-                item: `${baseUrl}/blog`,
-              },
-              {
-                '@type': 'ListItem',
-                position: 3,
-                name: post.title,
-                item: canonicalUrl,
-              },
-            ],
-          };
+    const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+      { name: 'Home', url: `${baseUrl}/` },
+      { name: 'Guides & Blog', url: canonicalUrl },
+    ]);
 
-          const faqSchema =
-            post.faqs && post.faqs.length > 0
-              ? {
-                  '@context': 'https://schema.org',
-                  '@type': 'FAQPage',
-                  mainEntity: post.faqs.map((faq) => ({
-                    '@type': 'Question',
-                    name: faq.question,
-                    acceptedAnswer: {
-                      '@type': 'Answer',
-                      text: faq.answer,
-                    },
-                  })),
-                }
-              : null;
+    const pageNode = buildWebPageNode({
+      canonicalUrl,
+      name: title,
+      description,
+      type: 'CollectionPage',
+      hasBreadcrumbs: true,
+    });
 
-          return {
-            title: `${post.title} — ToolVerse`,
-            description: post.description,
-            keywords: post.keywords,
-            canonicalUrl,
-            ogType: 'article',
-            ogImage,
-            jsonLd: [blogSchema, breadcrumbSchema, ...(faqSchema ? [faqSchema] : [])],
-          };
-        }
-      }
+    const graph = [
+      buildOrganizationNode(),
+      buildWebSiteNode(),
+      pageNode,
+      breadcrumbs,
+    ];
 
     return {
-      title: 'ToolVerse Blog — Guides for Tools, Careers & Privacy',
-      description:
-        'Practical guides on image compression, PDF privacy, barcodes, remote jobs, and Pakistan salary tax — with links to free ToolVerse utilities.',
+      title,
+      description,
       keywords: ['toolverse blog', 'career guides', 'remote jobs guide', 'pdf tutorial'],
-      canonicalUrl: `${baseUrl}/blog`,
+      canonicalUrl,
       ogType: 'website',
       ogImage: DEFAULT_OG_IMAGE,
+      jsonLd: wrapInGraph(graph),
     };
   }
 
+  // 5. Job Hub Pages (/jobs/[slug])
   if (parts[0] === 'jobs' && parts[1]) {
     const job = getJobPageContent(parts[1]);
     const canonicalUrl = `${baseUrl}/jobs/${parts[1]}`;
@@ -397,26 +570,31 @@ export function getMetadataForPath(pathname: string): PageMetadata {
       job?.seoDescription ??
       `Browse ${formattedTitle.toLowerCase()} listings. Filter remote, government, and tech roles and apply on the original posting sites.`;
 
-    const jsonLd: Record<string, unknown>[] = [
-      {
-        '@context': 'https://schema.org',
-        '@type': 'CollectionPage',
-        name: job?.title ?? formattedTitle,
-        description: pageDesc,
-        url: canonicalUrl,
-        inLanguage: 'en',
-        isPartOf: {
-          '@type': 'WebSite',
-          name: 'ToolVerse',
-          url: `${baseUrl}/`,
-        },
-      },
+    const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+      { name: 'Home', url: `${baseUrl}/` },
+      { name: 'Job Finder', url: `${baseUrl}/tools/global-job-finder` },
+      { name: job?.title ?? formattedTitle, url: canonicalUrl },
+    ]);
+
+    const pageNode = buildWebPageNode({
+      canonicalUrl,
+      name: pageTitle,
+      description: pageDesc,
+      type: 'CollectionPage',
+      hasBreadcrumbs: true,
+    });
+
+    const graph: (Record<string, unknown> | null)[] = [
+      buildOrganizationNode(),
+      buildWebSiteNode(),
+      pageNode,
+      breadcrumbs,
     ];
 
     if (job?.faqs?.length) {
-      jsonLd.push({
-        '@context': 'https://schema.org',
+      graph.push({
         '@type': 'FAQPage',
+        '@id': `${canonicalUrl}#faq`,
         mainEntity: job.faqs.map((faq) => ({
           '@type': 'Question',
           name: faq.question,
@@ -426,9 +604,12 @@ export function getMetadataForPath(pathname: string): PageMetadata {
     }
 
     if (job?.featuredPostings?.length) {
-      for (const posting of job.featuredPostings) {
-        jsonLd.push(buildJobPostingJsonLd(posting, canonicalUrl));
-      }
+      job.featuredPostings.forEach((posting, idx) => {
+        const postingSchema = buildJobPostingJsonLd(posting, canonicalUrl);
+        delete (postingSchema as Record<string, unknown>)['@context'];
+        (postingSchema as Record<string, unknown>)['@id'] = `${canonicalUrl}#job-${idx + 1}`;
+        graph.push(postingSchema);
+      });
     }
 
     return {
@@ -438,30 +619,86 @@ export function getMetadataForPath(pathname: string): PageMetadata {
       canonicalUrl,
       ogType: 'website',
       ogImage: DEFAULT_OG_IMAGE,
-      jsonLd,
+      jsonLd: wrapInGraph(graph),
     };
   }
 
+  // 6. Legal & Policy Pages (/legal/[slug])
   if (parts[0] === 'legal' && parts[1]) {
-    const pageTitle = `${parts[1]
+    const slug = parts[1];
+    const formattedSlug = slug
       .split('-')
       .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-      .join(' ')} — ToolVerse`;
+      .join(' ');
+    const pageTitle = `${formattedSlug} — ToolVerse`;
+    const canonicalUrl = `${baseUrl}/legal/${slug}`;
+    const pageDesc = `Official ToolVerse ${slug.replace(/-/g, ' ')}. Learn more about our privacy-first policies, security, and editorial standards.`;
+
+    let pageType = 'WebPage';
+    let mainEntityId: string | undefined = undefined;
+
+    if (slug === 'about') {
+      pageType = 'AboutPage';
+      mainEntityId = ORGANIZATION_ID;
+    } else if (slug === 'contact') {
+      pageType = 'ContactPage';
+      mainEntityId = ORGANIZATION_ID;
+    }
+
+    const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+      { name: 'Home', url: `${baseUrl}/` },
+      { name: formattedSlug, url: canonicalUrl },
+    ]);
+
+    const pageNode = buildWebPageNode({
+      canonicalUrl,
+      name: pageTitle,
+      description: pageDesc,
+      type: pageType,
+      hasBreadcrumbs: true,
+      mainEntityId,
+    });
+
+    const graph = [
+      buildOrganizationNode(),
+      buildWebSiteNode(),
+      pageNode,
+      breadcrumbs,
+    ];
+
     return {
       title: pageTitle,
-      description: `Official ToolVerse ${parts[1].replace(/-/g, ' ')}.`,
-      canonicalUrl: `${baseUrl}/legal/${parts[1]}`,
+      description: pageDesc,
+      canonicalUrl,
       ogType: 'website',
       ogImage: DEFAULT_OG_IMAGE,
+      jsonLd: wrapInGraph(graph),
     };
   }
 
+  // 7. Fallback / Default
+  const fallbackUrl = `${baseUrl}/`;
+  const fallbackTitle = 'ToolVerse — Free Online Tools';
+  const fallbackDesc = 'Free, fast, privacy-first online tools for everyday work.';
+
+  const fallbackGraph = [
+    buildOrganizationNode(),
+    buildWebSiteNode(),
+    buildWebPageNode({
+      canonicalUrl: fallbackUrl,
+      name: fallbackTitle,
+      description: fallbackDesc,
+      type: 'WebPage',
+    }),
+  ];
+
   return {
-    title: 'ToolVerse — Free Online Tools',
-    description: 'Free, fast, privacy-first online tools for everyday work.',
-    canonicalUrl: `${baseUrl}/`,
+    title: fallbackTitle,
+    description: fallbackDesc,
+    canonicalUrl: fallbackUrl,
     ogType: 'website',
     ogImage: DEFAULT_OG_IMAGE,
+    jsonLd: wrapInGraph(fallbackGraph),
   };
 }
 

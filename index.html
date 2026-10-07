@@ -51,27 +51,106 @@
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "ToolVerse",
-      "url": "https://toolverse.baby/",
-      "description": "Free privacy-first online tools for everyday work",
-      "inLanguage": "en",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://toolverse.baby/?q={search_term_string}",
-        "query-input": "required name=search_term_string"
-      }
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://toolverse.baby/#organization",
+          "name": "ToolVerse",
+          "url": "https://toolverse.baby/",
+          "logo": {
+            "@type": "ImageObject",
+            "@id": "https://toolverse.baby/#logo",
+            "url": "https://toolverse.baby/favicon.svg",
+            "contentUrl": "https://toolverse.baby/favicon.svg",
+            "caption": "ToolVerse Logo",
+            "inLanguage": "en-US"
+          },
+          "image": {
+            "@id": "https://toolverse.baby/#logo"
+          },
+          "description": "Privacy-first free online tools for PDFs, images, calculators, writing, developers, and job search. Most tools process data locally in your browser memory.",
+          "email": "support@toolverse.baby",
+          "foundingDate": "2025",
+          "contactPoint": [
+            {
+              "@type": "ContactPoint",
+              "contactType": "customer support",
+              "email": "support@toolverse.baby",
+              "url": "https://toolverse.baby/legal/contact",
+              "availableLanguage": [
+                "English"
+              ]
+            }
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://toolverse.baby/#website",
+          "url": "https://toolverse.baby/",
+          "name": "ToolVerse",
+          "description": "Free privacy-first online tools for PDFs, images, calculators, writing, developers, and job search.",
+          "publisher": {
+            "@id": "https://toolverse.baby/#organization"
+          },
+          "inLanguage": "en-US",
+          "potentialAction": [
+            {
+              "@type": "SearchAction",
+              "target": {
+                "@type": "EntryPoint",
+                "urlTemplate": "https://toolverse.baby/?q={search_term_string}"
+              },
+              "query-input": "required name=search_term_string"
+            }
+          ]
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://toolverse.baby/#webpage",
+          "url": "https://toolverse.baby/",
+          "name": "ToolVerse — 100+ Free Online Tools for Everyday Work | Privacy-First",
+          "description": "Free privacy-first online tools for PDFs, images, calculators, writing, developers, and job search. Most tools run locally in your browser — no sign-up required.",
+          "isPartOf": {
+            "@id": "https://toolverse.baby/#website"
+          },
+          "about": {
+            "@id": "https://toolverse.baby/#organization"
+          },
+          "inLanguage": "en-US"
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://toolverse.baby/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Are ToolVerse tools free?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Core utilities are free to use in your browser without creating an account for basic workflows."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Do you upload my PDFs or photos?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Client-side tools process files in your browser memory. Your documents are not uploaded to ToolVerse servers for those tools."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Where should I start?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Use site search, pick a category, or open popular tools like target-size image compression, PDF merge, or the guides blog."
+              }
+            }
+          ]
+        }
+      ]
     }
-    </script>
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "ToolVerse",
-      "url": "https://toolverse.baby/",
-      "logo": "https://toolverse.baby/favicon.svg"
-    }
-    </script>
+  </script>
 </head>
 
 <body
