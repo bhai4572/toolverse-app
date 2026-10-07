@@ -1,22 +1,47 @@
 # ToolVerse SEO / AEO / GEO Backlog
 
-Last updated: 2026-10-07 (wave 9 — **Semrush & Ahrefs Free Alternative Suite + Monetization Sidebar**). White-hat only. Do not invent rankings or traffic claims.
+Last updated: 2026-10-08 (wave 10 — **15 High-Trending Creator, Finance, AI & Developer Tools**). White-hat only. Do not invent rankings or traffic claims.
 
 ## Status
 
 | Area | State |
 |---|---|
-| Tool page SEO | **98 / 98** done (+10 professional SEO tools) |
-| Category pillars | **13 / 13** — updated SEO suite pillar |
+| Tool page SEO | **113 / 113** done (+15 trending tools across 4 high-demand verticals) |
+| Category pillars | **13 / 13** — updated |
 | Job landings | **5 / 5** thickened + related links |
-| Guides | **9 pillars + 91 generated tool how-tos** (98 tools covered; 7 map to pillars) |
-| Monetization & Ads | Sticky sidebar ads + in-article ad units inserted after primary sections |
+| Guides | **9 pillars + 106 generated tool how-tos** (113 tools covered; 7 map to pillars) |
+| Monetization & Ads | Sticky sidebar ads + in-article ad units inserted across all tools |
 | Blog hub | Category filters + pagination (12/page) |
 | Internal links | Blog↔tool bidirectional; category auto-guides |
 | Prerender / CF middleware | Live (`x-toolverse-shell`) |
 | AEO homepage FAQ + entity | Done |
-| `llms.txt` / sitemap / robots | Wave 9: 227 URLs in sitemap.xml; llms.txt includes full SEO suite |
+| `llms.txt` / sitemap / robots | Wave 10: 257 URLs in sitemap.xml; llms.txt includes 113+ tools |
 | E-E-A-T legal pages | Done |
+
+## Done — wave 10 (15 Trending Creator, Finance, AI & Developer Utilities)
+
+- **15 High-Growth Tools Added**:
+  1. `youtube-thumbnail-downloader` (Creator) — 1080p Full HD thumbnail grabber
+  2. `paypal-stripe-fee-calculator` (Finance) — Domestic & cross-border merchant fee breakdown
+  3. `freelancer-hourly-rate-calculator` (Finance) — Sustainable billable rate & overhead calculator
+  4. `crypto-profit-calculator` (Finance) — Crypto ROI, net profit & exchange fee calculator
+  5. `loan-payoff-calculator` (Finance) — Amortization extra-payment interest-saving calculator
+  6. `chatgpt-prompt-generator` (AI Prompt) — Structured Persona-Task-Format prompt engineer
+  7. `ai-sentence-humanizer` (AI Writing) — Passive voice & robotic cliché remover
+  8. `midjourney-prompt-builder` (AI Prompt) — Midjourney v6 `--ar`, `--stylize` & lighting builder
+  9. `glassmorphism-css-generator` (Developer) — Visual frosted glass backdrop blur & CSS generator
+  10. `instagram-hashtag-generator` (Creator) — Niche viral tag generator with clean dot spacing
+  11. `twitter-thread-splitter` (Creator) — Thread splitter at sentence boundaries with `1/n`
+  12. `srt-subtitle-cleaner` (Creator) — Strip timecodes and markers from SRT to clean text
+  13. `markdown-html-converter` (Developer) — Dual-pane live markdown-to-HTML parser
+  14. `curl-to-code-converter` (Developer) — Convert cURL into Python (requests), JS (fetch), PHP
+  15. `svg-to-png-converter` (Developer) — Client-side HTML5 Canvas vector-to-PNG rasterizer
+- **Complete SEO Setup**:
+  - Full `TOOL_PAGE_CONTENT` for all 15 tools (answerFirst, deep topical sections, rich FAQs)
+  - 15 auto-generated `/blog/how-to-*` guides with bidirectional linking
+  - Sitemap regenerated to 257 URLs (113 live tools + 115 blog guides)
+- **Monetization**:
+  - All tools wrapped in two-column layout with sticky sidebar `AdSlot` + in-article ad placements
 
 ## Done — wave 9 (Semrush & Ahrefs Alternative SEO Suite + Monetization Layout)
 

@@ -33,6 +33,7 @@ import { WritingTools } from './WritingTools';
 import { AdvancedTools } from './AdvancedTools';
 import { JobFinderTool } from './JobTools';
 import { SeoTools } from './SeoTools';
+import { TrendingTools } from './TrendingTools';
 import { AlertTriangle, Lock } from 'lucide-react';
 
 export function ToolRenderer({ tool }: { tool: ToolDefinition }) {
@@ -143,6 +144,22 @@ export function ToolRenderer({ tool }: { tool: ToolDefinition }) {
     case 'redirect-chain-checker':
     case 'canonical-hreflang-generator':
       return <SeoTools tool={tool} />;
+    case 'youtube-thumbnail-downloader':
+    case 'paypal-stripe-fee-calculator':
+    case 'freelancer-hourly-rate-calculator':
+    case 'crypto-profit-calculator':
+    case 'loan-payoff-calculator':
+    case 'chatgpt-prompt-generator':
+    case 'ai-sentence-humanizer':
+    case 'midjourney-prompt-builder':
+    case 'glassmorphism-css-generator':
+    case 'instagram-hashtag-generator':
+    case 'twitter-thread-splitter':
+    case 'srt-subtitle-cleaner':
+    case 'markdown-html-converter':
+    case 'curl-to-code-converter':
+    case 'svg-to-png-converter':
+      return <TrendingTools tool={tool} />;
     case 'adsense-revenue-calculator':
       return <AdsenseCalculatorTool />;
     case 'youtube-earnings-estimator':

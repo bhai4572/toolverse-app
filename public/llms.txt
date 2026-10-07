@@ -4,15 +4,20 @@
 
 ## What is ToolVerse?
 
-ToolVerse (toolverse.baby) provides 88+ live browser utilities with no signup wall for core workflows. Contact: support@toolverse.baby. About: https://toolverse.baby/legal/about · Editorial: https://toolverse.baby/legal/editorial-policy
+ToolVerse (toolverse.baby) provides 113+ live browser utilities with no signup wall for core workflows. Contact: support@toolverse.baby. About: https://toolverse.baby/legal/about · Editorial: https://toolverse.baby/legal/editorial-policy
 
 ## High-intent tools
 
 - [Compress Image to Target Size](https://toolverse.baby/tools/compress-image-target-size): Exact KB targets (20KB / 50KB / 100KB) for portals.
 - [Merge PDF Files](https://toolverse.baby/tools/pdf-merge): Private client-side PDF combine.
 - [HEIC to JPG](https://toolverse.baby/tools/heic-to-jpg): iPhone photos for Windows/forms.
+- [YouTube Thumbnail Downloader](https://toolverse.baby/tools/youtube-thumbnail-downloader): Extract 1080p Full HD thumbnails in 1 click.
+- [PayPal & Stripe Fee Calculator](https://toolverse.baby/tools/paypal-stripe-fee-calculator): Calculate precise domestic & cross-border merchant fees.
+- [Freelance Hourly Rate Calculator](https://toolverse.baby/tools/freelancer-hourly-rate-calculator): Calculate billable rates accounting for tax, overhead, and profit.
+- [Crypto Profit & Loss Calculator](https://toolverse.baby/tools/crypto-profit-calculator): Accurate crypto investment ROI, net profit, and fee calculation.
+- [ChatGPT Prompt Enhancer](https://toolverse.baby/tools/chatgpt-prompt-generator): Engineer prompt frameworks (Persona, Task, Format) for LLMs.
+- [Glassmorphism CSS Generator](https://toolverse.baby/tools/glassmorphism-css-generator): Visual frosted glass UI generator with instant CSS copy.
 - [QR Code Generator](https://toolverse.baby/tools/qr-code-generator) / [Barcode Generator](https://toolverse.baby/tools/barcode-generator)
-- [UTM Builder](https://toolverse.baby/tools/utm-builder) / [Meta Tag Generator](https://toolverse.baby/tools/meta-tag-generator)
 - [SEO Site Audit & Health Checker](https://toolverse.baby/tools/seo-audit-analyzer): Free Semrush Site Audit alternative.
 - [Keyword Magic Explorer](https://toolverse.baby/tools/keyword-research-tool): Free keyword search volume, KD, & intent explorer.
 - [Backlink & Anchor Analyzer](https://toolverse.baby/tools/backlink-checker-analyzer): Free Ahrefs backlink analyzer alternative.
