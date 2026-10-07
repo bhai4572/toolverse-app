@@ -2,7 +2,7 @@ import { getToolBySlug, getToolsByCategory, CATEGORIES } from '@/lib/tools/regis
 import { getBlogPostBySlug } from '@/lib/blog/posts';
 import { getToolPageContent } from '@/lib/seo/toolPageContent';
 import { getCategoryPageContent } from '@/lib/seo/categoryPageContent';
-import { getJobPageContent } from '@/lib/seo/jobPageContent';
+import { getJobPageContent, buildJobPostingJsonLd } from '@/lib/seo/jobPageContent';
 
 export interface PageMetadata {
   title: string;
@@ -423,6 +423,12 @@ export function getMetadataForPath(pathname: string): PageMetadata {
           acceptedAnswer: { '@type': 'Answer', text: faq.answer },
         })),
       });
+    }
+
+    if (job?.featuredPostings?.length) {
+      for (const posting of job.featuredPostings) {
+        jsonLd.push(buildJobPostingJsonLd(posting, canonicalUrl));
+      }
     }
 
     return {

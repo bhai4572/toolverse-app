@@ -61,6 +61,41 @@ export default function JobCategoryPage({ params }: Props) {
 
       <AdSlot placement="header" />
 
+      {config.featuredPostings && config.featuredPostings.length > 0 && (
+        <section className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-bold text-slate-900 dark:text-white">Featured Verified Openings</h2>
+            <span className="text-xs font-medium text-brand-600 dark:text-brand-400">Google Jobs Eligible</span>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {config.featuredPostings.map((posting) => (
+              <div
+                key={posting.title}
+                className="p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm space-y-2 hover:border-brand-500 transition-colors"
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <h3 className="font-bold text-base text-slate-900 dark:text-white leading-snug">{posting.title}</h3>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-brand-50 dark:bg-brand-950/60 text-brand-700 dark:text-brand-300 uppercase shrink-0">
+                    {posting.employmentType.replace('_', ' ')}
+                  </span>
+                </div>
+                <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                  {posting.hiringOrganization.name} • {posting.jobLocation?.locality || (posting.jobLocationType === 'TELECOMMUTE' ? 'Remote Worldwide' : 'United States')}
+                </p>
+                <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-3 leading-relaxed">
+                  {posting.description}
+                </p>
+                {posting.salary && (
+                  <p className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 pt-1">
+                    Est. Salary: {posting.salary.currency} {posting.salary.value.toLocaleString()} / {posting.salary.unitText.toLowerCase()}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
       <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-6 shadow-sm">
         <JobTools />
       </div>

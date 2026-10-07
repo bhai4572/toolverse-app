@@ -387,13 +387,49 @@ function buildBodyMain(pathname, meta, deps) {
   } else if (parts[0] === 'jobs' && parts[1]) {
     // Job landing
     const job = getJobPageContent?.(parts[1]);
+    const postings = job?.featuredPostings || [];
+    const postingsHtml = postings.length
+      ? `<section class="space-y-4 mt-6">
+          <h2 class="text-2xl font-bold text-slate-900">Featured Verified Job Openings</h2>
+          <div class="space-y-4">
+            ${postings
+              .map(
+                (p) => `
+              <div class="p-5 border rounded-xl bg-white shadow-sm space-y-2">
+                <div class="flex items-center justify-between">
+                  <h3 class="font-bold text-lg text-slate-900">${esc(p.title)}</h3>
+                  <span class="text-xs font-semibold px-2.5 py-1 bg-indigo-50 text-indigo-700 rounded-full">${esc(p.employmentType)}</span>
+                </div>
+                <p class="text-sm text-slate-600 font-medium">${esc(p.hiringOrganization.name)} &bull; ${esc(p.jobLocation?.locality || (p.jobLocationType === 'TELECOMMUTE' ? 'Remote Worldwide' : 'United States'))}</p>
+                <p class="text-sm text-slate-700 leading-relaxed">${esc(p.description)}</p>
+                ${p.salary ? `<p class="text-xs font-semibold text-emerald-700">Estimated Compensation: ${esc(p.salary.currency)} ${p.salary.value.toLocaleString()} / ${esc(p.salary.unitText.toLowerCase())}</p>` : ''}
+                <div class="pt-2">
+                  <a href="/tools/global-job-finder" class="inline-block text-xs font-bold text-indigo-600 hover:underline">Apply &amp; Search Similar Jobs &rarr;</a>
+                </div>
+              </div>`
+              )
+              .join('')}
+          </div>
+        </section>`
+      : '';
+
     contentHtml = `
       <article class="space-y-6">
+        <nav aria-label="Breadcrumb" class="text-xs text-slate-500 space-x-2">
+          <a href="/" class="hover:underline">Home</a> &gt;
+          <a href="/tools/global-job-finder" class="hover:underline">Job Finder</a> &gt;
+          <span class="text-slate-800 font-semibold">${esc(job?.title || meta.title)}</span>
+        </nav>
         <header class="space-y-2">
           <h1 class="text-3xl font-extrabold text-slate-900">${esc(job?.title || meta.title)}</h1>
           <p class="text-base text-slate-600">${esc(job?.intro || job?.subtitle || meta.description)}</p>
         </header>
-        <p class="text-sm text-slate-500">Search and filter active postings across global portals. Verified listings only.</p>
+        ${postingsHtml}
+        <div class="p-6 bg-slate-50 border rounded-xl text-center space-y-2 my-6">
+          <h3 class="font-bold text-base text-slate-900">Search Real-Time Global Job Postings</h3>
+          <p class="text-xs text-slate-500">Live multi-source engine indexing USA, UK, UAE, Canada, and Pakistan portals.</p>
+          <a href="/tools/global-job-finder" class="inline-block px-5 py-2.5 bg-indigo-600 text-white rounded-xl font-bold text-sm">Open 1-Click Job Finder &rarr;</a>
+        </div>
       </article>
     `;
   } else {

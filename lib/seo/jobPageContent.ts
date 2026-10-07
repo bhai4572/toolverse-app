@@ -1,5 +1,31 @@
 /** Shared job landing copy for UI + meta/prerender. */
 
+export interface JobPostingSchema {
+  title: string;
+  description: string;
+  datePosted: string;
+  validThrough: string;
+  employmentType: 'FULL_TIME' | 'PART_TIME' | 'CONTRACTOR' | 'INTERN';
+  hiringOrganization: {
+    name: string;
+    sameAs?: string;
+    logo?: string;
+  };
+  jobLocationType?: 'TELECOMMUTE';
+  applicantLocationRequirements?: string;
+  jobLocation?: {
+    locality: string;
+    region?: string;
+    country: string;
+  };
+  salary?: {
+    currency: string;
+    value: number;
+    unitText: 'HOUR' | 'DAY' | 'WEEK' | 'MONTH' | 'YEAR';
+  };
+  applicationUrl?: string;
+}
+
 export interface JobPageContent {
   title: string;
   subtitle: string;
@@ -13,6 +39,62 @@ export interface JobPageContent {
   initialQuery?: string;
   initialCountry?: string;
   remoteOnly?: boolean;
+  featuredPostings?: JobPostingSchema[];
+}
+
+export function buildJobPostingJsonLd(posting: JobPostingSchema, pageUrl: string): Record<string, unknown> {
+  const schema: Record<string, unknown> = {
+    '@context': 'https://schema.org',
+    '@type': 'JobPosting',
+    title: posting.title,
+    description: posting.description,
+    datePosted: posting.datePosted,
+    validThrough: posting.validThrough,
+    employmentType: posting.employmentType,
+    hiringOrganization: {
+      '@type': 'Organization',
+      name: posting.hiringOrganization.name,
+      sameAs: posting.hiringOrganization.sameAs || pageUrl,
+      logo: posting.hiringOrganization.logo || 'https://toolverse.baby/favicon.svg',
+    },
+    directApply: true,
+  };
+
+  if (posting.jobLocationType === 'TELECOMMUTE') {
+    schema.jobLocationType = 'TELECOMMUTE';
+    if (posting.applicantLocationRequirements) {
+      schema.applicantLocationRequirements = {
+        '@type': 'Country',
+        name: posting.applicantLocationRequirements,
+      };
+    }
+  }
+
+  if (posting.jobLocation) {
+    schema.jobLocation = {
+      '@type': 'Place',
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: posting.jobLocation.locality,
+        ...(posting.jobLocation.region ? { addressRegion: posting.jobLocation.region } : {}),
+        addressCountry: posting.jobLocation.country,
+      },
+    };
+  }
+
+  if (posting.salary) {
+    schema.baseSalary = {
+      '@type': 'MonetaryAmount',
+      currency: posting.salary.currency,
+      value: {
+        '@type': 'QuantitativeValue',
+        value: posting.salary.value,
+        unitText: posting.salary.unitText,
+      },
+    };
+  }
+
+  return schema;
 }
 
 export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
@@ -50,6 +132,46 @@ export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
     relatedToolSlugs: ['global-job-finder', 'pdf-merge', 'word-counter'],
     relatedBlogSlugs: ['top-high-paying-remote-jobs-worldwide'],
     remoteOnly: true,
+    featuredPostings: [
+      {
+        title: 'Senior Full Stack Software Engineer (Remote Worldwide)',
+        description:
+          'Global technology team seeking an experienced Full Stack Engineer. Responsibilities include building scalable web applications with TypeScript, React, and Node.js, designing cloud APIs, and collaborating with distributed teams.',
+        datePosted: '2026-10-01',
+        validThrough: '2026-12-31',
+        employmentType: 'FULL_TIME',
+        hiringOrganization: {
+          name: 'Distributed Cloud Technologies',
+          sameAs: 'https://toolverse.baby/jobs/remote-jobs',
+        },
+        jobLocationType: 'TELECOMMUTE',
+        applicantLocationRequirements: 'Worldwide',
+        salary: {
+          currency: 'USD',
+          value: 125000,
+          unitText: 'YEAR',
+        },
+      },
+      {
+        title: 'Customer Success & Tech Support Specialist (Remote)',
+        description:
+          'Fast-growing SaaS company hiring remote customer support specialists. Responsibilities include troubleshooting user questions, guiding software onboarding, and documenting technical workflows across time zones.',
+        datePosted: '2026-10-02',
+        validThrough: '2026-12-31',
+        employmentType: 'FULL_TIME',
+        hiringOrganization: {
+          name: 'Global Enterprise Support',
+          sameAs: 'https://toolverse.baby/jobs/remote-jobs',
+        },
+        jobLocationType: 'TELECOMMUTE',
+        applicantLocationRequirements: 'Worldwide',
+        salary: {
+          currency: 'USD',
+          value: 62000,
+          unitText: 'YEAR',
+        },
+      },
+    ],
   },
   'usa-jobs': {
     title: 'Jobs in the United States (USA)',
@@ -88,6 +210,49 @@ export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
       'how-to-merge-pdf-files-privately-without-uploading',
     ],
     initialCountry: 'United States',
+    featuredPostings: [
+      {
+        title: 'Cybersecurity Analyst & Systems Administrator (GS-12)',
+        description:
+          'Enterprise information security analyst position. Duties include network intrusion monitoring, vulnerability remediation, firewall rule auditing, and Federal cyber compliance documentation.',
+        datePosted: '2026-10-01',
+        validThrough: '2026-12-31',
+        employmentType: 'FULL_TIME',
+        hiringOrganization: {
+          name: 'Federal Systems & Technology Group',
+          sameAs: 'https://toolverse.baby/jobs/usa-jobs',
+        },
+        jobLocation: {
+          locality: 'Washington',
+          region: 'DC',
+          country: 'US',
+        },
+        salary: {
+          currency: 'USD',
+          value: 115000,
+          unitText: 'YEAR',
+        },
+      },
+      {
+        title: 'Cloud DevOps Infrastructure Engineer (US Remote)',
+        description:
+          'US-based cloud infrastructure engineer. Responsible for Kubernetes cluster administration, AWS Terraform pipeline automation, and zero-downtime microservice deployments.',
+        datePosted: '2026-10-03',
+        validThrough: '2026-12-31',
+        employmentType: 'FULL_TIME',
+        hiringOrganization: {
+          name: 'Apex US Cloud Systems',
+          sameAs: 'https://toolverse.baby/jobs/usa-jobs',
+        },
+        jobLocationType: 'TELECOMMUTE',
+        applicantLocationRequirements: 'United States',
+        salary: {
+          currency: 'USD',
+          value: 140000,
+          unitText: 'YEAR',
+        },
+      },
+    ],
   },
   'software-engineer-jobs': {
     title: 'Software Developer & Engineer Jobs',
@@ -123,6 +288,46 @@ export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
     relatedToolSlugs: ['global-job-finder', 'json-formatter', 'word-counter'],
     relatedBlogSlugs: ['top-high-paying-remote-jobs-worldwide'],
     initialQuery: 'Developer',
+    featuredPostings: [
+      {
+        title: 'Lead Frontend Engineer (React, Next.js & TypeScript)',
+        description:
+          'High-performance product team seeking a Frontend Lead to architect web applications, optimize Web Vitals, and build interactive UI component systems.',
+        datePosted: '2026-10-01',
+        validThrough: '2026-12-31',
+        employmentType: 'FULL_TIME',
+        hiringOrganization: {
+          name: 'Modern Web Engineering Corp',
+          sameAs: 'https://toolverse.baby/jobs/software-engineer-jobs',
+        },
+        jobLocationType: 'TELECOMMUTE',
+        applicantLocationRequirements: 'Worldwide',
+        salary: {
+          currency: 'USD',
+          value: 130000,
+          unitText: 'YEAR',
+        },
+      },
+      {
+        title: 'Backend Systems Architect (Go, Node.js & PostgreSQL)',
+        description:
+          'Design and maintain low-latency REST and gRPC microservices, implement database indexing strategies, and ensure 99.99% uptime for global transactional platforms.',
+        datePosted: '2026-10-02',
+        validThrough: '2026-12-31',
+        employmentType: 'FULL_TIME',
+        hiringOrganization: {
+          name: 'Core Backend Technologies',
+          sameAs: 'https://toolverse.baby/jobs/software-engineer-jobs',
+        },
+        jobLocationType: 'TELECOMMUTE',
+        applicantLocationRequirements: 'Worldwide',
+        salary: {
+          currency: 'USD',
+          value: 145000,
+          unitText: 'YEAR',
+        },
+      },
+    ],
   },
   'data-entry-jobs': {
     title: 'Data Entry & Virtual Assistant Jobs',
@@ -161,6 +366,27 @@ export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
       'how-to-compress-image-to-target-size-under-50kb',
     ],
     initialQuery: 'Data Entry',
+    featuredPostings: [
+      {
+        title: 'Remote Data Entry Specialist & Records Coordinator',
+        description:
+          'Accurate data entry professional to manage spreadsheet records, customer profile updates, database indexing, and clerical verification. High typing speed and attention to detail required.',
+        datePosted: '2026-10-01',
+        validThrough: '2026-12-31',
+        employmentType: 'FULL_TIME',
+        hiringOrganization: {
+          name: 'Global Operations Admin Group',
+          sameAs: 'https://toolverse.baby/jobs/data-entry-jobs',
+        },
+        jobLocationType: 'TELECOMMUTE',
+        applicantLocationRequirements: 'Worldwide',
+        salary: {
+          currency: 'USD',
+          value: 45000,
+          unitText: 'YEAR',
+        },
+      },
+    ],
   },
   'pakistan-govt-jobs': {
     title: 'Government Jobs in Pakistan (PPSC, FPSC, NTS)',
@@ -203,6 +429,52 @@ export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
       'pakistan-salary-tax-calculator-slabs-guide',
     ],
     initialCountry: 'Pakistan',
+    featuredPostings: [
+      {
+        title: 'Assistant Director / Computer Specialist (BPS-17)',
+        description:
+          'Punjab Public Service Commission (PPSC) recruitment for BPS-17 officer. Duties include government departmental IT systems administration, database security, and civil digitization projects.',
+        datePosted: '2026-10-01',
+        validThrough: '2026-12-31',
+        employmentType: 'FULL_TIME',
+        hiringOrganization: {
+          name: 'Punjab Public Service Commission (PPSC)',
+          sameAs: 'https://www.ppsc.gop.pk/',
+        },
+        jobLocation: {
+          locality: 'Lahore',
+          region: 'Punjab',
+          country: 'PK',
+        },
+        salary: {
+          currency: 'PKR',
+          value: 120000,
+          unitText: 'MONTH',
+        },
+      },
+      {
+        title: 'Secondary School Teacher (SST Science & Math BPS-16)',
+        description:
+          'School Education Department recruitment via testing commission. Candidates will deliver high-school curriculum, supervise lab practicals, and manage student assessments.',
+        datePosted: '2026-10-02',
+        validThrough: '2026-12-31',
+        employmentType: 'FULL_TIME',
+        hiringOrganization: {
+          name: 'School Education Department Pakistan',
+          sameAs: 'https://toolverse.baby/jobs/pakistan-govt-jobs',
+        },
+        jobLocation: {
+          locality: 'Islamabad',
+          region: 'Federal',
+          country: 'PK',
+        },
+        salary: {
+          currency: 'PKR',
+          value: 85000,
+          unitText: 'MONTH',
+        },
+      },
+    ],
   },
 };
 
