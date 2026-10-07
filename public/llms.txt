@@ -13,6 +13,10 @@ ToolVerse (toolverse.baby) provides 88+ live browser utilities with no signup wa
 - [HEIC to JPG](https://toolverse.baby/tools/heic-to-jpg): iPhone photos for Windows/forms.
 - [QR Code Generator](https://toolverse.baby/tools/qr-code-generator) / [Barcode Generator](https://toolverse.baby/tools/barcode-generator)
 - [UTM Builder](https://toolverse.baby/tools/utm-builder) / [Meta Tag Generator](https://toolverse.baby/tools/meta-tag-generator)
+- [SEO Site Audit & Health Checker](https://toolverse.baby/tools/seo-audit-analyzer): Free Semrush Site Audit alternative.
+- [Keyword Magic Explorer](https://toolverse.baby/tools/keyword-research-tool): Free keyword search volume, KD, & intent explorer.
+- [Backlink & Anchor Analyzer](https://toolverse.baby/tools/backlink-checker-analyzer): Free Ahrefs backlink analyzer alternative.
+- [SERP Simulator](https://toolverse.baby/tools/serp-simulator) / [Schema Generator](https://toolverse.baby/tools/schema-markup-generator)
 - [Pakistan Salary Tax Estimator](https://toolverse.baby/tools/pakistan-salary-tax-estimator) / [Zakat Calculator](https://toolverse.baby/tools/zakat-calculator)
 - [Global Job Finder](https://toolverse.baby/tools/global-job-finder): Discovery only — apply on original postings.
 

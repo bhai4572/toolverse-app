@@ -6,7 +6,17 @@ import { getGuidePostForTool } from '@/lib/blog/posts';
 import { ToolRenderer } from '@/features/tools/ToolRenderer';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import { AdSlot } from '@/components/AdSlot';
-import { ShieldCheck, Info, CheckCircle2, HelpCircle, ArrowRight, BookOpen } from 'lucide-react';
+import {
+  ShieldCheck,
+  Info,
+  CheckCircle2,
+  HelpCircle,
+  ArrowRight,
+  BookOpen,
+  Sparkles,
+  Search,
+  Zap,
+} from 'lucide-react';
 import type { Metadata } from 'next';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://toolverse.baby';
@@ -82,6 +92,15 @@ export default function ToolPage({ params }: { params: { slug: string } }) {
     }
   }
 
+  const trendingSeoTools = [
+    { name: 'SEO Site Audit & Health', slug: 'seo-audit-analyzer' },
+    { name: 'Keyword Magic Explorer', slug: 'keyword-research-tool' },
+    { name: 'Backlink & Anchor Analyzer', slug: 'backlink-checker-analyzer' },
+    { name: 'Google SERP Simulator', slug: 'serp-simulator' },
+    { name: 'Robots.txt Generator', slug: 'robots-txt-generator' },
+    { name: 'Schema JSON-LD Maker', slug: 'schema-markup-generator' },
+  ].filter((t) => t.slug !== tool.slug).slice(0, 5);
+
   const faqList = pageContent?.faqs ?? [
     {
       question: `Is ${tool.canonicalName} completely free to use?`,
@@ -98,125 +117,189 @@ export default function ToolPage({ params }: { params: { slug: string } }) {
   ];
 
   return (
-    <div className="space-y-10 max-w-4xl mx-auto py-4">
-      <div className="space-y-3">
-        <Breadcrumb
-          items={[
-            { label: tool.category, href: `/category/${tool.categorySlug}` },
-            { label: tool.canonicalName },
-          ]}
-        />
+    <div className="max-w-7xl mx-auto py-4">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        {/* MAIN CONTENT COLUMN */}
+        <div className="lg:col-span-8 space-y-8">
+          <div className="space-y-3">
+            <Breadcrumb
+              items={[
+                { label: tool.category, href: `/category/${tool.categorySlug}` },
+                { label: tool.canonicalName },
+              ]}
+            />
 
-        <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-          {tool.canonicalName}
-        </h1>
+            <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+              {tool.canonicalName}
+            </h1>
 
-        <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300">
-          {pageContent?.answerFirst || tool.shortDescription}
-        </p>
-
-        <div className="inline-flex items-center gap-2 text-xs font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200/60 dark:border-emerald-800/60 px-3.5 py-1.5 rounded-full">
-          <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-          <span>{tool.privacyMessage}</span>
-        </div>
-      </div>
-
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm">
-        <ToolRenderer tool={tool} />
-      </div>
-
-      {guidePost && (
-        <aside className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl border border-brand-200/70 dark:border-brand-800/60 bg-brand-50/80 dark:bg-brand-950/40 px-4 py-3">
-          <div className="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
-            <BookOpen className="w-4 h-4 mt-0.5 text-brand-600 shrink-0" />
-            <p>
-              New to this workflow?{' '}
-              <span className="font-medium text-slate-900 dark:text-white">Read the full guide</span> for steps,
-              when not to use it, and common mistakes.
+            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300">
+              {pageContent?.answerFirst || tool.shortDescription}
             </p>
-          </div>
-          <Link
-            href={`/blog/${guidePost.slug}`}
-            className="inline-flex items-center justify-center gap-1 text-sm font-semibold text-brand-700 dark:text-brand-300 whitespace-nowrap hover:underline"
-          >
-            {guidePost.isToolGuide ? 'How-to guide' : 'Full guide'} <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
-        </aside>
-      )}
 
-      <AdSlot slotId="tool-middle-ad" />
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 space-y-3">
-          <h2 className="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2">
-            <Info className="w-4 h-4 text-brand-600" /> How to Use {tool.canonicalName}
-          </h2>
-          <ol className="space-y-2 text-xs text-slate-600 dark:text-slate-300 list-decimal pl-4">
-            {tool.instructions.map((step, idx) => (
-              <li key={idx} className="leading-relaxed">{step}</li>
-            ))}
-          </ol>
-        </div>
-
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 space-y-3">
-          <h2 className="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-emerald-600" /> Common Use Cases
-          </h2>
-          <ul className="space-y-2 text-xs text-slate-600 dark:text-slate-300 list-disc pl-4">
-            {tool.useCases.map((useCase, idx) => (
-              <li key={idx} className="leading-relaxed">{useCase}</li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
-      {pageContent?.sections?.length ? (
-        <div className="space-y-6">
-          {pageContent.sections.map((section) => (
-            <section key={section.heading} className="space-y-2">
-              <h2 className="text-lg font-bold text-slate-900 dark:text-white">{section.heading}</h2>
-              <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{section.body}</p>
-            </section>
-          ))}
-        </div>
-      ) : null}
-
-      <div className="bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-xl p-6 space-y-4">
-        <h2 className="font-bold text-lg text-slate-900 dark:text-white flex items-center gap-2">
-          <HelpCircle className="w-5 h-5 text-brand-500" /> Frequently Asked Questions
-        </h2>
-        <div className="space-y-3">
-          {faqList.map((faq) => (
-            <div key={faq.question} className="p-4 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-1">
-              <h3 className="text-sm font-semibold text-slate-900 dark:text-white">{faq.question}</h3>
-              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">{faq.answer}</p>
+            <div className="inline-flex items-center gap-2 text-xs font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200/60 dark:border-emerald-800/60 px-3.5 py-1.5 rounded-full">
+              <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+              <span>{tool.privacyMessage}</span>
             </div>
-          ))}
-        </div>
-      </div>
-
-      {relatedTools.length > 0 && (
-        <div className="space-y-4 pt-4 border-t border-slate-200 dark:border-slate-800">
-          <h2 className="font-bold text-lg text-slate-900 dark:text-white">Related Tools</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {relatedTools.map((rel) => (
-              <Link key={rel.id} href={`/tools/${rel.slug}`} className="tool-card group p-4">
-                <div className="font-semibold text-sm text-slate-900 dark:text-white group-hover:text-brand-600">
-                  {rel.canonicalName}
-                </div>
-                <div className="text-xs text-slate-500 line-clamp-2 mt-1">{rel.shortDescription}</div>
-              </Link>
-            ))}
           </div>
-          <p className="text-xs text-slate-500">
-            Browse more in{' '}
-            <Link href={`/category/${tool.categorySlug}`} className="text-brand-600 font-medium hover:underline">
-              {tool.category}
-            </Link>
-            .
-          </p>
+
+          {/* MAIN TOOL INTERACTIVE APP */}
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 sm:p-7 shadow-sm">
+            <ToolRenderer tool={tool} />
+          </div>
+
+          {guidePost && (
+            <aside className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl border border-brand-200/70 dark:border-brand-800/60 bg-brand-50/80 dark:bg-brand-950/40 px-4 py-3">
+              <div className="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
+                <BookOpen className="w-4 h-4 mt-0.5 text-brand-600 shrink-0" />
+                <p>
+                  New to this workflow?{' '}
+                  <span className="font-medium text-slate-900 dark:text-white">Read the full guide</span> for steps,
+                  when not to use it, and common mistakes.
+                </p>
+              </div>
+              <Link
+                href={`/blog/${guidePost.slug}`}
+                className="inline-flex items-center justify-center gap-1 text-sm font-semibold text-brand-700 dark:text-brand-300 whitespace-nowrap hover:underline"
+              >
+                {guidePost.isToolGuide ? 'How-to guide' : 'Full guide'} <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </aside>
+          )}
+
+          {/* IN-ARTICLE AD SLOT AFTER TOOL */}
+          <AdSlot slotId="tool-inline-top" format="in-article" />
+
+          {/* HOW TO USE & COMMON USE CASES */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 sm:p-6 space-y-3">
+              <h2 className="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2">
+                <Info className="w-4 h-4 text-brand-600" /> How to Use {tool.canonicalName}
+              </h2>
+              <ol className="space-y-2 text-xs text-slate-600 dark:text-slate-300 list-decimal pl-4">
+                {tool.instructions.map((step, idx) => (
+                  <li key={idx} className="leading-relaxed">{step}</li>
+                ))}
+              </ol>
+            </div>
+
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 sm:p-6 space-y-3">
+              <h2 className="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600" /> Common Use Cases
+              </h2>
+              <ul className="space-y-2 text-xs text-slate-600 dark:text-slate-300 list-disc pl-4">
+                {tool.useCases.map((useCase, idx) => (
+                  <li key={idx} className="leading-relaxed">{useCase}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* DEEP CONTENT SECTIONS WITH AD INSERTION */}
+          {pageContent?.sections?.length ? (
+            <div className="space-y-6">
+              {pageContent.sections.map((section, sIdx) => (
+                <React.Fragment key={section.heading}>
+                  <section className="space-y-2">
+                    <h2 className="text-lg font-bold text-slate-900 dark:text-white">{section.heading}</h2>
+                    <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{section.body}</p>
+                  </section>
+                  {sIdx === 0 && <AdSlot slotId="tool-content-break" format="horizontal" />}
+                </React.Fragment>
+              ))}
+            </div>
+          ) : null}
+
+          {/* FAQS SECTION */}
+          <div className="bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-xl p-5 sm:p-6 space-y-4">
+            <h2 className="font-bold text-lg text-slate-900 dark:text-white flex items-center gap-2">
+              <HelpCircle className="w-5 h-5 text-brand-500" /> Frequently Asked Questions
+            </h2>
+            <div className="space-y-3">
+              {faqList.map((faq) => (
+                <div key={faq.question} className="p-4 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-1">
+                  <h3 className="text-sm font-semibold text-slate-900 dark:text-white">{faq.question}</h3>
+                  <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">{faq.answer}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* RELATED TOOLS */}
+          {relatedTools.length > 0 && (
+            <div className="space-y-4 pt-4 border-t border-slate-200 dark:border-slate-800">
+              <h2 className="font-bold text-lg text-slate-900 dark:text-white">Related Tools</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {relatedTools.map((rel) => (
+                  <Link key={rel.id} href={`/tools/${rel.slug}`} className="tool-card group p-4">
+                    <div className="font-semibold text-sm text-slate-900 dark:text-white group-hover:text-brand-600">
+                      {rel.canonicalName}
+                    </div>
+                    <div className="text-xs text-slate-500 line-clamp-2 mt-1">{rel.shortDescription}</div>
+                  </Link>
+                ))}
+              </div>
+              <p className="text-xs text-slate-500">
+                Browse more in{' '}
+                <Link href={`/category/${tool.categorySlug}`} className="text-brand-600 font-medium hover:underline">
+                  {tool.category}
+                </Link>
+                .
+              </p>
+            </div>
+          )}
         </div>
-      )}
+
+        {/* STICKY SIDEBAR (DESKTOP) */}
+        <aside className="lg:col-span-4 space-y-6 lg:sticky lg:top-20">
+          {/* PRIMARY SIDEBAR AD SLOT */}
+          <AdSlot slotId="tool-sidebar-primary" format="sidebar" />
+
+          {/* POPULAR SEMRUSH & AHREFS ALTERNATIVES WIDGET */}
+          <div className="p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm space-y-3">
+            <div className="flex items-center gap-2 text-xs font-bold text-slate-900 dark:text-white">
+              <Sparkles className="w-4 h-4 text-brand-600" />
+              <span>Free SEO &amp; Growth Suite</span>
+            </div>
+            <p className="text-xs text-slate-500 leading-relaxed">
+              100% free alternatives to expensive Semrush and Ahrefs subscriptions.
+            </p>
+            <div className="space-y-2 pt-1">
+              {trendingSeoTools.map((t) => (
+                <Link
+                  key={t.slug}
+                  href={`/tools/${t.slug}`}
+                  className="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/60 border border-transparent hover:border-slate-200 dark:hover:border-slate-700 transition-all text-xs font-semibold text-slate-700 dark:text-slate-200 group"
+                >
+                  <span className="group-hover:text-brand-600 transition-colors truncate">{t.name}</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-brand-600 group-hover:translate-x-0.5 transition-all shrink-0" />
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* CATEGORY EXPLORER WIDGET */}
+          <div className="p-5 bg-gradient-to-br from-slate-50 to-indigo-50/40 dark:from-slate-900 dark:to-indigo-950/30 border border-slate-200 dark:border-slate-800 rounded-2xl space-y-2">
+            <h4 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
+              Explore {tool.category}
+            </h4>
+            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+              Discover all utilities in this collection.
+            </p>
+            <div className="pt-1">
+              <Link
+                href={`/category/${tool.categorySlug}`}
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-600 dark:text-brand-400 hover:underline"
+              >
+                View all in {tool.category} <ArrowRight className="w-3 h-3" />
+              </Link>
+            </div>
+          </div>
+
+          {/* SECONDARY SIDEBAR AD SLOT */}
+          <AdSlot slotId="tool-sidebar-secondary" format="sidebar" />
+        </aside>
+      </div>
     </div>
   );
 }

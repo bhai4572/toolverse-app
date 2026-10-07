@@ -191,26 +191,42 @@ export const CATEGORY_PAGE_CONTENT: Record<string, CategoryPageContent> = {
     relatedBlogSlugs: ['how-to-build-utm-campaign-urls'],
   },
   'seo-url-tools': {
-    seoTitle: 'SEO & Marketing Tools — UTM, Meta Tags, Short Links | ToolVerse',
+    seoTitle: 'Free SEO & Marketing Tools — Semrush & Ahrefs Alternative Suite | ToolVerse',
     seoDescription:
-      'Build UTM campaign URLs, generate meta/Open Graph tags, and shorten links with ToolVerse SEO utilities.',
+      'Free SEO tools: site audit, keyword research & intent explorer, backlink analyzer, SERP preview, robots.txt & schema generators. 100% free, no signup.',
     intro:
-      'SEO, Marketing & URL Tools help you build UTM links, draft meta tags with a SERP-style preview, and create short links for campaigns.',
+      'Explore ToolVerse’s full suite of professional SEO utilities — built as a fast, 100% free browser alternative to expensive Semrush and Ahrefs subscriptions. Audit on-page health, explore high-volume keywords, simulate Google search snippets, and generate technical SEO files instantly.',
     sections: [
       {
-        heading: 'Campaign tracking that stays readable',
-        body: 'UTM Builder adds source, medium, and campaign parameters consistently so Analytics reports stay clean. Prefer lowercase snake_case values and avoid stuffing PII into UTMs.',
+        heading: 'Complete On-Page & Technical SEO Auditing',
+        body: 'Audit meta titles, descriptions, headings, image alt attributes, and canonical tags with an instant 0–100 health score. Identify critical indexing blockers and fix on-page SEO issues before search engine crawlers penalize your rankings.',
       },
       {
-        heading: 'Meta tags and share previews',
-        body: 'Meta Tag Generator drafts title, description, and Open Graph fields with a SERP-style preview. Pair with QR Code Generator when you need a print-to-URL bridge.',
+        heading: 'Keyword Magic, Search Intent & Link Profiling',
+        body: 'Research long-tail keyword variations, question topics, search intent (Informational, Commercial, Transactional), and difficulty benchmarks. Analyze backlink profiles, domain authority tiers, and anchor text ratios without recurring subscription fees.',
+      },
+      {
+        heading: 'SERP Previews, Technical Schemas & Robots Directives',
+        body: 'Preview Google search snippets with real-time pixel meters, generate valid JSON-LD Rich Snippets (FAQ, Article, Product), configure robots.txt with AEO crawler permissions, and build clean XML sitemaps for Google Search Console.',
       },
     ],
-    featuredToolSlugs: ['meta-tag-generator', 'utm-builder', 'url-shortener', 'qr-code-generator'],
-    relatedCategorySlugs: ['developer-cybersecurity-tools', 'creator-social-tools'],
+    featuredToolSlugs: [
+      'seo-audit-analyzer',
+      'keyword-research-tool',
+      'backlink-checker-analyzer',
+      'serp-simulator',
+      'schema-markup-generator',
+      'meta-tag-generator',
+      'keyword-density-checker',
+      'utm-builder',
+      'url-shortener',
+    ],
+    relatedCategorySlugs: ['developer-cybersecurity-tools', 'creator-social-tools', 'text-writing-student-tools'],
     relatedBlogSlugs: [
       'how-to-build-utm-campaign-urls',
-      'how-to-generate-barcodes-free-code-128-ean-upc',
+      'how-to-seo-audit-analyzer',
+      'how-to-keyword-research-tool',
+      'how-to-backlink-checker-analyzer',
     ],
   },
   'developer-cybersecurity-tools': {

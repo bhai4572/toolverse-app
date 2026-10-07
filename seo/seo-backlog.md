@@ -1,25 +1,44 @@
 # ToolVerse SEO / AEO / GEO Backlog
 
-Last updated: 2026-10-07 (wave 8 — **per-tool how-to guides**). White-hat only. Do not invent rankings or traffic claims.
+Last updated: 2026-10-07 (wave 9 — **Semrush & Ahrefs Free Alternative Suite + Monetization Sidebar**). White-hat only. Do not invent rankings or traffic claims.
 
 ## Status
 
 | Area | State |
 |---|---|
-| Tool page SEO | **88 / 88** done |
-| Category pillars | **13 / 13** — sections + featured tools + related blogs |
+| Tool page SEO | **98 / 98** done (+10 professional SEO tools) |
+| Category pillars | **13 / 13** — updated SEO suite pillar |
 | Job landings | **5 / 5** thickened + related links |
-| Guides | **9 pillars + 81 generated tool how-tos** (88 tools covered; 7 map to pillars) |
+| Guides | **9 pillars + 91 generated tool how-tos** (98 tools covered; 7 map to pillars) |
+| Monetization & Ads | Sticky sidebar ads + in-article ad units inserted after primary sections |
 | Blog hub | Category filters + pagination (12/page) |
 | Internal links | Blog↔tool bidirectional; category auto-guides |
 | Prerender / CF middleware | Live (`x-toolverse-shell`) |
 | AEO homepage FAQ + entity | Done |
-| `llms.txt` / sitemap / robots | Wave 8: tool-guide summary in llms; sitemap includes `/blog/how-to-*` |
+| `llms.txt` / sitemap / robots | Wave 9: 227 URLs in sitemap.xml; llms.txt includes full SEO suite |
 | E-E-A-T legal pages | Done |
 
-**Verdict:** On-site SEO now includes a maintainable **guide per live tool** via `lib/blog/toolGuides.ts` (not 88 hand-copied doorway pages). Remaining work is **user offline** (deploy secrets, outreach) or **monitoring**.
+## Done — wave 9 (Semrush & Ahrefs Alternative SEO Suite + Monetization Layout)
 
-## Done — wave 8 (tool guides)
+- **10 New Professional SEO Tools**:
+  1. `seo-audit-analyzer` — On-Page Site Audit & Health Checker (0-100 score + 1-click fixes)
+  2. `keyword-research-tool` — Keyword Magic & Search Intent Explorer (KD%, volume, CPC, CSV export)
+  3. `backlink-checker-analyzer` — Domain Rating (DR/DA), Anchor Text & Toxic Link Analyzer
+  4. `serp-simulator` — Live Google Desktop & Mobile SERP Preview (580px title & 960px snippet meter)
+  5. `keyword-density-checker` — Keyword Density & TF-IDF Content Analyzer with stuffing warnings
+  6. `robots-txt-generator` — Robots.txt Builder with AI crawler toggles & 1-click download
+  7. `xml-sitemap-validator` — Standards-compliant XML Sitemap Generator & Validator
+  8. `schema-markup-generator` — Google Rich Snippets Schema JSON-LD Generator
+  9. `redirect-chain-checker` — HTTP Status & Redirect Chain Visualizer (301/302 hops)
+  10. `canonical-hreflang-generator` — International SEO & Canonical Tag Builder
+- **Monetization & Ad Architecture**:
+  - Two-column responsive desktop layout (`lg:grid-cols-12`)
+  - Sticky right sidebar featuring `AdSlot format="sidebar"` with Monetag direct offers & AdSense
+  - Quick-navigation widget for "Free SEO & Growth Suite"
+  - In-content `AdSlot format="in-article"` inserted after initial tool action and content breaks
+- **Automated Guides & Sitemap**:
+  - All 10 tools auto-generate unique how-to guides (`/blog/how-to-*`)
+  - Sitemap regenerated with 227 total verified URLs (98 live tools + 100 blog guides + categories + hubs)
 
 - Generator: `lib/blog/toolGuides.ts` builds unique how-to posts from registry + `TOOL_PAGE_CONTENT`
 - Pillar overrides for 7 tools already covered by deep guides (no duplicate cannibalization)

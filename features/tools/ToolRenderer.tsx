@@ -32,6 +32,7 @@ import { LoremIpsumTool } from './LoremIpsumTool';
 import { WritingTools } from './WritingTools';
 import { AdvancedTools } from './AdvancedTools';
 import { JobFinderTool } from './JobTools';
+import { SeoTools } from './SeoTools';
 import { AlertTriangle, Lock } from 'lucide-react';
 
 export function ToolRenderer({ tool }: { tool: ToolDefinition }) {
@@ -131,6 +132,17 @@ export function ToolRenderer({ tool }: { tool: ToolDefinition }) {
       return <UtmBuilderTool />;
     case 'meta-tag-generator':
       return <MetaTagGeneratorTool />;
+    case 'seo-audit-analyzer':
+    case 'keyword-research-tool':
+    case 'backlink-checker-analyzer':
+    case 'serp-simulator':
+    case 'keyword-density-checker':
+    case 'robots-txt-generator':
+    case 'xml-sitemap-validator':
+    case 'schema-markup-generator':
+    case 'redirect-chain-checker':
+    case 'canonical-hreflang-generator':
+      return <SeoTools tool={tool} />;
     case 'adsense-revenue-calculator':
       return <AdsenseCalculatorTool />;
     case 'youtube-earnings-estimator':

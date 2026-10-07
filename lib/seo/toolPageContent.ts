@@ -709,6 +709,366 @@ export const TOOL_PAGE_CONTENT: Record<string, ToolPageContent> = {
     ],
   },
 
+  'seo-audit-analyzer': {
+    answerFirst:
+      'On-Page SEO Site Audit & Health Checker inspects your title tags, meta descriptions, H1-H6 structure, canonical tags, open graph metadata, and content depth — generating a 0-100 SEO health score with 1-click fixes.',
+    seoTitle: 'Free On-Page SEO Site Audit & Health Checker | ToolVerse',
+    seoDescription:
+      'Free SEO site audit tool and Semrush alternative. Audit on-page ranking factors, identify missing tags, check heading structure, and fix SEO issues instantly.',
+    sections: [
+      {
+        heading: 'Why on-page auditing matters for search rankings',
+        body: 'Even the best content can fail to rank if basic on-page signals are misconfigured. Truncated titles, missing meta descriptions, duplicate H1 tags, and missing image alt tags waste crawl budget and weaken your topical authority.',
+      },
+      {
+        heading: 'Free Semrush Site Audit Alternative without paywalls',
+        body: 'Most enterprise SEO suites charge $130+/month for simple on-page checklists. ToolVerse performs instant client-side audits directly inside your browser with complete privacy and zero subscription fees.',
+      },
+      {
+        heading: 'Prioritize fixes: Errors vs Warnings vs Passes',
+        body: 'Focus first on Critical Errors (missing titles, missing H1, thin content under 100 words), followed by Warnings (title pixel overflow over 580px, missing alt text, missing Open Graph tags).',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is this SEO audit tool completely free?',
+        answer: 'Yes, 100% free with unlimited audits. No credit card, account registration, or monthly limits.',
+      },
+      {
+        question: 'What is a good SEO health score?',
+        answer: 'Scores of 80/100 or higher indicate strong on-page readiness that complies with Google search guidelines.',
+      },
+      {
+        question: 'Does this audit check mobile responsiveness?',
+        answer: 'Yes, it checks mobile title truncation limits (under 60 characters) and description lengths (under 160 characters).',
+      },
+    ],
+  },
+
+  'keyword-research-tool': {
+    answerFirst:
+      'Keyword Magic & Search Intent Explorer uncovers high-value keyword variations, search volume tiers, keyword difficulty (KD%), search intent (Informational, Commercial, Transactional), and CPC estimates with instant CSV export.',
+    seoTitle: 'Free Keyword Research Tool — Semrush Magic & Ahrefs Alternative | ToolVerse',
+    seoDescription:
+      'Free keyword research tool & keyword difficulty checker. Discover search volume, search intent, long-tail variations, and CPC benchmarks with free CSV export.',
+    sections: [
+      {
+        heading: 'Semrush Keyword Magic & Ahrefs Keyword Explorer Alternative',
+        body: 'Stop paying high monthly subscriptions just to generate long-tail keyword ideas. ToolVerse expands any seed topic into dozens of commercial, informational, and transactional variations with search difficulty modeling.',
+      },
+      {
+        heading: 'Targeting Search Intent to win top Google rankings',
+        body: 'Google prioritizes pages that accurately satisfy user intent. Classifying keywords into Informational (guides, tutorials), Commercial (best-of comparisons, reviews), and Transactional (buy, download, online tools) ensures your content matches what searchers want.',
+      },
+      {
+        heading: 'How to use Keyword Difficulty (KD%) to rank faster',
+        body: 'For new websites and young domains, target keywords with KD under 35%. As your domain authority grows through backlinks and content clusters, you can compete for higher KD terms.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'How many keywords can I research for free?',
+        answer: 'Unlimited! There are no daily search limits or query throttling.',
+      },
+      {
+        question: 'Can I export keywords to Excel or Google Sheets?',
+        answer: 'Yes, click "Export CSV" to instantly download the full dataset with search volume, KD, CPC, and intent tags.',
+      },
+      {
+        question: 'What does Search Intent mean?',
+        answer: 'Search Intent reflects what the user wants to accomplish: learn something (Informational), evaluate choices (Commercial), or take action (Transactional).',
+      },
+    ],
+  },
+
+  'backlink-checker-analyzer': {
+    answerFirst:
+      'Backlink & Anchor Text Analyzer evaluates domain authority (DR/DA), referring domains, dofollow vs nofollow link ratios, top anchor text distribution, and link toxicity risks without recurring fees.',
+    seoTitle: 'Free Backlink Checker & Domain Rating Analyzer | ToolVerse',
+    seoDescription:
+      'Free Ahrefs backlink checker alternative. Analyze domain rating (DR), total backlinks, referring domains, anchor text distribution, and dofollow ratios.',
+    sections: [
+      {
+        heading: 'Why backlink profiling is the #1 Google ranking factor',
+        body: 'Backlinks serve as digital votes of confidence. Sites with high Domain Rating (DR) and balanced dofollow link equity rank significantly faster for competitive search queries than isolated domains.',
+      },
+      {
+        heading: 'Preventing over-optimized anchor text penalties',
+        body: 'Natural backlink profiles feature a healthy distribution of branded anchors (e.g. your brand name), generic anchors (visit website, click here), and natural URLs. Having over 40% exact-match commercial anchors can trigger algorithmic spam filters.',
+      },
+      {
+        heading: 'Dofollow vs Nofollow link equity ratio',
+        body: 'Dofollow links pass PageRank and direct authority, while nofollow/sponsored links provide referral traffic and natural backlink variance. A healthy profile typically maintains 65%–85% dofollow links.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'How is Domain Rating (DR) calculated?',
+        answer: 'Domain Rating is an algorithmic scale from 0 to 100 modeling the quantity and authority of referring domains linking to a website.',
+      },
+      {
+        question: 'Is this backlink checker completely free?',
+        answer: 'Yes, evaluate any domain or backlink list without signing up or entering payment details.',
+      },
+      {
+        question: 'What is a toxic link score?',
+        answer: 'A toxic score reflects spammy referring domains, PBNs, or low-quality link farms that could hurt Google trustworthiness.',
+      },
+    ],
+  },
+
+  'serp-simulator': {
+    answerFirst:
+      'Google SERP Snippet Preview & CTR Optimizer lets you live preview how your title tag, breadcrumb URL, and meta description appear on desktop and mobile Google Search results with real-time pixel meters and star rating previews.',
+    seoTitle: 'Google SERP Simulator — Title & Meta Pixel Counter | ToolVerse',
+    seoDescription:
+      'Live Google SERP preview tool for desktop & mobile. Verify 580px title limits, 960px meta description boundaries, and rich review snippet appearance.',
+    sections: [
+      {
+        heading: 'Character count vs Pixel width: why Google truncates titles',
+        body: 'Google measures titles in pixels, not characters. A title containing wide capital letters (W, M) can truncate at 52 characters, while narrow letters (i, l, t) can fit 65 characters. Keeping titles under 580 pixels guarantees full visibility.',
+      },
+      {
+        heading: 'Maximizing Organic Click-Through Rate (CTR)',
+        body: 'Higher organic CTR directly boosts search rankings. Incorporate emotional hooks, numbers, brackets, current year (2026), and clear value propositions to outclick competing search results.',
+      },
+      {
+        heading: 'Responsive desktop vs mobile SERP behavior',
+        body: 'Mobile search results feature larger card containers and rounded favicons. Toggle between Desktop and Mobile in our simulator to verify readability across all devices.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'What is the maximum pixel width for Google title tags?',
+        answer: 'Google displays up to 580 pixels on desktop and mobile (~55 to 60 characters).',
+      },
+      {
+        question: 'What is the ideal meta description length?',
+        answer: 'Between 140 and 160 characters (max 960 pixels) to avoid truncation while maximizing click incentives.',
+      },
+      {
+        question: 'Can I preview review stars?',
+        answer: 'Yes, toggle the "Show Rating Stars" switch to simulate Schema.org AggregateRating rich snippets.',
+      },
+    ],
+  },
+
+  'keyword-density-checker': {
+    answerFirst:
+      'Keyword Density & Content Analyzer calculates single-word, 2-word, and 3-word phrase density percentages, total word count, and reading time, automatically flagging keyword stuffing risks.',
+    seoTitle: 'Free Keyword Density Checker & Content Analyzer | ToolVerse',
+    seoDescription:
+      'Analyze keyword density, frequency, and TF-IDF distribution. Flag keyword stuffing risks and optimize content for Google search guidelines.',
+    sections: [
+      {
+        heading: 'Optimal keyword density for Google SEO',
+        body: 'Modern search algorithms penalize repetitive text. An ideal keyword density for your primary target keyword is between 1.2% and 2.5%. Anything exceeding 3.5% risks being flagged as keyword stuffing.',
+      },
+      {
+        heading: 'Why multi-word phrase density matters',
+        body: 'Evaluating 2-word and 3-word n-grams ensures your supporting subtopics and semantic phrases (LSI keywords) are distributed naturally throughout the article body.',
+      },
+      {
+        heading: 'Client-side privacy for unpublished drafts',
+        body: 'Unlike competitor tools that send your unpublished manuscripts to third-party servers, ToolVerse processes all text locally in browser memory. Your drafts remain 100% confidential.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'What is keyword stuffing?',
+        answer: 'Keyword stuffing is artificially loading content with the same keyword to manipulate rankings. Google detects and penalizes this practice.',
+      },
+      {
+        question: 'Does this tool filter stop words?',
+        answer: 'Yes, common English stop words (the, is, at, which) are filtered out so meaningful topical words are highlighted.',
+      },
+      {
+        question: 'What is the maximum text size I can analyze?',
+        answer: 'You can analyze complete long-form guides, academic papers, and articles up to 50,000 words.',
+      },
+    ],
+  },
+
+  'robots-txt-generator': {
+    answerFirst:
+      'Robots.txt Generator & Directives Validator creates clean, valid robots.txt files with crawler permissions, custom disallow paths, crawl delay, AI bot controls, and sitemap links.',
+    seoTitle: 'Robots.txt Generator & Directives Validator Online | ToolVerse',
+    seoDescription:
+      'Create and validate robots.txt files. Manage crawl budgets for Googlebot, Bingbot, and AI bots (ChatGPT, Perplexity) with instant 1-click download.',
+    sections: [
+      {
+        heading: 'Controlling crawl budget with robots.txt',
+        body: 'A well-structured robots.txt prevents search bots from wasting crawl budget on duplicate staging directories, admin portals, or private API routes, ensuring valuable pages get indexed promptly.',
+      },
+      {
+        heading: 'AEO Optimization: AI Bot permissions',
+        body: 'To earn citations in ChatGPT, Perplexity, and Claude search summaries, ensure your robots.txt allows user-facing search bots (ChatGPT-User, PerplexityBot, Claude-Web) while optionally blocking bulk training scrapers.',
+      },
+      {
+        heading: 'Validating sitemap declarations',
+        body: 'Always declare your absolute XML sitemap URL at the bottom of your robots.txt file to help newly launched search engine bots discover your content immediately.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Where should the robots.txt file be uploaded?',
+        answer: 'Upload it to the root directory of your website (e.g. https://yourdomain.com/robots.txt).',
+      },
+      {
+        question: 'Can robots.txt password-protect private pages?',
+        answer: 'No. Robots.txt is a polite advisory protocol. Use server authentication or noindex tags for private content.',
+      },
+      {
+        question: 'How do I test my robots.txt?',
+        answer: 'You can verify your directives using Google Search Console’s Robots Testing Tool.',
+      },
+    ],
+  },
+
+  'xml-sitemap-validator': {
+    answerFirst:
+      'XML Sitemap Generator & Validator builds standards-compliant XML sitemaps with priority weights (0.1–1.0), change frequencies, and lastmod timestamps for Google Search Console submission.',
+    seoTitle: 'XML Sitemap Generator & Header Validator | ToolVerse',
+    seoDescription:
+      'Build standards-compliant XML sitemaps for Google Search Console and Bing. Configure priority, change frequency, and lastmod timestamps with instant download.',
+    sections: [
+      {
+        heading: 'Why XML sitemaps accelerate search indexing',
+        body: 'XML sitemaps provide search engine crawlers with an authoritative map of all canonical URLs on your site, signaling when pages were last modified and which pages carry the highest editorial priority.',
+      },
+      {
+        heading: 'Setting realistic priority and changefreq attributes',
+        body: 'Avoid setting all pages to 1.0 daily. Assign 1.0 to your homepage, 0.8 to core category hubs and popular tools, 0.7 to articles, and 0.4 to static legal policies.',
+      },
+      {
+        heading: 'Submitting to Google Search Console',
+        body: 'Once downloaded and placed at /sitemap.xml, submit the URL in Google Search Console and Bing Webmaster Tools for fast crawl coverage and discovery.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'How many URLs can a single XML sitemap contain?',
+        answer: 'Standard sitemap protocol allows up to 50,000 URLs and a 50MB uncompressed file size per sitemap file.',
+      },
+      {
+        question: 'Is this sitemap generator free?',
+        answer: 'Yes, generate unlimited sitemaps with no account registration or watermarks.',
+      },
+      {
+        question: 'Does Google require the lastmod attribute?',
+        answer: 'Yes, Google Search Console strongly recommends lastmod dates so crawlers know when content has genuinely been updated.',
+      },
+    ],
+  },
+
+  'schema-markup-generator': {
+    answerFirst:
+      'Google Rich Snippets Schema JSON-LD Generator creates valid structured data markup for FAQPage, Article, SoftwareApplication, and Product types to earn visual rich snippets in search results.',
+    seoTitle: 'Schema Markup Generator (JSON-LD Rich Snippets) | ToolVerse',
+    seoDescription:
+      'Generate valid Schema.org JSON-LD structured data for FAQ, Article, Product, and Software apps. Earn rich snippets on Google Search results.',
+    sections: [
+      {
+        heading: 'Why Schema.org JSON-LD improves search visibility',
+        body: 'Structured data helps search engines understand the exact meaning of your content. Pages with valid schema qualify for rich snippet enhancements like FAQ dropdown accordions, star ratings, and publication timestamps.',
+      },
+      {
+        heading: 'Earning FAQ rich snippets on Google',
+        body: 'Adding FAQPage schema creates collapsible question-and-answer accordions directly beneath your search result snippet, dramatically expanding your visual footprint on the search results page.',
+      },
+      {
+        heading: 'Google-preferred JSON-LD format',
+        body: 'Google explicitly recommends JSON-LD embedded inside a <script type="application/ld+json"> tag over older Microdata or RDFa formats because it is cleaner and less error-prone.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Where do I paste the generated schema code?',
+        answer: 'Paste the <script type="application/ld+json"> snippet inside the <head> or <body> section of your HTML page.',
+      },
+      {
+        question: 'How do I verify my schema is valid?',
+        answer: 'Test your URL or code snippet in the official Google Rich Results Test tool (search.google.com/test/rich-results).',
+      },
+      {
+        question: 'Does schema guarantee rich snippets in Google?',
+        answer: 'Schema qualifies your page for rich snippets, but Google decides whether to show them based on query context and page authority.',
+      },
+    ],
+  },
+
+  'redirect-chain-checker': {
+    answerFirst:
+      'HTTP Status & Redirect Chain Checker simulates 301 Permanent, 302 Temporary, and 307 redirects, visualizing intermediate hops to recover lost link equity and optimize search crawl budget.',
+    seoTitle: 'Redirect Chain Checker & 301 Status Inspector | ToolVerse',
+    seoDescription:
+      'Trace redirect paths and detect multi-hop 301/302 chains. Fix redirect loops, recover PageRank link equity, and optimize crawl budget.',
+    sections: [
+      {
+        heading: 'Why redirect chains destroy SEO performance',
+        body: 'Every redirect hop adds latency, wastes crawler budget, and slightly degrades link equity (PageRank). If page A redirects to B, which redirects to C, Googlebot may stop following the chain, leaving the final page unindexed.',
+      },
+      {
+        heading: '301 Permanent vs 302 Temporary redirects',
+        body: 'Use 301 Permanent redirects when permanently moving URLs so Google consolidates ranking signals. Use 302 Temporary redirects only for short-term maintenance or seasonal promotions.',
+      },
+      {
+        heading: 'Best practices for site migrations',
+        body: 'Always update internal links and server rules to point directly to final destination URLs (1 hop maximum). Never link to an old URL that triggers a redirect.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'What is a redirect chain?',
+        answer: 'A redirect chain occurs when there is more than one redirect between the initial requested URL and the final destination URL.',
+      },
+      {
+        question: 'How many redirect hops does Google follow?',
+        answer: 'Google usually follows up to 5 redirect hops before abandoning the crawl and flagging a redirect error.',
+      },
+      {
+        question: 'Do 301 redirects pass PageRank?',
+        answer: 'Yes, 301 redirects pass the vast majority of link equity, but direct links are always faster and safer.',
+      },
+    ],
+  },
+
+  'canonical-hreflang-generator': {
+    answerFirst:
+      'Canonical & Hreflang Tag Generator builds self-referencing canonical tags and multi-language hreflang annotations to prevent duplicate content penalties and target international search audiences.',
+    seoTitle: 'Canonical & Hreflang Tag Generator for International SEO | ToolVerse',
+    seoDescription:
+      'Generate self-referential canonical tags and multi-language hreflang annotations (en, es, de, ur, ar). Prevent duplicate content penalties.',
+    sections: [
+      {
+        heading: 'Consolidating duplicate content with canonical tags',
+        body: 'Parameters, session IDs, and trailing slash variations can create duplicate URLs. Adding <link rel="canonical"> tells search engines which single URL is the authoritative master version to index.',
+      },
+      {
+        heading: 'Targeting global audiences with hreflang tags',
+        body: 'If your site provides content in multiple languages or regional variations (e.g. en-US vs en-GB, Spanish, Urdu), hreflang annotations ensure Google displays the correct localized version to users in each country.',
+      },
+      {
+        heading: 'Bidirectional return tag requirements',
+        body: 'Hreflang tags must be reciprocal: if page A points to page B, page B must point back to page A. Missing return tags will cause Google to ignore the annotations.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Where should canonical and hreflang tags be placed?',
+        answer: 'Place them inside the <head> section of every HTML document before any body content.',
+      },
+      {
+        question: 'What is the x-default hreflang attribute?',
+        answer: 'x-default serves as the fallback URL for international searchers whose preferred language is not explicitly targeted.',
+      },
+      {
+        question: 'Should a canonical tag point to itself?',
+        answer: 'Yes! Google strongly recommends self-referential canonical tags on all original content pages.',
+      },
+    ],
+  },
+
   'json-formatter': {
     answerFirst:
       'JSON Formatter & Validator beautifies or minifies JSON and flags syntax errors so API payloads are easier to read and debug — locally in your browser.',
