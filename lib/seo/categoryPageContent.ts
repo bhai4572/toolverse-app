@@ -158,24 +158,29 @@ export const CATEGORY_PAGE_CONTENT: Record<string, CategoryPageContent> = {
       },
     ],
     featuredToolSlugs: [
+      'freelancer-hourly-rate-calculator',
+      'paypal-stripe-fee-calculator',
       'invoice-generator',
-      'quotation-generator',
+      'crypto-profit-calculator',
       'profit-margin-calculator',
       'break-even-calculator',
     ],
     relatedCategorySlugs: ['pdf-document-tools', 'calculators-converters', 'creator-social-tools'],
-    relatedBlogSlugs: ['how-to-merge-pdf-files-privately-without-uploading'],
+    relatedBlogSlugs: [
+      'freelance-rate-calculator-guide-paypal-stripe-fees',
+      'how-to-merge-pdf-files-privately-without-uploading',
+    ],
   },
   'creator-social-tools': {
-    seoTitle: 'Creator Tools — YouTube Earnings & Social Helpers | ToolVerse',
+    seoTitle: 'Creator Tools — YouTube Thumbnails, Hashtags & Social Helpers | ToolVerse',
     seoDescription:
-      'Creator-focused utilities including YouTube earnings estimates and social helpers for day-to-day publishing work.',
+      'Creator-focused utilities: 1080p YouTube thumbnail downloader, viral Instagram hashtags, Twitter thread splitter, and earnings calculators.',
     intro:
-      'Creator & Social Media Tools support quick estimates and formatting helpers for publishing workflows — treat earnings tools as directional, not payout guarantees.',
+      'Creator & Social Media Tools support quick content creation, thumbnail extraction, viral hashtag generation, and thread formatting — 100% free with no account required.',
     sections: [
       {
-        heading: 'Estimates vs payouts',
-        body: 'YouTube earnings calculators model ranges from public CPM assumptions. Use them for planning, not tax or contract decisions. Pair tag and chapter helpers with your actual upload checklist on YouTube Studio.',
+        heading: 'Thumbnails, Hashtags & Repurposing',
+        body: 'Extract 1080p Full HD video thumbnails with YouTube Thumbnail Downloader, generate targeted niche tags with Instagram Hashtag Generator, split long articles for Twitter/X, and clean video transcripts from SRT files.',
       },
       {
         heading: 'Creative + SEO companion tools',
@@ -183,12 +188,18 @@ export const CATEGORY_PAGE_CONTENT: Record<string, CategoryPageContent> = {
       },
     ],
     featuredToolSlugs: [
+      'youtube-thumbnail-downloader',
+      'instagram-hashtag-generator',
+      'twitter-thread-splitter',
+      'srt-subtitle-cleaner',
       'youtube-earnings-estimator',
       'youtube-tag-formatter',
-      'youtube-chapters-generator',
     ],
     relatedCategorySlugs: ['social-image-presets', 'seo-url-tools', 'business-finance-tools'],
-    relatedBlogSlugs: ['how-to-build-utm-campaign-urls'],
+    relatedBlogSlugs: [
+      'how-to-youtube-thumbnail-downloader',
+      'how-to-build-utm-campaign-urls',
+    ],
   },
   'seo-url-tools': {
     seoTitle: 'Free SEO & Marketing Tools — Semrush & Ahrefs Alternative Suite | ToolVerse',
@@ -223,8 +234,8 @@ export const CATEGORY_PAGE_CONTENT: Record<string, CategoryPageContent> = {
     ],
     relatedCategorySlugs: ['developer-cybersecurity-tools', 'creator-social-tools', 'text-writing-student-tools'],
     relatedBlogSlugs: [
+      'best-free-semrush-ahrefs-alternatives-2026',
       'how-to-build-utm-campaign-urls',
-      'how-to-seo-audit-analyzer',
       'how-to-keyword-research-tool',
       'how-to-backlink-checker-analyzer',
     ],

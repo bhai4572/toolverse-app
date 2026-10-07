@@ -74,77 +74,363 @@ function replaceJsonLd(html, schemas) {
   return out.replace('</head>', `${injected}\n  </head>`);
 }
 
+function mdToHtml(md) {
+  if (!md) return '';
+  const blocks = md.split('\n\n');
+  return blocks
+    .map((paragraph) => {
+      const trimmed = paragraph.trim();
+      if (!trimmed) return '';
+      if (trimmed.startsWith('# ')) return '';
+      if (trimmed.startsWith('## ')) {
+        return `<h2 class="text-2xl font-bold mt-6 mb-3">${esc(trimmed.replace(/^##\s+/, ''))}</h2>`;
+      }
+      if (trimmed.startsWith('### ')) {
+        return `<h3 class="text-xl font-semibold mt-4 mb-2">${esc(trimmed.replace(/^###\s+/, ''))}</h3>`;
+      }
+      if (trimmed.startsWith('- ') || /^\d+\.\s/.test(trimmed)) {
+        const isNum = /^\d+\.\s/.test(trimmed);
+        const tag = isNum ? 'ol' : 'ul';
+        const listCls = isNum ? 'list-decimal' : 'list-disc';
+        const items = trimmed
+          .split('\n')
+          .map((item) => `<li class="my-1">${esc(item.replace(/^(- |\d+\.\s)/, ''))}</li>`)
+          .join('');
+        return `<${tag} class="${listCls} list-inside space-y-1 pl-4 my-3">${items}</${tag}>`;
+      }
+      if (trimmed.startsWith('|') && trimmed.includes('|')) {
+        const rows = trimmed.split('\n').filter((r) => r.trim() && !r.includes('---'));
+        if (rows.length > 0) {
+          const tableHtml = rows
+            .map((r, i) => {
+              const cols = r.split('|').filter((_, ci, arr) => ci > 0 && ci < arr.length - 1);
+              const tag = i === 0 ? 'th' : 'td';
+              const cellCls = i === 0 ? 'border p-2 bg-slate-100 font-bold' : 'border p-2';
+              return `<tr>${cols.map((c) => `<${tag} class="${cellCls}">${esc(c.trim())}</${tag}>`).join('')}</tr>`;
+            })
+            .join('');
+          return `<div class="overflow-x-auto my-4"><table class="border-collapse border border-slate-300 w-full text-sm">${tableHtml}</table></div>`;
+        }
+      }
+      if (trimmed === '---') return '<hr class="my-6 border-slate-200" />';
+      return `<p class="leading-relaxed my-3">${esc(trimmed)}</p>`;
+    })
+    .join('\n');
+}
+
 function buildBodyMain(pathname, meta, deps) {
   const {
     TOOLS,
     CATEGORIES,
+    getToolsByCategory,
     getToolPageContent,
     getCategoryPageContent,
     getBlogPostBySlug,
     getJobPageContent,
   } = deps;
   const parts = pathname.replace(/\/$/, '').split('/').filter(Boolean);
-  let h1 = meta.title.replace(/\s*[—|].*$/, '').trim() || meta.title;
-  let intro = meta.description;
-  let extra = '';
 
-  if (parts[0] === 'tools' && parts[1]) {
+  let contentHtml = '';
+
+  if (parts.length === 0) {
+    // Home Page
+    const popular = TOOLS.filter((t) => t.isPopular && t.status === 'live').slice(0, 9);
+    contentHtml = `
+      <div class="space-y-8">
+        <header class="text-center space-y-3 max-w-3xl mx-auto">
+          <h1 class="text-4xl font-extrabold text-slate-900">${esc(meta.title.replace(/\s*[—|].*$/, ''))}</h1>
+          <p class="text-lg text-slate-600">${esc(meta.description)}</p>
+        </header>
+
+        <section class="p-6 bg-emerald-50 rounded-2xl border border-emerald-200 text-emerald-900">
+          <h2 class="text-lg font-bold mb-2">Browser Privacy Guarantee</h2>
+          <p class="text-sm">Client-side tools process files locally in your web browser memory. Zero files are uploaded to external servers for core conversions.</p>
+        </section>
+
+        <section class="space-y-4">
+          <h2 class="text-2xl font-bold">Popular Free Online Tools</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            ${popular
+              .map(
+                (t) => `
+              <div class="p-4 border rounded-xl bg-white shadow-sm">
+                <h3 class="font-bold text-base"><a href="/tools/${esc(t.slug)}" class="text-indigo-600 hover:underline">${esc(t.canonicalName)}</a></h3>
+                <p class="text-xs text-slate-500 mt-1">${esc(t.shortDescription)}</p>
+              </div>`
+              )
+              .join('')}
+          </div>
+        </section>
+
+        <section class="space-y-4">
+          <h2 class="text-2xl font-bold">Browse Tools by Category</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            ${CATEGORIES.map(
+              (c) => `
+              <div class="p-4 border rounded-xl bg-white shadow-sm">
+                <h3 class="font-bold text-base"><a href="/category/${esc(c.slug)}" class="text-indigo-600 hover:underline">${esc(c.name)}</a></h3>
+                <p class="text-xs text-slate-500 mt-1">${esc(c.description)}</p>
+              </div>`
+            ).join('')}
+          </div>
+        </section>
+      </div>
+    `;
+  } else if (parts[0] === 'tools' && parts[1]) {
+    // Tool Page
     const tool = TOOLS.find((t) => t.slug === parts[1]);
     const seo = getToolPageContent(parts[1]);
     if (tool) {
-      h1 = tool.canonicalName;
-      intro = seo?.answerFirst || tool.shortDescription;
-      extra = `<p class="text-sm"><a href="/category/${esc(tool.categorySlug)}">${esc(tool.category)}</a></p>`;
+      const siblingTools = (getToolsByCategory ? getToolsByCategory(tool.categorySlug) : [])
+        .filter((t) => t.slug !== tool.slug && t.status === 'live')
+        .slice(0, 4);
+
+      const instructionsHtml = tool.instructions?.length
+        ? `<section class="space-y-2 mt-6">
+            <h2 class="text-xl font-bold">How to Use ${esc(tool.canonicalName)}</h2>
+            <ol class="list-decimal list-inside space-y-1 pl-4 text-slate-700">
+              ${tool.instructions.map((inst) => `<li>${esc(inst)}</li>`).join('')}
+            </ol>
+          </section>`
+        : '';
+
+      const useCasesHtml = tool.useCases?.length
+        ? `<section class="space-y-2 mt-6">
+            <h2 class="text-xl font-bold">Common Use Cases</h2>
+            <ul class="list-disc list-inside space-y-1 pl-4 text-slate-700">
+              ${tool.useCases.map((u) => `<li>${esc(u)}</li>`).join('')}
+            </ul>
+          </section>`
+        : '';
+
+      const topicalSectionsHtml = (seo?.sections || [])
+        .map(
+          (s) => `
+          <section class="space-y-2 mt-6">
+            <h2 class="text-xl font-bold">${esc(s.heading)}</h2>
+            <p class="text-slate-700 leading-relaxed">${esc(s.body)}</p>
+          </section>`
+        )
+        .join('');
+
+      const faqs = seo?.faqs || [];
+      const faqsHtml = faqs.length
+        ? `<section class="space-y-4 mt-8 pt-6 border-t">
+            <h2 class="text-2xl font-bold">Frequently Asked Questions</h2>
+            <div class="space-y-3">
+              ${faqs
+                .map(
+                  (f) => `
+                <div class="p-4 bg-slate-50 border rounded-lg">
+                  <h3 class="font-semibold text-slate-900">${esc(f.question)}</h3>
+                  <p class="text-sm text-slate-600 mt-1">${esc(f.answer)}</p>
+                </div>`
+                )
+                .join('')}
+            </div>
+          </section>`
+        : '';
+
+      const relatedToolsHtml = siblingTools.length
+        ? `<section class="space-y-3 mt-8 pt-6 border-t">
+            <h2 class="text-lg font-bold">Related Tools in ${esc(tool.category)}</h2>
+            <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              ${siblingTools
+                .map(
+                  (st) => `
+                <li class="p-3 border rounded-lg bg-white">
+                  <a href="/tools/${esc(st.slug)}" class="font-semibold text-indigo-600 hover:underline">${esc(st.canonicalName)}</a>
+                  <p class="text-xs text-slate-500 mt-0.5">${esc(st.shortDescription)}</p>
+                </li>`
+                )
+                .join('')}
+            </ul>
+          </section>`
+        : '';
+
+      contentHtml = `
+        <article class="space-y-6">
+          <nav aria-label="Breadcrumb" class="text-xs text-slate-500 space-x-2">
+            <a href="/" class="hover:underline">Home</a> &gt;
+            <a href="/category/${esc(tool.categorySlug)}" class="hover:underline">${esc(tool.category)}</a> &gt;
+            <span class="text-slate-800 font-semibold">${esc(tool.canonicalName)}</span>
+          </nav>
+
+          <header class="space-y-3">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900">${esc(tool.canonicalName)}</h1>
+            <p class="text-lg text-slate-600 max-w-3xl leading-relaxed">${esc(seo?.answerFirst || tool.shortDescription)}</p>
+            <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-800 text-xs font-semibold inline-block">
+              Privacy Guarantee: ${esc(tool.privacyMessage)}
+            </div>
+          </header>
+
+          <div class="p-6 bg-slate-50 border border-slate-200 rounded-xl my-6 text-center text-sm text-slate-600">
+            Interactive ${esc(tool.canonicalName)} widget loads and processes in your browser session.
+          </div>
+
+          ${instructionsHtml}
+          ${useCasesHtml}
+          ${topicalSectionsHtml}
+          ${faqsHtml}
+          ${relatedToolsHtml}
+        </article>
+      `;
     }
   } else if (parts[0] === 'category' && parts[1]) {
+    // Category Page
     const cat = CATEGORIES.find((c) => c.slug === parts[1]);
-    const seo = getCategoryPageContent(parts[1]);
-    if (cat) {
-      h1 = cat.name;
-      intro = seo?.intro || cat.description;
-    }
+    const catSeo = getCategoryPageContent(parts[1]);
+    const catTools = (getToolsByCategory ? getToolsByCategory(parts[1]) : []).filter(
+      (t) => t.status === 'live'
+    );
+
+    contentHtml = `
+      <article class="space-y-6">
+        <nav aria-label="Breadcrumb" class="text-xs text-slate-500 space-x-2">
+          <a href="/" class="hover:underline">Home</a> &gt;
+          <span class="text-slate-800 font-semibold">${esc(cat?.name || parts[1])}</span>
+        </nav>
+
+        <header class="space-y-2">
+          <h1 class="text-3xl font-extrabold text-slate-900">${esc(cat?.name || parts[1])}</h1>
+          <p class="text-base text-slate-600 max-w-3xl">${esc(catSeo?.intro || cat?.description || meta.description)}</p>
+        </header>
+
+        <section class="space-y-4 mt-6">
+          <h2 class="text-2xl font-bold">Tools in this Collection</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            ${catTools
+              .map(
+                (t) => `
+              <div class="p-4 border rounded-xl bg-white shadow-sm space-y-2">
+                <h3 class="font-bold text-base"><a href="/tools/${esc(t.slug)}" class="text-indigo-600 hover:underline">${esc(t.canonicalName)}</a></h3>
+                <p class="text-xs text-slate-500">${esc(t.shortDescription)}</p>
+              </div>`
+              )
+              .join('')}
+          </div>
+        </section>
+      </article>
+    `;
   } else if (parts[0] === 'blog' && parts[1]) {
+    // Blog Post
     const post = getBlogPostBySlug(parts[1]);
     if (post) {
-      h1 = post.title;
-      intro = post.description;
-      if (post.relatedToolSlug) {
-        extra = `<p class="text-sm">Related tool: <a href="/tools/${esc(post.relatedToolSlug)}">${esc(post.relatedToolSlug)}</a></p>`;
-      }
+      const relatedTool = post.relatedToolSlug
+        ? TOOLS.find((t) => t.slug === post.relatedToolSlug)
+        : null;
+
+      const faqsHtml = post.faqs?.length
+        ? `<section class="space-y-4 mt-8 pt-6 border-t">
+            <h2 class="text-2xl font-bold">Frequently Asked Questions</h2>
+            <div class="space-y-3">
+              ${post.faqs
+                .map(
+                  (f) => `
+                <div class="p-4 bg-slate-50 border rounded-lg">
+                  <h3 class="font-semibold text-slate-900">${esc(f.question)}</h3>
+                  <p class="text-sm text-slate-600 mt-1">${esc(f.answer)}</p>
+                </div>`
+                )
+                .join('')}
+            </div>
+          </section>`
+        : '';
+
+      const ctaHtml = relatedTool
+        ? `<div class="p-6 bg-indigo-50 border border-indigo-200 rounded-2xl text-center space-y-2 my-8">
+            <h3 class="text-lg font-bold text-indigo-900">Try the Free Online Tool</h3>
+            <p class="text-sm text-indigo-700">${esc(relatedTool.shortDescription)}</p>
+            <div class="pt-2">
+              <a href="/tools/${esc(relatedTool.slug)}" class="inline-block px-5 py-2.5 bg-indigo-600 text-white rounded-xl font-bold text-sm hover:bg-indigo-700">Open ${esc(relatedTool.canonicalName)} &rarr;</a>
+            </div>
+          </div>`
+        : '';
+
+      contentHtml = `
+        <article class="space-y-6 max-w-4xl mx-auto">
+          <nav aria-label="Breadcrumb" class="text-xs text-slate-500 space-x-2">
+            <a href="/" class="hover:underline">Home</a> &gt;
+            <a href="/blog" class="hover:underline">Blog</a> &gt;
+            <span class="text-slate-800 font-semibold">${esc(post.title)}</span>
+          </nav>
+
+          <header class="space-y-3">
+            <span class="text-xs font-semibold uppercase tracking-wider text-indigo-600">${esc(post.category)}</span>
+            <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900">${esc(post.title)}</h1>
+            <p class="text-lg text-slate-600 leading-relaxed">${esc(post.description)}</p>
+            <p class="text-xs text-slate-400">By ${esc(post.author)} &bull; ${esc(post.publishDate)} &bull; ${post.readTimeMinutes} min read</p>
+          </header>
+
+          ${ctaHtml}
+
+          <div class="prose max-w-none text-slate-800 my-6">
+            ${mdToHtml(post.contentMarkdown)}
+          </div>
+
+          ${faqsHtml}
+          ${ctaHtml}
+        </article>
+      `;
     }
   } else if (parts[0] === 'blog') {
-    h1 = 'ToolVerse Blog';
+    // Blog Hub
+    contentHtml = `
+      <div class="space-y-6">
+        <header class="space-y-2">
+          <h1 class="text-3xl font-extrabold text-slate-900">ToolVerse Guides &amp; Blog</h1>
+          <p class="text-base text-slate-600">Practical guides, workflows, and tutorials for privacy-first tools, SEO optimization, and calculators.</p>
+        </header>
+        <p class="text-sm text-slate-500">Explore comprehensive how-to tutorials for each of our 113+ free online utilities.</p>
+      </div>
+    `;
   } else if (parts[0] === 'jobs' && parts[1]) {
+    // Job landing
     const job = getJobPageContent?.(parts[1]);
-    if (job) {
-      h1 = job.title;
-      intro = job.intro || job.subtitle;
-    }
-  } else if (parts.length === 0) {
-    h1 = '100+ Free Online Tools for Everyday Work';
+    contentHtml = `
+      <article class="space-y-6">
+        <header class="space-y-2">
+          <h1 class="text-3xl font-extrabold text-slate-900">${esc(job?.title || meta.title)}</h1>
+          <p class="text-base text-slate-600">${esc(job?.intro || job?.subtitle || meta.description)}</p>
+        </header>
+        <p class="text-sm text-slate-500">Search and filter active postings across global portals. Verified listings only.</p>
+      </article>
+    `;
+  } else {
+    // Generic fallback (e.g. Legal)
+    contentHtml = `
+      <article class="space-y-4">
+        <h1 class="text-3xl font-extrabold">${esc(meta.title)}</h1>
+        <p class="text-base text-slate-600">${esc(meta.description)}</p>
+      </article>
+    `;
   }
 
   return `
       <header class="p-4 bg-white border-b">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
-          <a href="/" class="font-bold text-xl">ToolVerse</a>
-          <nav>
-            <a href="/category/pdf-document-tools" class="px-2 text-sm">PDF Tools</a>
-            <a href="/category/image-design-tools" class="px-2 text-sm">Image Tools</a>
-            <a href="/blog" class="px-2 text-sm">Blog</a>
-            <a href="/legal/about" class="px-2 text-sm">About</a>
+          <a href="/" class="font-bold text-xl text-indigo-600">ToolVerse</a>
+          <nav class="space-x-4 text-sm font-medium">
+            <a href="/category/pdf-document-tools" class="text-slate-600 hover:text-indigo-600">PDF Tools</a>
+            <a href="/category/image-design-tools" class="text-slate-600 hover:text-indigo-600">Image Tools</a>
+            <a href="/category/seo-url-tools" class="text-slate-600 hover:text-indigo-600">SEO Tools</a>
+            <a href="/blog" class="text-slate-600 hover:text-indigo-600">Guides &amp; Blog</a>
+            <a href="/legal/about" class="text-slate-600 hover:text-indigo-600">About</a>
           </nav>
         </div>
       </header>
-      <main class="max-w-7xl mx-auto px-4 py-8 space-y-4">
+      <main class="max-w-7xl mx-auto px-4 py-8">
         <!-- prerender:${esc(pathname)} -->
-        <h1 class="text-3xl font-extrabold">${esc(h1)}</h1>
-        <p class="text-base text-slate-600 max-w-3xl">${esc(intro)}</p>
-        ${extra}
-        <p class="text-sm text-slate-500">Interactive tools load in your browser.</p>
+        ${contentHtml}
       </main>
-      <footer class="p-6 bg-white border-t text-center text-xs text-slate-500">
-        <p>&copy; 2026 ToolVerse. Free, fast, privacy-first online tools.</p>
+      <footer class="p-6 bg-slate-900 text-slate-400 border-t text-center text-xs space-y-2 mt-12">
+        <p>&copy; 2026 ToolVerse. Free, fast, privacy-first online tools. All file conversions processed locally in browser.</p>
+        <p class="space-x-3">
+          <a href="/legal/privacy-policy" class="hover:text-white">Privacy</a>
+          <a href="/legal/terms-of-use" class="hover:text-white">Terms</a>
+          <a href="/legal/editorial-policy" class="hover:text-white">Editorial</a>
+          <a href="/legal/contact" class="hover:text-white">Contact</a>
+        </p>
       </footer>`;
 }
 
@@ -198,7 +484,7 @@ async function main() {
 
   try {
     const { getMetadataForPath } = await vite.ssrLoadModule('/lib/seo/metaEngine.ts');
-    const { TOOLS, CATEGORIES } = await vite.ssrLoadModule('/lib/tools/registry.ts');
+    const { TOOLS, CATEGORIES, getToolsByCategory } = await vite.ssrLoadModule('/lib/tools/registry.ts');
     const { BLOG_POSTS, getBlogPostBySlug } = await vite.ssrLoadModule('/lib/blog/posts.ts');
     const { getToolPageContent } = await vite.ssrLoadModule('/lib/seo/toolPageContent.ts');
     const { getCategoryPageContent } = await vite.ssrLoadModule('/lib/seo/categoryPageContent.ts');
@@ -207,6 +493,7 @@ async function main() {
     const deps = {
       TOOLS,
       CATEGORIES,
+      getToolsByCategory,
       getToolPageContent,
       getCategoryPageContent,
       getBlogPostBySlug,

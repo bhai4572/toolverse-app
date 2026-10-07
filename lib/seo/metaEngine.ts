@@ -1,4 +1,4 @@
-import { getToolBySlug, CATEGORIES } from '@/lib/tools/registry';
+import { getToolBySlug, getToolsByCategory, CATEGORIES } from '@/lib/tools/registry';
 import { getBlogPostBySlug } from '@/lib/blog/posts';
 import { getToolPageContent } from '@/lib/seo/toolPageContent';
 import { getCategoryPageContent } from '@/lib/seo/categoryPageContent';
@@ -195,6 +195,19 @@ export function getMetadataForPath(pathname: string): PageMetadata {
         })),
       };
 
+      const howToSchema = tool.instructions && tool.instructions.length > 0 ? {
+        '@context': 'https://schema.org',
+        '@type': 'HowTo',
+        name: `How to Use ${tool.canonicalName}`,
+        description: pageSeo?.answerFirst || tool.shortDescription,
+        step: tool.instructions.map((inst, index) => ({
+          '@type': 'HowToStep',
+          position: index + 1,
+          name: `Step ${index + 1}`,
+          text: inst,
+        })),
+      } : null;
+
       return {
         title: pageTitle,
         description: pageDesc,
@@ -202,7 +215,7 @@ export function getMetadataForPath(pathname: string): PageMetadata {
         canonicalUrl,
         ogType: 'website',
         ogImage: DEFAULT_OG_IMAGE,
-        jsonLd: [softwareAppSchema, breadcrumbSchema, faqSchema],
+        jsonLd: [softwareAppSchema, breadcrumbSchema, faqSchema, ...(howToSchema ? [howToSchema] : [])],
       };
     }
   }
@@ -212,6 +225,22 @@ export function getMetadataForPath(pathname: string): PageMetadata {
     if (category) {
       const canonicalUrl = `${baseUrl}/category/${category.slug}`;
       const catSeo = getCategoryPageContent(category.slug);
+      const catTools = getToolsByCategory(category.slug);
+      const itemListSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        name: `${category.name} Tools Collection`,
+        description: catSeo?.intro || category.description,
+        numberOfItems: catTools.length,
+        itemListElement: catTools.map((t, idx) => ({
+          '@type': 'ListItem',
+          position: idx + 1,
+          name: t.canonicalName,
+          url: `${baseUrl}/tools/${t.slug}`,
+          description: t.shortDescription,
+        })),
+      };
+
       return {
         title: catSeo?.seoTitle ?? `${category.name} — Free Online Tools | ToolVerse`,
         description:
@@ -222,20 +251,76 @@ export function getMetadataForPath(pathname: string): PageMetadata {
         ogType: 'website',
         ogImage: DEFAULT_OG_IMAGE,
         jsonLd: [
-          {
-            '@context': 'https://schema.org',
-            '@type': 'CollectionPage',
-            name: category.name,
-            description: catSeo?.intro || category.description,
-            url: canonicalUrl,
-            inLanguage: 'en',
-            isPartOf: {
-              '@type': 'WebSite',
-              name: 'ToolVerse',
-              url: `${baseUrl}/`,
+            {
+              '@context': 'https://schema.org',
+              '@type': 'CollectionPage',
+              name: category.name,
+              description: catSeo?.intro || category.description,
+              url: canonicalUrl,
+              inLanguage: 'en',
+              isPartOf: {
+                '@type': 'WebSite',
+                name: 'ToolVerse',
+                url: `${baseUrl}/`,
+              },
             },
-          },
-          {
+            {
+              '@context': 'https://schema.org',
+              '@type': 'BreadcrumbList',
+              itemListElement: [
+                {
+                  '@type': 'ListItem',
+                  position: 1,
+                  name: 'Home',
+                  item: `${baseUrl}/`,
+                },
+                {
+                  '@type': 'ListItem',
+                  position: 2,
+                  name: category.name,
+                  item: canonicalUrl,
+                },
+              ],
+            },
+            itemListSchema,
+          ],
+        };
+      }
+    }
+
+    if (parts[0] === 'blog') {
+      if (parts[1]) {
+        const post = getBlogPostBySlug(parts[1]);
+        if (post) {
+          const canonicalUrl = `${baseUrl}/blog/${post.slug}`;
+          const ogImage = post.featuredImage || DEFAULT_OG_IMAGE;
+          const blogSchema = {
+            '@context': 'https://schema.org',
+            '@type': 'BlogPosting',
+            headline: post.title,
+            description: post.description,
+            image: [ogImage],
+            datePublished: post.publishDate,
+            dateModified: post.publishDate,
+            author: {
+              '@type': 'Person',
+              name: post.author,
+            },
+            publisher: {
+              '@type': 'Organization',
+              name: 'ToolVerse',
+              logo: {
+                '@type': 'ImageObject',
+                url: `${baseUrl}/favicon.svg`,
+              },
+            },
+            mainEntityOfPage: {
+              '@type': 'WebPage',
+              '@id': canonicalUrl,
+            },
+          };
+
+          const breadcrumbSchema = {
             '@context': 'https://schema.org',
             '@type': 'BreadcrumbList',
             itemListElement: [
@@ -248,84 +333,45 @@ export function getMetadataForPath(pathname: string): PageMetadata {
               {
                 '@type': 'ListItem',
                 position: 2,
-                name: category.name,
+                name: 'Blog',
+                item: `${baseUrl}/blog`,
+              },
+              {
+                '@type': 'ListItem',
+                position: 3,
+                name: post.title,
                 item: canonicalUrl,
               },
             ],
-          },
-        ],
-      };
-    }
-  }
+          };
 
-  if (parts[0] === 'blog') {
-    if (parts[1]) {
-      const post = getBlogPostBySlug(parts[1]);
-      if (post) {
-        const canonicalUrl = `${baseUrl}/blog/${post.slug}`;
-        const ogImage = post.featuredImage || DEFAULT_OG_IMAGE;
-        const blogSchema = {
-          '@context': 'https://schema.org',
-          '@type': 'BlogPosting',
-          headline: post.title,
-          description: post.description,
-          image: [ogImage],
-          datePublished: post.publishDate,
-          dateModified: post.publishDate,
-          author: {
-            '@type': 'Person',
-            name: post.author,
-          },
-          publisher: {
-            '@type': 'Organization',
-            name: 'ToolVerse',
-            logo: {
-              '@type': 'ImageObject',
-              url: `${baseUrl}/favicon.svg`,
-            },
-          },
-          mainEntityOfPage: {
-            '@type': 'WebPage',
-            '@id': canonicalUrl,
-          },
-        };
+          const faqSchema =
+            post.faqs && post.faqs.length > 0
+              ? {
+                  '@context': 'https://schema.org',
+                  '@type': 'FAQPage',
+                  mainEntity: post.faqs.map((faq) => ({
+                    '@type': 'Question',
+                    name: faq.question,
+                    acceptedAnswer: {
+                      '@type': 'Answer',
+                      text: faq.answer,
+                    },
+                  })),
+                }
+              : null;
 
-        const breadcrumbSchema = {
-          '@context': 'https://schema.org',
-          '@type': 'BreadcrumbList',
-          itemListElement: [
-            {
-              '@type': 'ListItem',
-              position: 1,
-              name: 'Home',
-              item: `${baseUrl}/`,
-            },
-            {
-              '@type': 'ListItem',
-              position: 2,
-              name: 'Blog',
-              item: `${baseUrl}/blog`,
-            },
-            {
-              '@type': 'ListItem',
-              position: 3,
-              name: post.title,
-              item: canonicalUrl,
-            },
-          ],
-        };
-
-        return {
-          title: `${post.title} — ToolVerse`,
-          description: post.description,
-          keywords: post.keywords,
-          canonicalUrl,
-          ogType: 'article',
-          ogImage,
-          jsonLd: [blogSchema, breadcrumbSchema],
-        };
+          return {
+            title: `${post.title} — ToolVerse`,
+            description: post.description,
+            keywords: post.keywords,
+            canonicalUrl,
+            ogType: 'article',
+            ogImage,
+            jsonLd: [blogSchema, breadcrumbSchema, ...(faqSchema ? [faqSchema] : [])],
+          };
+        }
       }
-    }
 
     return {
       title: 'ToolVerse Blog — Guides for Tools, Careers & Privacy',

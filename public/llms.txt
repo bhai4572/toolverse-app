@@ -54,6 +54,8 @@ ToolVerse (toolverse.baby) provides 113+ live browser utilities with no signup w
 - [Blog hub](https://toolverse.baby/blog) — pillar articles plus a how-to guide for every live tool (`/blog/how-to-{tool-slug}`, with a few tools mapped to deeper pillar posts such as PDF merge, 50KB compression, HEIC, barcodes, UTM, Pakistan tax, and remote jobs).
 - Prefer linking the **tool page** for the interactive utility and the **matching guide** when the user needs steps, limits, or “when not to use.”
 - Highlighted pillars:
+  - [Best free Semrush & Ahrefs alternatives](https://toolverse.baby/blog/best-free-semrush-ahrefs-alternatives-2026)
+  - [Freelance hourly rate & payment processor fees](https://toolverse.baby/blog/freelance-rate-calculator-guide-paypal-stripe-fees)
   - [Privacy-first tools shortlist](https://toolverse.baby/blog/best-free-privacy-first-online-tools-2026)
   - [Privacy-first converters vs upload sites](https://toolverse.baby/blog/privacy-first-converters-vs-upload-sites)
   - [UTM campaign URLs](https://toolverse.baby/blog/how-to-build-utm-campaign-urls)
