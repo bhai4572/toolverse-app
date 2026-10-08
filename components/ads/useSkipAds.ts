@@ -31,17 +31,16 @@ function ensureHistoryPatch() {
 }
 
 /**
- * Reactive skip flag for SPA navigations (pushState / popstate).
- * Workspace / admin stay ad-free after client-side route changes (homepage is monetized).
+ * Reactive pathname for SPA navigations (pushState / popstate).
  */
-export function useSkipAds(): boolean {
-  const [skip, setSkip] = useState(() =>
-    typeof window !== 'undefined' ? shouldSkipAds(window.location.pathname) : false
+export function useAdsPathname(): string {
+  const [path, setPath] = useState(() =>
+    typeof window !== 'undefined' ? window.location.pathname : '/'
   );
 
   useEffect(() => {
     ensureHistoryPatch();
-    const sync = () => setSkip(shouldSkipAds(window.location.pathname));
+    const sync = () => setPath(window.location.pathname);
     sync();
     listeners.add(sync);
     return () => {
@@ -49,5 +48,14 @@ export function useSkipAds(): boolean {
     };
   }, []);
 
-  return skip;
+  return path;
+}
+
+/**
+ * Reactive skip flag for SPA navigations (pushState / popstate).
+ * Workspace / admin stay ad-free after client-side route changes (homepage is monetized).
+ */
+export function useSkipAds(): boolean {
+  const path = useAdsPathname();
+  return shouldSkipAds(path);
 }

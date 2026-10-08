@@ -2,9 +2,15 @@
  * Adsterra unit registry — human labels match publisher dashboard names.
  * Tools stay free; these units are display-only (never gate UI).
  *
- * Monetag: In-Page Push + Vignette live in index.html (zones 11966213 / 11966214).
+ * Monetag: In-Page Push + Vignette load from AdGlobals (controlled; no popunder).
  * Banner zone was never stored in git — set MONETAG_BANNER_ZONE when you create one.
  */
+
+/** Monetag In-Page Push — public pages via AdGlobals */
+export const MONETAG_PUSH_ZONE = '11986841';
+
+/** Monetag Vignette — inner pages only, gated in AdGlobals */
+export const MONETAG_VIGNETTE_ZONE = '11986843';
 
 /** Monetag display/banner zone ID — leave empty until pasted from Monetag dashboard */
 export const MONETAG_BANNER_ZONE = '';

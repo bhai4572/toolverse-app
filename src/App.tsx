@@ -334,7 +334,7 @@ export default function App() {
         {renderContent()}
       </main>
       {!isWorkspace && <Footer />}
-      {/* Global ad hooks (Social Bar removed; Monetag push/vignette in index.html) */}
+      {/* Global ad hooks (Social Bar removed; Monetag push/vignette via AdGlobals) */}
       {!skipAds && <AdGlobals />}
     </div>
   );
