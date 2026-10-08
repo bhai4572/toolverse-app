@@ -729,8 +729,13 @@ async function main() {
       routes.push(`/publishers/${p}`);
     }
 
-    // SEO Tools & Dashboard Routes
+    // SEO Suite, hubs, pricing
+    routes.push('/seo');
     routes.push('/seo-tools');
+    routes.push('/tools');
+    routes.push('/pricing');
+    routes.push('/study');
+    routes.push('/immigration');
     routes.push('/dashboard');
 
     for (const route of routes) {

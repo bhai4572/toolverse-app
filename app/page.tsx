@@ -2,42 +2,82 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Search, ShieldCheck, Zap, Lock, Sparkles, ArrowRight, Layers, Minimize2, QrCode, FileText, Calculator, Code2, Globe, Briefcase } from 'lucide-react';
-import { TOOLS, CATEGORIES, getPopularTools, getFeaturedTools, searchTools, ToolDefinition } from '@/lib/tools/registry';
+import { Search, ArrowRight, Wrench, Globe2, GraduationCap, Landmark, ShieldCheck, Zap } from 'lucide-react';
+import { TOOLS, CATEGORIES, getPopularTools, searchTools } from '@/lib/tools/registry';
+
+const PATHS = [
+  {
+    href: '/tools',
+    title: 'Tools',
+    blurb: 'PDF, image, calculators, writing — category-first hub.',
+    icon: Wrench,
+  },
+  {
+    href: '/seo',
+    title: 'SEO Suite',
+    blurb: 'On-page, technical, keywords — free lite + Pro roadmap.',
+    icon: Globe2,
+  },
+  {
+    href: '/study',
+    title: 'Study Abroad',
+    blurb: 'Study-visa routes and destination paths.',
+    icon: GraduationCap,
+  },
+  {
+    href: '/immigration',
+    title: 'Immigration',
+    blurb: 'Work visas, embassies, jobs abroad.',
+    icon: Landmark,
+  },
+] as const;
 
 export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState(() => {
     if (typeof window === 'undefined') return '';
     return new URLSearchParams(window.location.search).get('q') || '';
   });
-  const popularTools = getPopularTools();
-  const featuredTools = getFeaturedTools();
-
+  const popularTools = getPopularTools().slice(0, 6);
   const searchResults = searchQuery.trim() ? searchTools(searchQuery) : [];
 
   return (
-    <div className="space-y-16 py-6">
-      {/* Hero Section */}
-      <section className="text-center space-y-6 max-w-4xl mx-auto pt-6">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-50 dark:bg-brand-950/60 border border-brand-200/60 dark:border-brand-800/60 text-brand-700 dark:text-brand-300 text-xs font-semibold">
-          <Sparkles className="w-3.5 h-3.5" />
-          <span>{TOOLS.length}+ Free Online Tools &amp; 100% Privacy-First Suite</span>
-        </div>
-
-        <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
-          {TOOLS.length}+ Free Online Tools for <span className="text-brand-600 dark:text-brand-500">Everyday Work</span>
-        </h1>
-
-        <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
-          <strong className="font-semibold text-slate-800 dark:text-slate-200">ToolVerse</strong> is a
-          privacy-first suite of free browser utilities for PDFs, images, calculators, writing, SEO helpers,
-          developers, and job search — most file tools process locally on your device with no signup wall.
-        </p>
-
-        {/* Global Search Input */}
-        <div className="max-w-xl mx-auto relative">
-          <div className="relative shadow-lg rounded-xl overflow-hidden">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" aria-hidden="true" />
+    <div className="space-y-14 py-2">
+      {/* Hero — one composition: brand, headline, support, CTA, search */}
+      <section className="relative overflow-hidden rounded-3xl border border-slate-200 dark:border-slate-800">
+        <div
+          className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-brand-900"
+          aria-hidden
+        />
+        <div
+          className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_20%_20%,rgba(59,130,246,0.45),transparent_45%),radial-gradient(circle_at_90%_10%,rgba(14,165,233,0.25),transparent_40%)]"
+          aria-hidden
+        />
+        <div className="relative px-6 py-14 sm:px-12 sm:py-20 max-w-3xl space-y-6">
+          <p className="text-sm font-bold tracking-tight text-white">
+            Tool<span className="text-brand-400">Verse</span>
+          </p>
+          <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-[1.1]">
+            Free tools. Real SEO suite. Clear paths.
+          </h1>
+          <p className="text-slate-300 text-sm sm:text-base max-w-xl leading-relaxed">
+            Privacy-first utilities plus a growing SEO software module — pick Tools, SEO, Study, or Immigration. No one-screen dump.
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <Link
+              href="/tools"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-bold transition-colors"
+            >
+              Browse tools <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
+              href="/seo"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-white/25 hover:border-white/50 text-white text-sm font-bold"
+            >
+              Open SEO Suite
+            </Link>
+          </div>
+          <div className="relative max-w-md pt-2">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input
               type="search"
               value={searchQuery}
@@ -51,293 +91,81 @@ export default function HomePage() {
                   window.history.replaceState({}, '', url.pathname + url.search);
                 }
               }}
-              placeholder="Search tools or businesses (e.g. Ali Barber, photo 100kb, pdf merge)..."
-              aria-label="Search ToolVerse tools"
-              className="w-full pl-12 pr-4 py-4 text-base bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 outline-none focus:border-brand-500 dark:text-white"
+              placeholder="Search tools (pdf merge, keyword, tax…)"
+              aria-label="Search tools"
+              className="w-full pl-10 pr-4 py-3 rounded-xl bg-white/10 border border-white/15 text-white placeholder:text-slate-400 text-sm outline-none focus:border-brand-400"
             />
-          </div>
-
-          {searchResults.length > 0 && (
-            <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-2xl max-h-80 overflow-y-auto text-left py-2 z-50">
-              {searchResults.map((tool) => (
-                <Link
-                  key={tool.id}
-                  href={`/tools/${tool.slug}`}
-                  className="px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center justify-between group transition-colors"
-                >
-                  <div>
-                    <div className="text-sm font-semibold text-slate-900 dark:text-white group-hover:text-brand-600">
-                      {tool.canonicalName}
-                    </div>
-                    <div className="text-xs text-slate-500">{tool.shortDescription}</div>
-                  </div>
-                  <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-brand-600" />
-                </Link>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* Global Business Digital Identity & Printable QR Network Section */}
-      <section className="relative overflow-hidden rounded-3xl bg-slate-900 text-white p-6 sm:p-10 shadow-2xl border border-indigo-500/30">
-        <div className="absolute top-0 right-0 -mt-10 -mr-10 w-64 h-64 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none" />
-        
-        <div className="relative z-10 space-y-8">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-            <div className="space-y-3 max-w-2xl">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 text-xs font-bold uppercase tracking-wider">
-                <QrCode className="w-4 h-4 text-indigo-400" />
-                <span>Global Business Identity &amp; QR Network</span>
+            {searchResults.length > 0 && (
+              <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-2xl max-h-64 overflow-y-auto py-1 z-20 text-left">
+                {searchResults.slice(0, 8).map((tool) => (
+                  <Link key={tool.id} href={`/tools/${tool.slug}`} className="block px-4 py-2.5 hover:bg-slate-50 dark:hover:bg-slate-800 text-sm font-medium text-slate-900 dark:text-white">
+                    {tool.canonicalName}
+                  </Link>
+                ))}
               </div>
-              <h2 className="text-2xl sm:text-4xl font-extrabold text-white leading-tight">
-                Give Your Business a Permanent Toolverse Digital Identity 🏪
-              </h2>
-              <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
-                Connect offline customers to your online presence. Every business receives a permanent Business ID (<code className="text-amber-300 font-mono">TV-BIZ-XXXXXX</code>), verified credentials, vector printable QR identity badges, category rankings, and honest review management.
-              </p>
-            </div>
-
-            <div className="flex flex-wrap md:flex-col gap-3 w-full md:w-auto">
-              <Link
-                href="/business"
-                className="flex-1 md:flex-none text-center px-6 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm shadow-lg shadow-indigo-600/30 transition-all hover:scale-105 active:scale-95"
-              >
-                Explore Businesses 🏪
-              </Link>
-              <Link
-                href="/business/register"
-                className="flex-1 md:flex-none text-center px-6 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow-lg shadow-emerald-600/30 transition-all hover:scale-105 active:scale-95"
-              >
-                List Your Business +
-              </Link>
-            </div>
-          </div>
-
-          {/* Quick Identity Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t border-slate-800">
-            <Link href="/business" className="p-4 rounded-2xl bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 transition-all group">
-              <div className="flex items-center justify-between mb-2">
-                <Globe className="w-5 h-5 text-indigo-400 group-hover:scale-110 transition-transform" />
-                <span className="text-[10px] uppercase font-bold text-indigo-300 bg-indigo-950/80 px-2 py-0.5 rounded border border-indigo-800">Directory</span>
-              </div>
-              <h3 className="font-bold text-sm text-white group-hover:text-indigo-300 transition-colors">Global Directory</h3>
-              <p className="text-xs text-slate-400 mt-1">Discover verified local shops, SaaS platforms, and services.</p>
-            </Link>
-
-            <Link href="/business-qr" className="p-4 rounded-2xl bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 transition-all group">
-              <div className="flex items-center justify-between mb-2">
-                <QrCode className="w-5 h-5 text-emerald-400 group-hover:scale-110 transition-transform" />
-                <span className="text-[10px] uppercase font-bold text-emerald-300 bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-800">Printable</span>
-              </div>
-              <h3 className="font-bold text-sm text-white group-hover:text-emerald-300 transition-colors">Vector QR Badges</h3>
-              <p className="text-xs text-slate-400 mt-1">Print custom status badges for shop windows and counters.</p>
-            </Link>
-
-            <Link href="/business/bidding" className="p-4 rounded-2xl bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 transition-all group">
-              <div className="flex items-center justify-between mb-2">
-                <Sparkles className="w-5 h-5 text-amber-400 group-hover:scale-110 transition-transform" />
-                <span className="text-[10px] uppercase font-bold text-amber-300 bg-amber-950/80 px-2 py-0.5 rounded border border-amber-800">Top 3 Bidding</span>
-              </div>
-              <h3 className="font-bold text-sm text-white group-hover:text-amber-300 transition-colors">Category Auction</h3>
-              <p className="text-xs text-slate-400 mt-1">Compete for sponsored Top 3 positions in your industry.</p>
-            </Link>
-
-            <Link href="/how-to" className="p-4 rounded-2xl bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 transition-all group">
-              <div className="flex items-center justify-between mb-2">
-                <FileText className="w-5 h-5 text-cyan-400 group-hover:scale-110 transition-transform" />
-                <span className="text-[10px] uppercase font-bold text-cyan-300 bg-cyan-950/80 px-2 py-0.5 rounded border border-cyan-800">Guides</span>
-              </div>
-              <h3 className="font-bold text-sm text-white group-hover:text-cyan-300 transition-colors">How-To Center</h3>
-              <p className="text-xs text-slate-400 mt-1">Step-by-step guides for verification and QR identity growth.</p>
-            </Link>
+            )}
           </div>
         </div>
       </section>
 
-      {/* Featured Global Job Engine Banner */}
-      <section className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-brand-950 to-indigo-950 p-6 sm:p-8 text-white shadow-2xl border border-brand-800/40">
-        <div className="absolute top-0 right-0 -mt-10 -mr-10 w-48 h-48 bg-brand-500/20 rounded-full blur-3xl pointer-events-none" />
-        <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-          <div className="space-y-2 max-w-xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/20 text-brand-300 border border-brand-400/30 text-xs font-semibold">
-              <Briefcase className="w-3.5 h-3.5 text-brand-400" />
-              <span>1-Click Live Global Job Finder Engine</span>
-            </div>
-            <h2 className="text-xl sm:text-2xl font-extrabold text-white">
-              Find Jobs by City, Country & Industry 💼
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-300">
-              Live crawler indexing Global Govt Civil Service Portals (USA, UK, UAE, Saudi Arabia, Canada, EU, India, Pakistan), Banks, Tech, Medical & Remote jobs worldwide.
+      {/* Product paths — not card soup in hero; secondary section */}
+      <section className="space-y-4" aria-labelledby="paths-heading">
+        <h2 id="paths-heading" className="text-xl font-bold text-slate-900 dark:text-white">
+          Where do you want to go?
+        </h2>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {PATHS.map((p) => (
+            <Link
+              key={p.href}
+              href={p.href}
+              className="group p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-brand-500/60 transition-colors"
+            >
+              <p.icon className="w-5 h-5 text-brand-600 mb-3" />
+              <h3 className="font-bold text-slate-900 dark:text-white group-hover:text-brand-600">{p.title}</h3>
+              <p className="text-xs text-slate-500 mt-1 leading-relaxed">{p.blurb}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/60 dark:border-emerald-800/40">
+        <div className="flex items-start gap-3">
+          <ShieldCheck className="w-6 h-6 text-emerald-600 shrink-0" />
+          <div>
+            <h2 className="font-bold text-slate-900 dark:text-white text-sm">Browser privacy for file tools</h2>
+            <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
+              Client-side PDF/image tools process locally. Free tier is ad-supported — Pro will mean fewer ads + SEO depth.
             </p>
           </div>
-          <Link
-            href="/tools/global-job-finder"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-sm transition-all shadow-lg shadow-brand-600/30 hover:scale-105 active:scale-95 whitespace-nowrap"
-          >
-            <span>Find Jobs Now</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
         </div>
+        <Link href="/pricing" className="text-xs font-bold text-brand-600 whitespace-nowrap hover:underline">
+          Free vs Pro →
+        </Link>
       </section>
 
-      {/* Privacy Guarantee Section */}
-      <section className="bg-gradient-to-r from-brand-600 to-indigo-700 text-white rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl">
-        <div className="space-y-2 text-center sm:text-left">
-          <div className="flex items-center gap-2 justify-center sm:justify-start font-bold text-lg">
-            <ShieldCheck className="w-6 h-6 text-emerald-300" />
-            <span>Browser Privacy Guarantee</span>
-          </div>
-          <p className="text-sm text-blue-100 max-w-xl">
-            Your files and documents stay entirely inside your web browser memory. No files are uploaded to any cloud server for client-side tools.
-          </p>
-        </div>
-        <div className="flex items-center gap-3 bg-white/10 backdrop-blur-md px-4 py-2.5 rounded-xl text-xs font-semibold border border-white/20">
-          <Lock className="w-4 h-4 text-emerald-300" />
-          <span>Zero Server Storage</span>
-        </div>
-      </section>
-
-      {/* Answer-first workflows (AEO + internal links) */}
-      <section className="space-y-4 max-w-4xl mx-auto" aria-labelledby="workflows-heading">
-        <h2 id="workflows-heading" className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white text-center sm:text-left">
-          Common workflows
-        </h2>
-        <ul className="grid sm:grid-cols-2 gap-3 text-sm text-slate-600 dark:text-slate-300">
-          <li className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
-            Need a <Link className="text-brand-600 font-medium hover:underline" href="/tools/compress-image-target-size">photo under 50KB</Link> for a job portal? Compress locally, then convert{' '}
-            <Link className="text-brand-600 font-medium hover:underline" href="/tools/heic-to-jpg">HEIC to JPG</Link> if needed.
-          </li>
-          <li className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
-            Building an application packet?{' '}
-            <Link className="text-brand-600 font-medium hover:underline" href="/tools/pdf-merge">Merge PDFs</Link>,{' '}
-            <Link className="text-brand-600 font-medium hover:underline" href="/tools/pdf-split">split pages</Link>, or start from{' '}
-            <Link className="text-brand-600 font-medium hover:underline" href="/category/pdf-document-tools">PDF tools</Link>.
-          </li>
-          <li className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
-            Planning take-home pay in Pakistan? Try the{' '}
-            <Link className="text-brand-600 font-medium hover:underline" href="/tools/pakistan-salary-tax-estimator">salary tax estimator</Link> and{' '}
-            <Link className="text-brand-600 font-medium hover:underline" href="/tools/zakat-calculator">Zakat calculator</Link>.
-          </li>
-          <li className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
-            Job hunting? Open the{' '}
-            <Link className="text-brand-600 font-medium hover:underline" href="/tools/global-job-finder">job finder</Link> or browse{' '}
-            <Link className="text-brand-600 font-medium hover:underline" href="/jobs/remote-jobs">remote jobs</Link>, then prep files with PDF/image tools.
-          </li>
-        </ul>
-      </section>
-
-      {/* Popular Tools Grid */}
-      <section className="space-y-6">
-        <div className="flex items-center justify-between">
+      <section className="space-y-4">
+        <div className="flex items-end justify-between gap-4">
           <div>
-            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Most Popular Tools</h2>
-            <p className="text-xs text-slate-500">High-intent utilities people open most often for forms, PDFs, and daily work.</p>
+            <h2 className="text-xl font-bold text-slate-900 dark:text-white">Popular tools</h2>
+            <p className="text-xs text-slate-500">{TOOLS.length}+ live · {CATEGORIES.length} categories</p>
           </div>
+          <Link href="/tools" className="text-xs font-semibold text-brand-600 hover:underline">All categories</Link>
         </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {popularTools.map((tool) => (
             <Link
               key={tool.id}
               href={`/tools/${tool.slug}`}
-              className="tool-card group flex flex-col justify-between"
+              className="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-brand-500/50 transition-colors"
             >
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <div className="w-10 h-10 rounded-lg bg-brand-50 dark:bg-slate-800 text-brand-600 dark:text-brand-400 flex items-center justify-center font-bold">
-                    <Zap className="w-5 h-5" />
-                  </div>
-                  <span className="text-[10px] uppercase font-semibold text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">
-                    {tool.processingMode}
-                  </span>
-                </div>
-                <h3 className="font-semibold text-base text-slate-900 dark:text-white group-hover:text-brand-600 transition-colors">
-                  {tool.canonicalName}
-                </h3>
-                <p className="text-xs text-slate-500 line-clamp-2">{tool.shortDescription}</p>
+              <div className="flex items-center gap-2 mb-2">
+                <Zap className="w-4 h-4 text-brand-600" />
+                <h3 className="font-semibold text-sm text-slate-900 dark:text-white">{tool.canonicalName}</h3>
               </div>
-
-              <div className="pt-4 flex items-center gap-1 text-xs font-semibold text-brand-600 dark:text-brand-400">
-                <span>Use Tool</span>
-                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-              </div>
+              <p className="text-xs text-slate-500 line-clamp-2">{tool.shortDescription}</p>
             </Link>
           ))}
         </div>
-      </section>
-
-      {/* Browse By Categories */}
-      <section className="space-y-6">
-        <div>
-          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Browse All Categories</h2>
-          <p className="text-xs text-slate-500">Explore tools organized by domain and workflow.</p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {CATEGORIES.map((cat) => (
-            <Link
-              key={cat.id}
-              href={`/category/${cat.slug}`}
-              className="tool-card hover:border-brand-500/80 transition-all flex flex-col justify-between"
-            >
-              <div className="space-y-2">
-                <div className="font-bold text-base text-slate-900 dark:text-white">{cat.name}</div>
-                <p className="text-xs text-slate-500">{cat.description}</p>
-              </div>
-              <div className="pt-4 text-xs font-semibold text-brand-600 flex items-center gap-1">
-                <span>View Category Tools</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* Visible FAQ — matches homepage FAQ schema */}
-      <section className="max-w-3xl mx-auto space-y-4" aria-labelledby="home-faq-heading">
-        <h2 id="home-faq-heading" className="text-xl font-bold text-slate-900 dark:text-white">
-          Frequently asked questions
-        </h2>
-        <div className="space-y-3">
-          <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
-            <h3 className="text-sm font-semibold text-slate-900 dark:text-white">Are ToolVerse tools free?</h3>
-            <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
-              Yes. Core utilities are free to use in your browser without creating an account for basic workflows.
-            </p>
-          </div>
-          <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
-            <h3 className="text-sm font-semibold text-slate-900 dark:text-white">Do you upload my PDFs or photos?</h3>
-            <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
-              Client-side tools process files in your browser memory. Your documents are not uploaded to ToolVerse servers for those tools.
-            </p>
-          </div>
-          <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
-            <h3 className="text-sm font-semibold text-slate-900 dark:text-white">Where should I start?</h3>
-            <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
-              Use search above, pick a category, or open popular tools like{' '}
-              <Link href="/tools/compress-image-target-size" className="text-brand-600 hover:underline">
-                target-size image compression
-              </Link>
-              ,{' '}
-              <Link href="/tools/pdf-merge" className="text-brand-600 hover:underline">
-                PDF merge
-              </Link>
-              , or the{' '}
-              <Link href="/blog" className="text-brand-600 hover:underline">
-                guides blog
-              </Link>
-              .
-            </p>
-          </div>
-        </div>
-        <p className="text-xs text-slate-500">
-          Learn more on{' '}
-          <Link href="/legal/about" className="text-brand-600 hover:underline font-medium">
-            About ToolVerse
-          </Link>
-          .
-        </p>
       </section>
     </div>
   );

@@ -51,6 +51,11 @@ import PublisherProfilePage from '../app/publishers/[slug]/page';
 import CreatePitchPage from '../app/guest-posts/create-pitch/page';
 import BecomeAPublisherPage from '../app/become-a-publisher/page';
 import SeoToolsPage from '../app/seo-tools/page';
+import SeoSuitePage from '../app/seo/page';
+import ToolsHubPage from '../app/tools/page';
+import PricingPage from '../app/pricing/page';
+import StudyAbroadPage from '../app/study/page';
+import ImmigrationPage from '../app/immigration/page';
 import DashboardPage from '../app/dashboard/page';
 
 import { Header } from '../components/Header';
@@ -168,8 +173,28 @@ export default function App() {
       return <BecomeAPublisherPage />;
     }
 
+    if (parts[0] === 'seo' || parts[0] === 'seo-suite') {
+      return <SeoSuitePage />;
+    }
+
     if (parts[0] === 'seo-tools') {
       return <SeoToolsPage />;
+    }
+
+    if (parts[0] === 'pricing') {
+      return <PricingPage />;
+    }
+
+    if (parts[0] === 'study') {
+      return <StudyAbroadPage />;
+    }
+
+    if (parts[0] === 'immigration') {
+      return <ImmigrationPage />;
+    }
+
+    if (parts[0] === 'tools' && !parts[1]) {
+      return <ToolsHubPage />;
     }
 
     if (parts[0] === 'dashboard') {

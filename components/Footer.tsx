@@ -26,24 +26,23 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Categories */}
+          {/* Product areas */}
           <div>
-            <h4 className="text-white font-semibold text-sm mb-4">Tool Categories</h4>
+            <h4 className="text-white font-semibold text-sm mb-4">Product</h4>
             <ul className="space-y-2 text-xs">
-              {CATEGORIES.slice(0, 6).map((cat) => (
-                <li key={cat.id}>
-                  <Link href={`/category/${cat.slug}`} className="hover:text-white transition-colors">
-                    {cat.name}
-                  </Link>
-                </li>
-              ))}
+              <li><Link href="/tools" className="hover:text-white transition-colors">Tools hub</Link></li>
+              <li><Link href="/seo" className="hover:text-white transition-colors">SEO Suite</Link></li>
+              <li><Link href="/study" className="hover:text-white transition-colors">Study Abroad</Link></li>
+              <li><Link href="/immigration" className="hover:text-white transition-colors">Immigration</Link></li>
+              <li><Link href="/pricing" className="hover:text-white transition-colors">Pricing</Link></li>
+              <li><Link href="/travel" className="hover:text-white transition-colors">Travel</Link></li>
             </ul>
           </div>
 
           <div>
-            <h4 className="text-white font-semibold text-sm mb-4">More Categories</h4>
+            <h4 className="text-white font-semibold text-sm mb-4">Tool Categories</h4>
             <ul className="space-y-2 text-xs">
-              {CATEGORIES.slice(6).map((cat) => (
+              {CATEGORIES.slice(0, 8).map((cat) => (
                 <li key={cat.id}>
                   <Link href={`/category/${cat.slug}`} className="hover:text-white transition-colors">
                     {cat.name}

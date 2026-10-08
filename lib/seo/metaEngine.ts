@@ -1381,6 +1381,57 @@ export function getMetadataForPath(pathname: string): PageMetadata {
     };
   }
 
+  // Product hubs (SEO Suite, Tools, Study, Immigration, Pricing)
+  const hubMeta: Record<string, { title: string; description: string; keywords: string[] }> = {
+    seo: {
+      title: 'ToolVerse SEO Suite — Free On-Page & Technical SEO Tools',
+      description:
+        'Professional SEO software hub: meta tags, site audit lite, keywords, robots, sitemap, schema. Free tools live; Pro crawl/rank/backlinks on the roadmap.',
+      keywords: ['seo suite', 'free seo tools', 'on page seo', 'semrush alternative', 'toolverse seo'],
+    },
+    tools: {
+      title: 'All Tools Hub — Browse ToolVerse by Category',
+      description: 'Find PDF, image, calculator, writing, SEO, and developer tools organized by category. Privacy-first browser utilities.',
+      keywords: ['online tools hub', 'free pdf tools', 'image tools', 'toolverse'],
+    },
+    pricing: {
+      title: 'ToolVerse Pricing — Free vs Pro SEO',
+      description: 'Free ad-supported utilities and SEO lite. Pro roadmap: full site audit, rank tracking, real backlinks, fewer ads.',
+      keywords: ['toolverse pricing', 'seo tools free vs pro'],
+    },
+    study: {
+      title: 'Study Abroad — Visa Routes & Destinations | ToolVerse',
+      description: 'Study-abroad hub with destination visa routes, embassies, and related application tools. University dataset coming.',
+      keywords: ['study abroad', 'student visa', 'study in uk canada australia'],
+    },
+    immigration: {
+      title: 'Immigration & Work Visas — ToolVerse',
+      description: 'Immigration hub for work visas, embassies, and jobs abroad — structured from ToolVerse travel intelligence.',
+      keywords: ['immigration', 'work visa', 'embassy directory'],
+    },
+  };
+
+  if (parts.length === 1 && hubMeta[parts[0]]) {
+    const h = hubMeta[parts[0]];
+    const canonicalUrl = `${baseUrl}/${parts[0]}`;
+    return {
+      title: h.title,
+      description: h.description,
+      keywords: h.keywords,
+      canonicalUrl,
+      ogType: 'website',
+      ogImage: DEFAULT_OG_IMAGE,
+      jsonLd: wrapInGraph([
+        buildOrganizationNode(),
+        buildWebPageNode({ canonicalUrl, name: h.title, description: h.description, type: 'WebPage' }),
+        buildBreadcrumbNode(canonicalUrl, [
+          { name: 'Home', url: `${baseUrl}/` },
+          { name: parts[0], url: canonicalUrl },
+        ]),
+      ]),
+    };
+  }
+
   // 7. Fallback / Default
   const fallbackUrl = `${baseUrl}/`;
   const fallbackTitle = 'ToolVerse — Free Online Tools';

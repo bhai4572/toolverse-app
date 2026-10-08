@@ -5,25 +5,17 @@ import { getStoredVerificationRequests, reviewVerificationRequest } from '@/lib/
 import { getStoredBusinessReports, updateReportStatus } from '@/lib/business/moderationEngine';
 import { getStoredPolicies, updatePolicyDocument } from '@/lib/business/policyEngine';
 import { Business, VerificationRequest, BusinessReport, PolicyDocument } from '@/lib/business/types';
+import { TOOLS, CATEGORIES } from '@/lib/tools/registry';
+import { FEATURE_FLAGS } from '@/lib/product/featureFlags';
+import { BLOG_POSTS } from '@/lib/blog/posts';
 import {
-  ShieldCheck,
-  Building,
-  FileText,
-  AlertOctagon,
-  CheckCircle,
-  XCircle,
   LogOut,
-  Search,
-  Check,
-  X,
-  Filter,
-  FileCode,
   Lock,
 } from 'lucide-react';
 
 export default function AdminControlPanelPage() {
   const [session, setSession] = useState(getCurrentAdminSession());
-  const [activeTab, setActiveTab] = useState<'verification' | 'businesses' | 'reports' | 'categories' | 'policies' | 'audit'>('verification');
+  const [activeTab, setActiveTab] = useState<'overview' | 'verification' | 'businesses' | 'reports' | 'categories' | 'policies' | 'audit'>('overview');
 
   // Re-fetch triggers
   const [refreshKey, setRefreshKey] = useState(0);
@@ -117,30 +109,38 @@ export default function AdminControlPanelPage() {
         </button>
       </header>
 
-      {/* Real Real-Time Database Metrics Bar */}
-      <div className="grid grid-cols-2 sm:grid-cols-6 gap-3">
+      {/* Inventory metrics — real counts only (no fake traffic) */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
         <div className="p-4 bg-white dark:bg-slate-900 border rounded-2xl">
-          <div className="text-slate-400 text-[11px]">Total Businesses</div>
+          <div className="text-slate-400 text-[11px]">Tools</div>
+          <div className="text-2xl font-black text-slate-900 dark:text-white">{TOOLS.length}</div>
+        </div>
+        <div className="p-4 bg-white dark:bg-slate-900 border rounded-2xl">
+          <div className="text-slate-400 text-[11px]">Tool categories</div>
+          <div className="text-2xl font-black text-brand-600">{CATEGORIES.length}</div>
+        </div>
+        <div className="p-4 bg-white dark:bg-slate-900 border rounded-2xl">
+          <div className="text-slate-400 text-[11px]">SEO tools</div>
+          <div className="text-2xl font-black text-slate-900 dark:text-white">{TOOLS.filter((t) => t.categorySlug === 'seo-url-tools').length}</div>
+        </div>
+        <div className="p-4 bg-white dark:bg-slate-900 border rounded-2xl">
+          <div className="text-slate-400 text-[11px]">Blog posts</div>
+          <div className="text-2xl font-black text-slate-900 dark:text-white">{BLOG_POSTS.length}</div>
+        </div>
+        <div className="p-4 bg-white dark:bg-slate-900 border rounded-2xl">
+          <div className="text-slate-400 text-[11px]">Businesses</div>
           <div className="text-2xl font-black text-slate-900 dark:text-white">{businesses.length}</div>
         </div>
         <div className="p-4 bg-white dark:bg-slate-900 border rounded-2xl">
-          <div className="text-slate-400 text-[11px]">Pending Verifications</div>
+          <div className="text-slate-400 text-[11px]">Pending verif.</div>
           <div className="text-2xl font-black text-amber-500">{verRequests.filter((r) => r.status === 'PENDING').length}</div>
         </div>
         <div className="p-4 bg-white dark:bg-slate-900 border rounded-2xl">
-          <div className="text-slate-400 text-[11px]">Spam Flagged</div>
+          <div className="text-slate-400 text-[11px]">Spam flagged</div>
           <div className="text-2xl font-black text-rose-500">{businesses.filter((b) => b.spamStatus === 'SPAM').length}</div>
         </div>
         <div className="p-4 bg-white dark:bg-slate-900 border rounded-2xl">
-          <div className="text-slate-400 text-[11px]">Active Reports</div>
-          <div className="text-2xl font-black text-purple-500">{reports.filter((r) => r.status === 'NEW').length}</div>
-        </div>
-        <div className="p-4 bg-white dark:bg-slate-900 border rounded-2xl">
-          <div className="text-slate-400 text-[11px]">Categories</div>
-          <div className="text-2xl font-black text-indigo-500">{categories.length}</div>
-        </div>
-        <div className="p-4 bg-white dark:bg-slate-900 border rounded-2xl">
-          <div className="text-slate-400 text-[11px]">Audit Events</div>
+          <div className="text-slate-400 text-[11px]">Audit events</div>
           <div className="text-2xl font-black text-slate-700 dark:text-slate-300">{auditLogs.length}</div>
         </div>
       </div>
@@ -149,6 +149,7 @@ export default function AdminControlPanelPage() {
       <div className="flex items-center gap-2 border-b overflow-x-auto pb-2">
         {(
           [
+            { id: 'overview', label: 'Overview' },
             { id: 'verification', label: `Verifications (${verRequests.filter((r) => r.status === 'PENDING').length})` },
             { id: 'businesses', label: `Business Manager (${businesses.length})` },
             { id: 'reports', label: `Spam Reports (${reports.filter((r) => r.status === 'NEW').length})` },
@@ -170,6 +171,40 @@ export default function AdminControlPanelPage() {
           </button>
         ))}
       </div>
+
+      {activeTab === 'overview' && (
+        <section className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl space-y-6">
+          <div>
+            <h2 className="text-lg font-extrabold text-slate-900 dark:text-white">Product overview</h2>
+            <p className="text-slate-500 mt-1">
+              Traffic / pageviews: use Microsoft Clarity (site tag) and Cloudflare Analytics until first-party events ship.
+              End-user block list requires auth — not available yet. Business spam toggle remains below.
+            </p>
+          </div>
+          <div>
+            <h3 className="font-bold text-slate-800 dark:text-slate-200 mb-3">Feature flags (Free vs Pro)</h3>
+            <div className="grid sm:grid-cols-2 gap-2">
+              {FEATURE_FLAGS.map((f) => (
+                <div key={f.id} className="flex items-center justify-between gap-2 px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800">
+                  <span className="font-medium text-slate-800 dark:text-slate-200">{f.name}</span>
+                  <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded ${
+                    f.tier === 'free'
+                      ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
+                      : 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-200'
+                  }`}>
+                    {f.tier} · {f.status}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-2 text-[11px]">
+            <a href="/seo" className="px-3 py-1.5 rounded-lg bg-brand-600 text-white font-bold">SEO Suite</a>
+            <a href="/pricing" className="px-3 py-1.5 rounded-lg bg-slate-800 text-white font-bold">Pricing</a>
+            <a href="/tools" className="px-3 py-1.5 rounded-lg border font-bold">Tools hub</a>
+          </div>
+        </section>
+      )}
 
       {/* Tab 1: Verification Portal */}
       {activeTab === 'verification' && (
