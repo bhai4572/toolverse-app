@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
-import { ADSTERRA_NATIVE } from './adConfig';
+import React, { useEffect, useRef, useState } from 'react';
+import { ADSTERRA_NATIVE, shouldSkipAds } from './adConfig';
 
 interface AdsterraNativeProps {
   className?: string;
@@ -9,12 +9,18 @@ interface AdsterraNativeProps {
 
 /**
  * Native banner — script + container div (exact Adsterra snippet).
- * Use on tool hubs, category pages, blog index (mid-content).
+ * Use on tool hubs, category pages, blog index (mid-content) — not every tool page.
  */
 export function AdsterraNative({ className = '' }: AdsterraNativeProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
+  const [skip, setSkip] = useState(false);
 
   useEffect(() => {
+    if (typeof window !== 'undefined' && shouldSkipAds(window.location.pathname)) {
+      setSkip(true);
+      return;
+    }
+
     const wrap = wrapRef.current;
     if (!wrap) return;
 
@@ -33,6 +39,8 @@ export function AdsterraNative({ className = '' }: AdsterraNativeProps) {
       wrap.replaceChildren();
     };
   }, []);
+
+  if (skip) return null;
 
   return (
     <div

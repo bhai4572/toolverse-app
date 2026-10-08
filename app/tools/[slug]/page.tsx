@@ -5,7 +5,7 @@ import { getToolPageContent } from '@/lib/seo/toolPageContent';
 import { getGuidePostForTool } from '@/lib/blog/posts';
 import { ToolRenderer } from '@/features/tools/ToolRenderer';
 import { Breadcrumb } from '@/components/Breadcrumb';
-import { AdSlot } from '@/components/AdSlot';
+import { ToolPageAdChrome } from '@/components/ads/ToolPageAdChrome';
 import {
   ShieldCheck,
   Info,
@@ -14,8 +14,6 @@ import {
   ArrowRight,
   BookOpen,
   Sparkles,
-  Search,
-  Zap,
 } from 'lucide-react';
 import type { Metadata } from 'next';
 
@@ -117,43 +115,33 @@ export default function ToolPage({ params }: { params: { slug: string } }) {
   ];
 
   return (
-    <div className="max-w-7xl mx-auto py-4">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* MAIN CONTENT COLUMN */}
-        <div className="lg:col-span-8 space-y-8">
-          <div className="space-y-3">
-            <Breadcrumb
-              items={[
-                { label: tool.category, href: `/category/${tool.categorySlug}` },
-                { label: tool.canonicalName },
-              ]}
-            />
+    <ToolPageAdChrome
+      header={
+        <>
+          <Breadcrumb
+            items={[
+              { label: tool.category, href: `/category/${tool.categorySlug}` },
+              { label: tool.canonicalName },
+            ]}
+          />
 
-            <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-              {tool.canonicalName}
-            </h1>
+          <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+            {tool.canonicalName}
+          </h1>
 
-            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300">
-              {pageContent?.answerFirst || tool.shortDescription}
-            </p>
+          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300">
+            {pageContent?.answerFirst || tool.shortDescription}
+          </p>
 
-            <div className="inline-flex items-center gap-2 text-xs font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200/60 dark:border-emerald-800/60 px-3.5 py-1.5 rounded-full">
-              <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-              <span>{tool.privacyMessage}</span>
-            </div>
-
-            {/* Adsterra Banner 468x60 — under tool title (medium widths) */}
-            <AdSlot slot="under-title" className="my-2" />
+          <div className="inline-flex items-center gap-2 text-xs font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200/60 dark:border-emerald-800/60 px-3.5 py-1.5 rounded-full">
+            <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+            <span>{tool.privacyMessage}</span>
           </div>
-
-          {/* Adsterra Banner 728x90 — content top (desktop) */}
-          <AdSlot slot="leaderboard" className="my-0" />
-
-          {/* MAIN TOOL INTERACTIVE APP — ads never inside dropzones / controls */}
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 sm:p-7 shadow-sm">
-            <ToolRenderer tool={tool} />
-          </div>
-
+        </>
+      }
+      tool={<ToolRenderer tool={tool} />}
+      below={
+        <>
           {guidePost && (
             <aside className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl border border-brand-200/70 dark:border-brand-800/60 bg-brand-50/80 dark:bg-brand-950/40 px-4 py-3">
               <div className="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
@@ -173,10 +161,6 @@ export default function ToolPage({ params }: { params: { slug: string } }) {
             </aside>
           )}
 
-          {/* Adsterra Banner 300x250 — after tool, outside controls */}
-          <AdSlot slot="in-content" slotId="tool-inline-top" />
-
-          {/* HOW TO USE & COMMON USE CASES */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 sm:p-6 space-y-3">
               <h2 className="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2">
@@ -201,24 +185,17 @@ export default function ToolPage({ params }: { params: { slug: string } }) {
             </div>
           </div>
 
-          {/* DEEP CONTENT SECTIONS WITH AD INSERTION */}
           {pageContent?.sections?.length ? (
             <div className="space-y-6">
-              {pageContent.sections.map((section, sIdx) => (
-                <React.Fragment key={section.heading}>
-                  <section className="space-y-2">
-                    <h2 className="text-lg font-bold text-slate-900 dark:text-white">{section.heading}</h2>
-                    <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{section.body}</p>
-                  </section>
-                  {sIdx === 0 && (
-                    <AdSlot slot="leaderboard" slotId="tool-content-break" />
-                  )}
-                </React.Fragment>
+              {pageContent.sections.map((section) => (
+                <section key={section.heading} className="space-y-2">
+                  <h2 className="text-lg font-bold text-slate-900 dark:text-white">{section.heading}</h2>
+                  <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{section.body}</p>
+                </section>
               ))}
             </div>
           ) : null}
 
-          {/* FAQS SECTION */}
           <div className="bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-xl p-5 sm:p-6 space-y-4">
             <h2 className="font-bold text-lg text-slate-900 dark:text-white flex items-center gap-2">
               <HelpCircle className="w-5 h-5 text-brand-500" /> Frequently Asked Questions
@@ -233,7 +210,6 @@ export default function ToolPage({ params }: { params: { slug: string } }) {
             </div>
           </div>
 
-          {/* RELATED TOOLS */}
           {relatedTools.length > 0 && (
             <div className="space-y-4 pt-4 border-t border-slate-200 dark:border-slate-800">
               <h2 className="font-bold text-lg text-slate-900 dark:text-white">Related Tools</h2>
@@ -256,14 +232,10 @@ export default function ToolPage({ params }: { params: { slug: string } }) {
               </p>
             </div>
           )}
-        </div>
-
-        {/* STICKY SIDEBAR (DESKTOP) */}
-        <aside className="lg:col-span-4 space-y-6 lg:sticky lg:top-20">
-          {/* Adsterra Banner 160x600 — sticky sidebar */}
-          <AdSlot slot="sidebar-skyscraper" slotId="tool-sidebar-primary" />
-
-          {/* POPULAR SEMRUSH & AHREFS ALTERNATIVES WIDGET */}
+        </>
+      }
+      rail={
+        <>
           <div className="p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm space-y-3">
             <div className="flex items-center gap-2 text-xs font-bold text-slate-900 dark:text-white">
               <Sparkles className="w-4 h-4 text-brand-600" />
@@ -286,7 +258,6 @@ export default function ToolPage({ params }: { params: { slug: string } }) {
             </div>
           </div>
 
-          {/* CATEGORY EXPLORER WIDGET */}
           <div className="p-5 bg-gradient-to-br from-slate-50 to-indigo-50/40 dark:from-slate-900 dark:to-indigo-950/30 border border-slate-200 dark:border-slate-800 rounded-2xl space-y-2">
             <h4 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
               Explore {tool.category}
@@ -303,11 +274,8 @@ export default function ToolPage({ params }: { params: { slug: string } }) {
               </Link>
             </div>
           </div>
-
-          {/* Adsterra Banner 160x300 — secondary sidebar */}
-          <AdSlot slot="sidebar-half" slotId="tool-sidebar-secondary" />
-        </aside>
-      </div>
-    </div>
+        </>
+      }
+    />
   );
 }

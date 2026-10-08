@@ -2,23 +2,12 @@
 
 import React from 'react';
 import { AdsterraSocialBar } from './AdsterraSocialBar';
-import { AdsterraBanner } from './AdsterraBanner';
 
 /**
- * Global Adsterra loaders + mobile sticky 320x50 (non-blocking, under chrome).
- * Does not gate tools. Skips workspace/admin via child components.
+ * Global Adsterra loaders — social bar only (floating, not a banner slot).
+ * Mobile 320x50 is in-flow via tool header / site footer — no second sticky bar.
+ * Never gates tools. Child skips workspace/admin.
  */
 export function AdGlobals() {
-  return (
-    <>
-      <AdsterraSocialBar />
-      {/* Mobile 320x50 — fixed bottom, leaves CTAs usable (pb on body via spacer) */}
-      <div className="md:hidden fixed bottom-0 inset-x-0 z-40 flex flex-col items-center pointer-events-none">
-        <div className="pointer-events-auto bg-slate-950/80 backdrop-blur-sm border-t border-slate-800/80 w-full flex justify-center py-1">
-          <AdsterraBanner size="320x50" />
-        </div>
-      </div>
-      <div className="md:hidden h-14 shrink-0" aria-hidden />
-    </>
-  );
+  return <AdsterraSocialBar />;
 }

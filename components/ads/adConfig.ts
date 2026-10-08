@@ -64,20 +64,26 @@ export type AdSlotName =
   | 'sidebar-skyscraper'
   | 'sidebar-half'
   | 'leaderboard'
+  | 'mobile-banner'
   | 'mobile-sticky'
   | 'under-title'
   | 'in-content'
   | 'native'
-  | 'footer';
+  | 'footer'
+  | 'footer-mobile';
 
 export const SLOT_TO_BANNER: Partial<Record<AdSlotName, BannerSize>> = {
   'sidebar-skyscraper': '160x600',
   'sidebar-half': '160x300',
   leaderboard: '728x90',
+  /** In-flow mobile top/footer — not fixed sticky */
+  'mobile-banner': '320x50',
+  /** @deprecated Prefer mobile-banner; kept for legacy callers */
   'mobile-sticky': '320x50',
   'under-title': '468x60',
   'in-content': '300x250',
   footer: '728x90',
+  'footer-mobile': '320x50',
 };
 
 /** Routes where ads must not load (SEO workspace / admin) */

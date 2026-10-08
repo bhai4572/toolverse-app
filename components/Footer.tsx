@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { ShieldCheck, Wrench, Lock, Heart } from 'lucide-react';
 import { CATEGORIES, TOOLS } from '@/lib/tools/registry';
-import { AdSlot } from './AdSlot';
+import { FooterAdBar } from './ads/FooterAdBar';
 import { AdsterraSmartLink } from './ads/AdsterraSmartLink';
 
 export function Footer() {
@@ -94,8 +94,7 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Adsterra Banner 728x90 — footer */}
-        <AdSlot slot="footer" slotId="footer-banner" className="my-6" />
+        <FooterAdBar />
 
         <div className="pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
           <div>

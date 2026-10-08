@@ -8,3 +8,5 @@ export {
   AdsterraSocialBar,
   AdsterraSmartLink,
 } from './ads/AdSlot';
+export { ToolPageAdChrome } from './ads/ToolPageAdChrome';
+export { AdRegion } from './ads/AdRegion';

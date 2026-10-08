@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
-import { ADSTERRA_BANNERS, type BannerSize } from './adConfig';
+import React, { useEffect, useRef, useState } from 'react';
+import { ADSTERRA_BANNERS, shouldSkipAds, type BannerSize } from './adConfig';
 
 interface AdsterraBannerProps {
   size: BannerSize;
@@ -15,8 +15,14 @@ interface AdsterraBannerProps {
 export function AdsterraBanner({ size, className = '' }: AdsterraBannerProps) {
   const unit = ADSTERRA_BANNERS[size];
   const hostRef = useRef<HTMLDivElement>(null);
+  const [skip, setSkip] = useState(false);
 
   useEffect(() => {
+    if (typeof window !== 'undefined' && shouldSkipAds(window.location.pathname)) {
+      setSkip(true);
+      return;
+    }
+
     const host = hostRef.current;
     if (!host) return;
 
@@ -64,6 +70,8 @@ export function AdsterraBanner({ size, className = '' }: AdsterraBannerProps) {
       host.replaceChildren();
     };
   }, [unit.key, unit.height, unit.width, unit.invokeSrc, unit.label]);
+
+  if (skip) return null;
 
   return (
     <div

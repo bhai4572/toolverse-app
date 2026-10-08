@@ -100,9 +100,8 @@ export default function JobCategoryPage({ params }: Props) {
         <JobTools />
       </div>
 
-      {/* Ads outside the job search tool UI */}
+      {/* Content-break outside the job search tool UI — Footer owns footer bar */}
       <AdSlot slot="in-content" />
-      <AdSlot slot="footer" placement="footer" />
 
       {config.sections.map((section) => (
         <section key={section.heading} className="space-y-2">

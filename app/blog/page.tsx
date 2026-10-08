@@ -155,8 +155,8 @@ export default function BlogHubPage() {
         </nav>
       )}
 
+      {/* Native mid-hub only — site Footer owns the footer bar */}
       <AdSlot slot="native" />
-      <AdSlot slot="footer" placement="footer" />
     </div>
   );
 }

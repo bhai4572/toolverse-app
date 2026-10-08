@@ -47,6 +47,31 @@ function resolveSize(props: AdSlotProps): BannerSize | 'native' {
 }
 
 /**
+ * Responsive visibility for WP-theme chassis:
+ * - 728x90: md+
+ * - 320x50: mobile only
+ * - 160x600: xl+
+ * - 160x300: 2xl+ (≥1536)
+ * - 468x60: sm–lg mid band only (optional; skipped on tool chrome)
+ */
+function responsiveClass(size: BannerSize): string {
+  switch (size) {
+    case '160x600':
+      return 'hidden xl:flex';
+    case '160x300':
+      return 'hidden 2xl:flex';
+    case '728x90':
+      return 'hidden md:flex';
+    case '320x50':
+      return 'flex md:hidden';
+    case '468x60':
+      return 'hidden sm:flex lg:hidden';
+    default:
+      return 'flex';
+  }
+}
+
+/**
  * AdSlot — maps named/legacy placements to Adsterra units.
  * Never blocks tool UI; decorative wrapper only.
  */
@@ -58,17 +83,7 @@ export function AdSlot(props: AdSlotProps) {
     return <AdsterraNative className={className} />;
   }
 
-  const responsiveHide =
-    resolved === '160x600' || resolved === '160x300'
-      ? 'hidden lg:flex'
-      : resolved === '728x90'
-        ? 'hidden md:flex'
-        : resolved === '320x50'
-          ? 'flex md:hidden'
-          : resolved === '468x60'
-            ? 'hidden sm:flex lg:hidden'
-            : 'flex';
-
+  const responsiveHide = responsiveClass(resolved);
   const inner = <AdsterraBanner size={resolved} />;
 
   if (bare) {
