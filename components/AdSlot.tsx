@@ -6,6 +6,5 @@ export {
   AdsterraBanner,
   AdsterraNative,
   AdsterraSocialBar,
-  AdsterraPopunder,
   AdsterraSmartLink,
 } from './ads/AdSlot';

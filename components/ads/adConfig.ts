@@ -16,12 +16,6 @@ export const ADSTERRA_NATIVE = {
   containerId: 'container-6be7d1c14bcef8d4c03340fddce77229',
 } as const;
 
-/** Popunder — load once per session (localStorage gate) */
-export const ADSTERRA_POPUNDER_SRC =
-  'https://abscloud.org/1/7cc3d1600628400e785bb71175962f68';
-
-export const POPUNDER_SESSION_KEY = 'tv_adsterra_popunder_v1';
-
 export type BannerSize =
   | '468x60'
   | '160x300'

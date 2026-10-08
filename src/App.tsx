@@ -335,7 +335,7 @@ export default function App() {
         {renderContent()}
       </main>
       {!isWorkspace && <Footer />}
-      {/* Adsterra: social bar + session popunder + mobile 320x50 — never gates tools */}
+      {/* Adsterra: social bar + mobile 320x50 — never gates tools */}
       {!skipAds && <AdGlobals />}
     </div>
   );

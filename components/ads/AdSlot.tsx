@@ -91,5 +91,4 @@ export function AdSlot(props: AdSlotProps) {
 export { AdsterraBanner } from './AdsterraBanner';
 export { AdsterraNative } from './AdsterraNative';
 export { AdsterraSocialBar } from './AdsterraSocialBar';
-export { AdsterraPopunder } from './AdsterraPopunder';
 export { AdsterraSmartLink } from './AdsterraSmartLink';
