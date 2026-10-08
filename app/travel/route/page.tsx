@@ -11,6 +11,7 @@ import {
 import { getEmbassiesForRoute } from '@/lib/travel/embassyRegistry';
 import { generateTravelRouteSchema } from '@/lib/travel/travelSeoEngine';
 import { TravelPurpose } from '@/lib/travel/types';
+import { UnderCtaAdBand } from '@/components/ads/UnderCtaAdBand';
 
 interface TravelRoutePageProps {
   nationalityCode?: string;
@@ -455,6 +456,9 @@ export default function TravelRoutePage({ nationalityCode = 'PK', destinationCod
               </a>
             </div>
           </div>
+
+          {/* Fill empty space under CTA — 300×250 (narrow column) */}
+          <UnderCtaAdBand variant="rectangle" region="travel-route-under-cta" />
         </div>
       </div>
     </div>

@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { ArrowRight, GraduationCap } from 'lucide-react';
 import { getAllCountries } from '@/lib/travel/countryRegistry';
+import { UnderCtaAdBand } from '@/components/ads/UnderCtaAdBand';
 
 const STUDY_DESTINATIONS = ['GB', 'CA', 'AU', 'DE', 'US', 'MY', 'TR', 'AE'] as const;
 
@@ -59,6 +60,35 @@ export default function StudyAbroadPage() {
           ))}
         </div>
       </section>
+
+      <section className="p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-brand-50 via-white to-slate-50 dark:from-blue-950/60 dark:via-slate-900 dark:to-slate-900 border border-brand-200/60 dark:border-blue-800/40 space-y-4">
+        <h2 className="text-lg font-bold text-slate-900 dark:text-white">Ready to plan your study trip?</h2>
+        <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl">
+          Open a destination route, prep application PDFs, or size a passport photo — every tool stays free with no signup wall.
+        </p>
+        <div className="flex flex-wrap gap-2">
+          <Link
+            href="/travel"
+            className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold shadow-sm transition-colors"
+          >
+            Check study visa routes <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+          <Link
+            href="/tools/gpa-calculator"
+            className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-semibold hover:border-brand-500 transition-colors"
+          >
+            GPA calculator
+          </Link>
+          <Link
+            href="/passport-photos"
+            className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-semibold hover:border-brand-500 transition-colors"
+          >
+            Passport photo sizes
+          </Link>
+        </div>
+      </section>
+
+      <UnderCtaAdBand variant="both" region="study-under-cta" />
     </div>
   );
 }

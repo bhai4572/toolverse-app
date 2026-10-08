@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { ArrowRight, Landmark } from 'lucide-react';
 import { getAllCountries } from '@/lib/travel/countryRegistry';
+import { UnderCtaAdBand } from '@/components/ads/UnderCtaAdBand';
 
 const WORK_DESTINATIONS = ['AE', 'SA', 'GB', 'CA', 'DE', 'QA', 'OM', 'US'] as const;
 
@@ -58,6 +59,35 @@ export default function ImmigrationPage() {
           ))}
         </div>
       </section>
+
+      <section className="p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-brand-50 via-white to-slate-50 dark:from-blue-950/60 dark:via-slate-900 dark:to-slate-900 border border-brand-200/60 dark:border-blue-800/40 space-y-4">
+        <h2 className="text-lg font-bold text-slate-900 dark:text-white">Ready to plan your move?</h2>
+        <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl">
+          Check visa rules for a destination, find the right embassy, or browse overseas roles — tools stay free and ungated.
+        </p>
+        <div className="flex flex-wrap gap-2">
+          <Link
+            href="/travel"
+            className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold shadow-sm transition-colors"
+          >
+            Open visa checker <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+          <Link
+            href="/travel/embassies"
+            className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-semibold hover:border-brand-500 transition-colors"
+          >
+            Embassy directory
+          </Link>
+          <Link
+            href="/travel/jobs"
+            className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-semibold hover:border-brand-500 transition-colors"
+          >
+            Jobs abroad
+          </Link>
+        </div>
+      </section>
+
+      <UnderCtaAdBand variant="both" region="immigration-under-cta" />
     </div>
   );
 }
