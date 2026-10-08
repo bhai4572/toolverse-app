@@ -165,6 +165,15 @@ for (const ht of [
   add(`/how-to/${ht}`, 'weekly', '0.8');
 }
 
+// Global Travel Intelligence Platform Routes
+add('/travel', 'daily', '1.0');
+add('/travel/passport', 'daily', '0.9');
+add('/travel/embassies', 'daily', '0.9');
+add('/travel/destinations', 'daily', '0.9');
+add('/travel/jobs', 'daily', '0.9');
+add('/travel/planner', 'daily', '0.9');
+add('/admin/travel', 'monthly', '0.5');
+
 const lines = [
   '<?xml version="1.0" encoding="UTF-8"?>',
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',

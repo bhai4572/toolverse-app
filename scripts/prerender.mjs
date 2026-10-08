@@ -702,6 +702,18 @@ async function main() {
       routes.push(`/how-to/${ht}`);
     }
 
+    // Global Travel Intelligence Platform Routes
+    routes.push('/travel');
+    routes.push('/travel/passport');
+    routes.push('/travel/embassies');
+    routes.push('/travel/destinations');
+    routes.push('/travel/jobs');
+    routes.push('/travel/planner');
+    routes.push('/admin/travel');
+    routes.push('/travel/PK/GB');
+    routes.push('/travel/PK/TR');
+    routes.push('/travel/PK/AE');
+
     for (const route of routes) {
       const html = applyPage(template, route, getMetadataForPath, deps);
       if (route === '/') fs.writeFileSync(templatePath, html);

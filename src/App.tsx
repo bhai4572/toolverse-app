@@ -32,6 +32,16 @@ import AdminPage from '../app/admin/page';
 import HowToHubPage from '../app/how-to/page';
 import HowToArticlePage from '../app/how-to/[slug]/page';
 
+// Global Travel Intelligence Platform Imports
+import TravelHubPage from '../app/travel/page';
+import TravelRoutePage from '../app/travel/route/page';
+import PassportDashboardPage from '../app/travel/passport/page';
+import EmbassyDirectoryPage from '../app/travel/embassies/page';
+import DestinationsPage from '../app/travel/destinations/page';
+import JobsTravelPage from '../app/travel/jobs/page';
+import TravelPlannerPage from '../app/travel/planner/page';
+import AdminTravelPage from '../app/admin/travel/page';
+
 import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
 import { SEOHead } from './components/SEOHead';
@@ -90,7 +100,33 @@ export default function App() {
       if (parts[1] === 'login') {
         return <AdminLoginPage />;
       }
+      if (parts[1] === 'travel') {
+        return <AdminTravelPage />;
+      }
       return <AdminPage />;
+    }
+
+    // Global Travel Intelligence Platform Routes
+    if (parts[0] === 'travel') {
+      if (parts[1] === 'passport') {
+        return <PassportDashboardPage />;
+      }
+      if (parts[1] === 'embassies') {
+        return <EmbassyDirectoryPage />;
+      }
+      if (parts[1] === 'destinations') {
+        return <DestinationsPage />;
+      }
+      if (parts[1] === 'jobs') {
+        return <JobsTravelPage />;
+      }
+      if (parts[1] === 'planner') {
+        return <TravelPlannerPage />;
+      }
+      if (parts[1] && parts[2]) {
+        return <TravelRoutePage nationalityCode={parts[1]} destinationCode={parts[2]} />;
+      }
+      return <TravelHubPage />;
     }
 
     // How-To Knowledge Base
