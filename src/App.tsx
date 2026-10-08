@@ -322,7 +322,7 @@ export default function App() {
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100">
       <SEOHead pathname={currentPath} />
       <Header />
-      {/* Persistent header ad bar — monetized routes only (not home / workspace / admin) */}
+      {/* Persistent header ad bar — skipped on workspace / admin only */}
       {!skipAds && <HeaderAdBar />}
       <main
         className={

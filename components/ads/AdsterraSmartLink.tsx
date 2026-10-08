@@ -11,7 +11,7 @@ interface AdsterraSmartLinkProps {
 
 /**
  * Smart link — ONLY for explicit sponsored / optional outbound text.
- * Do not wrap internal nav links. Hidden on homepage / workspace / admin.
+ * Do not wrap internal nav links. Hidden on workspace / admin.
  */
 export function AdsterraSmartLink({
   children = 'Sponsored',

@@ -78,7 +78,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
-        {/* Brand + beside-logo ad (skipped on homepage via HeaderBrandAd) */}
+        {/* Brand + beside-logo ad (hidden below sm so logo/nav stay clear) */}
         <div className="flex items-center gap-2 sm:gap-3 min-w-0 shrink">
           <Link href="/" className="flex items-center gap-2 font-bold text-xl tracking-tight text-slate-900 dark:text-white shrink-0" aria-label="ToolVerse home">
             <div className="w-9 h-9 rounded-lg bg-brand-600 flex items-center justify-center text-white shadow-sm" aria-hidden="true">

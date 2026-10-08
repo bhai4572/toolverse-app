@@ -6,7 +6,7 @@ import { useSkipAds } from './useSkipAds';
 
 /**
  * Single clean footer leaderboard row below the 4-column grid.
- * Desktop: 728×90. Mobile: 320×50. Skips homepage / workspace / admin.
+ * Desktop: 728×90. Mobile: 320×50. Skips workspace / admin.
  */
 export function FooterAdBar() {
   const skip = useSkipAds();

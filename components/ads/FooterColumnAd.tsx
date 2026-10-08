@@ -10,7 +10,7 @@ interface FooterColumnAdProps {
 
 /**
  * Identical 160×300 unit under every footer link column.
- * Same min-height, centered, equal top spacing. Skips home / workspace / admin.
+ * Same min-height, centered, equal top spacing. Skips workspace / admin.
  */
 export function FooterColumnAd({ className = '' }: FooterColumnAdProps) {
   const skip = useSkipAds();

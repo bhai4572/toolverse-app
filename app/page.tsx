@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { Search, ArrowRight, Wrench, Globe2, GraduationCap, Landmark, ShieldCheck, Zap, Briefcase } from 'lucide-react';
 import { TOOLS, CATEGORIES, getPopularTools, searchTools } from '@/lib/tools/registry';
+import { AdSlot } from '@/components/ads/AdSlot';
 
 const PATHS = [
   {
@@ -155,6 +156,16 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Leaderboard under primary Job Finder CTA — 728×90 / 320×50 */}
+      <div
+        className="flex flex-col items-center justify-center gap-1 py-1 min-h-[50px] md:min-h-[90px]"
+        data-ad-region="home-leaderboard"
+        aria-label="Advertisement"
+      >
+        <AdSlot slot="leaderboard" bare className="my-0 max-w-[728px] w-full" />
+        <AdSlot slot="mobile-banner" bare className="my-0 max-w-[320px] w-full" />
+      </div>
+
       {/* Product paths — not card soup in hero; secondary section */}
       <section className="space-y-4" aria-labelledby="paths-heading">
         <h2 id="paths-heading" className="text-xl font-bold text-slate-900 dark:text-white">
@@ -178,6 +189,15 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+
+      {/* Mid-page native after paths — single unit, not stacked */}
+      <div
+        className="flex justify-center py-2"
+        data-ad-region="home-mid"
+        aria-label="Advertisement"
+      >
+        <AdSlot slot="native" bare className="my-0 w-full max-w-[728px]" />
+      </div>
 
       <section className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/60 dark:border-emerald-800/40">
         <div className="flex items-start gap-3">

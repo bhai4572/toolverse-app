@@ -6,7 +6,7 @@ import { useSkipAds } from './useSkipAds';
 
 /**
  * Persistent top ad bar — 728x90 desktop / 320x50 mobile (in-flow under site header).
- * Skips homepage, workspace, admin. Not sticky (site Header stays sticky).
+ * Skips workspace / admin. Not sticky (site Header stays sticky).
  */
 export function HeaderAdBar() {
   const skip = useSkipAds();

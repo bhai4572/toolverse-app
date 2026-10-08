@@ -7,7 +7,7 @@ import { useSkipAds } from './useSkipAds';
 const SCRIPT_ATTR = 'data-adsterra-social-bar';
 
 /**
- * Social bar — load once on monetized routes (async). Skips home / workspace / admin.
+ * Social bar — load once on monetized routes (async). Skips workspace / admin.
  */
 export function AdsterraSocialBar() {
   const skip = useSkipAds();
