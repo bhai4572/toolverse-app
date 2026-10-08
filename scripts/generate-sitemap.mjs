@@ -174,6 +174,25 @@ add('/travel/jobs', 'daily', '0.9');
 add('/travel/planner', 'daily', '0.9');
 add('/admin/travel', 'monthly', '0.5');
 
+// Startup Launch & Discovery Platform Routes
+add('/startups', 'daily', '1.0');
+add('/submit-startup', 'monthly', '0.7');
+for (const s of ['nexus-ai-writer', 'devflow-database-studio', 'taskpulse-workspace', 'rankpulse-backlink-monitor']) {
+  add(`/startups/${s}`, 'daily', '0.9');
+}
+
+// Guest Posting & Publisher Marketplace Routes
+add('/guest-posts', 'daily', '1.0');
+add('/guest-posts/create-pitch', 'monthly', '0.7');
+add('/become-a-publisher', 'monthly', '0.8');
+for (const p of ['tech-vision-journal', 'startup-builder-daily', 'seo-growth-digest']) {
+  add(`/publishers/${p}`, 'daily', '0.9');
+}
+
+// SEO Tools & Dashboard Routes
+add('/seo-tools', 'daily', '0.9');
+add('/dashboard', 'monthly', '0.5');
+
 const lines = [
   '<?xml version="1.0" encoding="UTF-8"?>',
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',

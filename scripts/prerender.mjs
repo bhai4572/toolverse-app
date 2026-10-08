@@ -714,6 +714,25 @@ async function main() {
     routes.push('/travel/PK/TR');
     routes.push('/travel/PK/AE');
 
+    // Startup Launch & Discovery Platform Routes
+    routes.push('/startups');
+    routes.push('/submit-startup');
+    for (const s of ['nexus-ai-writer', 'devflow-database-studio', 'taskpulse-workspace', 'rankpulse-backlink-monitor']) {
+      routes.push(`/startups/${s}`);
+    }
+
+    // Guest Posting & Publisher Marketplace Routes
+    routes.push('/guest-posts');
+    routes.push('/guest-posts/create-pitch');
+    routes.push('/become-a-publisher');
+    for (const p of ['tech-vision-journal', 'startup-builder-daily', 'seo-growth-digest']) {
+      routes.push(`/publishers/${p}`);
+    }
+
+    // SEO Tools & Dashboard Routes
+    routes.push('/seo-tools');
+    routes.push('/dashboard');
+
     for (const route of routes) {
       const html = applyPage(template, route, getMetadataForPath, deps);
       if (route === '/') fs.writeFileSync(templatePath, html);

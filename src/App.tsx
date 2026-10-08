@@ -42,6 +42,17 @@ import JobsTravelPage from '../app/travel/jobs/page';
 import TravelPlannerPage from '../app/travel/planner/page';
 import AdminTravelPage from '../app/admin/travel/page';
 
+// Startup Launch, Guest Posting, SEO Tools & Dashboard Imports
+import StartupsDirectoryPage from '../app/startups/page';
+import StartupProfilePage from '../app/startups/[slug]/page';
+import SubmitStartupPage from '../app/submit-startup/page';
+import GuestPostsMarketplacePage from '../app/guest-posts/page';
+import PublisherProfilePage from '../app/publishers/[slug]/page';
+import CreatePitchPage from '../app/guest-posts/create-pitch/page';
+import BecomeAPublisherPage from '../app/become-a-publisher/page';
+import SeoToolsPage from '../app/seo-tools/page';
+import DashboardPage from '../app/dashboard/page';
+
 import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
 import { SEOHead } from './components/SEOHead';
@@ -127,6 +138,42 @@ export default function App() {
         return <TravelRoutePage nationalityCode={parts[1]} destinationCode={parts[2]} />;
       }
       return <TravelHubPage />;
+    }
+
+    // Startup Launch & Discovery Routes
+    if (parts[0] === 'startups') {
+      if (parts[1]) {
+        return <StartupProfilePage params={{ slug: parts[1] }} />;
+      }
+      return <StartupsDirectoryPage />;
+    }
+
+    if (parts[0] === 'submit-startup') {
+      return <SubmitStartupPage />;
+    }
+
+    // Guest Posting & Publisher Marketplace Routes
+    if (parts[0] === 'guest-posts') {
+      if (parts[1] === 'create-pitch') {
+        return <CreatePitchPage />;
+      }
+      return <GuestPostsMarketplacePage />;
+    }
+
+    if (parts[0] === 'publishers' && parts[1]) {
+      return <PublisherProfilePage params={{ slug: parts[1] }} />;
+    }
+
+    if (parts[0] === 'become-a-publisher') {
+      return <BecomeAPublisherPage />;
+    }
+
+    if (parts[0] === 'seo-tools') {
+      return <SeoToolsPage />;
+    }
+
+    if (parts[0] === 'dashboard') {
+      return <DashboardPage />;
     }
 
     // How-To Knowledge Base

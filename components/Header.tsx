@@ -105,6 +105,27 @@ export function Header() {
         {/* Desktop Controls */}
         <div className="hidden md:flex items-center gap-2">
           <Link
+            href="/startups"
+            className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-indigo-600 dark:hover:text-indigo-400 px-2.5 py-1.5 rounded-lg transition-colors flex items-center gap-1 bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800"
+          >
+            Startups 🚀
+          </Link>
+
+          <Link
+            href="/guest-posts"
+            className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-indigo-600 dark:hover:text-indigo-400 px-2.5 py-1.5 rounded-lg transition-colors flex items-center gap-1"
+          >
+            Guest Posts 📝
+          </Link>
+
+          <Link
+            href="/seo-tools"
+            className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-indigo-600 dark:hover:text-indigo-400 px-2.5 py-1.5 rounded-lg transition-colors flex items-center gap-1"
+          >
+            SEO Tools 🛠️
+          </Link>
+
+          <Link
             href="/travel"
             className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 px-2.5 py-1.5 rounded-lg transition-colors flex items-center gap-1 bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800"
           >
