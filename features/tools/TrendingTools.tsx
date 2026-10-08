@@ -156,6 +156,10 @@ function YoutubeThumbnailComponent({ handleCopy }: { handleCopy: (s: string) => 
 
   return (
     <div className="space-y-6">
+      <div className="rounded-xl border border-amber-200 bg-amber-50 dark:bg-amber-950/30 dark:border-amber-800 px-4 py-3 text-xs text-amber-900 dark:text-amber-200">
+        <strong>Thumbnail image only — not a video downloader.</strong> This tool fetches public JPG covers from
+        YouTube image CDNs (i.ytimg.com / img.youtube.com). It does not download video or audio.
+      </div>
       <div className="space-y-1">
         <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
           Paste YouTube Video URL, Short, or 11-digit Video ID

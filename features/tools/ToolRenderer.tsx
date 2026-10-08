@@ -36,6 +36,7 @@ import { AdvancedTools } from './AdvancedTools';
 import { JobFinderTool } from './JobTools';
 import { SeoTools } from './SeoTools';
 import { TrendingTools } from './TrendingTools';
+import { DocumentConversionTools } from './DocumentConversionTools';
 import { AlertTriangle, Lock } from 'lucide-react';
 
 export function ToolRenderer({ tool }: { tool: ToolDefinition }) {
@@ -97,6 +98,12 @@ export function ToolRenderer({ tool }: { tool: ToolDefinition }) {
     case 'pdf-rotate':
     case 'pdf-reorder-pages':
       return <PdfRotateTool />;
+    case 'excel-to-pdf':
+    case 'excel-to-csv':
+    case 'csv-to-excel':
+    case 'csv-to-pdf':
+    case 'word-to-pdf':
+      return <DocumentConversionTools tool={tool} />;
     case 'word-counter':
     case 'character-counter':
     case 'text-diff-checker':

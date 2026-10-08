@@ -1071,36 +1071,152 @@ export const TOOL_PAGE_CONTENT: Record<string, ToolPageContent> = {
 
   'youtube-thumbnail-downloader': {
     answerFirst:
-      'YouTube Thumbnail Downloader & HD Grabber extracts high-definition 1080p, 720p, and 4K YouTube cover images from any video link or Short for instant 1-click download with zero quality compression.',
-    seoTitle: 'YouTube Thumbnail Downloader (HD 1080p & 4K Grabber) | ToolVerse',
+      'YouTube Thumbnail Downloader extracts public JPG cover images (maxres/hq/mq) from a YouTube URL via i.ytimg.com — thumbnail image only, not a video or audio downloader.',
+    seoTitle: 'YouTube Thumbnail Downloader (Image Only) | ToolVerse',
     seoDescription:
-      'Download high-resolution YouTube video thumbnails in 1080p (maxresdefault), 720p, and standard sizes. Free online thumbnail grabber with zero registration.',
+      'Download YouTube thumbnail images in maxres, HQ, and MQ sizes. Thumbnail image only — not a video downloader. Free, no signup.',
     sections: [
       {
-        heading: 'How to download high-resolution YouTube thumbnails',
-        body: 'Paste any YouTube URL, Short, or 11-character video ID into the search bar. The tool automatically resolves direct Google CDN media endpoints for Maxresdefault (1280x720), Hqdefault (640x480), and Mqdefault (480x360).',
+        heading: 'How to download YouTube thumbnail images',
+        body: 'Paste any YouTube URL, Short, or 11-character video ID. The tool builds public CDN image URLs for maxresdefault, hqdefault, and mqdefault — JPG covers only, never the video stream.',
       },
       {
-        heading: 'Why creators repurpose YouTube video thumbnails',
-        body: 'Repurposing thumbnails as blog post featured images, newsletter headers, and LinkedIn preview graphics saves hours of duplicate design work while keeping visual branding consistent across channels.',
+        heading: 'Thumbnail image only — not a video downloader',
+        body: 'ToolVerse does not fetch or save YouTube video or audio. This utility is for public thumbnail artwork used in design mockups, blog featured images, and social previews.',
       },
       {
-        heading: 'Client-side speed and zero watermarks',
-        body: 'Unlike ad-cluttered downloader websites that re-encode images or force desktop apps, ToolVerse connects directly to Google image CDNs with zero watermarks and instant browser downloads.',
+        heading: 'Direct CDN links, no re-encoding',
+        body: 'Previews load from YouTube image CDNs (img.youtube.com / i.ytimg.com) so you get the same public JPG the platform already serves — no watermarks and no desktop app required.',
       },
     ],
     faqs: [
       {
-        question: 'Is it legal to download YouTube thumbnails?',
-        answer: 'Yes, downloading thumbnails for personal use, design inspiration, or referencing is completely legal. Commercial reuse of another creator’s artwork requires permission.',
+        question: 'Does this download YouTube videos?',
+        answer: 'No. Thumbnail image only — not a video downloader. It only offers public JPG thumbnail sizes.',
       },
       {
-        question: 'Why are some video thumbnails not available in 1080p?',
-        answer: 'If the creator originally uploaded a low-resolution thumbnail (under 720p), YouTube does not generate a maxresdefault image tier. Our tool automatically provides the highest available resolution.',
+        question: 'Why are some thumbnails not available in maxres?',
+        answer: 'If the creator uploaded a low-resolution thumbnail, YouTube may not publish maxresdefault. Use HQ or MQ instead.',
       },
       {
-        question: 'Can I download thumbnails from YouTube Shorts?',
-        answer: 'Yes! Both standard YouTube video links and YouTube Shorts URLs are fully supported.',
+        question: 'Can I get thumbnails from YouTube Shorts?',
+        answer: 'Yes. Standard watch URLs and Shorts URLs are supported for thumbnail images.',
+      },
+    ],
+  },
+
+  'excel-to-pdf': {
+    answerFirst:
+      'Excel to PDF converts an .xlsx spreadsheet into a printable PDF table in your browser — cell values only, with clear size and row limits.',
+    seoTitle: 'Excel to PDF Converter (Private, Browser) | ToolVerse',
+    seoDescription:
+      'Convert Excel (.xlsx) to PDF in your browser. No upload. Simple table layout with a 5 MB and 500-row limit.',
+    sections: [
+      {
+        heading: 'Private spreadsheet snapshots',
+        body: 'Turn the first worksheet into a landscape PDF table without sending the file to a cloud converter. Useful for email attachments and portal uploads that prefer PDF.',
+      },
+      {
+        heading: 'What is preserved',
+        body: 'Cell values are rendered as a plain table. Charts, formulas as live formulas, merged cells, and Excel styling are not preserved — use Excel to CSV if you need raw data instead.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is my Excel file uploaded?',
+        answer: 'No. Conversion runs locally in your browser with SheetJS and jsPDF loaded on demand.',
+      },
+      {
+        question: 'How large can the file be?',
+        answer: 'Up to 5 MB. PDF export stops at 500 rows and 20 columns so the browser stays responsive.',
+      },
+    ],
+  },
+
+  'excel-to-csv': {
+    answerFirst:
+      'Excel to CSV exports the first sheet of an .xlsx workbook to UTF-8 CSV entirely in your browser.',
+    seoTitle: 'Excel to CSV Converter Online (No Upload) | ToolVerse',
+    seoDescription:
+      'Convert Excel .xlsx to CSV privately in your browser. Pair with CSV to Excel for round-trips.',
+    sections: [
+      {
+        heading: 'Spreadsheet to plain data',
+        body: 'CSV is the common interchange format for Sheets, databases, and scripts. This tool reads .xlsx locally and downloads a .csv of the first sheet.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can I convert CSV back to Excel?',
+        answer: 'Yes — use the CSV to Excel tool in the same document suite.',
+      },
+    ],
+  },
+
+  'csv-to-excel': {
+    answerFirst:
+      'CSV to Excel builds a downloadable .xlsx workbook from a CSV file in your browser — no upload required.',
+    seoTitle: 'CSV to Excel (.xlsx) Converter | ToolVerse',
+    seoDescription:
+      'Convert CSV to Excel .xlsx locally. Private browser conversion for Sheets and Excel workflows.',
+    sections: [
+      {
+        heading: 'CSV into a real workbook',
+        body: 'Many exports are CSV-only. This tool wraps your table into an .xlsx file you can open in Excel or upload to Google Sheets.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Does it keep Excel formulas?',
+        answer: 'No — CSV has no formulas. You get cell values as text/numbers in a single sheet.',
+      },
+    ],
+  },
+
+  'csv-to-pdf': {
+    answerFirst:
+      'CSV to PDF renders a CSV file as a simple landscape PDF table in your browser for sharing or printing.',
+    seoTitle: 'CSV to PDF Converter (Table Layout) | ToolVerse',
+    seoDescription:
+      'Turn CSV data into a printable PDF table privately in your browser. 5 MB and 500-row limits apply.',
+    sections: [
+      {
+        heading: 'Share tables without a spreadsheet app',
+        body: 'When recipients need a fixed snapshot rather than an editable sheet, export CSV to PDF. For editable round-trips, use Excel to CSV / CSV to Excel instead.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Will wide CSVs fit?',
+        answer: 'PDF export includes up to 20 columns. Wider tables are truncated with a note on the page.',
+      },
+    ],
+  },
+
+  'word-to-pdf': {
+    answerFirst:
+      'Word to PDF extracts plain text from a .docx file and writes a simple PDF in your browser — not a pixel-perfect Word layout engine.',
+    seoTitle: 'Word (DOCX) to PDF Converter | ToolVerse',
+    seoDescription:
+      'Convert Word .docx to PDF privately in your browser. Plain-text extraction; images and complex layout not preserved.',
+    sections: [
+      {
+        heading: 'Private text-first conversion',
+        body: 'Best for drafts and text-heavy documents you want as PDF without uploading to a third-party converter. Complex Word layouts, images, and exact styling are not reproduced.',
+      },
+      {
+        heading: 'Related document tools',
+        body: 'For spreadsheets, use Excel to PDF, Excel to CSV, CSV to Excel, or CSV to PDF in the same suite. For image packs, use JPG/Images to PDF.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Does it support old .doc files?',
+        answer: 'No — only modern .docx (Office Open XML). Save as .docx in Word first.',
+      },
+      {
+        question: 'Are images included?',
+        answer: 'No. This converter extracts readable text only to keep the bundle small and private.',
       },
     ],
   },

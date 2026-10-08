@@ -19,20 +19,20 @@ export const CATEGORY_PAGE_CONTENT: Record<string, CategoryPageContent> = {
   'pdf-document-tools': {
     seoTitle: 'Free PDF Tools Online — Merge, Split, Convert | ToolVerse',
     seoDescription:
-      'Browser-based PDF utilities: merge, split, rotate, reorder, and convert images to PDF. Files stay on your device for core tools.',
+      'Browser-based PDF & document utilities: merge, split, Excel/Word/CSV convert, and images to PDF. Files stay on your device for core tools.',
     intro:
-      'PDF & Document Tools help you merge, split, rotate, reorder, and convert files in your browser — built for job packs, invoices, and scans you would rather not upload to a random converter.',
+      'PDF & Document Tools help you merge, split, rotate, reorder, and convert Excel, Word, CSV, and images in your browser — built for job packs, invoices, and scans you would rather not upload to a random converter.',
     sections: [
       {
         heading: 'Private PDF workflows',
         body: 'Start with Merge PDF for application packs, Split PDF to extract a single page, and JPG/Images to PDF when your phone camera is the scanner. Pair with image tools when scans need compression first.',
       },
       {
-        heading: 'When to prefer browser-side merge',
-        body: 'Use local PDF tools for contracts, bank statements, and unpublished drafts. Cloud converters can still make sense for heavy OCR or team collaboration — match the tool to the sensitivity of the file.',
+        heading: 'Microsoft-style document conversions',
+        body: 'Convert Excel to PDF or CSV, CSV back to Excel, CSV to PDF tables, and Word (.docx) to a simple text PDF — all client-side with clear size and fidelity limits.',
       },
     ],
-    featuredToolSlugs: ['pdf-merge', 'pdf-split', 'jpg-to-pdf', 'pdf-rotate'],
+    featuredToolSlugs: ['pdf-merge', 'excel-to-pdf', 'word-to-pdf', 'excel-to-csv', 'csv-to-excel', 'jpg-to-pdf'],
     relatedCategorySlugs: ['image-design-tools', 'business-finance-tools', 'career-jobs-employment-engine'],
     relatedBlogSlugs: [
       'how-to-merge-pdf-files-privately-without-uploading',
@@ -180,7 +180,7 @@ export const CATEGORY_PAGE_CONTENT: Record<string, CategoryPageContent> = {
     sections: [
       {
         heading: 'Thumbnails, Hashtags & Repurposing',
-        body: 'Extract 1080p Full HD video thumbnails with YouTube Thumbnail Downloader, generate targeted niche tags with Instagram Hashtag Generator, split long articles for Twitter/X, and clean video transcripts from SRT files.',
+        body: 'Grab public YouTube thumbnail images (not video) with YouTube Thumbnail Downloader, generate niche tags with Instagram Hashtag Generator, split long articles for Twitter/X, and clean SRT transcripts.',
       },
       {
         heading: 'Creative + SEO companion tools',
