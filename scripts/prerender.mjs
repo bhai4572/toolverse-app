@@ -432,6 +432,101 @@ function buildBodyMain(pathname, meta, deps) {
         </div>
       </article>
     `;
+  } else if (parts[0] === 'business') {
+    if (parts[1] === 'register') {
+      contentHtml = `
+        <article class="space-y-6 max-w-4xl mx-auto">
+          <header class="space-y-2">
+            <h1 class="text-3xl font-extrabold text-slate-900">List &amp; Register Your Business</h1>
+            <p class="text-base text-slate-600">Create a permanent Toolverse Business ID, get verified, and generate custom vector QR badges for physical shopfronts.</p>
+          </header>
+          <div class="p-6 bg-slate-50 border border-slate-200 rounded-2xl text-center">
+            <p class="text-sm text-slate-600">Loading interactive 4-step business registration portal...</p>
+          </div>
+        </article>
+      `;
+    } else if (parts[1] === 'bidding') {
+      contentHtml = `
+        <article class="space-y-6">
+          <header class="space-y-2">
+            <h1 class="text-3xl font-extrabold text-slate-900">Category Top 3 Sponsored Bidding Marketplace</h1>
+            <p class="text-base text-slate-600">Compete for legitimate sponsored category visibility at positions #1, #2, and #3.</p>
+          </header>
+        </article>
+      `;
+    } else if (parts[1]) {
+      const bizName = parts[1].split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+      contentHtml = `
+        <article class="space-y-6">
+          <header class="space-y-3">
+            <div class="inline-block px-3 py-1 bg-emerald-100 text-emerald-800 text-xs font-bold rounded-full">Verified Business Profile</div>
+            <h1 class="text-4xl font-extrabold text-slate-900">${esc(bizName)}</h1>
+            <p class="text-slate-600">${esc(meta.description)}</p>
+          </header>
+          <div class="p-6 bg-slate-50 border border-slate-200 rounded-2xl">
+            <h2 class="text-xl font-bold mb-2">Customer Reviews &amp; Information</h2>
+            <p class="text-sm text-slate-600">View customer feedback, business hours, services, and verified credentials.</p>
+          </div>
+        </article>
+      `;
+    } else {
+      contentHtml = `
+        <article class="space-y-6">
+          <header class="space-y-2">
+            <h1 class="text-3xl font-extrabold text-slate-900">Global Business Directory &amp; Digital Identity Network</h1>
+            <p class="text-base text-slate-600">Discover verified local businesses, SaaS tools, agencies, restaurants, and online services.</p>
+          </header>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+            <div class="p-5 border rounded-2xl bg-white shadow-sm">
+              <h3 class="font-bold text-lg"><a href="/business/ali-barber-studio" class="text-indigo-600 hover:underline">Ali Barber Studio</a></h3>
+              <p class="text-xs text-slate-500 mt-1">Lahore, Pakistan &bull; Barber Shop &amp; Grooming</p>
+            </div>
+            <div class="p-5 border rounded-2xl bg-white shadow-sm">
+              <h3 class="font-bold text-lg"><a href="/business/apex-digital-marketing" class="text-indigo-600 hover:underline">Apex Digital Marketing</a></h3>
+              <p class="text-xs text-slate-500 mt-1">London, UK &bull; Digital Marketing Agency</p>
+            </div>
+            <div class="p-5 border rounded-2xl bg-white shadow-sm">
+              <h3 class="font-bold text-lg"><a href="/business/blue-sky-dentistry" class="text-indigo-600 hover:underline">Blue Sky Dentistry</a></h3>
+              <p class="text-xs text-slate-500 mt-1">Toronto, Canada &bull; Dental Clinic &amp; Care</p>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+  } else if (parts[0] === 'b' && parts[1]) {
+    contentHtml = `
+      <article class="space-y-4 max-w-xl mx-auto text-center py-12">
+        <h1 class="text-3xl font-extrabold">Permanent Toolverse Business QR Resolver</h1>
+        <p class="text-slate-600">Resolving Business ID <code class="bg-slate-100 px-2 py-1 rounded font-mono text-indigo-600">${esc(parts[1])}</code> to canonical public profile...</p>
+      </article>
+    `;
+  } else if (parts[0] === 'business-qr') {
+    contentHtml = `
+      <article class="space-y-6">
+        <header class="space-y-2">
+          <h1 class="text-3xl font-extrabold text-slate-900">Printable Vector QR Identity Generator</h1>
+          <p class="text-base text-slate-600">Generate high-resolution printable Toolverse QR identity badges for shop windows, counters, and menus.</p>
+        </header>
+      </article>
+    `;
+  } else if (parts[0] === 'how-to') {
+    contentHtml = `
+      <article class="space-y-6">
+        <header class="space-y-2">
+          <h1 class="text-3xl font-extrabold text-slate-900">Toolverse How-To Center &amp; Guides</h1>
+          <p class="text-base text-slate-600">Official tutorials on business profile registration, verification, printable QR badges, and reviews.</p>
+        </header>
+      </article>
+    `;
+  } else if (parts[0] === 'admin') {
+    contentHtml = `
+      <article class="space-y-6 max-w-xl mx-auto py-8">
+        <header class="text-center space-y-2">
+          <h1 class="text-3xl font-extrabold text-slate-900">Toolverse Admin Control Center</h1>
+          <p class="text-sm text-slate-600">Secure Role-Based Access Control (RBAC) Admin Portal.</p>
+        </header>
+      </article>
+    `;
   } else {
     // Generic fallback (e.g. Legal)
     contentHtml = `

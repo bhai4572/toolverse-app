@@ -1,21 +1,4 @@
-# Cloudflare Pages Redirects & SPA Fallback Rules
-# Static files in dist/ take precedence over 200 rewrite rules.
+# Cloudflare Pages Redirects
+# Static assets in dist/ (written by scripts/prerender.mjs) are served directly by Cloudflare Pages.
 
-# Dynamic SPA fallbacks
-/b/* /index.html 200
-/business /index.html 200
-/business/* /index.html 200
-/business-qr /index.html 200
-/how-to /index.html 200
-/how-to/* /index.html 200
-/admin /index.html 200
-/admin/* /index.html 200
-/products /index.html 200
-/products/* /index.html 200
-/alternatives /index.html 200
-/alternatives/* /index.html 200
-/questions /index.html 200
-/questions/* /index.html 200
-/collections /index.html 200
-/collections/* /index.html 200
 
