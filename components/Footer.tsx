@@ -27,12 +27,12 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Exact 4-column grid — ads fill empty space under each column */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+        {/* Exact 4-column grid — one identical 160×300 ad below each link list */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12 items-stretch">
           {/* 1. Product */}
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-0">
             <h4 className="text-white font-semibold text-sm mb-4">Product</h4>
-            <ul className="space-y-2 text-xs">
+            <ul className="space-y-2 text-xs mb-6">
               <li><Link href="/tools" className="hover:text-white transition-colors">Tools hub</Link></li>
               <li><Link href="/workspace" className="hover:text-white transition-colors">SEO Dashboard</Link></li>
               <li><Link href="/seo" className="hover:text-white transition-colors">SEO Suite</Link></li>
@@ -46,13 +46,13 @@ export function Footer() {
               <li><Link href="/au" className="hover:text-white transition-colors">Australia tools</Link></li>
               <li><Link href="/passport-photos" className="hover:text-white transition-colors">Passport photo sizes</Link></li>
             </ul>
-            <FooterColumnAd size="160x300" />
+            <FooterColumnAd />
           </div>
 
           {/* 2. Tool Categories */}
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-0">
             <h4 className="text-white font-semibold text-sm mb-4">Tool Categories</h4>
-            <ul className="space-y-2 text-xs">
+            <ul className="space-y-2 text-xs mb-6">
               {CATEGORIES.slice(0, 8).map((cat) => (
                 <li key={cat.id}>
                   <Link href={`/category/${cat.slug}`} className="hover:text-white transition-colors">
@@ -61,13 +61,13 @@ export function Footer() {
                 </li>
               ))}
             </ul>
-            <FooterColumnAd size="300x250" />
+            <FooterColumnAd />
           </div>
 
           {/* 3. Popular Tools & Jobs */}
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-0">
             <h4 className="text-white font-semibold text-sm mb-4">Popular Tools & Jobs</h4>
-            <ul className="space-y-2 text-xs">
+            <ul className="space-y-2 text-xs mb-6">
               <li><Link href="/tools/pdf-compress" className="hover:text-white transition-colors">Compress PDF Online</Link></li>
               <li><Link href="/tools/pdf-merge" className="hover:text-white transition-colors">Merge PDF Online</Link></li>
               <li><Link href="/tools/tip-calculator" className="hover:text-white transition-colors">Tip Calculator</Link></li>
@@ -80,13 +80,13 @@ export function Footer() {
               <li><Link href="/jobs/usa-jobs" className="hover:text-white transition-colors">Jobs in USA</Link></li>
               <li><Link href="/blog" className="hover:text-white transition-colors">SEO Guides & Blog</Link></li>
             </ul>
-            <FooterColumnAd size="160x300" />
+            <FooterColumnAd />
           </div>
 
           {/* 4. Trust & Legal */}
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-0">
             <h4 className="text-white font-semibold text-sm mb-4">Trust & Legal</h4>
-            <ul className="space-y-2 text-xs">
+            <ul className="space-y-2 text-xs mb-6">
               <li><Link href="/legal/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
               <li><Link href="/legal/terms-of-use" className="hover:text-white transition-colors">Terms of Use</Link></li>
               <li><Link href="/legal/disclaimer" className="hover:text-white transition-colors">Disclaimer</Link></li>
@@ -97,11 +97,11 @@ export function Footer() {
               <li><Link href="/legal/editorial-policy" className="hover:text-white transition-colors">Editorial Policy</Link></li>
               <li><Link href="/legal/contact" className="hover:text-white transition-colors">Contact Support</Link></li>
             </ul>
-            <FooterColumnAd size="300x250" />
+            <FooterColumnAd />
           </div>
         </div>
 
-        {/* Full-width footer leaderboard + 300x250 row */}
+        {/* Single clean leaderboard row */}
         <FooterAdBar />
 
         <div className="pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
