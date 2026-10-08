@@ -4,6 +4,7 @@ import { CATEGORIES, getToolsByCategory, getToolBySlug } from '@/lib/tools/regis
 import { getCategoryPageContent } from '@/lib/seo/categoryPageContent';
 import { getBlogPostBySlug, getGuidesForCategory } from '@/lib/blog/posts';
 import { Breadcrumb } from '@/components/Breadcrumb';
+import { AdSlot } from '@/components/AdSlot';
 import { ArrowRight } from 'lucide-react';
 import type { Metadata } from 'next';
 
@@ -88,6 +89,9 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
           {pageContent?.intro || cat.description}
         </p>
       </header>
+
+      {/* Adsterra Native banner — category mid-content */}
+      <AdSlot slot="native" />
 
       {featuredTools.length > 0 && (
         <section className="space-y-3" aria-labelledby="featured-tools-heading">

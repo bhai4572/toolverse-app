@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { Search, ArrowRight } from 'lucide-react';
 import { CATEGORIES, TOOLS, searchTools, getToolsByCategory } from '@/lib/tools/registry';
+import { AdSlot } from '@/components/AdSlot';
 
 export default function ToolsHubPage() {
   const [q, setQ] = useState('');
@@ -50,6 +51,9 @@ export default function ToolsHubPage() {
           )}
         </div>
       </header>
+
+      {/* Adsterra Native banner — mid-content on hub */}
+      <AdSlot slot="native" />
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {CATEGORIES.map((cat) => {

@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { Breadcrumb } from '@/components/Breadcrumb';
+import { AdSlot } from '@/components/AdSlot';
 import { getRegionHub, RegionCode, REGION_HUBS } from '@/lib/regions/hubs';
 
 export function RegionalHubPage({ code }: { code: RegionCode }) {
@@ -24,6 +25,8 @@ export function RegionalHubPage({ code }: { code: RegionCode }) {
           {hub.answerFirst}
         </p>
       </header>
+
+      <AdSlot slot="native" />
 
       <section className="space-y-3" aria-labelledby="region-tools-heading">
         <h2 id="region-tools-heading" className="text-lg font-bold text-slate-900 dark:text-white">

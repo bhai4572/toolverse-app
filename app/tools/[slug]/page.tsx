@@ -141,9 +141,15 @@ export default function ToolPage({ params }: { params: { slug: string } }) {
               <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
               <span>{tool.privacyMessage}</span>
             </div>
+
+            {/* Adsterra Banner 468x60 — under tool title (medium widths) */}
+            <AdSlot slot="under-title" className="my-2" />
           </div>
 
-          {/* MAIN TOOL INTERACTIVE APP */}
+          {/* Adsterra Banner 728x90 — content top (desktop) */}
+          <AdSlot slot="leaderboard" className="my-0" />
+
+          {/* MAIN TOOL INTERACTIVE APP — ads never inside dropzones / controls */}
           <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 sm:p-7 shadow-sm">
             <ToolRenderer tool={tool} />
           </div>
@@ -167,8 +173,8 @@ export default function ToolPage({ params }: { params: { slug: string } }) {
             </aside>
           )}
 
-          {/* IN-ARTICLE AD SLOT AFTER TOOL */}
-          <AdSlot slotId="tool-inline-top" format="in-article" />
+          {/* Adsterra Banner 300x250 — after tool, outside controls */}
+          <AdSlot slot="in-content" slotId="tool-inline-top" />
 
           {/* HOW TO USE & COMMON USE CASES */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -204,7 +210,9 @@ export default function ToolPage({ params }: { params: { slug: string } }) {
                     <h2 className="text-lg font-bold text-slate-900 dark:text-white">{section.heading}</h2>
                     <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{section.body}</p>
                   </section>
-                  {sIdx === 0 && <AdSlot slotId="tool-content-break" format="horizontal" />}
+                  {sIdx === 0 && (
+                    <AdSlot slot="leaderboard" slotId="tool-content-break" />
+                  )}
                 </React.Fragment>
               ))}
             </div>
@@ -252,8 +260,8 @@ export default function ToolPage({ params }: { params: { slug: string } }) {
 
         {/* STICKY SIDEBAR (DESKTOP) */}
         <aside className="lg:col-span-4 space-y-6 lg:sticky lg:top-20">
-          {/* PRIMARY SIDEBAR AD SLOT */}
-          <AdSlot slotId="tool-sidebar-primary" format="sidebar" />
+          {/* Adsterra Banner 160x600 — sticky sidebar */}
+          <AdSlot slot="sidebar-skyscraper" slotId="tool-sidebar-primary" />
 
           {/* POPULAR SEMRUSH & AHREFS ALTERNATIVES WIDGET */}
           <div className="p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm space-y-3">
@@ -296,8 +304,8 @@ export default function ToolPage({ params }: { params: { slug: string } }) {
             </div>
           </div>
 
-          {/* SECONDARY SIDEBAR AD SLOT */}
-          <AdSlot slotId="tool-sidebar-secondary" format="sidebar" />
+          {/* Adsterra Banner 160x300 — secondary sidebar */}
+          <AdSlot slot="sidebar-half" slotId="tool-sidebar-secondary" />
         </aside>
       </div>
     </div>

@@ -123,7 +123,7 @@ export default function BlogPostPage({ params }: Props) {
         </div>
       </header>
 
-      <AdSlot placement="header" />
+      <AdSlot slot="leaderboard" placement="header" />
 
       <div className="rounded-2xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-800">
         <img
@@ -192,7 +192,8 @@ export default function BlogPostPage({ params }: Props) {
         </div>
       )}
 
-      <AdSlot placement="footer" />
+      <AdSlot slot="in-content" className="my-6" />
+      <AdSlot slot="footer" placement="footer" />
 
       <div className="space-y-6 pt-8 border-t border-slate-200 dark:border-slate-800">
         <h3 className="text-xl font-bold text-slate-900 dark:text-white">More Recommended Guides</h3>

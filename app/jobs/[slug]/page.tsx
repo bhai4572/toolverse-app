@@ -59,7 +59,7 @@ export default function JobCategoryPage({ params }: Props) {
         <p className="text-sm text-slate-600 dark:text-slate-400 max-w-3xl leading-relaxed">{config.intro}</p>
       </header>
 
-      <AdSlot placement="header" />
+      <AdSlot slot="leaderboard" placement="header" />
 
       {config.featuredPostings && config.featuredPostings.length > 0 && (
         <section className="space-y-4">
@@ -100,7 +100,9 @@ export default function JobCategoryPage({ params }: Props) {
         <JobTools />
       </div>
 
-      <AdSlot placement="footer" />
+      {/* Ads outside the job search tool UI */}
+      <AdSlot slot="in-content" />
+      <AdSlot slot="footer" placement="footer" />
 
       {config.sections.map((section) => (
         <section key={section.heading} className="space-y-2">

@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { Search, ArrowRight, Wrench, Globe2, GraduationCap, Landmark, ShieldCheck, Zap } from 'lucide-react';
 import { TOOLS, CATEGORIES, getPopularTools, searchTools } from '@/lib/tools/registry';
+import { AdSlot } from '@/components/AdSlot';
 
 const PATHS = [
   {
@@ -142,6 +143,9 @@ export default function HomePage() {
           Free vs Pro →
         </Link>
       </section>
+
+      {/* Adsterra Native — home mid-content */}
+      <AdSlot slot="native" />
 
       <section className="space-y-4">
         <div className="flex items-end justify-between gap-4">

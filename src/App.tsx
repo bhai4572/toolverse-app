@@ -67,7 +67,7 @@ import PassportPhotosHubPage from '../app/passport-photos/page';
 import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
 import { SEOHead } from './components/SEOHead';
-import { AdBlockDetector } from '../components/AdBlockDetector';
+import { AdGlobals } from '../components/ads/AdGlobals';
 
 export default function App() {
   const [currentPath, setCurrentPath] = useState(
@@ -314,9 +314,15 @@ export default function App() {
     return <HomePage />;
   };
 
+  const skipAds =
+    isWorkspace ||
+    pathNormalized === '/admin' ||
+    pathNormalized.startsWith('/admin/') ||
+    pathNormalized === '/business/dashboard' ||
+    pathNormalized.startsWith('/business/dashboard/');
+
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100">
-      <AdBlockDetector />
       <SEOHead pathname={currentPath} />
       <Header />
       <main
@@ -329,6 +335,8 @@ export default function App() {
         {renderContent()}
       </main>
       {!isWorkspace && <Footer />}
+      {/* Adsterra: social bar + session popunder + mobile 320x50 — never gates tools */}
+      {!skipAds && <AdGlobals />}
     </div>
   );
 }

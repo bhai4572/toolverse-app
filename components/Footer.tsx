@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { ShieldCheck, Wrench, Lock, Heart } from 'lucide-react';
 import { CATEGORIES, TOOLS } from '@/lib/tools/registry';
 import { AdSlot } from './AdSlot';
+import { AdsterraSmartLink } from './ads/AdsterraSmartLink';
 
 export function Footer() {
   return (
@@ -93,22 +94,18 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Footer Ad Banner Box */}
-        <AdSlot slotId="footer-banner" className="my-6" />
+        {/* Adsterra Banner 728x90 — footer */}
+        <AdSlot slot="footer" slotId="footer-banner" className="my-6" />
 
         <div className="pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
           <div>
             © {new Date().getFullYear()} ToolVerse. All rights reserved. Zero mock data.
           </div>
           <div className="flex items-center gap-4 text-slate-500">
-            <a
-              href="https://omg10.com/4/11966216"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs font-semibold text-brand-400 hover:text-brand-300 transition-colors flex items-center gap-1"
-            >
-              ⚡ Featured Deals & Special Offers
-            </a>
+            {/* Adsterra Smart link — optional outbound only, not nav */}
+            <AdsterraSmartLink className="text-xs font-semibold text-brand-400 hover:text-brand-300 transition-colors">
+              Sponsored
+            </AdsterraSmartLink>
             <span>•</span>
             <span>Client-side WebAssembly & Web Crypto</span>
           </div>

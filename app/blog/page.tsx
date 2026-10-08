@@ -54,7 +54,8 @@ export default function BlogHubPage() {
         </p>
       </header>
 
-      <AdSlot placement="header" />
+      {/* Adsterra Banner 728x90 + Native mid-list */}
+      <AdSlot slot="leaderboard" placement="header" />
 
       <div className="flex flex-wrap gap-2 justify-center pb-2">
         {BLOG_HUB_CATEGORIES.map((cat) => (
@@ -154,7 +155,8 @@ export default function BlogHubPage() {
         </nav>
       )}
 
-      <AdSlot placement="footer" />
+      <AdSlot slot="native" />
+      <AdSlot slot="footer" placement="footer" />
     </div>
   );
 }
