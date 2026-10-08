@@ -1,3 +1,21 @@
-# Cloudflare Pages evaluates _redirects BEFORE static files.
-# Do NOT use "/* /index.html 200" here - it overwrites prerendered
-# dist/tools/*/index.html shells. SPA fallback is functions/_middleware.ts.
+# Cloudflare Pages Redirects & SPA Fallback Rules
+# Static files in dist/ take precedence over 200 rewrite rules.
+
+# Dynamic SPA fallbacks
+/b/* /index.html 200
+/business /index.html 200
+/business/* /index.html 200
+/business-qr /index.html 200
+/how-to /index.html 200
+/how-to/* /index.html 200
+/admin /index.html 200
+/admin/* /index.html 200
+/products /index.html 200
+/products/* /index.html 200
+/alternatives /index.html 200
+/alternatives/* /index.html 200
+/questions /index.html 200
+/questions/* /index.html 200
+/collections /index.html 200
+/collections/* /index.html 200
+
