@@ -87,9 +87,11 @@ export const SLOT_TO_BANNER: Partial<Record<AdSlotName, BannerSize>> = {
   'footer-mobile': '320x50',
 };
 
-/** Routes where ads must not load (SEO workspace / admin) */
+/** Routes where ads must not load (homepage first-visit, SEO workspace, admin) */
 export function shouldSkipAds(pathname: string): boolean {
   const p = pathname.replace(/\/$/, '') || '/';
+  // Homepage = zero Adsterra (no native, banners, or social bar)
+  if (p === '/') return true;
   if (p === '/workspace' || p.startsWith('/workspace/')) return true;
   if (p === '/seo-dashboard' || p.startsWith('/seo-dashboard/')) return true;
   if (p === '/admin' || p.startsWith('/admin/')) return true;

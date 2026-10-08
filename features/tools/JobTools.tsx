@@ -15,6 +15,8 @@ import {
   Bookmark, BookmarkCheck, DollarSign, ChevronRight, X, 
   MessageSquare, Copy, Linkedin, Facebook 
 } from 'lucide-react';
+import { AdSlot } from '@/components/ads/AdSlot';
+import { JobsGridWithAds } from '@/components/ads/JobsGridWithAds';
 
 const POPULAR_COUNTRIES = [
   { code: 'all', name: 'All Countries 🌐' },
@@ -435,8 +437,9 @@ function JobFinderContent() {
         </div>
       ) : (
         <div className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {(filteredJobs || []).slice(0, visibleCount).map((job, idx) => {
+          <JobsGridWithAds
+            every={4}
+            cards={(filteredJobs || []).slice(0, visibleCount).map((job, idx) => {
               if (!job) return null;
               const jobId = job.id || `job-${idx}`;
               const isBookmarked = savedJobIds.includes(jobId);
@@ -452,7 +455,6 @@ function JobFinderContent() {
                   className="group relative cursor-pointer p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-brand-500 dark:hover:border-brand-500 hover:shadow-xl transition-all duration-200 flex flex-col justify-between"
                 >
                   <div>
-                    {/* Card Top Header */}
                     <div className="flex items-start justify-between gap-3 mb-3">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-xl bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-400 border border-brand-200 dark:border-brand-800 flex items-center justify-center font-bold text-base shrink-0">
@@ -483,7 +485,6 @@ function JobFinderContent() {
                         </div>
                       </div>
 
-                      {/* Share & Bookmark Buttons */}
                       <div className="flex items-center gap-1 shrink-0">
                         <button
                           onClick={(e) => openShareModal(job, e)}
@@ -506,7 +507,6 @@ function JobFinderContent() {
                       </div>
                     </div>
 
-                    {/* Location & Tags */}
                     <div className="flex flex-wrap items-center gap-1.5 mb-3 text-xs">
                       <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium">
                         <MapPin className="w-3 h-3 text-brand-500" />
@@ -529,13 +529,11 @@ function JobFinderContent() {
                       )}
                     </div>
 
-                    {/* Description snippet */}
                     <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed mb-4">
                       {job.description || 'View details and apply online on official portal.'}
                     </p>
                   </div>
 
-                  {/* Card Footer */}
                   <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs">
                     <span className="text-slate-400 font-medium text-[11px]">
                       Posted: {job.postedDate || '2026-10-06'}
@@ -547,12 +545,13 @@ function JobFinderContent() {
                   </div>
                 </div>
               );
-            })}
-          </div>
+            }).filter(Boolean)}
+          />
 
           {/* Load More Button */}
           {visibleCount < (filteredJobs || []).length && (
-            <div className="text-center pt-4">
+            <div className="text-center pt-4 space-y-4">
+              <AdSlot slot="in-content" bare className="mx-auto" />
               <button
                 onClick={() => setVisibleCount((prev) => prev + 40)}
                 className="px-6 py-3 bg-brand-600 hover:bg-brand-500 text-white rounded-xl text-xs font-bold shadow-md transition transform hover:-translate-y-0.5"
@@ -643,45 +642,51 @@ function JobFinderContent() {
               )}
             </div>
 
-            {/* Modal Footer / Apply Actions */}
-            <div className="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/80 flex items-center justify-between flex-wrap gap-3">
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={(e) => toggleBookmark(selectedJob.id, e)}
-                  className="px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-xs font-semibold flex items-center gap-1.5 transition"
-                >
-                  {savedJobIds.includes(selectedJob.id) ? (
-                    <>
-                      <BookmarkCheck className="w-4 h-4 text-brand-600" />
-                      <span>Saved</span>
-                    </>
-                  ) : (
-                    <>
-                      <Bookmark className="w-4 h-4" />
-                      <span>Save Job</span>
-                    </>
-                  )}
-                </button>
-
-                <button
-                  onClick={(e) => openShareModal(selectedJob, e)}
-                  className="px-3 py-2 rounded-lg bg-brand-50 dark:bg-brand-950/60 text-brand-700 dark:text-brand-300 hover:bg-brand-100 text-xs font-semibold flex items-center gap-1.5 transition border border-brand-200 dark:border-brand-800"
-                >
-                  <Share2 className="w-4 h-4" />
-                  <span>Share ToolVerse Link</span>
-                </button>
+            {/* Detail ad + apply actions — never gates Apply */}
+            <div className="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/80 space-y-3">
+              <div className="flex justify-center">
+                <AdSlot slot="mobile-banner" bare className="max-w-[320px]" />
+                <AdSlot slot="under-title" bare className="max-w-[468px]" />
               </div>
+              <div className="flex items-center justify-between flex-wrap gap-3">
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={(e) => toggleBookmark(selectedJob.id, e)}
+                    className="px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-xs font-semibold flex items-center gap-1.5 transition"
+                  >
+                    {savedJobIds.includes(selectedJob.id) ? (
+                      <>
+                        <BookmarkCheck className="w-4 h-4 text-brand-600" />
+                        <span>Saved</span>
+                      </>
+                    ) : (
+                      <>
+                        <Bookmark className="w-4 h-4" />
+                        <span>Save Job</span>
+                      </>
+                    )}
+                  </button>
 
-              <div className="flex items-center gap-2">
-                <a
-                  href={selectedJob?.url || '#'}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-5 py-2 rounded-lg bg-brand-600 hover:bg-brand-500 active:scale-95 text-white text-xs font-bold flex items-center gap-2 transition shadow-md shadow-brand-600/30"
-                >
-                  <span>Apply on Official Portal</span>
-                  <ChevronRight className="w-4 h-4" />
-                </a>
+                  <button
+                    onClick={(e) => openShareModal(selectedJob, e)}
+                    className="px-3 py-2 rounded-lg bg-brand-50 dark:bg-brand-950/60 text-brand-700 dark:text-brand-300 hover:bg-brand-100 text-xs font-semibold flex items-center gap-1.5 transition border border-brand-200 dark:border-brand-800"
+                  >
+                    <Share2 className="w-4 h-4" />
+                    <span>Share ToolVerse Link</span>
+                  </button>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <a
+                    href={selectedJob?.url || '#'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-5 py-2 rounded-lg bg-brand-600 hover:bg-brand-500 active:scale-95 text-white text-xs font-bold flex items-center gap-2 transition shadow-md shadow-brand-600/30"
+                  >
+                    <span>Apply on Official Portal</span>
+                    <ChevronRight className="w-4 h-4" />
+                  </a>
+                </div>
               </div>
             </div>
           </div>

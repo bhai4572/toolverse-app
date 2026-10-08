@@ -68,6 +68,8 @@ import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
 import { SEOHead } from './components/SEOHead';
 import { AdGlobals } from '../components/ads/AdGlobals';
+import { HeaderAdBar } from '../components/ads/HeaderAdBar';
+import { shouldSkipAds } from '../components/ads/adConfig';
 
 export default function App() {
   const [currentPath, setCurrentPath] = useState(
@@ -314,17 +316,14 @@ export default function App() {
     return <HomePage />;
   };
 
-  const skipAds =
-    isWorkspace ||
-    pathNormalized === '/admin' ||
-    pathNormalized.startsWith('/admin/') ||
-    pathNormalized === '/business/dashboard' ||
-    pathNormalized.startsWith('/business/dashboard/');
+  const skipAds = shouldSkipAds(pathNormalized);
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100">
       <SEOHead pathname={currentPath} />
       <Header />
+      {/* Persistent header ad bar — monetized routes only (not home / workspace / admin) */}
+      {!skipAds && <HeaderAdBar />}
       <main
         className={
           isWorkspace
@@ -335,7 +334,7 @@ export default function App() {
         {renderContent()}
       </main>
       {!isWorkspace && <Footer />}
-      {/* Adsterra: social bar + mobile 320x50 — never gates tools */}
+      {/* Adsterra social bar — monetized pages only; never gates tools; no popunder */}
       {!skipAds && <AdGlobals />}
     </div>
   );

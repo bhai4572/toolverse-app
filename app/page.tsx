@@ -2,11 +2,16 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Search, ArrowRight, Wrench, Globe2, GraduationCap, Landmark, ShieldCheck, Zap } from 'lucide-react';
+import { Search, ArrowRight, Wrench, Globe2, GraduationCap, Landmark, ShieldCheck, Zap, Briefcase } from 'lucide-react';
 import { TOOLS, CATEGORIES, getPopularTools, searchTools } from '@/lib/tools/registry';
-import { AdSlot } from '@/components/AdSlot';
 
 const PATHS = [
+  {
+    href: '/tools/global-job-finder',
+    title: 'Job Finder',
+    blurb: 'Search remote & local jobs worldwide — free, no signup.',
+    icon: Briefcase,
+  },
   {
     href: '/tools',
     title: 'Tools',
@@ -58,23 +63,29 @@ export default function HomePage() {
             Tool<span className="text-brand-400">Verse</span>
           </p>
           <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-[1.1]">
-            Free tools. Real SEO dashboard. Clear paths.
+            Free tools. Global Job Finder. Clear paths.
           </h1>
           <p className="text-slate-300 text-sm sm:text-base max-w-xl leading-relaxed">
-            ToolVerse is a privacy-first free online tools site: compress and merge PDFs, image utilities, Western tax/pay estimators, writing helpers, and a Semrush-style SEO Dashboard that uses your audits — not fake market graphs. Start with Tools, SEO Dashboard, Study, or Immigration.
+            ToolVerse is a privacy-first free online tools site: compress and merge PDFs, image utilities, Western tax/pay estimators, writing helpers, a Global Job Finder for remote and local roles, and a Semrush-style SEO Dashboard. Start with Jobs, Tools, SEO Dashboard, Study, or Immigration.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link
-              href="/workspace"
+              href="/tools/global-job-finder"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-bold transition-colors"
             >
-              Open SEO Dashboard <ArrowRight className="w-4 h-4" />
+              <Briefcase className="w-4 h-4" /> Open Job Finder <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
               href="/tools"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-white/25 hover:border-white/50 text-white text-sm font-bold"
             >
               Browse tools
+            </Link>
+            <Link
+              href="/workspace"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-white/25 hover:border-white/50 text-white text-sm font-bold"
+            >
+              SEO Dashboard
             </Link>
           </div>
           <div className="relative max-w-md pt-2">
@@ -109,17 +120,56 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Featured Job Finder — primary traffic entry */}
+      <section
+        className="relative overflow-hidden rounded-2xl border border-brand-200 dark:border-brand-800 bg-gradient-to-r from-brand-50 via-white to-emerald-50 dark:from-brand-950/50 dark:via-slate-900 dark:to-emerald-950/30 p-6 sm:p-8"
+        aria-labelledby="job-finder-heading"
+      >
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+          <div className="flex items-start gap-4 min-w-0">
+            <div className="w-12 h-12 rounded-xl bg-brand-600 text-white flex items-center justify-center shrink-0 shadow-md">
+              <Briefcase className="w-6 h-6" />
+            </div>
+            <div className="space-y-1 min-w-0">
+              <h2 id="job-finder-heading" className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                Global Job Finder
+              </h2>
+              <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed max-w-xl">
+                Browse remote, hybrid, and onsite vacancies worldwide — filter by country, sector, and salary. Apply on official employer portals.
+              </p>
+              <div className="flex flex-wrap gap-2 pt-1 text-[11px] font-semibold text-slate-500">
+                <Link href="/jobs/remote-jobs" className="hover:text-brand-600">Remote Jobs</Link>
+                <span>·</span>
+                <Link href="/jobs/usa-jobs" className="hover:text-brand-600">USA Jobs</Link>
+                <span>·</span>
+                <Link href="/tools/global-job-finder" className="hover:text-brand-600">Full Job Search</Link>
+              </div>
+            </div>
+          </div>
+          <Link
+            href="/tools/global-job-finder"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-bold shadow-lg shadow-brand-600/25 whitespace-nowrap shrink-0 transition-colors"
+          >
+            Search jobs free <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+      </section>
+
       {/* Product paths — not card soup in hero; secondary section */}
       <section className="space-y-4" aria-labelledby="paths-heading">
         <h2 id="paths-heading" className="text-xl font-bold text-slate-900 dark:text-white">
           Where do you want to go?
         </h2>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
           {PATHS.map((p) => (
             <Link
               key={p.href}
               href={p.href}
-              className="group p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-brand-500/60 transition-colors"
+              className={`group p-5 rounded-2xl border bg-white dark:bg-slate-900 hover:border-brand-500/60 transition-colors ${
+                p.href.includes('job-finder')
+                  ? 'border-brand-400/70 dark:border-brand-600/50 ring-1 ring-brand-500/20'
+                  : 'border-slate-200 dark:border-slate-800'
+              }`}
             >
               <p.icon className="w-5 h-5 text-brand-600 mb-3" />
               <h3 className="font-bold text-slate-900 dark:text-white group-hover:text-brand-600">{p.title}</h3>
@@ -143,9 +193,6 @@ export default function HomePage() {
           Free vs Pro →
         </Link>
       </section>
-
-      {/* Adsterra Native — home mid-content */}
-      <AdSlot slot="native" />
 
       <section className="space-y-4">
         <div className="flex items-end justify-between gap-4">

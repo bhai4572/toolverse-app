@@ -1,17 +1,19 @@
 'use client';
 
 import { useEffect } from 'react';
-import { ADSTERRA_SOCIAL_BAR_SRC, shouldSkipAds } from './adConfig';
+import { ADSTERRA_SOCIAL_BAR_SRC } from './adConfig';
+import { useSkipAds } from './useSkipAds';
 
 const SCRIPT_ATTR = 'data-adsterra-social-bar';
 
 /**
- * Social bar — load once globally (async). Skips workspace/admin.
+ * Social bar — load once on monetized routes (async). Skips home / workspace / admin.
  */
 export function AdsterraSocialBar() {
+  const skip = useSkipAds();
+
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    if (shouldSkipAds(window.location.pathname)) return;
+    if (typeof window === 'undefined' || skip) return;
     if (document.querySelector(`script[${SCRIPT_ATTR}]`)) return;
 
     const script = document.createElement('script');
@@ -20,7 +22,7 @@ export function AdsterraSocialBar() {
     script.src = ADSTERRA_SOCIAL_BAR_SRC;
     script.async = true;
     document.body.appendChild(script);
-  }, []);
+  }, [skip]);
 
   return null;
 }

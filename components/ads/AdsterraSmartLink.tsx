@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { ADSTERRA_SMART_LINK } from './adConfig';
+import { useSkipAds } from './useSkipAds';
 
 interface AdsterraSmartLinkProps {
   children?: React.ReactNode;
@@ -10,12 +11,15 @@ interface AdsterraSmartLinkProps {
 
 /**
  * Smart link — ONLY for explicit sponsored / optional outbound text.
- * Do not wrap internal nav links.
+ * Do not wrap internal nav links. Hidden on homepage / workspace / admin.
  */
 export function AdsterraSmartLink({
   children = 'Sponsored',
   className = '',
 }: AdsterraSmartLinkProps) {
+  const skip = useSkipAds();
+  if (skip) return null;
+
   return (
     <a
       href={ADSTERRA_SMART_LINK}

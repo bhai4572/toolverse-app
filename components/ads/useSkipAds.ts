@@ -1,0 +1,53 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { shouldSkipAds } from './adConfig';
+
+type Listener = () => void;
+
+const listeners = new Set<Listener>();
+let patched = false;
+let origPush: History['pushState'] | null = null;
+let origReplace: History['replaceState'] | null = null;
+
+function notify() {
+  listeners.forEach((l) => l());
+}
+
+function ensureHistoryPatch() {
+  if (typeof window === 'undefined' || patched) return;
+  patched = true;
+  origPush = history.pushState.bind(history);
+  origReplace = history.replaceState.bind(history);
+  history.pushState = (...args: Parameters<History['pushState']>) => {
+    origPush!(...args);
+    notify();
+  };
+  history.replaceState = (...args: Parameters<History['replaceState']>) => {
+    origReplace!(...args);
+    notify();
+  };
+  window.addEventListener('popstate', notify);
+}
+
+/**
+ * Reactive skip flag for SPA navigations (pushState / popstate).
+ * Homepage, workspace, and admin stay ad-free after client-side route changes.
+ */
+export function useSkipAds(): boolean {
+  const [skip, setSkip] = useState(() =>
+    typeof window !== 'undefined' ? shouldSkipAds(window.location.pathname) : false
+  );
+
+  useEffect(() => {
+    ensureHistoryPatch();
+    const sync = () => setSkip(shouldSkipAds(window.location.pathname));
+    sync();
+    listeners.add(sync);
+    return () => {
+      listeners.delete(sync);
+    };
+  }, []);
+
+  return skip;
+}

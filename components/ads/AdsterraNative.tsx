@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
-import { ADSTERRA_NATIVE, shouldSkipAds } from './adConfig';
+import React, { useEffect, useRef } from 'react';
+import { ADSTERRA_NATIVE } from './adConfig';
+import { useSkipAds } from './useSkipAds';
 
 interface AdsterraNativeProps {
   className?: string;
@@ -13,13 +14,10 @@ interface AdsterraNativeProps {
  */
 export function AdsterraNative({ className = '' }: AdsterraNativeProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
-  const [skip, setSkip] = useState(false);
+  const skip = useSkipAds();
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && shouldSkipAds(window.location.pathname)) {
-      setSkip(true);
-      return;
-    }
+    if (skip) return;
 
     const wrap = wrapRef.current;
     if (!wrap) return;
@@ -38,7 +36,7 @@ export function AdsterraNative({ className = '' }: AdsterraNativeProps) {
     return () => {
       wrap.replaceChildren();
     };
-  }, []);
+  }, [skip]);
 
   if (skip) return null;
 
