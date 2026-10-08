@@ -6,6 +6,7 @@ import {
   SEO_NAV_GROUPS,
   getBreadcrumbs,
   type SeoNavGroup,
+  type SeoNavItem,
 } from '@/lib/seo/workspace/seoNavConfig';
 import {
   ChevronDown,
@@ -23,7 +24,28 @@ import {
   PanelLeftClose,
   PanelLeft,
   Home,
+  Lock,
 } from 'lucide-react';
+
+function NavLinkLabel({ item, active }: { item: SeoNavItem; active: boolean }) {
+  const locked = item.status === 'locked';
+  return (
+    <span className="flex items-center gap-1.5 min-w-0">
+      <span className="truncate">{item.label}</span>
+      {locked ? (
+        <Lock className="w-3 h-3 shrink-0 text-slate-500" aria-label="Locked" />
+      ) : (
+        <span
+          className={`shrink-0 text-[9px] font-extrabold uppercase tracking-wide px-1 py-0.5 rounded ${
+            active ? 'bg-emerald-500/25 text-emerald-300' : 'bg-emerald-500/15 text-emerald-400/90'
+          }`}
+        >
+          Live
+        </span>
+      )}
+    </span>
+  );
+}
 
 const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   globe: Globe2,
@@ -89,13 +111,15 @@ function NavGroup({
                   )}
                   <Link
                     href={`/workspace/${item.slug}`}
-                    className={`flex-1 truncate px-2 py-1.5 rounded-md text-[13px] font-medium ${
+                    className={`flex-1 min-w-0 px-2 py-1.5 rounded-md text-[13px] font-medium ${
                       activeSlug === item.slug
                         ? 'bg-brand-600/20 text-brand-300'
-                        : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                        : item.status === 'locked'
+                          ? 'text-slate-500 hover:bg-slate-800 hover:text-slate-300'
+                          : 'text-slate-300 hover:bg-slate-800 hover:text-white'
                     }`}
                   >
-                    {item.label}
+                    <NavLinkLabel item={item} active={activeSlug === item.slug} />
                   </Link>
                 </div>
                 {item.children && childOpen && (
@@ -104,13 +128,15 @@ function NavGroup({
                       <li key={child.id}>
                         <Link
                           href={`/workspace/${child.slug}`}
-                          className={`block truncate px-2 py-1 rounded-md text-[12px] ${
+                          className={`block min-w-0 px-2 py-1 rounded-md text-[12px] ${
                             activeSlug === child.slug
                               ? 'bg-brand-600/20 text-brand-300 font-semibold'
-                              : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                              : child.status === 'locked'
+                                ? 'text-slate-500 hover:text-slate-300 hover:bg-slate-800'
+                                : 'text-slate-400 hover:text-white hover:bg-slate-800'
                           }`}
                         >
-                          {child.label}
+                          <NavLinkLabel item={child} active={activeSlug === child.slug} />
                         </Link>
                       </li>
                     ))}

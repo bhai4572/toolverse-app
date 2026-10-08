@@ -11,8 +11,8 @@ const QUICK = [
   { href: '/workspace/site-audit', label: 'Site Audit', blurb: 'Fetch URL → health score' },
   { href: '/workspace/on-page-seo', label: 'On-Page Checker', blurb: 'Meta, headings, alt' },
   { href: '/workspace/site-performance', label: 'Site Performance', blurb: 'CWV-style estimates' },
-  { href: '/workspace/keyword-magic', label: 'Keyword Magic', blurb: 'Modeled keyword ideas' },
   { href: '/workspace/position-tracking', label: 'Position Tracking', blurb: 'Log your ranks' },
+  { href: '/workspace/traffic-analytics/overview', label: 'Traffic Analytics', blurb: 'Paste GA4 / CSV' },
   { href: '/workspace/reports/export', label: 'Export Report', blurb: 'HTML / PDF of last audit' },
 ];
 
@@ -33,7 +33,7 @@ export function WorkspaceHome() {
     <ModuleShell
       title="SEO Dashboard"
       purpose="Semrush-style workspace — free forever for now. Charts and stats come from audits and jobs you run in this browser."
-      honesty="No fake global traffic or competitor market share. Everything labeled as your data or modeled ideation."
+      honesty="No fake global traffic or competitor market share. Locked nav items stay visible but show Coming soon until real data is ready."
     >
       <Panel title="Primary project URL">
         <UrlForm url={url} setUrl={setUrl} onRun={saveProject} buttonLabel="Save project" />

@@ -96,11 +96,13 @@ Home
 |--------|----------------|-------------|
 | Site Audit / On-Page | Fetch HTML (CORS proxy) + `performOnPageAudit` | Multi-page crawl index |
 | Site Performance | HTML weight / script estimates | CrUX / PSI API field data |
-| Keyword Magic | Modeled ideation (`generateKeywordData`) | Live search volume DB |
+| Keyword Magic | **Locked** (modeled volume looked like fake Semrush DB) | Live search volume DB |
 | Position Tracking | User-entered positions → local charts | Live SERP scrape |
 | Backlinks | Outbound link extract + GSC paste | Global backlink index |
 | Traffic Analytics | GA4/CSV paste → “Your data” charts | Semrush clickstream |
 | Reports | HTML/PDF of last local audit | White-label agency SaaS |
+
+**Lock policy:** Nav items use `status: 'live' | 'locked'` in `lib/seo/workspace/seoNavConfig.ts`. Live = real fetch / paste / user-entered data. Locked modules stay in the sidebar (lock icon) and open a Coming soon panel — no runnable fake market graphs. Unlock when real APIs or verified imports ship. Classic `/tools` catalog is unaffected.
 
 ---
 

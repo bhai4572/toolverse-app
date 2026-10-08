@@ -2,6 +2,7 @@
 
 import React from 'react';
 import type { SeoNavItem } from '@/lib/seo/workspace/seoNavConfig';
+import { isNavItemLive } from '@/lib/seo/workspace/seoNavConfig';
 import {
   UrlAuditModule,
   OnPageModule,
@@ -25,8 +26,13 @@ import {
   OrganicResearchModule,
   AdsPlannerModule,
 } from './modules/GenericModule';
+import { LockedModule } from './LockedModule';
 
 export function ModuleRouter({ item }: { item: SeoNavItem }) {
+  if (!isNavItemLive(item)) {
+    return <LockedModule item={item} />;
+  }
+
   switch (item.kind) {
     case 'url-audit':
       return <UrlAuditModule title={item.label} moduleId={item.id} />;

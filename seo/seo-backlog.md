@@ -1,6 +1,8 @@
 # ToolVerse SEO / AEO / GEO Backlog
 
-Last updated: 2026-10-08 (wave 10 — **15 High-Trending Creator, Finance, AI & Developer Tools**). White-hat only. Do not invent rankings or traffic claims.
+Last updated: 2026-10-08 (workspace lock policy + wave 10 tools). White-hat only. Do not invent rankings or traffic claims.
+
+**Workspace lock policy:** SEO Dashboard modules that are not real user-data / fetch / paste analysis stay `status: 'locked'` in `seoNavConfig` (Coming soon panel). Unlock only when real integration is ready — never ship fake Semrush market graphs.
 
 ## Status
 

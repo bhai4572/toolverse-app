@@ -426,8 +426,8 @@ export function OrganicResearchModule({ item }: { item: SeoNavItem }) {
           <Link href="/workspace/keyword-gap" className="text-xs font-bold text-brand-600 hover:underline">
             Keyword Gap
           </Link>
-          <Link href="/workspace/keyword-magic" className="text-xs font-bold text-brand-600 hover:underline">
-            Keyword Magic
+          <Link href="/workspace/link-building/extractor" className="text-xs font-bold text-brand-600 hover:underline">
+            Link Extractor
           </Link>
         </div>
       </Panel>
