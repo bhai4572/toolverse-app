@@ -21,6 +21,8 @@ const PILLAR_GUIDE_BY_TOOL = {
   'pakistan-salary-tax-estimator': 'pakistan-salary-tax-calculator-slabs-guide',
   'utm-builder': 'how-to-build-utm-campaign-urls',
   'global-job-finder': 'top-high-paying-remote-jobs-worldwide',
+  'seo-audit-analyzer': 'best-free-semrush-ahrefs-alternatives-2026',
+  'freelancer-hourly-rate-calculator': 'freelance-rate-calculator-guide-paypal-stripe-fees',
 };
 
 function add(pathname, changefreq = 'weekly', priority = '0.8') {

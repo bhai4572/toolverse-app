@@ -15,7 +15,16 @@
     "prebuild": "node scripts/generate-sitemap.mjs",
     "deploy:pages": "npm run build && wrangler pages deploy dist --project-name=toolverse-app --commit-dirty=true",
     "cf:check": "node -e \"console.log('Use: npm run build → output dist. Project: toolverse-app')\"",
-    "test": "vitest run tests/"
+    "test": "vitest run tests/",
+    "seo:all": "node seo/runSeoEngine.mjs",
+    "seo:crawl": "node -e \"import('./seo/crawler/siteCrawler.mjs').then(m => m.runSiteCrawler())\"",
+    "seo:audit": "node -e \"import('./seo/audit/technicalAuditor.mjs').then(m => m.runTechnicalAudit())\"",
+    "seo:accessibility": "node -e \"import('./seo/audit/accessibilityAuditor.mjs').then(m => m.runAccessibilityAudit())\"",
+    "seo:keywords": "node -e \"import('./seo/keywords/keywordEngine.mjs').then(m => m.runKeywordEngine())\"",
+    "seo:content": "node -e \"import('./seo/content/contentGapEngine.mjs').then(m => m.runContentGapEngine())\"",
+    "seo:links": "node -e \"import('./seo/internal-links/linkGraphEngine.mjs').then(m => m.runLinkGraphEngine())\"",
+    "seo:backlinks": "node -e \"import('./seo/backlinks/backlinkEngine.mjs').then(m => m.runBacklinkEngine())\"",
+    "seo:report": "node -e \"import('./seo/reports/reportGenerator.mjs').then(m => m.runReportGenerator())\""
   },
   "dependencies": {
     "browser-image-compression": "^2.0.2",
