@@ -37,6 +37,11 @@ export function Footer() {
               <li><Link href="/immigration" className="hover:text-white transition-colors">Immigration</Link></li>
               <li><Link href="/pricing" className="hover:text-white transition-colors">Pricing</Link></li>
               <li><Link href="/travel" className="hover:text-white transition-colors">Travel</Link></li>
+              <li><Link href="/us" className="hover:text-white transition-colors">US tools</Link></li>
+              <li><Link href="/uk" className="hover:text-white transition-colors">UK tools</Link></li>
+              <li><Link href="/ca" className="hover:text-white transition-colors">Canada tools</Link></li>
+              <li><Link href="/au" className="hover:text-white transition-colors">Australia tools</Link></li>
+              <li><Link href="/passport-photos" className="hover:text-white transition-colors">Passport photo sizes</Link></li>
             </ul>
           </div>
 
@@ -57,10 +62,13 @@ export function Footer() {
           <div>
             <h4 className="text-white font-semibold text-sm mb-4">Popular Tools & Jobs</h4>
             <ul className="space-y-2 text-xs">
+              <li><Link href="/tools/pdf-compress" className="hover:text-white transition-colors">Compress PDF Online</Link></li>
               <li><Link href="/tools/pdf-merge" className="hover:text-white transition-colors">Merge PDF Online</Link></li>
-              <li><Link href="/tools/pdf-split" className="hover:text-white transition-colors">Split PDF Pages</Link></li>
+              <li><Link href="/tools/tip-calculator" className="hover:text-white transition-colors">Tip Calculator</Link></li>
+              <li><Link href="/tools/us-paycheck-calculator" className="hover:text-white transition-colors">US Paycheck Estimator</Link></li>
+              <li><Link href="/tools/uk-take-home-pay-calculator" className="hover:text-white transition-colors">UK Take-Home Pay</Link></li>
+              <li><Link href="/tools/wifi-qr-code-generator" className="hover:text-white transition-colors">Wi‑Fi QR Code</Link></li>
               <li><Link href="/tools/compress-image-target-size" className="hover:text-white transition-colors">Compress Image to 50KB</Link></li>
-              <li><Link href="/tools/barcode-generator" className="hover:text-white transition-colors">Barcode Generator (Code 128)</Link></li>
               <li><Link href="/tools/pakistan-salary-tax-estimator" className="hover:text-white transition-colors">Pakistan Salary Tax Estimator</Link></li>
               <li><Link href="/jobs/remote-jobs" className="hover:text-white transition-colors">Remote Jobs Worldwide</Link></li>
               <li><Link href="/jobs/usa-jobs" className="hover:text-white transition-colors">Jobs in USA</Link></li>

@@ -1396,7 +1396,14 @@ export function getMetadataForPath(pathname: string): PageMetadata {
       ogImage: DEFAULT_OG_IMAGE,
       jsonLd: wrapInGraph([
         buildOrganizationNode(),
-        buildWebPageNode({ canonicalUrl, name: title, description, type: 'WebPage' }),
+        buildWebSiteNode(),
+        buildWebPageNode({
+          canonicalUrl,
+          name: title,
+          description,
+          type: 'WebPage',
+          hasBreadcrumbs: true,
+        }),
         buildBreadcrumbNode(canonicalUrl, [
           { name: 'Home', url: `${baseUrl}/` },
           { name: 'SEO Dashboard', url: canonicalUrl },
@@ -1405,33 +1412,77 @@ export function getMetadataForPath(pathname: string): PageMetadata {
     };
   }
 
-  // Product hubs (SEO Suite, Tools, Study, Immigration, Pricing)
-  const hubMeta: Record<string, { title: string; description: string; keywords: string[] }> = {
+  // Product hubs (SEO Suite, Tools, Study, Immigration, Pricing, regions, passport)
+  const hubMeta: Record<
+    string,
+    { title: string; description: string; keywords: string[]; crumb: string }
+  > = {
     seo: {
       title: 'ToolVerse SEO Suite — Free On-Page & Technical SEO Tools',
       description:
-        'SEO software hub and classic tools catalog. Open the free Semrush-style SEO Dashboard for audits, keywords, and reports.',
+        'SEO software hub: open the free Semrush-style SEO Dashboard for audits, keywords, and reports on your own data — plus classic free SEO utilities.',
       keywords: ['seo suite', 'free seo tools', 'on page seo', 'semrush alternative', 'toolverse seo'],
+      crumb: 'SEO Suite',
     },
     tools: {
       title: 'All Tools Hub — Browse ToolVerse by Category',
-      description: 'Find PDF, image, calculator, writing, SEO, and developer tools organized by category. Privacy-first browser utilities.',
+      description:
+        'Find the right free tool fast: PDF, image, calculator, writing, SEO, and developer utilities organized by category. Most file tools run in your browser.',
       keywords: ['online tools hub', 'free pdf tools', 'image tools', 'toolverse'],
+      crumb: 'Tools',
     },
     pricing: {
       title: 'ToolVerse Pricing — Free SEO Dashboard (Pro Paused)',
       description: 'Everything free for now: SEO Dashboard, audits, keyword tools, report exports. Pro crawl/backlink index later.',
       keywords: ['toolverse pricing', 'free seo tools'],
+      crumb: 'Pricing',
     },
     study: {
       title: 'Study Abroad — Visa Routes & Destinations | ToolVerse',
       description: 'Study-abroad hub with destination visa routes, embassies, and related application tools. University dataset coming.',
       keywords: ['study abroad', 'student visa', 'study in uk canada australia'],
+      crumb: 'Study Abroad',
     },
     immigration: {
       title: 'Immigration & Work Visas — ToolVerse',
       description: 'Immigration hub for work visas, embassies, and jobs abroad — structured from ToolVerse travel intelligence.',
       keywords: ['immigration', 'work visa', 'embassy directory'],
+      crumb: 'Immigration',
+    },
+    us: {
+      title: 'US Tools Hub — Paycheck, Sales Tax, Tip, PDF | ToolVerse',
+      description:
+        'US-focused free tools: paycheck estimator, sales tax calculator, tip split, compress PDF, Wi‑Fi QR, and 2×2 passport photos. Browser-side privacy.',
+      keywords: ['us paycheck calculator', 'sales tax calculator', 'tip calculator', 'compress pdf'],
+      crumb: 'United States',
+    },
+    uk: {
+      title: 'UK Tools Hub — Take-Home Pay, VAT, PDF | ToolVerse',
+      description:
+        'UK-focused free tools: take-home pay estimator, VAT calculator, compress PDF, Wi‑Fi QR, and 35×45 mm passport photos.',
+      keywords: ['uk take home pay', 'vat calculator', 'compress pdf', 'uk passport photo'],
+      crumb: 'United Kingdom',
+    },
+    ca: {
+      title: 'Canada Tools Hub — Paycheque, GST/HST, PDF | ToolVerse',
+      description:
+        'Canada-focused free tools: paycheque estimator, GST/HST calculator, PDF merge/compress, and 50×70 mm passport photos.',
+      keywords: ['canada paycheck calculator', 'gst calculator', 'hst calculator', 'canada passport photo'],
+      crumb: 'Canada',
+    },
+    au: {
+      title: 'Australia Tools Hub — PAYG, GST, PDF | ToolVerse',
+      description:
+        'Australia-focused free tools: PAYG take-home estimator, 10% GST calculator, PDF compress/merge, and passport photo sizes.',
+      keywords: ['australia pay calculator', 'gst calculator australia', 'compress pdf', 'passport photo australia'],
+      crumb: 'Australia',
+    },
+    'passport-photos': {
+      title: 'Passport Photo Size Hub (US, UK, CA, AU, EU) | ToolVerse',
+      description:
+        'Passport and visa photo size presets for US 2×2, UK/AU/EU 35×45 mm, and Canada 50×70 mm — open the free Passport Photo Maker.',
+      keywords: ['passport photo size', '2x2 photo', '35x45 passport photo', 'canada passport photo'],
+      crumb: 'Passport photos',
     },
   };
 
@@ -1447,10 +1498,17 @@ export function getMetadataForPath(pathname: string): PageMetadata {
       ogImage: DEFAULT_OG_IMAGE,
       jsonLd: wrapInGraph([
         buildOrganizationNode(),
-        buildWebPageNode({ canonicalUrl, name: h.title, description: h.description, type: 'WebPage' }),
+        buildWebSiteNode(),
+        buildWebPageNode({
+          canonicalUrl,
+          name: h.title,
+          description: h.description,
+          type: 'CollectionPage',
+          hasBreadcrumbs: true,
+        }),
         buildBreadcrumbNode(canonicalUrl, [
           { name: 'Home', url: `${baseUrl}/` },
-          { name: parts[0], url: canonicalUrl },
+          { name: h.crumb, url: canonicalUrl },
         ]),
       ]),
     };

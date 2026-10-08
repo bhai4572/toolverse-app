@@ -17,7 +17,19 @@ export default function ToolsHubPage() {
           Find the right tool fast
         </h1>
         <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
-          {TOOLS.length}+ utilities by category — PDF, image, SEO, jobs, writing, and more. Most file tools run in your browser.
+          Browse {TOOLS.length}+ free ToolVerse utilities by category — PDF compress/merge, images, calculators (tip, VAT/GST, paycheck estimators), SEO, writing, and jobs. Most file tools process locally in your browser with no signup.
+        </p>
+        <p className="text-xs text-slate-500">
+          Regional hubs:{' '}
+          <Link href="/us" className="text-brand-600 hover:underline font-semibold">US</Link>
+          {' · '}
+          <Link href="/uk" className="text-brand-600 hover:underline font-semibold">UK</Link>
+          {' · '}
+          <Link href="/ca" className="text-brand-600 hover:underline font-semibold">Canada</Link>
+          {' · '}
+          <Link href="/au" className="text-brand-600 hover:underline font-semibold">Australia</Link>
+          {' · '}
+          <Link href="/passport-photos" className="text-brand-600 hover:underline font-semibold">Passport sizes</Link>
         </p>
         <div className="relative max-w-lg">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />

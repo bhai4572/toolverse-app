@@ -32,9 +32,13 @@ export const SOCIAL_PRESETS = [
 ];
 
 export const PASSPORT_PRESETS = [
-  { id: 'us-2x2', name: 'US / Pakistan Passport (2x2 inch)', widthPx: 600, heightPx: 600, aspect: '1:1' },
-  { id: 'schengen-35x45', name: 'Schengen / Europe Visa (35x45 mm)', widthPx: 413, heightPx: 531, aspect: '35:45' },
-  { id: 'india-passport', name: 'India Passport (35x35 mm)', widthPx: 413, heightPx: 413, aspect: '1:1' },
+  { id: 'us-2x2', name: 'US passport / visa (2×2 in)', widthPx: 600, heightPx: 600, aspect: '1:1' },
+  { id: 'uk-35x45', name: 'UK passport (35×45 mm)', widthPx: 413, heightPx: 531, aspect: '35:45' },
+  { id: 'ca-50x70', name: 'Canada passport (50×70 mm)', widthPx: 590, heightPx: 826, aspect: '50:70' },
+  { id: 'au-35x45', name: 'Australia passport (35×45 mm)', widthPx: 413, heightPx: 531, aspect: '35:45' },
+  { id: 'schengen-35x45', name: 'EU / Schengen (35×45 mm)', widthPx: 413, heightPx: 531, aspect: '35:45' },
+  { id: 'pk-2x2', name: 'Pakistan / common 2×2 in', widthPx: 600, heightPx: 600, aspect: '1:1' },
+  { id: 'india-passport', name: 'India passport (35×35 mm)', widthPx: 413, heightPx: 413, aspect: '1:1' },
 ];
 
 export async function compressImageFile(

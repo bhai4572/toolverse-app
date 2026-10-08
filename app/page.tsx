@@ -60,7 +60,7 @@ export default function HomePage() {
             Free tools. Real SEO dashboard. Clear paths.
           </h1>
           <p className="text-slate-300 text-sm sm:text-base max-w-xl leading-relaxed">
-            Privacy-first utilities plus a Semrush-style SEO workspace — pick Tools, SEO Dashboard, Study, or Immigration.
+            ToolVerse is a privacy-first free online tools site: compress and merge PDFs, image utilities, Western tax/pay estimators, writing helpers, and a Semrush-style SEO Dashboard that uses your audits — not fake market graphs. Start with Tools, SEO Dashboard, Study, or Immigration.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link

@@ -17,8 +17,8 @@ export default function SeoSuitePage() {
             Tool<span className="text-brand-400">Verse</span> SEO Software
           </h1>
           <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-            Professional Semrush-style dashboard with nested left nav — Site Audit, keywords, performance, reports, and more.
-            Everything is free right now. Charts use your audits and imports — not fake market data.
+            ToolVerse SEO Suite is a free Semrush-style workspace with nested left nav for Site Audit, keywords, performance, and reports — plus classic free SEO utilities.
+            Everything is free right now. Charts use your audits and imports — not fake market data. Incomplete modules stay locked until real integrations ship.
           </p>
           <div className="flex flex-wrap gap-3 pt-2">
             <Link href="/workspace" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-bold">

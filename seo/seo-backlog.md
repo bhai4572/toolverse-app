@@ -1,6 +1,6 @@
 # ToolVerse SEO / AEO / GEO Backlog
 
-Last updated: 2026-10-08 (workspace lock policy + wave 10 tools). White-hat only. Do not invent rankings or traffic claims.
+Last updated: 2026-10-09 (Western markets wave 11 + sitewide SEO polish). White-hat only. Do not invent rankings or traffic claims.
 
 **Workspace lock policy:** SEO Dashboard modules that are not real user-data / fetch / paste analysis stay `status: 'locked'` in `seoNavConfig` (Coming soon panel). Unlock only when real integration is ready — never ship fake Semrush market graphs.
 
@@ -8,17 +8,28 @@ Last updated: 2026-10-08 (workspace lock policy + wave 10 tools). White-hat only
 
 | Area | State |
 |---|---|
-| Tool page SEO | **113 / 113** done (+15 trending tools across 4 high-demand verticals) |
+| Tool page SEO | **121+ live tools** with registry + `TOOL_PAGE_CONTENT` for new Western tools |
 | Category pillars | **13 / 13** — updated |
 | Job landings | **5 / 5** thickened + related links |
-| Guides | **9 pillars + 106 generated tool how-tos** (113 tools covered; 7 map to pillars) |
+| Guides | Pillars + auto `how-to-{slug}` for live tools (incl. new Western tools) |
 | Monetization & Ads | Sticky sidebar ads + in-article ad units inserted across all tools |
 | Blog hub | Category filters + pagination (12/page) |
-| Internal links | Blog↔tool bidirectional; category auto-guides |
-| Prerender / CF middleware | Live (`x-toolverse-shell`) |
-| AEO homepage FAQ + entity | Done |
-| `llms.txt` / sitemap / robots | Wave 10: 257 URLs in sitemap.xml; llms.txt includes 113+ tools |
+| Internal links | Blog↔tool bidirectional; regional hubs `/us` `/uk` `/ca` `/au` + passport hub |
+| Prerender / CF middleware | Live (`x-toolverse-shell`) — hubs + new tools in prerender/sitemap |
+| AEO homepage FAQ + entity | Done; hubs answer-first intros strengthened |
+| `llms.txt` / sitemap / robots | Wave 11: regenerate via `npm run sitemap` on build |
 | E-E-A-T legal pages | Done |
+| Semrush / Ahrefs | **Aimed for strong audit** after crawl reindex — no #1 / perfect-score claims |
+
+## Done — wave 11 (Western markets + technical SEO polish)
+
+- **New working tools:** `pdf-compress`, `tip-calculator`, `us-sales-tax-calculator`, `us-paycheck-calculator`, `uk-take-home-pay-calculator`, `canada-paycheque-calculator`, `australia-pay-calculator`, `wifi-qr-code-generator`
+- **Fixed:** VAT/GST + discount/EMI/GPA/age/etc. no longer mis-rendered as percentage-only UI; VAT/GST gained UK/AU/CA/EU presets
+- **Passport:** US/UK/CA/AU/EU presets + `/passport-photos` hub
+- **Regional hubs:** `/us` `/uk` `/ca` `/au` with unique titles/descriptions/BreadcrumbList
+- **AEO/GEO:** answer-first copy on home, `/tools`, `/seo`; Organization + WebSite on hubs/workspace
+- **Offline SEO:** backlinks still user outreach via `seo/easy-backlinks-guide.md` — none claimed obtained in this wave
+- Tax tools: clear “not official tax advice” disclaimers
 
 ## Done — wave 10 (15 Trending Creator, Finance, AI & Developer Utilities)
 

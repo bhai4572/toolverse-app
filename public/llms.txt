@@ -1,15 +1,20 @@
 # ToolVerse (`https://toolverse.baby/`)
 
-> ToolVerse is a privacy-first free online tools platform for PDFs, images, calculators, writing/academic helpers, SEO utilities, developer tools, regional Pakistan finance estimates, and multi-source job discovery. Most file tools process data in the browser (Canvas / WebAssembly / Web Crypto) without uploading documents to ToolVerse servers for conversion.
+> ToolVerse is a privacy-first free online tools platform for PDFs, images, calculators, Western tax/pay estimators, writing/academic helpers, SEO utilities, developer tools, regional Pakistan finance estimates, and multi-source job discovery. Most file tools process data in the browser (Canvas / WebAssembly / Web Crypto) without uploading documents to ToolVerse servers for conversion.
 
 ## What is ToolVerse?
 
-ToolVerse (toolverse.baby) provides 113+ live browser utilities with no signup wall for core workflows. Contact: support@toolverse.baby. About: https://toolverse.baby/legal/about · Editorial: https://toolverse.baby/legal/editorial-policy
+ToolVerse (toolverse.baby) provides 120+ live browser utilities with no signup wall for core workflows. Contact: support@toolverse.baby. About: https://toolverse.baby/legal/about · Editorial: https://toolverse.baby/legal/editorial-policy
 
 ## High-intent tools
 
+- [Compress PDF](https://toolverse.baby/tools/pdf-compress): Shrink PDFs in-browser for email/portals (no upload).
 - [Compress Image to Target Size](https://toolverse.baby/tools/compress-image-target-size): Exact KB targets (20KB / 50KB / 100KB) for portals.
 - [Merge PDF Files](https://toolverse.baby/tools/pdf-merge): Private client-side PDF combine.
+- [Tip Calculator](https://toolverse.baby/tools/tip-calculator) / [US Sales Tax](https://toolverse.baby/tools/us-sales-tax-calculator)
+- [US Paycheck](https://toolverse.baby/tools/us-paycheck-calculator) / [UK Take-Home](https://toolverse.baby/tools/uk-take-home-pay-calculator) / [Canada Paycheque](https://toolverse.baby/tools/canada-paycheque-calculator) / [Australia PAYG](https://toolverse.baby/tools/australia-pay-calculator) — lite estimators with disclaimers
+- [VAT & GST](https://toolverse.baby/tools/vat-gst-calculator): UK/AU/CA/EU presets
+- [Wi‑Fi QR Code](https://toolverse.baby/tools/wifi-qr-code-generator) / [Passport Photo Maker](https://toolverse.baby/tools/passport-photo-maker)
 - [HEIC to JPG](https://toolverse.baby/tools/heic-to-jpg): iPhone photos for Windows/forms.
 - [YouTube Thumbnail Downloader](https://toolverse.baby/tools/youtube-thumbnail-downloader): Extract 1080p Full HD thumbnails in 1 click.
 - [PayPal & Stripe Fee Calculator](https://toolverse.baby/tools/paypal-stripe-fee-calculator): Calculate precise domestic & cross-border merchant fees.
@@ -24,6 +29,11 @@ ToolVerse (toolverse.baby) provides 113+ live browser utilities with no signup w
 - [SERP Simulator](https://toolverse.baby/tools/serp-simulator) / [Schema Generator](https://toolverse.baby/tools/schema-markup-generator)
 - [Pakistan Salary Tax Estimator](https://toolverse.baby/tools/pakistan-salary-tax-estimator) / [Zakat Calculator](https://toolverse.baby/tools/zakat-calculator)
 - [Global Job Finder](https://toolverse.baby/tools/global-job-finder): Discovery only — apply on original postings.
+
+## Regional hubs
+
+- [United States](https://toolverse.baby/us) · [United Kingdom](https://toolverse.baby/uk) · [Canada](https://toolverse.baby/ca) · [Australia](https://toolverse.baby/au)
+- [Passport photo sizes](https://toolverse.baby/passport-photos)
 
 ## Category hubs
 

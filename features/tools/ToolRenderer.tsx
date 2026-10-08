@@ -8,6 +8,7 @@ import { ImageConverterTool } from './ImageConverterTool';
 import { PassportPhotoMakerTool } from './PassportPhotoMakerTool';
 import { PdfMergeTool } from './PdfMergeTool';
 import { PdfSplitTool } from './PdfSplitTool';
+import { PdfCompressTool } from './PdfCompressTool';
 import { JpgToPdfTool } from './JpgToPdfTool';
 import { PdfRotateTool } from './PdfRotateTool';
 import { WordCounterTool } from './WordCounterTool';
@@ -17,7 +18,8 @@ import { JsonFormatterTool } from './JsonFormatterTool';
 import { QrCodeGeneratorTool } from './QrCodeGeneratorTool';
 import { BarcodeGeneratorTool } from './BarcodeGeneratorTool';
 import { PasswordGeneratorTool } from './PasswordGeneratorTool';
-import { PercentageCalculatorTool } from './PercentageCalculatorTool';
+import { CalculatorTools } from './CalculatorTools';
+import { WesternFinanceTools } from './WesternFinanceTools';
 import { ZakatCalculatorTool } from './ZakatCalculatorTool';
 import { PakistanTaxTool } from './PakistanTaxTool';
 import { InvoiceGeneratorTool } from './InvoiceGeneratorTool';
@@ -87,6 +89,8 @@ export function ToolRenderer({ tool }: { tool: ToolDefinition }) {
       return <PdfMergeTool />;
     case 'pdf-split':
       return <PdfSplitTool />;
+    case 'pdf-compress':
+      return <PdfCompressTool />;
     case 'jpg-to-pdf':
     case 'images-to-pdf':
       return <JpgToPdfTool />;
@@ -105,7 +109,9 @@ export function ToolRenderer({ tool }: { tool: ToolDefinition }) {
     case 'json-to-csv':
       return <JsonFormatterTool />;
     case 'qr-code-generator':
-      return <QrCodeGeneratorTool />;
+      return <QrCodeGeneratorTool defaultMode="text" />;
+    case 'wifi-qr-code-generator':
+      return <QrCodeGeneratorTool defaultMode="wifi" />;
     case 'barcode-generator':
       return <BarcodeGeneratorTool />;
     case 'password-generator':
@@ -119,7 +125,14 @@ export function ToolRenderer({ tool }: { tool: ToolDefinition }) {
     case 'vat-gst-calculator':
     case 'age-calculator':
     case 'gpa-calculator':
-      return <PercentageCalculatorTool />;
+      return <CalculatorTools tool={tool} />;
+    case 'tip-calculator':
+    case 'us-sales-tax-calculator':
+    case 'us-paycheck-calculator':
+    case 'uk-take-home-pay-calculator':
+    case 'canada-paycheque-calculator':
+    case 'australia-pay-calculator':
+      return <WesternFinanceTools tool={tool} />;
     case 'zakat-calculator':
       return <ZakatCalculatorTool />;
     case 'pakistan-salary-tax-estimator':

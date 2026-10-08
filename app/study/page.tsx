@@ -47,6 +47,8 @@ export default function StudyAbroadPage() {
           {[
             { href: '/tools/gpa-calculator', label: 'GPA Calculator' },
             { href: '/tools/passport-photo-maker', label: 'Passport Photo' },
+            { href: '/passport-photos', label: 'Passport size hub' },
+            { href: '/tools/pdf-compress', label: 'Compress PDF' },
             { href: '/tools/pdf-merge', label: 'Merge application PDFs' },
             { href: '/travel/embassies', label: 'Embassy directory' },
             { href: '/immigration', label: 'Immigration hub' },

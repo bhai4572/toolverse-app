@@ -32,7 +32,7 @@ export function WorkspaceHome() {
   return (
     <ModuleShell
       title="SEO Dashboard"
-      purpose="Semrush-style workspace — free forever for now. Charts and stats come from audits and jobs you run in this browser."
+      purpose="ToolVerse SEO Dashboard is a free Semrush-style workspace: run Site Audit and On-Page checks on URLs you choose, track positions you log, import GA4/CSV for traffic panels, and export HTML/PDF reports. Charts and stats come only from audits and jobs you run in this browser — not fake market graphs."
       honesty="No fake global traffic or competitor market share. Locked nav items stay visible but show Coming soon until real data is ready."
     >
       <Panel title="Primary project URL">

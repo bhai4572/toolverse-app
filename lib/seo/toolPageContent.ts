@@ -2127,29 +2127,205 @@ export const TOOL_PAGE_CONTENT: Record<string, ToolPageContent> = {
 
   'vat-gst-calculator': {
     answerFirst:
-      'VAT & GST Calculator adds or removes tax from a net or gross amount using the rate you enter — handy for invoices and quotes.',
-    seoTitle: 'VAT & GST Calculator Online | ToolVerse',
+      'VAT & GST Calculator adds or removes tax from a net or gross amount using UK, AU, CA, EU, and other presets — or a custom rate — for invoice math (not filing advice).',
+    seoTitle: 'VAT & GST Calculator (UK, AU, CA, EU) | ToolVerse',
     seoDescription:
-      'Add or remove VAT/GST from prices with a custom rate. Useful for quotes and invoices — confirm your local tax rules.',
+      'Add or remove VAT/GST with UK 20%, Australia 10%, Canada GST/HST, and EU presets. Browser-only math — confirm official rates.',
     sections: [
       {
         heading: 'Net vs gross',
-        body: 'Some prices are tax-exclusive; others already include tax. Choose the direction that matches how you quote clients.',
+        body: 'Some prices are tax-exclusive; others already include tax. Choose add (net→gross) or remove (gross→net) to match how you quote clients.',
+      },
+      {
+        heading: 'Western presets',
+        body: 'Use UK VAT (20/5/0), Australia GST 10%, Canada GST 5% or HST 13–15%, and common EU rates. Canada province shortcuts adjust the rate when selected.',
       },
       {
         heading: 'Not a filing tool',
-        body: 'Rates and rules differ by country and product type. Use this for arithmetic, then confirm with your accountant or tax authority.',
+        body: 'Rates and product rules differ. This is arithmetic only — confirm with your accountant or tax authority before filing.',
       },
     ],
     faqs: [
       {
         question: 'Which VAT rate should I use?',
         answer:
-          'Enter the rate that applies to your jurisdiction and goods/services. The calculator does not pick the legal rate for you.',
+          'Pick a preset that matches your market, or enter a custom rate. The tool does not determine the legal rate for your goods or services.',
       },
       {
         question: 'Are figures stored?',
         answer: 'No. Math runs in your browser.',
+      },
+    ],
+  },
+
+  'pdf-compress': {
+    answerFirst:
+      'Compress PDF shrinks a PDF in your browser by re-packing streams and stripping metadata — useful for email limits and portal uploads without uploading the file to our servers.',
+    seoTitle: 'Compress PDF Online Free (No Upload) | ToolVerse',
+    seoDescription:
+      'Compress PDF files privately in your browser. Shrink documents for email and government portals — no server upload.',
+    sections: [
+      {
+        heading: 'When compression helps',
+        body: 'Email caps (often ~10MB), job portals, and GOV.UK / IRCC-style uploads reject large packs. Re-packing can trim bloat from exports and merges.',
+      },
+      {
+        heading: 'Scanned photo PDFs',
+        body: 'If your PDF is mostly photos, compress images first or rebuild with Images to PDF after shrinking photos — stream re-pack alone has limits.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is my PDF uploaded?',
+        answer: 'No. Compression runs locally in your browser memory.',
+      },
+      {
+        question: 'Why barely smaller?',
+        answer: 'Already-optimized or image-heavy PDFs may not shrink much. Try image compression or a lower-quality scan rebuild.',
+      },
+    ],
+  },
+
+  'tip-calculator': {
+    answerFirst:
+      'Tip Calculator computes tip amount and splits the bill by party size with common US tip percents (15/18/20/25%).',
+    seoTitle: 'Tip Calculator — Split Bill Online | ToolVerse',
+    seoDescription:
+      'Free tip calculator with 15–25% presets and bill split. Instant tip, total, and per-person amounts in your browser.',
+    sections: [
+      {
+        heading: 'US tipping norms',
+        body: 'Many US diners tip around 15–20% of pre-tax service; 18–20% is common for full service. Adjust for quality and local custom.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Should I tip on tax?',
+        answer: 'Customs vary. Enter the amount you want to tip on (pre-tax or total) as the bill field.',
+      },
+    ],
+  },
+
+  'us-sales-tax-calculator': {
+    answerFirst:
+      'US Sales Tax Calculator adds or removes sales tax using a lite statewide rate table or your own combined local rate — estimate only, not official advice.',
+    seoTitle: 'US Sales Tax Calculator by State | ToolVerse',
+    seoDescription:
+      'Estimate US sales tax by state or custom rate. Add or remove tax for quick checkout math — verify local rates.',
+    sections: [
+      {
+        heading: 'State vs local',
+        body: 'Many cities add district tax on top of the state rate. Override with your combined rate when you know it.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is this filing advice?',
+        answer: 'No. It is a lite estimator. Confirm with your state DOR or a tax professional.',
+      },
+    ],
+  },
+
+  'us-paycheck-calculator': {
+    answerFirst:
+      'US Paycheck Estimator (lite) approximates take-home pay from gross salary using simplified federal brackets, FICA, and an optional state rate — not official tax advice.',
+    seoTitle: 'US Paycheck Calculator (Lite Estimate) | ToolVerse',
+    seoDescription:
+      'Estimate US take-home pay with federal tax, Social Security, Medicare, and optional state %. Planning only — not IRS advice.',
+    sections: [
+      {
+        heading: 'What is included',
+        body: 'Simplified single-style federal bands, employee Social Security and Medicare, plus a flat state % you control.',
+      },
+      {
+        heading: 'What is omitted',
+        body: 'Credits, pretax benefits, local taxes, and filing-status detail are not modeled. Use IRS tools for filing.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can I file taxes with this?',
+        answer: 'No. It is a rough estimator for offers and budgets only.',
+      },
+    ],
+  },
+
+  'uk-take-home-pay-calculator': {
+    answerFirst:
+      'UK Take-Home Pay Estimator approximates net pay from gross salary using England/NI/Wales-style tax bands and employee National Insurance — not HMRC advice.',
+    seoTitle: 'UK Take-Home Pay Calculator (Lite) | ToolVerse',
+    seoDescription:
+      'Estimate UK take-home pay with lite PAYE bands and NI. Planning only — confirm with HMRC; Scotland differs.',
+    sections: [
+      {
+        heading: 'Scotland and student loans',
+        body: 'Scotland uses different income tax rates. Student loan plans are not included in this lite tool.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is this official HMRC output?',
+        answer: 'No. Use HMRC calculators for official estimates. This is a browser-side planning aid.',
+      },
+    ],
+  },
+
+  'canada-paycheque-calculator': {
+    answerFirst:
+      'Canada Paycheque Estimator approximates net pay with lite federal tax, CPP, EI, and a province rate shortcut — not CRA advice.',
+    seoTitle: 'Canada Paycheque Calculator (Lite) | ToolVerse',
+    seoDescription:
+      'Estimate Canadian take-home pay with federal tax, CPP, EI, and province shortcuts. Not official CRA tax advice.',
+    sections: [
+      {
+        heading: 'GST/HST on invoices',
+        body: 'For shopping or invoice tax, use the VAT & GST calculator with Canada GST/HST presets instead of this pay tool.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is provincial tax exact?',
+        answer: 'No. Province shortcuts are simplified percentages. Verify with CRA or a tax professional.',
+      },
+    ],
+  },
+
+  'australia-pay-calculator': {
+    answerFirst:
+      'Australia Pay Calculator (PAYG lite) estimates resident take-home pay with progressive tax bands and a 2% Medicare levy — not ATO advice.',
+    seoTitle: 'Australia Take-Home Pay Calculator (Lite) | ToolVerse',
+    seoDescription:
+      'Estimate Australian net pay with lite PAYG brackets and Medicare levy. Planning only — confirm with the ATO.',
+    sections: [
+      {
+        heading: 'HECS-HELP',
+        body: 'Student loan repayments are not included. Check current ATO HELP thresholds if they apply to you.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can I use this for my tax return?',
+        answer: 'No. It is a rough estimator only.',
+      },
+    ],
+  },
+
+  'wifi-qr-code-generator': {
+    answerFirst:
+      'Wi‑Fi QR Code Generator builds a standard WIFI: QR so guests join your network by scanning — SSID and password stay in your browser when you create the PNG.',
+    seoTitle: 'Wi‑Fi QR Code Generator Free | ToolVerse',
+    seoDescription:
+      'Make a guest Wi‑Fi QR code (WPA/WEP/open) and download a PNG. Private browser generation — no account.',
+    sections: [
+      {
+        heading: 'How phones join',
+        body: 'Most modern iOS and Android cameras recognize WIFI: QR codes and offer to connect without typing the password.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is my Wi‑Fi password uploaded?',
+        answer: 'No. The payload is encoded locally into the QR image in your browser.',
       },
     ],
   },

@@ -198,6 +198,11 @@ add('/tools', 'daily', '0.95');
 add('/pricing', 'weekly', '0.9');
 add('/study', 'daily', '0.9');
 add('/immigration', 'daily', '0.9');
+add('/us', 'weekly', '0.85');
+add('/uk', 'weekly', '0.85');
+add('/ca', 'weekly', '0.85');
+add('/au', 'weekly', '0.85');
+add('/passport-photos', 'weekly', '0.85');
 add('/dashboard', 'monthly', '0.5');
 
 const lines = [

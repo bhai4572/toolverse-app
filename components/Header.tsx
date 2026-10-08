@@ -16,6 +16,11 @@ const PRIMARY_NAV = [
 
 const MORE_NAV = [
   { href: '/seo', label: 'SEO Suite (classic)' },
+  { href: '/us', label: 'US tools' },
+  { href: '/uk', label: 'UK tools' },
+  { href: '/ca', label: 'Canada tools' },
+  { href: '/au', label: 'Australia tools' },
+  { href: '/passport-photos', label: 'Passport photos' },
   { href: '/travel', label: 'Travel' },
   { href: '/tools/global-job-finder', label: 'Jobs Finder' },
   { href: '/business', label: 'Businesses' },

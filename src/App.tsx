@@ -58,6 +58,11 @@ import PricingPage from '../app/pricing/page';
 import StudyAbroadPage from '../app/study/page';
 import ImmigrationPage from '../app/immigration/page';
 import DashboardPage from '../app/dashboard/page';
+import UsHubPage from '../app/us/page';
+import UkHubPage from '../app/uk/page';
+import CaHubPage from '../app/ca/page';
+import AuHubPage from '../app/au/page';
+import PassportPhotosHubPage from '../app/passport-photos/page';
 
 import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
@@ -208,6 +213,22 @@ export default function App() {
 
     if (parts[0] === 'tools' && !parts[1]) {
       return <ToolsHubPage />;
+    }
+
+    if (parts[0] === 'us') {
+      return <UsHubPage />;
+    }
+    if (parts[0] === 'uk') {
+      return <UkHubPage />;
+    }
+    if (parts[0] === 'ca') {
+      return <CaHubPage />;
+    }
+    if (parts[0] === 'au') {
+      return <AuHubPage />;
+    }
+    if (parts[0] === 'passport-photos') {
+      return <PassportPhotosHubPage />;
     }
 
     if (parts[0] === 'dashboard') {

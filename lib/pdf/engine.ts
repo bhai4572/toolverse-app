@@ -126,3 +126,28 @@ export async function reorderPdfPages(
 
   return await newPdf.save();
 }
+
+/** Re-pack PDF with object streams + stripped metadata. Best-effort client-side shrink (not OCR/image recompress). */
+export async function compressPdfFile(file: File): Promise<{
+  bytes: Uint8Array;
+  originalSize: number;
+  compressedSize: number;
+}> {
+  const arrayBuffer = await file.arrayBuffer();
+  const originalSize = arrayBuffer.byteLength;
+  const src = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+  const out = await PDFDocument.create();
+  const copied = await out.copyPages(src, src.getPageIndices());
+  copied.forEach((page) => out.addPage(page));
+  out.setTitle('');
+  out.setAuthor('');
+  out.setSubject('');
+  out.setKeywords([]);
+  out.setProducer('ToolVerse');
+  out.setCreator('ToolVerse');
+  const bytes = await out.save({ useObjectStreams: true });
+  if (bytes.byteLength >= originalSize) {
+    return { bytes: new Uint8Array(arrayBuffer), originalSize, compressedSize: originalSize };
+  }
+  return { bytes, originalSize, compressedSize: bytes.byteLength };
+}

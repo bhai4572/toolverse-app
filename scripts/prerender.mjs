@@ -736,6 +736,11 @@ async function main() {
     routes.push('/pricing');
     routes.push('/study');
     routes.push('/immigration');
+    routes.push('/us');
+    routes.push('/uk');
+    routes.push('/ca');
+    routes.push('/au');
+    routes.push('/passport-photos');
     routes.push('/dashboard');
 
     for (const route of routes) {
