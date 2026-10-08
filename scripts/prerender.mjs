@@ -526,6 +526,12 @@ async function main() {
     const { getCategoryPageContent } = await vite.ssrLoadModule('/lib/seo/categoryPageContent.ts');
     const { getJobPageContent } = await vite.ssrLoadModule('/lib/seo/jobPageContent.ts');
 
+    const { PRODUCTS } = await vite.ssrLoadModule('/lib/products/registry.ts');
+    const { ALTERNATIVE_PAGES } = await vite.ssrLoadModule('/lib/products/alternativesRegistry.ts');
+    const { COMPARISON_PAGES } = await vite.ssrLoadModule('/lib/products/comparisonsRegistry.ts');
+    const { QUESTIONS } = await vite.ssrLoadModule('/lib/products/questionsRegistry.ts');
+    const { COLLECTIONS } = await vite.ssrLoadModule('/lib/products/collectionsRegistry.ts');
+
     const deps = {
       TOOLS,
       CATEGORIES,
@@ -546,6 +552,60 @@ async function main() {
     for (const p of BLOG_POSTS) routes.push(`/blog/${p.slug}`);
     for (const l of LEGAL_SLUGS) routes.push(`/legal/${l}`);
     for (const j of JOB_SLUGS) routes.push(`/jobs/${j}`);
+
+    // Product Discovery & Ecosystem Routes
+    routes.push('/products');
+    for (const prod of PRODUCTS) {
+      if (prod.status === 'approved') routes.push(`/products/${prod.slug}`);
+    }
+    routes.push('/alternatives');
+    for (const alt of ALTERNATIVE_PAGES) {
+      routes.push(`/alternatives/${alt.slug}`);
+    }
+    for (const comp of COMPARISON_PAGES) {
+      routes.push(`/compare/${comp.slug}`);
+    }
+    routes.push('/questions');
+    for (const q of QUESTIONS) {
+      routes.push(`/questions/${q.slug}`);
+    }
+    routes.push('/collections');
+    for (const col of COLLECTIONS) {
+      routes.push(`/collections/${col.slug}`);
+    }
+    routes.push('/submit');
+    routes.push('/badges');
+    routes.push('/claim');
+
+    // Business Discovery & Identity System Routes
+    routes.push('/business');
+    for (const biz of ['ali-barber-studio', 'apex-digital-marketing', 'blue-sky-dentistry', 'nexus-saas-labs']) {
+      routes.push(`/business/${biz}`);
+    }
+    for (const bId of ['TV-BIZ-8F4K2P', 'TV-BIZ-99X2M1', 'TV-BIZ-33K7L9', 'TV-BIZ-77P4R2']) {
+      routes.push(`/b/${bId}`);
+    }
+    routes.push('/business/register');
+    routes.push('/business/bidding');
+    routes.push('/business-qr');
+    routes.push('/admin/login');
+
+    // How-To Guides Hub & Detail Shells
+    routes.push('/how-to');
+    for (const ht of [
+      'how-to-create-a-business-profile',
+      'how-to-verify-your-business',
+      'how-to-get-a-toolverse-business-id',
+      'how-to-generate-a-business-qr-code',
+      'how-to-print-your-toolverse-qr',
+      'how-to-collect-honest-customer-reviews',
+      'how-business-rankings-work',
+      'how-sponsored-ranking-works',
+      'how-to-claim-a-business',
+      'how-to-report-a-fake-business',
+    ]) {
+      routes.push(`/how-to/${ht}`);
+    }
 
     for (const route of routes) {
       const html = applyPage(template, route, getMetadataForPath, deps);

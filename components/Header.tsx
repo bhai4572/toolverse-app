@@ -103,38 +103,62 @@ export function Header() {
         </div>
 
         {/* Desktop Controls */}
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden md:flex items-center gap-2">
           <Link
-            href="/tools/global-job-finder"
-            className="flex items-center gap-1.5 text-xs font-bold text-white bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 px-3.5 py-1.5 rounded-full shadow-sm transition-all hover:scale-105 active:scale-95"
+            href="/business"
+            className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-indigo-600 dark:hover:text-indigo-400 px-2.5 py-1.5 rounded-lg transition-colors flex items-center gap-1"
           >
-            <Briefcase className="w-3.5 h-3.5" />
-            <span>Find Jobs 💼</span>
+            Businesses 🏪
           </Link>
 
           <Link
-            href="/blog"
-            className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-brand-600 dark:hover:text-brand-400 px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-800 transition-colors"
+            href="/business-qr"
+            className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-indigo-600 dark:hover:text-indigo-400 px-2.5 py-1.5 rounded-lg transition-colors"
           >
-            <span>Blog & Guides 📚</span>
+            QR Badge 📱
           </Link>
 
-          <div className="flex items-center gap-1.5 text-xs font-bold text-brand-700 dark:text-brand-300 bg-brand-50 dark:bg-brand-950/60 px-3 py-1.5 rounded-full border border-brand-200/60 dark:border-brand-800/60">
-            <Sparkles className="w-3.5 h-3.5 text-brand-600 dark:text-brand-400" />
-            <span>{TOOLS.length}+ Free Tools</span>
-          </div>
+          <Link
+            href="/how-to"
+            className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-indigo-600 dark:hover:text-indigo-400 px-2.5 py-1.5 rounded-lg transition-colors"
+          >
+            How-To 📖
+          </Link>
 
-          <div className="flex items-center gap-1.5 text-xs font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 px-3 py-1.5 rounded-full border border-emerald-200/50 dark:border-emerald-800/50">
-            <ShieldCheck className="w-3.5 h-3.5" />
-            <span>Browser Privacy</span>
-          </div>
+          <Link
+            href="/products"
+            className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-indigo-600 dark:hover:text-indigo-400 px-2.5 py-1.5 rounded-lg transition-colors"
+          >
+            Products 🚀
+          </Link>
+
+          <Link
+            href="/alternatives"
+            className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-indigo-600 dark:hover:text-indigo-400 px-2.5 py-1.5 rounded-lg transition-colors"
+          >
+            Alternatives 🔄
+          </Link>
+
+          <Link
+            href="/questions"
+            className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-indigo-600 dark:hover:text-indigo-400 px-2.5 py-1.5 rounded-lg transition-colors"
+          >
+            Q&amp;A 💬
+          </Link>
+
+          <Link
+            href="/business/register"
+            className="flex items-center gap-1 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 px-3 py-1.5 rounded-xl shadow-sm transition-all"
+          >
+            List Business +
+          </Link>
 
           <button
             onClick={toggleDarkMode}
-            className="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors ml-1"
             aria-label="Toggle theme"
           >
-            {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
           </button>
         </div>
 

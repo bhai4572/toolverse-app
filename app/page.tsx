@@ -51,7 +51,7 @@ export default function HomePage() {
                   window.history.replaceState({}, '', url.pathname + url.search);
                 }
               }}
-              placeholder="Search any tool (e.g. photo 100kb, pdf merge, url shortener)..."
+              placeholder="Search tools or businesses (e.g. Ali Barber, photo 100kb, pdf merge)..."
               aria-label="Search ToolVerse tools"
               className="w-full pl-12 pr-4 py-4 text-base bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 outline-none focus:border-brand-500 dark:text-white"
             />
@@ -76,6 +76,82 @@ export default function HomePage() {
               ))}
             </div>
           )}
+        </div>
+      </section>
+
+      {/* Global Business Digital Identity & Printable QR Network Section */}
+      <section className="relative overflow-hidden rounded-3xl bg-slate-900 text-white p-6 sm:p-10 shadow-2xl border border-indigo-500/30">
+        <div className="absolute top-0 right-0 -mt-10 -mr-10 w-64 h-64 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none" />
+        
+        <div className="relative z-10 space-y-8">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div className="space-y-3 max-w-2xl">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 text-xs font-bold uppercase tracking-wider">
+                <QrCode className="w-4 h-4 text-indigo-400" />
+                <span>Global Business Identity &amp; QR Network</span>
+              </div>
+              <h2 className="text-2xl sm:text-4xl font-extrabold text-white leading-tight">
+                Give Your Business a Permanent Toolverse Digital Identity 🏪
+              </h2>
+              <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
+                Connect offline customers to your online presence. Every business receives a permanent Business ID (<code className="text-amber-300 font-mono">TV-BIZ-XXXXXX</code>), verified credentials, vector printable QR identity badges, category rankings, and honest review management.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap md:flex-col gap-3 w-full md:w-auto">
+              <Link
+                href="/business"
+                className="flex-1 md:flex-none text-center px-6 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm shadow-lg shadow-indigo-600/30 transition-all hover:scale-105 active:scale-95"
+              >
+                Explore Businesses 🏪
+              </Link>
+              <Link
+                href="/business/register"
+                className="flex-1 md:flex-none text-center px-6 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow-lg shadow-emerald-600/30 transition-all hover:scale-105 active:scale-95"
+              >
+                List Your Business +
+              </Link>
+            </div>
+          </div>
+
+          {/* Quick Identity Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t border-slate-800">
+            <Link href="/business" className="p-4 rounded-2xl bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 transition-all group">
+              <div className="flex items-center justify-between mb-2">
+                <Globe className="w-5 h-5 text-indigo-400 group-hover:scale-110 transition-transform" />
+                <span className="text-[10px] uppercase font-bold text-indigo-300 bg-indigo-950/80 px-2 py-0.5 rounded border border-indigo-800">Directory</span>
+              </div>
+              <h3 className="font-bold text-sm text-white group-hover:text-indigo-300 transition-colors">Global Directory</h3>
+              <p className="text-xs text-slate-400 mt-1">Discover verified local shops, SaaS platforms, and services.</p>
+            </Link>
+
+            <Link href="/business-qr" className="p-4 rounded-2xl bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 transition-all group">
+              <div className="flex items-center justify-between mb-2">
+                <QrCode className="w-5 h-5 text-emerald-400 group-hover:scale-110 transition-transform" />
+                <span className="text-[10px] uppercase font-bold text-emerald-300 bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-800">Printable</span>
+              </div>
+              <h3 className="font-bold text-sm text-white group-hover:text-emerald-300 transition-colors">Vector QR Badges</h3>
+              <p className="text-xs text-slate-400 mt-1">Print custom status badges for shop windows and counters.</p>
+            </Link>
+
+            <Link href="/business/bidding" className="p-4 rounded-2xl bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 transition-all group">
+              <div className="flex items-center justify-between mb-2">
+                <Sparkles className="w-5 h-5 text-amber-400 group-hover:scale-110 transition-transform" />
+                <span className="text-[10px] uppercase font-bold text-amber-300 bg-amber-950/80 px-2 py-0.5 rounded border border-amber-800">Top 3 Bidding</span>
+              </div>
+              <h3 className="font-bold text-sm text-white group-hover:text-amber-300 transition-colors">Category Auction</h3>
+              <p className="text-xs text-slate-400 mt-1">Compete for sponsored Top 3 positions in your industry.</p>
+            </Link>
+
+            <Link href="/how-to" className="p-4 rounded-2xl bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 transition-all group">
+              <div className="flex items-center justify-between mb-2">
+                <FileText className="w-5 h-5 text-cyan-400 group-hover:scale-110 transition-transform" />
+                <span className="text-[10px] uppercase font-bold text-cyan-300 bg-cyan-950/80 px-2 py-0.5 rounded border border-cyan-800">Guides</span>
+              </div>
+              <h3 className="font-bold text-sm text-white group-hover:text-cyan-300 transition-colors">How-To Center</h3>
+              <p className="text-xs text-slate-400 mt-1">Step-by-step guides for verification and QR identity growth.</p>
+            </Link>
+          </div>
         </div>
       </section>
 

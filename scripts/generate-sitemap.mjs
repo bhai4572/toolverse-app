@@ -99,6 +99,72 @@ for (const l of [
   add(`/legal/${l}`, 'monthly', '0.5');
 }
 
+// Product Discovery Hub & Ecosystem Routes
+add('/products', 'daily', '0.9');
+for (const p of ['canva', 'chatgpt', 'notion', 'figma', 'supabase', 'claude-ai']) {
+  add(`/products/${p}`, 'daily', '0.8');
+}
+
+add('/alternatives', 'daily', '0.9');
+for (const alt of ['canva', 'chatgpt', 'notion']) {
+  add(`/alternatives/${alt}`, 'weekly', '0.8');
+}
+
+for (const comp of ['canva-vs-figma', 'chatgpt-vs-claude']) {
+  add(`/compare/${comp}`, 'weekly', '0.8');
+}
+
+add('/questions', 'daily', '0.8');
+for (const q of [
+  'best-free-alternative-to-photoshop-online',
+  'which-ai-tool-is-best-for-writing-code',
+  'how-to-compress-pdf-files-without-losing-quality',
+]) {
+  add(`/questions/${q}`, 'weekly', '0.75');
+}
+
+add('/collections', 'daily', '0.85');
+for (const col of [
+  'best-free-ai-tools-2026',
+  'essential-web-developer-suite',
+  'best-privacy-first-image-tools',
+]) {
+  add(`/collections/${col}`, 'weekly', '0.8');
+}
+
+add('/submit', 'monthly', '0.6');
+add('/badges', 'monthly', '0.6');
+add('/claim', 'monthly', '0.6');
+
+// Global Business Discovery & Identity System Routes
+add('/business', 'daily', '0.9');
+for (const biz of ['ali-barber-studio', 'apex-digital-marketing', 'blue-sky-dentistry', 'nexus-saas-labs']) {
+  add(`/business/${biz}`, 'daily', '0.8');
+}
+for (const bId of ['TV-BIZ-8F4K2P', 'TV-BIZ-99X2M1', 'TV-BIZ-33K7L9', 'TV-BIZ-77P4R2']) {
+  add(`/b/${bId}`, 'weekly', '0.7');
+}
+add('/business/register', 'monthly', '0.7');
+add('/business/bidding', 'weekly', '0.8');
+add('/business-qr', 'monthly', '0.7');
+
+// How-To Knowledge Base
+add('/how-to', 'weekly', '0.85');
+for (const ht of [
+  'how-to-create-a-business-profile',
+  'how-to-verify-your-business',
+  'how-to-get-a-toolverse-business-id',
+  'how-to-generate-a-business-qr-code',
+  'how-to-print-your-toolverse-qr',
+  'how-to-collect-honest-customer-reviews',
+  'how-business-rankings-work',
+  'how-sponsored-ranking-works',
+  'how-to-claim-a-business',
+  'how-to-report-a-fake-business',
+]) {
+  add(`/how-to/${ht}`, 'weekly', '0.8');
+}
+
 const lines = [
   '<?xml version="1.0" encoding="UTF-8"?>',
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',

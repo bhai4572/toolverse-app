@@ -163,7 +163,7 @@ describe('Tool Registry Integrity Tests', () => {
   });
 
   it('ensures all registered live tools have valid required properties', () => {
-    TOOLS.forEach((tool) => {
+    TOOLS.filter((t) => t.status === 'live').forEach((tool) => {
       expect(tool.id).toBeTruthy();
       expect(tool.slug).toBeTruthy();
       expect(tool.canonicalName).toBeTruthy();

@@ -3,6 +3,12 @@ import { getBlogPostBySlug } from '@/lib/blog/posts';
 import { getToolPageContent } from '@/lib/seo/toolPageContent';
 import { getCategoryPageContent } from '@/lib/seo/categoryPageContent';
 import { getJobPageContent, buildJobPostingJsonLd } from '@/lib/seo/jobPageContent';
+import { getProductBySlug, PRODUCTS } from '@/lib/products/registry';
+import { getAlternativeBySlug } from '@/lib/products/alternativesRegistry';
+import { getComparisonBySlug } from '@/lib/products/comparisonsRegistry';
+import { getQuestionBySlug, QUESTIONS } from '@/lib/products/questionsRegistry';
+import { getCollectionBySlug, COLLECTIONS } from '@/lib/products/collectionsRegistry';
+import { evaluateProductPageQuality, getRobotsDirective } from '@/lib/products/seoQualityEngine';
 
 export interface PageMetadata {
   title: string;
@@ -232,6 +238,705 @@ export function getMetadataForPath(pathname: string): PageMetadata {
         'privacy first tools',
         'toolverse',
       ],
+      canonicalUrl,
+      ogType: 'website',
+      ogImage: DEFAULT_OG_IMAGE,
+      jsonLd: wrapInGraph(graph),
+    };
+  }
+
+  // --- Business Directory Hub & Business Profiles (/business, /business/[slug], /b/[businessId], /business-qr) ---
+  if (parts[0] === 'b' && parts[1]) {
+    const canonicalUrl = `${baseUrl}/b/${parts[1]}`;
+    const title = `Toolverse Business QR Resolver — ${parts[1]}`;
+    const description = `Permanent Toolverse Business Identity QR Resolver for business ID ${parts[1]}. Resolves to official verified public profile.`;
+
+    const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+      { name: 'Home', url: `${baseUrl}/` },
+      { name: 'Businesses', url: `${baseUrl}/business` },
+      { name: parts[1], url: canonicalUrl },
+    ]);
+
+    const pageNode = buildWebPageNode({
+      canonicalUrl,
+      name: title,
+      description,
+      type: 'WebPage',
+      hasBreadcrumbs: true,
+    });
+
+    const graph = [buildOrganizationNode(), buildWebSiteNode(), pageNode, breadcrumbs];
+
+    return {
+      title,
+      description,
+      canonicalUrl,
+      ogType: 'website',
+      ogImage: DEFAULT_OG_IMAGE,
+      jsonLd: wrapInGraph(graph),
+    };
+  }
+
+  if (parts[0] === 'business-qr') {
+    const canonicalUrl = `${baseUrl}/business-qr`;
+    const title = 'Toolverse Digital QR Identity Generator — Print Your Business QR';
+    const description = 'Generate high-resolution printable Toolverse QR identities for your business. Connect offline customers directly to your verified online profile.';
+
+    const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+      { name: 'Home', url: `${baseUrl}/` },
+      { name: 'Business QR', url: canonicalUrl },
+    ]);
+
+    const pageNode = buildWebPageNode({
+      canonicalUrl,
+      name: title,
+      description,
+      type: 'WebPage',
+      hasBreadcrumbs: true,
+    });
+
+    const graph = [buildOrganizationNode(), buildWebSiteNode(), pageNode, breadcrumbs];
+
+    return {
+      title,
+      description,
+      canonicalUrl,
+      ogType: 'website',
+      ogImage: DEFAULT_OG_IMAGE,
+      jsonLd: wrapInGraph(graph),
+    };
+  }
+
+  if (parts[0] === 'business') {
+    if (parts[1] === 'register') {
+      const canonicalUrl = `${baseUrl}/business/register`;
+      const title = 'List & Register Your Business — Toolverse Business Identity';
+      const description = 'Create a permanent Toolverse Business ID, get verified, and generate custom QR badges for physical locations.';
+
+      const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+        { name: 'Home', url: `${baseUrl}/` },
+        { name: 'Register Business', url: canonicalUrl },
+      ]);
+
+      const pageNode = buildWebPageNode({
+        canonicalUrl,
+        name: title,
+        description,
+        type: 'WebPage',
+        hasBreadcrumbs: true,
+      });
+
+      const graph = [buildOrganizationNode(), buildWebSiteNode(), pageNode, breadcrumbs];
+
+      return {
+        title,
+        description,
+        canonicalUrl,
+        ogType: 'website',
+        ogImage: DEFAULT_OG_IMAGE,
+        jsonLd: wrapInGraph(graph),
+      };
+    }
+
+    if (parts[1]) {
+      const canonicalUrl = `${baseUrl}/business/${parts[1]}`;
+      const nameFormatted = parts[1]
+        .split('-')
+        .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+        .join(' ');
+      const title = `${nameFormatted} — Toolverse Verified Business Profile & Reviews`;
+      const description = `Discover ${nameFormatted} on Toolverse. View ratings, customer reviews, verified credentials, contact details, services, and physical address.`;
+
+      const businessSchema: Record<string, unknown> = {
+        '@type': 'LocalBusiness',
+        '@id': `${canonicalUrl}#business`,
+        name: nameFormatted,
+        url: canonicalUrl,
+        description,
+        image: DEFAULT_OG_IMAGE,
+        publisher: { '@id': ORGANIZATION_ID },
+      };
+
+      const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+        { name: 'Home', url: `${baseUrl}/` },
+        { name: 'Businesses', url: `${baseUrl}/business` },
+        { name: nameFormatted, url: canonicalUrl },
+      ]);
+
+      const pageNode = buildWebPageNode({
+        canonicalUrl,
+        name: title,
+        description,
+        type: 'ItemPage',
+        hasBreadcrumbs: true,
+        mainEntityId: `${canonicalUrl}#business`,
+      });
+
+      const graph = [
+        buildOrganizationNode(),
+        buildWebSiteNode(),
+        pageNode,
+        breadcrumbs,
+        businessSchema,
+      ];
+
+      return {
+        title,
+        description,
+        canonicalUrl,
+        ogType: 'website',
+        ogImage: DEFAULT_OG_IMAGE,
+        jsonLd: wrapInGraph(graph),
+      };
+    }
+
+    // Business Directory Index (/business)
+    const canonicalUrl = `${baseUrl}/business`;
+    const title = 'Global Business Directory & Digital Identities — Toolverse';
+    const description = 'Discover verified local businesses, SaaS companies, online services, customer reviews, and category rankings on Toolverse.';
+
+    const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+      { name: 'Home', url: `${baseUrl}/` },
+      { name: 'Businesses', url: canonicalUrl },
+    ]);
+
+    const pageNode = buildWebPageNode({
+      canonicalUrl,
+      name: title,
+      description,
+      type: 'CollectionPage',
+      hasBreadcrumbs: true,
+    });
+
+    const graph = [buildOrganizationNode(), buildWebSiteNode(), pageNode, breadcrumbs];
+
+    return {
+      title,
+      description,
+      canonicalUrl,
+      ogType: 'website',
+      ogImage: DEFAULT_OG_IMAGE,
+      jsonLd: wrapInGraph(graph),
+    };
+  }
+
+  // --- How-To Hub & Guides (/how-to & /how-to/[slug]) ---
+  if (parts[0] === 'how-to') {
+    if (parts[1]) {
+      const canonicalUrl = `${baseUrl}/how-to/${parts[1]}`;
+      const titleFormatted = parts[1]
+        .split('-')
+        .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+        .join(' ');
+      const title = `${titleFormatted} — Toolverse Guide`;
+      const description = `Step-by-step guide on ${titleFormatted.toLowerCase()}. Learn best practices, verification workflows, and business growth tools on Toolverse.`;
+
+      const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+        { name: 'Home', url: `${baseUrl}/` },
+        { name: 'How-To Guides', url: `${baseUrl}/how-to` },
+        { name: titleFormatted, url: canonicalUrl },
+      ]);
+
+      const pageNode = buildWebPageNode({
+        canonicalUrl,
+        name: title,
+        description,
+        type: 'ItemPage',
+        hasBreadcrumbs: true,
+      });
+
+      const graph = [buildOrganizationNode(), buildWebSiteNode(), pageNode, breadcrumbs];
+
+      return {
+        title,
+        description,
+        canonicalUrl,
+        ogType: 'article',
+        ogImage: DEFAULT_OG_IMAGE,
+        jsonLd: wrapInGraph(graph),
+      };
+    }
+
+    const canonicalUrl = `${baseUrl}/how-to`;
+    const title = 'Toolverse How-To Center & Business Guides';
+    const description = 'Official tutorials on how to register your business, generate QR identities, print offline badges, get verified, and collect customer reviews.';
+
+    const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+      { name: 'Home', url: `${baseUrl}/` },
+      { name: 'How-To Guides', url: canonicalUrl },
+    ]);
+
+    const pageNode = buildWebPageNode({
+      canonicalUrl,
+      name: title,
+      description,
+      type: 'CollectionPage',
+      hasBreadcrumbs: true,
+    });
+
+    const graph = [buildOrganizationNode(), buildWebSiteNode(), pageNode, breadcrumbs];
+
+    return {
+      title,
+      description,
+      canonicalUrl,
+      ogType: 'website',
+      ogImage: DEFAULT_OG_IMAGE,
+      jsonLd: wrapInGraph(graph),
+    };
+  }
+
+  // --- Product Discovery Hub (/products & /products/[slug]) ---
+  if (parts[0] === 'products') {
+    if (parts[1]) {
+      const product = getProductBySlug(parts[1]);
+      if (product) {
+        const canonicalUrl = `${baseUrl}/products/${product.slug}`;
+        const pageTitle = `${product.name} — Features, Pricing, Reviews & Alternatives | ToolVerse`;
+        const pageDesc = `${product.tagline}. Read genuine user reviews, pricing plans, features, and software alternatives on ToolVerse.`;
+
+        const productId = `${canonicalUrl}#product`;
+        const quality = evaluateProductPageQuality(product);
+
+        const productSchema: Record<string, unknown> = {
+          '@type': ['Product', 'SoftwareApplication'],
+          '@id': productId,
+          name: product.name,
+          url: canonicalUrl,
+          description: product.description,
+          category: product.categoryName,
+          image: product.logoUrl,
+          applicationCategory: product.categoryName,
+          operatingSystem: product.platforms.join(', '),
+          offers: {
+            '@type': 'Offer',
+            price: product.pricingPlans[0]?.price.replace(/[^0-9.]/g, '') || '0',
+            priceCurrency: 'USD',
+            availability: 'https://schema.org/InStock',
+          },
+          aggregateRating: {
+            '@type': 'AggregateRating',
+            ratingValue: product.ratingAverage.toString(),
+            reviewCount: product.ratingCount.toString(),
+            bestRating: '5',
+            worstRating: '1',
+          },
+          publisher: { '@id': ORGANIZATION_ID },
+        };
+
+        const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+          { name: 'Home', url: `${baseUrl}/` },
+          { name: 'Products', url: `${baseUrl}/products` },
+          { name: product.name, url: canonicalUrl },
+        ]);
+
+        const pageNode = buildWebPageNode({
+          canonicalUrl,
+          name: pageTitle,
+          description: pageDesc,
+          type: 'ItemPage',
+          hasBreadcrumbs: true,
+          mainEntityId: productId,
+        });
+
+        const graph = [
+          buildOrganizationNode(),
+          buildWebSiteNode(),
+          pageNode,
+          breadcrumbs,
+          productSchema,
+        ];
+
+        return {
+          title: pageTitle,
+          description: pageDesc,
+          canonicalUrl,
+          ogType: 'website',
+          ogImage: product.logoUrl || DEFAULT_OG_IMAGE,
+          jsonLd: wrapInGraph(graph),
+        };
+      }
+    }
+
+    // Products Index (/products)
+    const canonicalUrl = `${baseUrl}/products`;
+    const title = 'Discover Software, AI Tools & SaaS Products — ToolVerse';
+    const description = 'Explore verified software products, AI assistants, SaaS platforms, developer tools, user reviews, and alternatives.';
+
+    const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+      { name: 'Home', url: `${baseUrl}/` },
+      { name: 'Products', url: canonicalUrl },
+    ]);
+
+    const pageNode = buildWebPageNode({
+      canonicalUrl,
+      name: title,
+      description,
+      type: 'CollectionPage',
+      hasBreadcrumbs: true,
+    });
+
+    const graph = [buildOrganizationNode(), buildWebSiteNode(), pageNode, breadcrumbs];
+
+    return {
+      title,
+      description,
+      canonicalUrl,
+      ogType: 'website',
+      ogImage: DEFAULT_OG_IMAGE,
+      jsonLd: wrapInGraph(graph),
+    };
+  }
+
+  // --- Alternatives Hub & Detail (/alternatives & /alternatives/[slug]) ---
+  if (parts[0] === 'alternatives') {
+    if (parts[1]) {
+      const alt = getAlternativeBySlug(parts[1]);
+      if (alt) {
+        const canonicalUrl = `${baseUrl}/alternatives/${alt.slug}`;
+        const title = alt.metaTitle;
+        const description = alt.metaDescription;
+
+        const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+          { name: 'Home', url: `${baseUrl}/` },
+          { name: 'Alternatives', url: `${baseUrl}/alternatives` },
+          { name: `Alternative to ${alt.targetProductName}`, url: canonicalUrl },
+        ]);
+
+        const pageNode = buildWebPageNode({
+          canonicalUrl,
+          name: title,
+          description,
+          type: 'CollectionPage',
+          hasBreadcrumbs: true,
+        });
+
+        const graph: (Record<string, unknown> | null)[] = [
+          buildOrganizationNode(),
+          buildWebSiteNode(),
+          pageNode,
+          breadcrumbs,
+        ];
+
+        if (alt.faqs.length) {
+          graph.push({
+            '@type': 'FAQPage',
+            '@id': `${canonicalUrl}#faq`,
+            mainEntity: alt.faqs.map((f) => ({
+              '@type': 'Question',
+              name: f.question,
+              acceptedAnswer: { '@type': 'Answer', text: f.answer },
+            })),
+          });
+        }
+
+        return {
+          title,
+          description,
+          canonicalUrl,
+          ogType: 'website',
+          ogImage: DEFAULT_OG_IMAGE,
+          jsonLd: wrapInGraph(graph),
+        };
+      }
+    }
+
+    const canonicalUrl = `${baseUrl}/alternatives`;
+    const title = 'Software & AI Alternatives Engine — ToolVerse';
+    const description = 'Discover top free and paid alternatives to popular design suites, AI models, workspaces, and developer software.';
+
+    const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+      { name: 'Home', url: `${baseUrl}/` },
+      { name: 'Alternatives', url: canonicalUrl },
+    ]);
+
+    const pageNode = buildWebPageNode({
+      canonicalUrl,
+      name: title,
+      description,
+      type: 'CollectionPage',
+      hasBreadcrumbs: true,
+    });
+
+    const graph = [buildOrganizationNode(), buildWebSiteNode(), pageNode, breadcrumbs];
+
+    return {
+      title,
+      description,
+      canonicalUrl,
+      ogType: 'website',
+      ogImage: DEFAULT_OG_IMAGE,
+      jsonLd: wrapInGraph(graph),
+    };
+  }
+
+  // --- Side-by-Side Comparisons (/compare/[slug]) ---
+  if (parts[0] === 'compare' && parts[1]) {
+    const comp = getComparisonBySlug(parts[1]);
+    const canonicalUrl = `${baseUrl}/compare/${parts[1]}`;
+    const title = comp ? comp.title : `Product Comparison — ToolVerse`;
+    const description = comp ? comp.metaDescription : `Compare features, pricing, and pros & cons side-by-side.`;
+
+    const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+      { name: 'Home', url: `${baseUrl}/` },
+      { name: 'Compare', url: `${baseUrl}/products` },
+      { name: comp?.title || parts[1], url: canonicalUrl },
+    ]);
+
+    const pageNode = buildWebPageNode({
+      canonicalUrl,
+      name: title,
+      description,
+      type: 'ItemPage',
+      hasBreadcrumbs: true,
+    });
+
+    const graph = [buildOrganizationNode(), buildWebSiteNode(), pageNode, breadcrumbs];
+
+    return {
+      title,
+      description,
+      canonicalUrl,
+      ogType: 'website',
+      ogImage: DEFAULT_OG_IMAGE,
+      jsonLd: wrapInGraph(graph),
+    };
+  }
+
+  // --- Questions Hub & Detail (/questions & /questions/[slug]) ---
+  if (parts[0] === 'questions') {
+    if (parts[1]) {
+      const q = getQuestionBySlug(parts[1]);
+      if (q) {
+        const canonicalUrl = `${baseUrl}/questions/${q.slug}`;
+        const title = `${q.title} — ToolVerse Q&A`;
+        const description = `${q.content.slice(0, 150)}... Read community answers, software recommendations, and developer tips.`;
+
+        const qSchema: Record<string, unknown> = {
+          '@type': 'Question',
+          '@id': `${canonicalUrl}#question`,
+          name: q.title,
+          text: q.content,
+          dateCreated: q.date,
+          answerCount: q.answers.length,
+          upvoteCount: q.upvotes,
+          author: { '@type': 'Person', name: q.authorName },
+          suggestedAnswer: q.answers.map((a) => ({
+            '@type': 'Answer',
+            text: a.content,
+            dateCreated: a.date,
+            upvoteCount: a.upvotes,
+            author: { '@type': 'Person', name: a.authorName },
+          })),
+        };
+
+        const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+          { name: 'Home', url: `${baseUrl}/` },
+          { name: 'Questions', url: `${baseUrl}/questions` },
+          { name: q.title, url: canonicalUrl },
+        ]);
+
+        const pageNode = buildWebPageNode({
+          canonicalUrl,
+          name: title,
+          description,
+          type: 'ItemPage',
+          hasBreadcrumbs: true,
+        });
+
+        const graph = [buildOrganizationNode(), buildWebSiteNode(), pageNode, breadcrumbs, qSchema];
+
+        return {
+          title,
+          description,
+          canonicalUrl,
+          ogType: 'website',
+          ogImage: DEFAULT_OG_IMAGE,
+          jsonLd: wrapInGraph(graph),
+        };
+      }
+    }
+
+    const canonicalUrl = `${baseUrl}/questions`;
+    const title = 'Ask Software & AI Questions — ToolVerse Community Q&A';
+    const description = 'Ask questions about online tools, AI assistants, developer utilities, PDF workflows, and software recommendations.';
+
+    const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+      { name: 'Home', url: `${baseUrl}/` },
+      { name: 'Questions', url: canonicalUrl },
+    ]);
+
+    const pageNode = buildWebPageNode({
+      canonicalUrl,
+      name: title,
+      description,
+      type: 'CollectionPage',
+      hasBreadcrumbs: true,
+    });
+
+    const graph = [buildOrganizationNode(), buildWebSiteNode(), pageNode, breadcrumbs];
+
+    return {
+      title,
+      description,
+      canonicalUrl,
+      ogType: 'website',
+      ogImage: DEFAULT_OG_IMAGE,
+      jsonLd: wrapInGraph(graph),
+    };
+  }
+
+  // --- Collections (/collections & /collections/[slug]) ---
+  if (parts[0] === 'collections') {
+    if (parts[1]) {
+      const col = getCollectionBySlug(parts[1]);
+      if (col) {
+        const canonicalUrl = `${baseUrl}/collections/${col.slug}`;
+        const title = `${col.title} — ToolVerse Collections`;
+        const description = `${col.description} Curated list of software products and free online tools.`;
+
+        const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+          { name: 'Home', url: `${baseUrl}/` },
+          { name: 'Collections', url: `${baseUrl}/collections` },
+          { name: col.title, url: canonicalUrl },
+        ]);
+
+        const pageNode = buildWebPageNode({
+          canonicalUrl,
+          name: title,
+          description,
+          type: 'CollectionPage',
+          hasBreadcrumbs: true,
+        });
+
+        const graph = [buildOrganizationNode(), buildWebSiteNode(), pageNode, breadcrumbs];
+
+        return {
+          title,
+          description,
+          canonicalUrl,
+          ogType: 'website',
+          ogImage: DEFAULT_OG_IMAGE,
+          jsonLd: wrapInGraph(graph),
+        };
+      }
+    }
+
+    const canonicalUrl = `${baseUrl}/collections`;
+    const title = 'Curated Tool & Software Collections — ToolVerse';
+    const description = 'Explore curated lists of AI assistants, developer stacks, design suites, and free online utilities.';
+
+    const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+      { name: 'Home', url: `${baseUrl}/` },
+      { name: 'Collections', url: canonicalUrl },
+    ]);
+
+    const pageNode = buildWebPageNode({
+      canonicalUrl,
+      name: title,
+      description,
+      type: 'CollectionPage',
+      hasBreadcrumbs: true,
+    });
+
+    const graph = [buildOrganizationNode(), buildWebSiteNode(), pageNode, breadcrumbs];
+
+    return {
+      title,
+      description,
+      canonicalUrl,
+      ogType: 'website',
+      ogImage: DEFAULT_OG_IMAGE,
+      jsonLd: wrapInGraph(graph),
+    };
+  }
+
+  // --- Product Submission Portal (/submit) ---
+  if (parts[0] === 'submit') {
+    const canonicalUrl = `${baseUrl}/submit`;
+    const title = 'List Your Product on ToolVerse — Product Discovery & Launch';
+    const description = 'Submit your SaaS, AI tool, developer application, or website to ToolVerse for free product discovery and community reviews.';
+
+    const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+      { name: 'Home', url: `${baseUrl}/` },
+      { name: 'Submit Product', url: canonicalUrl },
+    ]);
+
+    const pageNode = buildWebPageNode({
+      canonicalUrl,
+      name: title,
+      description,
+      type: 'WebPage',
+      hasBreadcrumbs: true,
+    });
+
+    const graph = [buildOrganizationNode(), buildWebSiteNode(), pageNode, breadcrumbs];
+
+    return {
+      title,
+      description,
+      canonicalUrl,
+      ogType: 'website',
+      ogImage: DEFAULT_OG_IMAGE,
+      jsonLd: wrapInGraph(graph),
+    };
+  }
+
+  // --- Badges Generator (/badges) ---
+  if (parts[0] === 'badges') {
+    const canonicalUrl = `${baseUrl}/badges`;
+    const title = 'Embeddable ToolVerse Badges — Showcase Your Product Profile';
+    const description = 'Generate lightweight SVG/HTML embed badges ("Featured on ToolVerse", "Listed on ToolVerse") for your website or README.';
+
+    const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+      { name: 'Home', url: `${baseUrl}/` },
+      { name: 'Badges', url: canonicalUrl },
+    ]);
+
+    const pageNode = buildWebPageNode({
+      canonicalUrl,
+      name: title,
+      description,
+      type: 'WebPage',
+      hasBreadcrumbs: true,
+    });
+
+    const graph = [buildOrganizationNode(), buildWebSiteNode(), pageNode, breadcrumbs];
+
+    return {
+      title,
+      description,
+      canonicalUrl,
+      ogType: 'website',
+      ogImage: DEFAULT_OG_IMAGE,
+      jsonLd: wrapInGraph(graph),
+    };
+  }
+
+  // --- Founder Claim (/claim) ---
+  if (parts[0] === 'claim') {
+    const canonicalUrl = `${baseUrl}/claim`;
+    const title = 'Claim Your Product Profile — ToolVerse Founder Verification';
+    const description = 'Verify company ownership of your product profile to update information, respond to reviews, and receive verified badges.';
+
+    const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+      { name: 'Home', url: `${baseUrl}/` },
+      { name: 'Claim Profile', url: canonicalUrl },
+    ]);
+
+    const pageNode = buildWebPageNode({
+      canonicalUrl,
+      name: title,
+      description,
+      type: 'WebPage',
+      hasBreadcrumbs: true,
+    });
+
+    const graph = [buildOrganizationNode(), buildWebSiteNode(), pageNode, breadcrumbs];
+
+    return {
+      title,
+      description,
       canonicalUrl,
       ogType: 'website',
       ogImage: DEFAULT_OG_IMAGE,
