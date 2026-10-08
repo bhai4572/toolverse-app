@@ -5,8 +5,8 @@ export { AdSlot } from './ads/AdSlot';
 export {
   AdsterraBanner,
   AdsterraNative,
-  AdsterraSocialBar,
   AdsterraSmartLink,
+  MonetagAdSlot,
 } from './ads/AdSlot';
 export { ToolPageAdChrome } from './ads/ToolPageAdChrome';
 export { HeaderAdBar } from './ads/HeaderAdBar';

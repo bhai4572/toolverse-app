@@ -104,5 +104,5 @@ export function AdSlot(props: AdSlotProps) {
 
 export { AdsterraBanner } from './AdsterraBanner';
 export { AdsterraNative } from './AdsterraNative';
-export { AdsterraSocialBar } from './AdsterraSocialBar';
 export { AdsterraSmartLink } from './AdsterraSmartLink';
+export { MonetagAdSlot } from './MonetagAdSlot';

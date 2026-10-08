@@ -22,7 +22,7 @@ interface ToolPageAdChromeProps {
  *
  * Mobile (≥3–4): header 320x50 · under-title · after-tool 300x250 · footer 320x50
  *
- * Social bar is global (AdGlobals). No popunder. Ads never cover tool controls.
+ * No social bar / popunder. Monetag push+vignette load from index.html. Ads never cover tool controls.
  */
 export function ToolPageAdChrome({ header, tool, below, rail }: ToolPageAdChromeProps) {
   return (

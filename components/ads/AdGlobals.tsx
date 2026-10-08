@@ -1,13 +1,12 @@
 'use client';
 
 import React from 'react';
-import { AdsterraSocialBar } from './AdsterraSocialBar';
 
 /**
- * Global Adsterra loaders — social bar only (floating, not a banner slot).
- * Mobile 320x50 is in-flow via tool header / site footer — no second sticky bar.
- * Never gates tools. Child skips workspace/admin.
+ * Global ad loaders. Adsterra Social Bar removed (notification-like bauval.org/14/…).
+ * Monetag In-Page Push + Vignette load from index.html. Display banners use in-flow slots.
+ * Never gates tools. No popunder.
  */
 export function AdGlobals() {
-  return <AdsterraSocialBar />;
+  return null;
 }

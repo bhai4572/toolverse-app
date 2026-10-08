@@ -1,14 +1,16 @@
 /**
  * Adsterra unit registry — human labels match publisher dashboard names.
  * Tools stay free; these units are display-only (never gate UI).
+ *
+ * Monetag: In-Page Push + Vignette live in index.html (zones 11966213 / 11966214).
+ * Banner zone was never stored in git — set MONETAG_BANNER_ZONE when you create one.
  */
+
+/** Monetag display/banner zone ID — leave empty until pasted from Monetag dashboard */
+export const MONETAG_BANNER_ZONE = '';
 
 export const ADSTERRA_SMART_LINK =
   'https://araplhn.org/4/24aa254faf80eeda68f896182a2eeb8c';
-
-/** Social bar — load once globally */
-export const ADSTERRA_SOCIAL_BAR_SRC =
-  'https://bauval.org/14/7f71d90df46e94f6cfe7f371e0ab7756';
 
 /** Native banner */
 export const ADSTERRA_NATIVE = {

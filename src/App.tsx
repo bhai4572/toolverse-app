@@ -334,7 +334,7 @@ export default function App() {
         {renderContent()}
       </main>
       {!isWorkspace && <Footer />}
-      {/* Adsterra social bar — monetized pages only; never gates tools; no popunder */}
+      {/* Global ad hooks (Social Bar removed; Monetag push/vignette in index.html) */}
       {!skipAds && <AdGlobals />}
     </div>
   );

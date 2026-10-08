@@ -32,7 +32,7 @@ function ensureHistoryPatch() {
 
 /**
  * Reactive skip flag for SPA navigations (pushState / popstate).
- * Homepage, workspace, and admin stay ad-free after client-side route changes.
+ * Workspace / admin stay ad-free after client-side route changes (homepage is monetized).
  */
 export function useSkipAds(): boolean {
   const [skip, setSkip] = useState(() =>

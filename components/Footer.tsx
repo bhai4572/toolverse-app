@@ -1,30 +1,54 @@
-import React from 'react';
+'use client';
+
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { ShieldCheck, Wrench } from 'lucide-react';
 import { CATEGORIES, TOOLS } from '@/lib/tools/registry';
 import { FooterAdBar } from './ads/FooterAdBar';
 import { FooterColumnAd } from './ads/FooterColumnAd';
 import { AdsterraSmartLink } from './ads/AdsterraSmartLink';
+import { MonetagAdSlot } from './ads/MonetagAdSlot';
+import { useSkipAds } from './ads/useSkipAds';
 
 export function Footer() {
+  const skipAds = useSkipAds();
+  const [isHome, setIsHome] = useState(
+    () =>
+      typeof window !== 'undefined' &&
+      (window.location.pathname.replace(/\/$/, '') || '/') === '/'
+  );
+
+  useEffect(() => {
+    setIsHome((window.location.pathname.replace(/\/$/, '') || '/') === '/');
+  }, [skipAds]);
+
   return (
     <footer className="mt-auto bg-slate-900 text-slate-400 text-sm border-t border-slate-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Brand strip */}
-        <div className="mb-10 space-y-4 max-w-xl">
-          <Link href="/" className="flex items-center gap-2 font-bold text-xl text-white">
-            <div className="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center text-white">
-              <Wrench className="w-4 h-4" />
+        {/* Brand strip — Monetag banner demo sits in empty space beside intro (homepage only) */}
+        <div className="mb-10 flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+          <div className="space-y-4 max-w-xl">
+            <Link href="/" className="flex items-center gap-2 font-bold text-xl text-white">
+              <div className="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center text-white">
+                <Wrench className="w-4 h-4" />
+              </div>
+              <span>ToolVerse</span>
+            </Link>
+            <p className="text-xs text-slate-400 leading-relaxed">
+              {TOOLS.length}+ free and privacy-first online utilities for files, images, PDFs, writing &amp; academic integrity, calculators, developers, and creators worldwide.
+            </p>
+            <div className="inline-flex items-center gap-2 text-xs font-medium text-emerald-400 bg-emerald-950/60 border border-emerald-800/60 px-3 py-1.5 rounded-full">
+              <ShieldCheck className="w-4 h-4" />
+              <span>Files processed locally in browser</span>
             </div>
-            <span>ToolVerse</span>
-          </Link>
-          <p className="text-xs text-slate-400 leading-relaxed">
-            {TOOLS.length}+ free and privacy-first online utilities for files, images, PDFs, writing &amp; academic integrity, calculators, developers, and creators worldwide.
-          </p>
-          <div className="inline-flex items-center gap-2 text-xs font-medium text-emerald-400 bg-emerald-950/60 border border-emerald-800/60 px-3 py-1.5 rounded-full">
-            <ShieldCheck className="w-4 h-4" />
-            <span>Files processed locally in browser</span>
           </div>
+          {isHome && !skipAds && (
+            <MonetagAdSlot
+              size="300x250"
+              label="Monetag banner"
+              className="shrink-0 self-center md:self-start"
+            />
+          )}
         </div>
 
         {/* Exact 4-column grid — one identical 160×300 ad below each link list */}
