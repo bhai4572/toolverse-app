@@ -1381,12 +1381,36 @@ export function getMetadataForPath(pathname: string): PageMetadata {
     };
   }
 
+  // SEO Dashboard workspace (/workspace, /workspace/*, /seo-dashboard)
+  if (parts[0] === 'workspace' || parts[0] === 'seo-dashboard') {
+    const canonicalUrl = `${baseUrl}/workspace`;
+    const title = 'SEO Dashboard — Free Semrush-Style Workspace | ToolVerse';
+    const description =
+      'Free SEO dashboard with nested left nav: Site Audit, On-Page, Site Performance, Keyword Magic, Position Tracking, link extractor, GA4 import, and PDF reports. Your data only — no fake market graphs.';
+    return {
+      title,
+      description,
+      keywords: ['seo dashboard', 'free semrush alternative', 'site audit', 'keyword tools', 'toolverse seo'],
+      canonicalUrl,
+      ogType: 'website',
+      ogImage: DEFAULT_OG_IMAGE,
+      jsonLd: wrapInGraph([
+        buildOrganizationNode(),
+        buildWebPageNode({ canonicalUrl, name: title, description, type: 'WebPage' }),
+        buildBreadcrumbNode(canonicalUrl, [
+          { name: 'Home', url: `${baseUrl}/` },
+          { name: 'SEO Dashboard', url: canonicalUrl },
+        ]),
+      ]),
+    };
+  }
+
   // Product hubs (SEO Suite, Tools, Study, Immigration, Pricing)
   const hubMeta: Record<string, { title: string; description: string; keywords: string[] }> = {
     seo: {
       title: 'ToolVerse SEO Suite — Free On-Page & Technical SEO Tools',
       description:
-        'Professional SEO software hub: meta tags, site audit lite, keywords, robots, sitemap, schema. Free tools live; Pro crawl/rank/backlinks on the roadmap.',
+        'SEO software hub and classic tools catalog. Open the free Semrush-style SEO Dashboard for audits, keywords, and reports.',
       keywords: ['seo suite', 'free seo tools', 'on page seo', 'semrush alternative', 'toolverse seo'],
     },
     tools: {
@@ -1395,9 +1419,9 @@ export function getMetadataForPath(pathname: string): PageMetadata {
       keywords: ['online tools hub', 'free pdf tools', 'image tools', 'toolverse'],
     },
     pricing: {
-      title: 'ToolVerse Pricing — Free vs Pro SEO',
-      description: 'Free ad-supported utilities and SEO lite. Pro roadmap: full site audit, rank tracking, real backlinks, fewer ads.',
-      keywords: ['toolverse pricing', 'seo tools free vs pro'],
+      title: 'ToolVerse Pricing — Free SEO Dashboard (Pro Paused)',
+      description: 'Everything free for now: SEO Dashboard, audits, keyword tools, report exports. Pro crawl/backlink index later.',
+      keywords: ['toolverse pricing', 'free seo tools'],
     },
     study: {
       title: 'Study Abroad — Visa Routes & Destinations | ToolVerse',

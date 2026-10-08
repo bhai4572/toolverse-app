@@ -13,9 +13,9 @@ const PATHS = [
     icon: Wrench,
   },
   {
-    href: '/seo',
-    title: 'SEO Suite',
-    blurb: 'On-page, technical, keywords — free lite + Pro roadmap.',
+    href: '/workspace',
+    title: 'SEO Dashboard',
+    blurb: 'Semrush-style workspace — audits, keywords, reports. Free.',
     icon: Globe2,
   },
   {
@@ -57,23 +57,23 @@ export default function HomePage() {
             Tool<span className="text-brand-400">Verse</span>
           </p>
           <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-[1.1]">
-            Free tools. Real SEO suite. Clear paths.
+            Free tools. Real SEO dashboard. Clear paths.
           </h1>
           <p className="text-slate-300 text-sm sm:text-base max-w-xl leading-relaxed">
-            Privacy-first utilities plus a growing SEO software module — pick Tools, SEO, Study, or Immigration. No one-screen dump.
+            Privacy-first utilities plus a Semrush-style SEO workspace — pick Tools, SEO Dashboard, Study, or Immigration.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link
-              href="/tools"
+              href="/workspace"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-bold transition-colors"
             >
-              Browse tools <ArrowRight className="w-4 h-4" />
+              Open SEO Dashboard <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
-              href="/seo"
+              href="/tools"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-white/25 hover:border-white/50 text-white text-sm font-bold"
             >
-              Open SEO Suite
+              Browse tools
             </Link>
           </div>
           <div className="relative max-w-md pt-2">

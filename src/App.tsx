@@ -52,6 +52,7 @@ import CreatePitchPage from '../app/guest-posts/create-pitch/page';
 import BecomeAPublisherPage from '../app/become-a-publisher/page';
 import SeoToolsPage from '../app/seo-tools/page';
 import SeoSuitePage from '../app/seo/page';
+import SeoWorkspacePage from '../app/workspace/page';
 import ToolsHubPage from '../app/tools/page';
 import PricingPage from '../app/pricing/page';
 import StudyAbroadPage from '../app/study/page';
@@ -76,8 +77,15 @@ export default function App() {
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
+  const pathNormalized = currentPath.replace(/\/$/, '') || '/';
+  const isWorkspace =
+    pathNormalized === '/workspace' ||
+    pathNormalized.startsWith('/workspace/') ||
+    pathNormalized === '/seo-dashboard' ||
+    pathNormalized.startsWith('/seo-dashboard/');
+
   const renderContent = () => {
-    const path = currentPath.replace(/\/$/, '') || '/';
+    const path = pathNormalized;
     const parts = path.split('/').filter(Boolean);
 
     if (parts.length === 0) {
@@ -171,6 +179,11 @@ export default function App() {
 
     if (parts[0] === 'become-a-publisher') {
       return <BecomeAPublisherPage />;
+    }
+
+    if (parts[0] === 'workspace' || parts[0] === 'seo-dashboard') {
+      const slug = parts.slice(1).join('/');
+      return <SeoWorkspacePage slug={slug} />;
     }
 
     if (parts[0] === 'seo' || parts[0] === 'seo-suite') {
@@ -285,10 +298,16 @@ export default function App() {
       <AdBlockDetector />
       <SEOHead pathname={currentPath} />
       <Header />
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <main
+        className={
+          isWorkspace
+            ? 'flex-1 w-full'
+            : 'flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6'
+        }
+      >
         {renderContent()}
       </main>
-      <Footer />
+      {!isWorkspace && <Footer />}
     </div>
   );
 }

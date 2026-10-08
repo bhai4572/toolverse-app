@@ -2,8 +2,9 @@
 
 **Site:** https://toolverse.baby  
 **Stack (live):** Vite + React SPA on Cloudflare Pages (`src/App.tsx` routes; `app/` pages are components)  
-**Updated:** 2026-04-08  
-**Honesty rule:** Full Semrush/Ahrefs parity = many months of real crawl/index data. This blueprint phases a credible SEO suite on top of tools that already exist — no fake “enterprise” buttons.
+**Updated:** 2026-10-08  
+**Honesty rule:** Full Semrush/Ahrefs parity = many months of real crawl/index data. No fake global traffic or competitor market share.  
+**Current product:** Free-only Semrush-style SEO Workspace at `/workspace` (alias `/seo-dashboard`) — nested left nav, real URL audits, local rank tracking, GA4/GSC paste imports, HTML/PDF reports.
 
 ---
 
@@ -27,10 +28,11 @@
 
 ## 1. Free vs Paid (MVP-realistic)
 
-### Positioning
-- **Free = utility + lite SEO + ads** → traffic + trust + SEO for ToolVerse itself.  
-- **Pro = depth, limits, projects, reports, fewer ads** → agencies / serious site owners.  
-Do **not** sell “full Semrush” on day one.
+### Positioning (Oct 2026)
+- **Pro is paused** — entire SEO Dashboard + utilities are free.  
+- **Free = Semrush-style workspace shell + working analyzers + ads on classic tools.**  
+- Charts = user-run audits, localStorage rank logs, pasted GA4/GSC data, or clearly labeled modeled keyword ideation.  
+- **Pro later** = multi-page crawl, real backlink index, fewer ads — not gated in UI now.
 
 ### Free (always)
 
@@ -75,17 +77,30 @@ Payment: Stripe Checkout later — out of scope for foundation week.
 ```
 Home
 ├── Tools          → /tools  (category-first hub)
-├── SEO Suite      → /seo    (software-style module; legacy /seo-tools redirects)
-├── Study Abroad   → /study  (routes existing travel STUDY purpose + country picks)
-├── Immigration    → /immigration (WORK / visa / embassy framing)
-├── Travel         → /travel (tourism / planner — keep, demote in primary nav)
-├── Jobs           → /jobs/... and tool entry
+├── SEO Dashboard  → /workspace  (Semrush-style shell; alias /seo-dashboard)
+├── SEO Suite      → /seo    (classic tool catalog landing)
+├── Study Abroad   → /study
+├── Immigration    → /immigration
+├── Travel         → /travel (More)
+├── Jobs           → /jobs/... 
 ├── Blog           → /blog
-├── Pricing        → /pricing
+├── Pricing        → /pricing (Free live · Pro paused)
 └── More           → Business, Startups, Guest Posts, Products, How-To, Admin
 ```
 
 **Nav principle:** ≤6 primary items on desktop. Everything else under **More**. No one-screen dump.
+
+### SEO Workspace data honesty
+
+| Module | Real / working | Not claimed |
+|--------|----------------|-------------|
+| Site Audit / On-Page | Fetch HTML (CORS proxy) + `performOnPageAudit` | Multi-page crawl index |
+| Site Performance | HTML weight / script estimates | CrUX / PSI API field data |
+| Keyword Magic | Modeled ideation (`generateKeywordData`) | Live search volume DB |
+| Position Tracking | User-entered positions → local charts | Live SERP scrape |
+| Backlinks | Outbound link extract + GSC paste | Global backlink index |
+| Traffic Analytics | GA4/CSV paste → “Your data” charts | Semrush clickstream |
+| Reports | HTML/PDF of last local audit | White-label agency SaaS |
 
 ---
 

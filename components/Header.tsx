@@ -7,7 +7,7 @@ import { searchTools, ToolDefinition } from '@/lib/tools/registry';
 
 const PRIMARY_NAV = [
   { href: '/tools', label: 'Tools' },
-  { href: '/seo', label: 'SEO Suite' },
+  { href: '/workspace', label: 'SEO Dashboard' },
   { href: '/study', label: 'Study Abroad' },
   { href: '/immigration', label: 'Immigration' },
   { href: '/blog', label: 'Blog' },
@@ -15,6 +15,7 @@ const PRIMARY_NAV = [
 ] as const;
 
 const MORE_NAV = [
+  { href: '/seo', label: 'SEO Suite (classic)' },
   { href: '/travel', label: 'Travel' },
   { href: '/tools/global-job-finder', label: 'Jobs Finder' },
   { href: '/business', label: 'Businesses' },

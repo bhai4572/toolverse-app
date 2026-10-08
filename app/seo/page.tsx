@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { ArrowRight, Lock, Sparkles } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { getToolBySlug } from '@/lib/tools/registry';
 import { SEO_SUITE_GROUPS } from '@/lib/product/featureFlags';
 
@@ -17,14 +17,15 @@ export default function SeoSuitePage() {
             Tool<span className="text-brand-400">Verse</span> SEO Software
           </h1>
           <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-            Professional on-page and technical SEO tools — free lite suite today, Pro depth (crawl audit, rank tracking, real backlinks) on the roadmap. Not overnight Semrush parity; real structure you can use now.
+            Professional Semrush-style dashboard with nested left nav — Site Audit, keywords, performance, reports, and more.
+            Everything is free right now. Charts use your audits and imports — not fake market data.
           </p>
           <div className="flex flex-wrap gap-3 pt-2">
-            <Link href="/pricing" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-bold">
-              Free vs Pro <ArrowRight className="w-4 h-4" />
+            <Link href="/workspace" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-bold">
+              Open SEO Dashboard <ArrowRight className="w-4 h-4" />
             </Link>
             <Link href="/tools/seo-audit-analyzer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-slate-600 hover:border-brand-400 text-sm font-bold text-slate-100">
-              Open free audit
+              Classic free audit
             </Link>
           </div>
         </div>
@@ -37,6 +38,21 @@ export default function SeoSuitePage() {
             <p className="text-sm text-slate-500">{group.description}</p>
           </div>
 
+          {group.id === 'workspace' && (
+            <Link
+              href="/workspace"
+              className="block p-5 rounded-2xl border border-brand-500/40 bg-brand-50/50 dark:bg-brand-950/30 hover:border-brand-500 transition-colors"
+            >
+              <div className="flex items-center justify-between gap-2">
+                <div>
+                  <h3 className="font-bold text-slate-900 dark:text-white">Launch full workspace</h3>
+                  <p className="text-xs text-slate-500 mt-1">Left sidebar · nested modules · local history · free</p>
+                </div>
+                <ArrowRight className="w-5 h-5 text-brand-600" />
+              </div>
+            </Link>
+          )}
+
           {group.tools.length > 0 && (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {group.tools.map((item) => {
@@ -44,7 +60,7 @@ export default function SeoSuitePage() {
                 if (!tool) return null;
                 return (
                   <Link
-                    key={item.slug}
+                    key={`${group.id}-${item.slug}`}
                     href={`/tools/${item.slug}`}
                     className="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-brand-500/50 transition-colors"
                   >
@@ -58,31 +74,6 @@ export default function SeoSuitePage() {
                   </Link>
                 );
               })}
-            </div>
-          )}
-
-          {group.proStubs.length > 0 && (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              {group.proStubs.map((stub) => (
-                <div
-                  key={stub.name}
-                  className="p-4 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 bg-slate-50/80 dark:bg-slate-900/50 opacity-95"
-                >
-                  <div className="flex items-center justify-between gap-2 mb-1">
-                    <h3 className="font-semibold text-sm text-slate-700 dark:text-slate-200 flex items-center gap-1.5">
-                      <Lock className="w-3.5 h-3.5 text-amber-600" />
-                      {stub.name}
-                    </h3>
-                    <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded bg-amber-50 text-amber-800 dark:bg-amber-950 dark:text-amber-200">
-                      Pro
-                    </span>
-                  </div>
-                  <p className="text-xs text-slate-500">{stub.blurb}</p>
-                  <Link href="/pricing" className="inline-flex items-center gap-1 mt-3 text-xs font-semibold text-brand-600">
-                    See roadmap <Sparkles className="w-3 h-3" />
-                  </Link>
-                </div>
-              ))}
             </div>
           )}
         </section>

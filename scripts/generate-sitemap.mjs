@@ -190,7 +190,9 @@ for (const p of ['tech-vision-journal', 'startup-builder-daily', 'seo-growth-dig
 }
 
 // SEO Tools & Dashboard Routes
-add('/seo', 'daily', '1.0');
+add('/workspace', 'daily', '1.0');
+add('/seo-dashboard', 'weekly', '0.8');
+add('/seo', 'daily', '0.95');
 add('/seo-tools', 'daily', '0.9');
 add('/tools', 'daily', '0.95');
 add('/pricing', 'weekly', '0.9');
