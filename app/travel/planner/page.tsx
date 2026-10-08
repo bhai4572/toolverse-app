@@ -93,7 +93,7 @@ export default function TravelPlannerPage() {
               className="w-full bg-slate-950 text-white font-bold px-3 py-2 rounded-xl border border-slate-700 text-xs"
             >
               {allCountries.map(c => (
-                <option key={c.iso2} value={c.iso2}>{c.flag} {c.name}</option>
+                <option key={c.iso2} value={c.iso2}>{c.flag} {c.name} ({c.iso2})</option>
               ))}
             </select>
           </div>
@@ -106,7 +106,7 @@ export default function TravelPlannerPage() {
               className="w-full bg-slate-950 text-white font-bold px-3 py-2 rounded-xl border border-slate-700 text-xs"
             >
               {allCountries.map(c => (
-                <option key={c.iso2} value={c.iso2}>{c.flag} {c.name}</option>
+                <option key={c.iso2} value={c.iso2}>{c.flag} {c.name} ({c.iso2})</option>
               ))}
             </select>
           </div>

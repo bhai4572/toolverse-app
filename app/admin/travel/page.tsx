@@ -104,7 +104,7 @@ export default function AdminTravelControlCenter() {
                     <span className="text-lg">{c.flag}</span>
                     <span>{c.name}</span>
                   </td>
-                  <td className="p-3 font-mono text-slate-400">{c.iso2} / {c.iso3}</td>
+                  <td className="p-3 font-mono text-xs text-slate-500">{c.iso2} / {c.iso3}</td>
                   <td className="p-3 text-slate-300">{c.capital}</td>
                   <td className="p-3 font-mono text-slate-300">{c.currency.code} ({c.currency.symbol})</td>
                   <td className="p-3">

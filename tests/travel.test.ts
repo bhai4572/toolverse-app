@@ -57,6 +57,18 @@ describe('Global Travel Intelligence Platform - Core Test Suite', () => {
       expect(de?.iso2).toBe('DE');
       expect(de?.capital).toBe('Berlin');
     });
+
+    it('should use real country names (no UN State 001 placeholders)', () => {
+      const countries = getAllCountries();
+      expect(countries.every((c) => !/^UN State \d{3}$/.test(c.name))).toBe(true);
+      expect(countries.every((c) => /^[A-Z]{2}$/.test(c.iso2))).toBe(true);
+      expect(getCountryByCodeOrName('IN')?.name).toBe('India');
+      expect(getCountryByCodeOrName('NG')?.name).toBe('Nigeria');
+      // Alphabetically sorted for dropdowns
+      for (let i = 1; i < countries.length; i++) {
+        expect(countries[i - 1].commonName.localeCompare(countries[i].commonName, 'en')).toBeLessThanOrEqual(0);
+      }
+    });
   });
 
   describe('2. Visa Engine & Nationality Matrix', () => {

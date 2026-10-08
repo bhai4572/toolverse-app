@@ -43,7 +43,7 @@ export default function DestinationsPage() {
               className="w-full bg-slate-900 text-slate-100 font-bold px-3 py-2 rounded-xl border border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
             >
               {allCountries.map(c => (
-                <option key={c.iso2} value={c.iso2}>{c.flag} {c.name}</option>
+                <option key={c.iso2} value={c.iso2}>{c.flag} {c.name} ({c.iso2})</option>
               ))}
             </select>
           </div>

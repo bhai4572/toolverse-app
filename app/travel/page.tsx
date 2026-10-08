@@ -48,7 +48,7 @@ export default function GlobalTravelPortalPage() {
             >
               {UN_COUNTRIES.map((c) => (
                 <option key={c.iso2} value={c.iso2}>
-                  {c.flagEmoji} {c.commonName} Passport
+                  {c.flagEmoji} {c.commonName} ({c.iso2})
                 </option>
               ))}
             </select>
@@ -66,7 +66,7 @@ export default function GlobalTravelPortalPage() {
             >
               {UN_COUNTRIES.map((c) => (
                 <option key={c.iso2} value={c.iso2}>
-                  {c.flagEmoji} {c.commonName} ({c.capital})
+                  {c.flagEmoji} {c.commonName} ({c.iso2})
                 </option>
               ))}
             </select>

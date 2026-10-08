@@ -76,7 +76,7 @@ export default function TravelRoutePage({ nationalityCode = 'PK', destinationCod
                   className="bg-slate-800 text-slate-100 font-bold px-3 py-1.5 rounded-lg border border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   {allCountries.map(c => (
-                    <option key={c.iso2} value={c.iso2}>{c.flag} {c.name}</option>
+                    <option key={c.iso2} value={c.iso2}>{c.flag} {c.name} ({c.iso2})</option>
                   ))}
                 </select>
               </div>
@@ -94,7 +94,7 @@ export default function TravelRoutePage({ nationalityCode = 'PK', destinationCod
                   className="bg-slate-800 text-slate-100 font-bold px-3 py-1.5 rounded-lg border border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   {allCountries.map(c => (
-                    <option key={c.iso2} value={c.iso2}>{c.flag} {c.name}</option>
+                    <option key={c.iso2} value={c.iso2}>{c.flag} {c.name} ({c.iso2})</option>
                   ))}
                 </select>
               </div>
