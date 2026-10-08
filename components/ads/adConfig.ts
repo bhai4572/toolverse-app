@@ -30,7 +30,7 @@ export interface BannerUnit {
   key: string;
   width: number;
   height: number;
-  /** Invoke script: bauval.org/22/{key}/invoke.js */
+  /** Official Adsterra Banner invoke host (bauval.org/22/{key}/invoke.js 404s) */
   invokeSrc: string;
 }
 
@@ -40,7 +40,8 @@ function banner(label: string, key: string, width: number, height: number): Bann
     key,
     width,
     height,
-    invokeSrc: `https://bauval.org/22/${key}/invoke.js`,
+    // Classic atOptions banners use highperformanceformat.com — not bauval.org /22/
+    invokeSrc: `https://www.highperformanceformat.com/${key}/invoke.js`,
   };
 }
 

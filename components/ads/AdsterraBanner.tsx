@@ -28,29 +28,12 @@ export function AdsterraBanner({ size, className = '' }: AdsterraBannerProps) {
 
     host.replaceChildren();
 
-    const iframe = document.createElement('iframe');
-    iframe.title = `Advertisement ${unit.label}`;
-    iframe.setAttribute('aria-label', 'Advertisement');
-    iframe.setAttribute('scrolling', 'no');
-    iframe.style.cssText = `border:0;margin:0;padding:0;overflow:hidden;display:block;width:${unit.width}px;height:${unit.height}px;max-width:100%;`;
-
-    host.appendChild(iframe);
-
-    const doc = iframe.contentDocument || iframe.contentWindow?.document;
-    if (!doc) return;
-
-    doc.open();
-    doc.write(
-      '<!DOCTYPE html><html><head><meta charset="utf-8">' +
-        '<style>html,body{margin:0;padding:0;overflow:hidden;background:transparent;}</style>' +
-        '</head><body></body></html>',
-    );
-    doc.close();
-
-    // Adsterra Banner — set atOptions then load invoke.js (exact network pattern)
-    const opts = doc.createElement('script');
-    opts.type = 'text/javascript';
-    opts.text = [
+    const srcdoc = [
+      '<!DOCTYPE html><html><head><meta charset="utf-8">',
+      '<meta name="viewport" content="width=device-width,initial-scale=1">',
+      '<style>html,body{margin:0;padding:0;overflow:hidden;background:transparent;}</style>',
+      '</head><body>',
+      '<script type="text/javascript">',
       'atOptions = {',
       `  'key': '${unit.key}',`,
       "  'format': 'iframe',",
@@ -58,13 +41,20 @@ export function AdsterraBanner({ size, className = '' }: AdsterraBannerProps) {
       `  'width': ${unit.width},`,
       "  'params': {}",
       '};',
+      '</script>',
+      `<script type="text/javascript" data-cfasync="false" src="${unit.invokeSrc}"><\/script>`,
+      '</body></html>',
     ].join('\n');
-    doc.body.appendChild(opts);
 
-    const invoke = doc.createElement('script');
-    invoke.type = 'text/javascript';
-    invoke.src = unit.invokeSrc;
-    doc.body.appendChild(invoke);
+    const iframe = document.createElement('iframe');
+    iframe.title = `Advertisement ${unit.label}`;
+    iframe.setAttribute('aria-label', 'Advertisement');
+    iframe.setAttribute('scrolling', 'no');
+    iframe.setAttribute('loading', 'eager');
+    iframe.style.cssText = `border:0;margin:0;padding:0;overflow:hidden;display:block;width:${unit.width}px;height:${unit.height}px;max-width:100%;background:transparent;`;
+    iframe.srcdoc = srcdoc;
+
+    host.appendChild(iframe);
 
     return () => {
       host.replaceChildren();
@@ -75,11 +65,17 @@ export function AdsterraBanner({ size, className = '' }: AdsterraBannerProps) {
 
   return (
     <div
-      className={`adsterra-banner flex justify-center overflow-hidden ${className}`}
+      className={`adsterra-banner flex justify-center items-center overflow-hidden bg-slate-100/60 dark:bg-slate-800/40 ${className}`}
       data-ad-label={unit.label}
       data-ad-size={size}
       ref={hostRef}
-      style={{ minHeight: unit.height }}
+      style={{
+        minWidth: Math.min(unit.width, 320),
+        width: '100%',
+        maxWidth: unit.width,
+        minHeight: unit.height,
+        height: unit.height,
+      }}
     />
   );
 }

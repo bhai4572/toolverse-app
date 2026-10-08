@@ -48,24 +48,23 @@ function resolveSize(props: AdSlotProps): BannerSize | 'native' {
 
 /**
  * Responsive visibility for WP-theme chassis:
- * - 728x90: md+
+ * - 728x90: md+ (~768)
  * - 320x50: mobile only
- * - 160x600: xl+
- * - 160x300: 2xl+ (≥1536)
- * - 468x60: sm–lg mid band only (optional; skipped on tool chrome)
+ * - 160x600 / 160x300: lg+ (~1024) — typical laptops, not only xl/2xl
+ * - 468x60: sm–md mid band only
  */
 function responsiveClass(size: BannerSize): string {
   switch (size) {
     case '160x600':
-      return 'hidden xl:flex';
+      return 'hidden lg:flex';
     case '160x300':
-      return 'hidden 2xl:flex';
+      return 'hidden lg:flex';
     case '728x90':
       return 'hidden md:flex';
     case '320x50':
       return 'flex md:hidden';
     case '468x60':
-      return 'hidden sm:flex lg:hidden';
+      return 'hidden sm:flex md:hidden';
     default:
       return 'flex';
   }

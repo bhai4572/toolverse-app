@@ -21,12 +21,12 @@ export function FooterAdBar() {
 
   return (
     <div
-      className="ad-footer my-6 flex flex-col items-center justify-center gap-2 min-h-[50px] md:min-h-[90px]"
+      className="ad-footer my-6 flex flex-col items-center justify-center gap-2 min-h-[50px] md:min-h-[90px] w-full"
       data-ad-region="footer"
       aria-label="Advertisement"
     >
-      <AdSlot slot="footer" slotId="footer-banner" bare className="my-0" />
-      <AdSlot slot="footer-mobile" bare className="my-0" />
+      <AdSlot slot="footer" slotId="footer-banner" bare className="my-0 max-w-[728px] w-full" />
+      <AdSlot slot="footer-mobile" bare className="my-0 max-w-[320px] w-full" />
     </div>
   );
 }
