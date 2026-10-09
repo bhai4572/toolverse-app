@@ -9,6 +9,7 @@ import { getComparisonBySlug } from '@/lib/products/comparisonsRegistry';
 import { getQuestionBySlug, QUESTIONS } from '@/lib/products/questionsRegistry';
 import { getCollectionBySlug, COLLECTIONS } from '@/lib/products/collectionsRegistry';
 import { evaluateProductPageQuality, getRobotsDirective } from '@/lib/products/seoQualityEngine';
+import { getStudyDestination } from '@/lib/study/destinations';
 
 export interface PageMetadata {
   title: string;
@@ -1438,9 +1439,17 @@ export function getMetadataForPath(pathname: string): PageMetadata {
       crumb: 'Pricing',
     },
     study: {
-      title: 'Study Abroad — Visa Routes & Destinations | ToolVerse',
-      description: 'Study-abroad hub with destination visa routes, embassies, and related application tools. University dataset coming.',
-      keywords: ['study abroad', 'student visa', 'study in uk canada australia'],
+      title: 'Study Abroad — USA, UK, Canada, Australia, NZ & Europe | ToolVerse',
+      description:
+        'Study-abroad hub: how admissions, documents, fee bands, and student visas work for USA, UK, Canada, Australia, New Zealand, and Europe — plus free application tools. Official portals linked; no fake rankings DB.',
+      keywords: [
+        'study abroad',
+        'study in usa',
+        'study in uk',
+        'study in canada',
+        'study in australia',
+        'student visa documents',
+      ],
       crumb: 'Study Abroad',
     },
     immigration: {
@@ -1512,6 +1521,52 @@ export function getMetadataForPath(pathname: string): PageMetadata {
         ]),
       ]),
     };
+  }
+
+  // Study destination guides: /study/{slug}
+  if (parts[0] === 'study' && parts[1] && parts.length === 2) {
+    const dest = getStudyDestination(parts[1]);
+    if (dest) {
+      const canonicalUrl = `${baseUrl}/study/${dest.slug}`;
+      const faqId = `${canonicalUrl}#faq`;
+      return {
+        title: dest.title,
+        description: dest.description,
+        keywords: dest.keywords,
+        canonicalUrl,
+        ogType: 'article',
+        ogImage: DEFAULT_OG_IMAGE,
+        jsonLd: wrapInGraph([
+          buildOrganizationNode(),
+          buildWebSiteNode(),
+          buildWebPageNode({
+            canonicalUrl,
+            name: dest.title,
+            description: dest.description,
+            type: 'WebPage',
+            hasBreadcrumbs: true,
+            mainEntityId: faqId,
+          }),
+          buildBreadcrumbNode(canonicalUrl, [
+            { name: 'Home', url: `${baseUrl}/` },
+            { name: 'Study Abroad', url: `${baseUrl}/study` },
+            { name: dest.name, url: canonicalUrl },
+          ]),
+          {
+            '@type': 'FAQPage',
+            '@id': faqId,
+            mainEntity: dest.faqs.map((f) => ({
+              '@type': 'Question',
+              name: f.question,
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: f.answer,
+              },
+            })),
+          },
+        ]),
+      };
+    }
   }
 
   // 7. Fallback / Default

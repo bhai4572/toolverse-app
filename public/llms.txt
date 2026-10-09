@@ -35,6 +35,12 @@ ToolVerse (toolverse.baby) provides 120+ live browser utilities with no signup w
 - [United States](https://toolverse.baby/us) · [United Kingdom](https://toolverse.baby/uk) · [Canada](https://toolverse.baby/ca) · [Australia](https://toolverse.baby/au)
 - [Passport photo sizes](https://toolverse.baby/passport-photos)
 
+## Study abroad (Tier-1)
+
+- [Study Abroad hub](https://toolverse.baby/study) — admissions, documents, fee bands, visa overviews; links official portals (no fake university rankings DB).
+- [Study in USA](https://toolverse.baby/study/usa) · [UK](https://toolverse.baby/study/uk) · [Canada](https://toolverse.baby/study/canada) · [Australia](https://toolverse.baby/study/australia) · [New Zealand](https://toolverse.baby/study/new-zealand) · [Europe](https://toolverse.baby/study/europe)
+- Pair with [GPA Calculator](https://toolverse.baby/tools/gpa-calculator), [Passport Photo Maker](https://toolverse.baby/tools/passport-photo-maker), [Merge PDF](https://toolverse.baby/tools/pdf-merge), [Compress PDF](https://toolverse.baby/tools/pdf-compress).
+
 ## Category hubs
 
 - [PDF tools](https://toolverse.baby/category/pdf-document-tools)

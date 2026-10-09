@@ -190,6 +190,9 @@ add('/seo-tools', 'daily', '0.9');
 add('/tools', 'daily', '0.95');
 add('/pricing', 'weekly', '0.9');
 add('/study', 'daily', '0.9');
+for (const s of ['usa', 'uk', 'canada', 'australia', 'new-zealand', 'europe']) {
+  add(`/study/${s}`, 'weekly', '0.88');
+}
 add('/immigration', 'daily', '0.9');
 add('/us', 'weekly', '0.85');
 add('/uk', 'weekly', '0.85');

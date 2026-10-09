@@ -1,6 +1,6 @@
 # ToolVerse SEO / AEO / GEO Backlog
 
-Last updated: 2026-10-09 (Western markets wave 11 + sitewide SEO polish). White-hat only. Do not invent rankings or traffic claims.
+Last updated: 2026-10-10 (Study abroad Tier-1 guides + Western markets wave 11). White-hat only. Do not invent rankings or traffic claims.
 
 **Workspace lock policy:** SEO Dashboard modules that are not real user-data / fetch / paste analysis stay `status: 'locked'` in `seoNavConfig` (Coming soon panel). Unlock only when real integration is ready — never ship fake Semrush market graphs.
 
@@ -14,12 +14,20 @@ Last updated: 2026-10-09 (Western markets wave 11 + sitewide SEO polish). White-
 | Guides | Pillars + auto `how-to-{slug}` for live tools (incl. new Western tools) |
 | Monetization & Ads | Sticky sidebar ads + in-article ad units inserted across all tools |
 | Blog hub | Category filters + pagination (12/page) |
-| Internal links | Blog↔tool bidirectional; regional hubs `/us` `/uk` `/ca` `/au` + passport hub |
-| Prerender / CF middleware | Live (`x-toolverse-shell`) — hubs + new tools in prerender/sitemap |
+| Internal links | Blog↔tool bidirectional; regional hubs `/us` `/uk` `/ca` `/au` + passport hub + study destinations |
+| Study abroad Tier-1 | **Live:** `/study` + `/study/{usa,uk,canada,australia,new-zealand,europe}` — admissions/docs/fees/visa AEO; official portals only (no fake uni DB) |
+| Prerender / CF middleware | Live (`x-toolverse-shell`) — hubs + study guides + tools in prerender/sitemap |
 | AEO homepage FAQ + entity | Done; hubs answer-first intros strengthened |
 | `llms.txt` / sitemap / robots | Wave 11: regenerate via `npm run sitemap` on build |
 | E-E-A-T legal pages | Done |
 | Semrush / Ahrefs | **Aimed for strong audit** after crawl reindex — no #1 / perfect-score claims |
+
+## Done — wave 12 (Study abroad Tier-1 content)
+
+- **Guides:** `/study/usa`, `/study/uk`, `/study/canada`, `/study/australia`, `/study/new-zealand`, `/study/europe`
+- **Pattern:** answer-first overview, admission pathways, documents checklist, honest fee bands + year disclaimer, visa overview → official gov links, popular fields, visible FAQs + FAQPage schema, BreadcrumbList, internal links to GPA/passport/PDF tools + travel/immigration
+- **Explicit non-goal:** no scraped 20k university rankings DB; link Common App / UCAS / IRCC / Home Affairs / Study Australia / Immigration NZ / Study in Europe instead
+- Hub `/study` + homepage Study path blurb updated; sitemap + prerender + `llms.txt` include new URLs
 
 ## Done — wave 11 (Western markets + technical SEO polish)
 

@@ -39,6 +39,10 @@
 
 **Bottom line:** Double down on Western **evergreen utility clusters** with localized hubs; avoid thin AI blog farms and fake-data SEO toys.
 
+### Study-abroad content (shipped 2026-10-10)
+
+Informational intent (“study in USA/UK/Canada… admission documents fees visa”) is a Tier-1 traffic lane that often goes to AI chat unless sites publish answer-first pages. ToolVerse now covers `/study/{usa,uk,canada,australia,new-zealand,europe}` with how-admissions-work copy + official portals — **not** a fake university rankings DB. Pair with existing tools (passport photo, PDF merge/compress, GPA) for conversion. Treat fee ranges as planning bands with disclaimers; do not claim migration outcomes.
+
 ---
 
 ## 2. Top opportunities by region

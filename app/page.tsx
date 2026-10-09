@@ -28,7 +28,7 @@ const PATHS = [
   {
     href: '/study',
     title: 'Study Abroad',
-    blurb: 'Study-visa routes and destination paths.',
+    blurb: 'USA, UK, Canada, AU, NZ & Europe — admissions, docs, fees.',
     icon: GraduationCap,
   },
   {

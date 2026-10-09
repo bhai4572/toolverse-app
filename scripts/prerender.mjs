@@ -735,6 +735,9 @@ async function main() {
     routes.push('/tools');
     routes.push('/pricing');
     routes.push('/study');
+    for (const s of ['usa', 'uk', 'canada', 'australia', 'new-zealand', 'europe']) {
+      routes.push(`/study/${s}`);
+    }
     routes.push('/immigration');
     routes.push('/us');
     routes.push('/uk');

@@ -56,6 +56,7 @@ import SeoWorkspacePage from '../app/workspace/page';
 import ToolsHubPage from '../app/tools/page';
 import PricingPage from '../app/pricing/page';
 import StudyAbroadPage from '../app/study/page';
+import StudyCountryPage from '../app/study/[slug]/page';
 import ImmigrationPage from '../app/immigration/page';
 import DashboardPage from '../app/dashboard/page';
 import UsHubPage from '../app/us/page';
@@ -206,6 +207,9 @@ export default function App() {
     }
 
     if (parts[0] === 'study') {
+      if (parts[1]) {
+        return <StudyCountryPage params={{ slug: parts[1] }} />;
+      }
       return <StudyAbroadPage />;
     }
 
