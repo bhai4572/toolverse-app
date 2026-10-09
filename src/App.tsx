@@ -5,6 +5,7 @@ import CategoryPage from '../app/category/[slug]/page';
 import LegalPage from '../app/legal/[slug]/page';
 import BlogHubPage from '../app/blog/page';
 import BlogPostPage from '../app/blog/[slug]/page';
+import BlogTopicsPage from '../app/blog/topics/page';
 import JobCategoryPage from '../app/jobs/[slug]/page';
 import ProductDiscoveryHubPage from '../app/products/page';
 import ProductProfilePage from '../app/products/[slug]/page';
@@ -306,6 +307,9 @@ export default function App() {
     }
 
     if (parts[0] === 'blog') {
+      if (parts[1] === 'topics') {
+        return <BlogTopicsPage />;
+      }
       if (parts[1]) {
         return <BlogPostPage params={{ slug: parts[1] }} />;
       }

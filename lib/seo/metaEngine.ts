@@ -1130,8 +1130,41 @@ export function getMetadataForPath(pathname: string): PageMetadata {
     }
   }
 
-  // 4. Blog Posts & Blog Index (/blog and /blog/[slug])
+  // 4. Blog Posts & Blog Index (/blog, /blog/topics, /blog/[slug])
   if (parts[0] === 'blog') {
+    if (parts[1] === 'topics') {
+      const canonicalUrl = `${baseUrl}/blog/topics`;
+      const title = 'US Interest Topics → Free Tools — ToolVerse Blog';
+      const description =
+        'Evergreen ToolVerse guides mapped to US interest themes — gaming launches, concerts, deal events, paychecks, and creator sizes — each linked to free PDF, QR, and calculator tools.';
+      const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+        { name: 'Home', url: `${baseUrl}/` },
+        { name: 'Guides & Blog', url: `${baseUrl}/blog` },
+        { name: 'Topics', url: canonicalUrl },
+      ]);
+      const pageNode = buildWebPageNode({
+        canonicalUrl,
+        name: title,
+        description,
+        type: 'CollectionPage',
+        hasBreadcrumbs: true,
+      });
+      return {
+        title,
+        description,
+        keywords: [
+          'toolverse blog topics',
+          'gta 6 prep tools',
+          'concert ticket pdf tips',
+          'us paycheck calculator guide',
+        ],
+        canonicalUrl,
+        ogType: 'website',
+        ogImage: DEFAULT_OG_IMAGE,
+        jsonLd: wrapInGraph([buildOrganizationNode(), buildWebSiteNode(), pageNode, breadcrumbs]),
+      };
+    }
+
     if (parts[1]) {
       const post = getBlogPostBySlug(parts[1]);
       if (post) {

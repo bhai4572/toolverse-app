@@ -54,10 +54,14 @@ function liveToolSlugs(toolsSrc) {
 
 const registry = fs.readFileSync(path.join(root, 'lib/tools/registry.ts'), 'utf8');
 const posts = fs.readFileSync(path.join(root, 'lib/blog/posts.ts'), 'utf8');
+const trendPosts = fs.readFileSync(path.join(root, 'lib/blog/usTrendPosts.ts'), 'utf8');
 
 const categories = slugs(section(registry, 'export const CATEGORIES', 'export const TOOLS'));
 const tools = liveToolSlugs(section(registry, 'export const TOOLS'));
-const pillarBlog = slugs(section(posts, 'const PILLAR_POSTS', 'export const BLOG_POSTS'));
+const pillarBlog = [
+  ...slugs(section(posts, 'const PILLAR_POSTS', 'export const BLOG_POSTS')),
+  ...slugs(section(trendPosts, 'export const US_TREND_POSTS')),
+];
 
 const blogSet = new Set(pillarBlog);
 for (const toolSlug of tools) {
@@ -73,6 +77,7 @@ add('/', 'daily', '1.0');
 for (const c of categories) add(`/category/${c}`, 'weekly', '0.8');
 for (const t of tools) add(`/tools/${t}`, 'weekly', '0.7');
 add('/blog', 'daily', '0.8');
+add('/blog/topics', 'weekly', '0.78');
 for (const p of blog) add(`/blog/${p}`, 'weekly', '0.75');
 
 for (const j of [

@@ -125,6 +125,10 @@ export default function BlogHubPage() {
         <p className="text-sm text-slate-500">
           {BLOG_POSTS.length} articles · {pillars.length} pillar guides · {BLOG_POSTS.length - pillars.length} tool
           how-tos
+          {' · '}
+          <a href="/blog/topics" className="text-indigo-600 dark:text-indigo-400 font-medium hover:underline">
+            US topic clusters
+          </a>
         </p>
       </header>
 

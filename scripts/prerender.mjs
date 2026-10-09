@@ -312,6 +312,23 @@ function buildBodyMain(pathname, meta, deps) {
         </section>
       </article>
     `;
+  } else if (parts[0] === 'blog' && parts[1] === 'topics') {
+    contentHtml = `
+      <div class="space-y-6 max-w-4xl mx-auto">
+        <nav aria-label="Breadcrumb" class="text-xs text-slate-500 space-x-2">
+          <a href="/" class="hover:underline">Home</a> &gt;
+          <a href="/blog" class="hover:underline">Blog</a> &gt;
+          <span class="text-slate-800 font-semibold">Topics</span>
+        </nav>
+        <header class="space-y-3">
+          <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900">US Interest Topics → Free Tools</h1>
+          <p class="text-lg text-slate-600 leading-relaxed">
+            Evergreen how-to, money, and privacy guides mapped to gaming launches, concerts, deal events, and paychecks — each linked to ToolVerse utilities.
+          </p>
+        </header>
+        <p class="text-sm text-slate-500"><a href="/blog" class="text-indigo-600 hover:underline">Browse all guides</a></p>
+      </div>
+    `;
   } else if (parts[0] === 'blog' && parts[1]) {
     // Blog Post
     const post = getBlogPostBySlug(parts[1]);
@@ -644,6 +661,7 @@ async function main() {
     }
     for (const c of CATEGORIES) routes.push(`/category/${c.slug}`);
     routes.push('/blog');
+    routes.push('/blog/topics');
     for (const p of BLOG_POSTS) routes.push(`/blog/${p.slug}`);
     for (const l of LEGAL_SLUGS) routes.push(`/legal/${l}`);
     for (const j of JOB_SLUGS) routes.push(`/jobs/${j}`);

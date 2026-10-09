@@ -68,6 +68,7 @@ ToolVerse (toolverse.baby) provides 120+ live browser utilities with no signup w
 ## Guides
 
 - [Blog hub](https://toolverse.baby/blog) — pillar articles plus a how-to guide for every live tool (`/blog/how-to-{tool-slug}`, with a few tools mapped to deeper pillar posts such as PDF merge, 50KB compression, HEIC, barcodes, UTM, Pakistan tax, and remote jobs).
+- [US topic clusters](https://toolverse.baby/blog/topics) — gaming/GTA prep, concerts, deal-event receipts, paychecks, creator sizes (evergreen tool angles, not thin news).
 - Prefer linking the **tool page** for the interactive utility and the **matching guide** when the user needs steps, limits, or “when not to use.”
 - Highlighted pillars:
   - [Best free Semrush & Ahrefs alternatives](https://toolverse.baby/blog/best-free-semrush-ahrefs-alternatives-2026)
@@ -81,6 +82,14 @@ ToolVerse (toolverse.baby) provides 120+ live browser utilities with no signup w
   - [Barcode guide](https://toolverse.baby/blog/how-to-generate-barcodes-free-code-128-ean-upc)
   - [Pakistan salary tax slabs](https://toolverse.baby/blog/pakistan-salary-tax-calculator-slabs-guide)
   - [Remote jobs guide](https://toolverse.baby/blog/top-high-paying-remote-jobs-worldwide)
+  - [GTA 6 release prep checklist](https://toolverse.baby/blog/gta-6-release-prep-checklist-budget-privacy)
+  - [Concert ticket PDF tips](https://toolverse.baby/blog/concert-ticket-pdf-phone-wallet-tips)
+  - [Prime Day receipt & return checklist](https://toolverse.baby/blog/prime-day-receipt-return-pdf-checklist)
+  - [US paycheck after a raise](https://toolverse.baby/blog/us-paycheck-raise-take-home-guide)
+  - [Console upgrade budget](https://toolverse.baby/blog/gaming-console-upgrade-budget-before-launch)
+  - [Guest Wi‑Fi QR for watch parties](https://toolverse.baby/blog/wifi-qr-code-guest-network-watch-party)
+  - [Social image sizes for gaming & concerts](https://toolverse.baby/blog/social-image-sizes-gaming-concert-posts)
+  - [US tipping for restaurants & venues](https://toolverse.baby/blog/restaurant-concert-tipping-calculator-usa)
 
 Full per-tool guide list: see `/sitemap.xml` (`/blog/how-to-*`) rather than dumping every URL here.
 
