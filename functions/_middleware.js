@@ -9,6 +9,17 @@ export async function onRequest(context) {
     pathname = pathname.slice(0, -1);
   }
 
+  // SEO / text assets must stay static (also excluded in public/_routes.json).
+  // Never HTML-fallback these even if _routes include accidentally matches.
+  if (
+    pathname === '/sitemap.xml' ||
+    pathname === '/robots.txt' ||
+    pathname === '/llms.txt' ||
+    pathname === '/ads.txt'
+  ) {
+    return context.next();
+  }
+
   // Real static assets (js/css/img/xml) — do not HTML-fallback
   if (/\.[a-zA-Z0-9]{1,8}$/.test(pathname) && !pathname.endsWith('.html')) {
     return context.next();

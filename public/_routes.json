@@ -8,9 +8,12 @@
     "/robots.txt",
     "/sitemap.xml",
     "/llms.txt",
+    "/ads.txt",
     "/*.js",
     "/*.css",
     "/*.map",
-    "/*.woff2"
+    "/*.woff2",
+    "/*.xml",
+    "/*.txt"
   ]
 }

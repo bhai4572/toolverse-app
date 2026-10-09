@@ -1,4 +1,4 @@
-# Cloudflare Pages Redirects
-# Static assets in dist/ (written by scripts/prerender.mjs) are served directly by Cloudflare Pages.
-# Dynamic client SPA fallback:
-/*  /index.html  200
+# Cloudflare Pages evaluates _redirects BEFORE static assets.
+# Do NOT use "/* /index.html 200" here — it can overwrite sitemap.xml,
+# robots.txt, and prerendered dist/*/index.html shells.
+# SPA fallback lives in functions/_middleware.js (ASSETS first, then index.html).
