@@ -7,6 +7,16 @@ Allow: /blog/
 Allow: /jobs/
 Allow: /legal/
 Disallow: /scratch/
+Disallow: /workspace
+Disallow: /workspace/
+Disallow: /seo-dashboard
+Disallow: /seo-dashboard/
+Disallow: /dashboard
+Disallow: /dashboard/
+Disallow: /admin
+Disallow: /admin/
+Disallow: /business/dashboard
+Disallow: /business/dashboard/
 
 # Training scrapers (disallow). Answer-engine fetchers allowed below for AEO/GEO citations.
 User-agent: GPTBot

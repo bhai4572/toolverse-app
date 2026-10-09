@@ -137,30 +137,25 @@ add('/badges', 'monthly', '0.6');
 add('/claim', 'monthly', '0.6');
 
 // Global Business Discovery & Identity System Routes
+// Keep in sync with lib/business/registry.ts INITIAL_BUSINESSES
 add('/business', 'daily', '0.9');
-for (const biz of ['ali-barber-studio', 'apex-digital-marketing', 'blue-sky-dentistry', 'nexus-saas-labs']) {
+for (const biz of ['ali-barber-studio', 'apex-digital-marketing', 'artisan-coffee-roasters']) {
   add(`/business/${biz}`, 'daily', '0.8');
 }
-for (const bId of ['TV-BIZ-8F4K2P', 'TV-BIZ-99X2M1', 'TV-BIZ-33K7L9', 'TV-BIZ-77P4R2']) {
+for (const bId of ['TV-BIZ-8F4K2P', 'TV-BIZ-3M9Q7L', 'TV-BIZ-9X2V4W']) {
   add(`/b/${bId}`, 'weekly', '0.7');
 }
 add('/business/register', 'monthly', '0.7');
 add('/business/bidding', 'weekly', '0.8');
 add('/business-qr', 'monthly', '0.7');
 
-// How-To Knowledge Base
+// How-To Knowledge Base — keep in sync with app/how-to/page.tsx HOW_TO_GUIDES
 add('/how-to', 'weekly', '0.85');
 for (const ht of [
   'how-to-create-a-business-profile',
-  'how-to-verify-your-business',
-  'how-to-get-a-toolverse-business-id',
-  'how-to-generate-a-business-qr-code',
-  'how-to-print-your-toolverse-qr',
-  'how-to-collect-honest-customer-reviews',
+  'how-to-generate-and-print-business-qr',
   'how-business-rankings-work',
-  'how-sponsored-ranking-works',
-  'how-to-claim-a-business',
-  'how-to-report-a-fake-business',
+  'how-to-verify-business-ownership',
 ]) {
   add(`/how-to/${ht}`, 'weekly', '0.8');
 }
@@ -172,7 +167,7 @@ add('/travel/embassies', 'daily', '0.9');
 add('/travel/destinations', 'daily', '0.9');
 add('/travel/jobs', 'daily', '0.9');
 add('/travel/planner', 'daily', '0.9');
-add('/admin/travel', 'monthly', '0.5');
+add('/travel/route', 'daily', '0.9');
 
 // Startup Launch & Discovery Platform Routes
 add('/startups', 'daily', '1.0');
@@ -189,9 +184,7 @@ for (const p of ['tech-vision-journal', 'startup-builder-daily', 'seo-growth-dig
   add(`/publishers/${p}`, 'daily', '0.9');
 }
 
-// SEO Tools & Dashboard Routes
-add('/workspace', 'daily', '1.0');
-add('/seo-dashboard', 'weekly', '0.8');
+// Public product / SEO hubs (exclude /workspace /dashboard /admin*)
 add('/seo', 'daily', '0.95');
 add('/seo-tools', 'daily', '0.9');
 add('/tools', 'daily', '0.95');
@@ -203,7 +196,6 @@ add('/uk', 'weekly', '0.85');
 add('/ca', 'weekly', '0.85');
 add('/au', 'weekly', '0.85');
 add('/passport-photos', 'weekly', '0.85');
-add('/dashboard', 'monthly', '0.5');
 
 const lines = [
   '<?xml version="1.0" encoding="UTF-8"?>',
