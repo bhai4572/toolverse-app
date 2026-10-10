@@ -7,6 +7,7 @@ import {
   calculateProfitMargin,
   calculateEmi,
 } from '../lib/calculators/engine';
+import { calculateCarLoan, calculateFuelTripCost } from '../lib/calculators/cars';
 import { analyzeText, convertTextCase, removeDuplicateLines } from '../lib/text/engine';
 import { calculatePakistanSalaryTax, calculateZakat } from '../lib/country/taxEngine';
 import { validateDestinationUrl, generateRandomAlias } from '../lib/url-shortener/client';
@@ -39,6 +40,30 @@ describe('Calculator Engine Tests', () => {
     const res = calculateEmi(100000, 10, 12);
     expect(res.monthlyEmi).toBeGreaterThan(8000);
     expect(res.schedule.length).toBe(12);
+  });
+
+  it('calculates car loan payment', () => {
+    const res = calculateCarLoan({
+      price: 20000,
+      downPayment: 2000,
+      tradeIn: 0,
+      annualRatePct: 6,
+      termMonths: 60,
+      salesTaxPct: 0,
+      fees: 0,
+    });
+    expect(res.amountFinanced).toBe(18000);
+    expect(res.monthlyEmi).toBeGreaterThan(300);
+    expect(res.schedule.length).toBe(60);
+  });
+
+  it('calculates fuel trip cost in mpg and l100km', () => {
+    const us = calculateFuelTripCost({ distance: 280, economy: 28, unit: 'mpg', pricePerUnit: 3.5 });
+    expect(us.fuelNeeded).toBe(10);
+    expect(us.tripCost).toBe(35);
+    const metric = calculateFuelTripCost({ distance: 100, economy: 8, unit: 'l100km', pricePerUnit: 1.5 });
+    expect(metric.fuelNeeded).toBe(8);
+    expect(metric.tripCost).toBe(12);
   });
 });
 

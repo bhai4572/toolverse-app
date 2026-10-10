@@ -10,6 +10,7 @@ import { getQuestionBySlug, QUESTIONS } from '@/lib/products/questionsRegistry';
 import { getCollectionBySlug, COLLECTIONS } from '@/lib/products/collectionsRegistry';
 import { evaluateProductPageQuality, getRobotsDirective } from '@/lib/products/seoQualityEngine';
 import { getStudyDestination } from '@/lib/study/destinations';
+import { CARS_DISCLAIMER, CARS_FAQS } from '@/lib/cars/data';
 
 export interface PageMetadata {
   title: string;
@@ -1666,6 +1667,57 @@ export function getMetadataForPath(pathname: string): PageMetadata {
         ]),
       };
     }
+  }
+
+  // Cars hub with FAQ schema
+  if (parts[0] === 'cars' && parts.length === 1) {
+    const canonicalUrl = `${baseUrl}/cars`;
+    const faqId = `${canonicalUrl}#faq`;
+    const title = 'Cars Hub — Loan, Fuel, Insurance Ranges & Checklists | ToolVerse';
+    const description =
+      'Car cost planning hub: loan & fuel calculators, US/UK/CA insurance and registration bands, EV vs gas ranges, buying docs, maintenance basics, and official NHTSA/GOV.UK links. No fake inventory.';
+    return {
+      title,
+      description,
+      keywords: [
+        'car loan calculator',
+        'fuel cost calculator',
+        'car insurance cost estimate',
+        'used car checklist',
+        'ev vs gas cost',
+      ],
+      canonicalUrl,
+      ogType: 'website',
+      ogImage: DEFAULT_OG_IMAGE,
+      jsonLd: wrapInGraph([
+        buildOrganizationNode(),
+        buildWebSiteNode(),
+        buildWebPageNode({
+          canonicalUrl,
+          name: title,
+          description: `${description} ${CARS_DISCLAIMER}`,
+          type: 'CollectionPage',
+          hasBreadcrumbs: true,
+          mainEntityId: faqId,
+        }),
+        buildBreadcrumbNode(canonicalUrl, [
+          { name: 'Home', url: `${baseUrl}/` },
+          { name: 'Cars', url: canonicalUrl },
+        ]),
+        {
+          '@type': 'FAQPage',
+          '@id': faqId,
+          mainEntity: CARS_FAQS.map((f) => ({
+            '@type': 'Question',
+            name: f.question,
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: f.answer,
+            },
+          })),
+        },
+      ]),
+    };
   }
 
   // 7. Fallback / Default

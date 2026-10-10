@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Search, ArrowRight, Wrench, Globe2, GraduationCap, Landmark, ShieldCheck, Zap, Briefcase } from 'lucide-react';
+import { Search, ArrowRight, Wrench, Globe2, GraduationCap, Landmark, ShieldCheck, Zap, Briefcase, Car } from 'lucide-react';
 import { TOOLS, CATEGORIES, getPopularTools, searchTools } from '@/lib/tools/registry';
 import { AdSlot } from '@/components/ads/AdSlot';
 
@@ -37,6 +37,12 @@ const PATHS = [
     blurb: 'Work visas, embassies, jobs abroad.',
     icon: Landmark,
   },
+  {
+    href: '/cars',
+    title: 'Cars',
+    blurb: 'Loan, fuel, insurance bands & checklists.',
+    icon: Car,
+  },
 ] as const;
 
 export default function HomePage() {
@@ -64,10 +70,10 @@ export default function HomePage() {
             Tool<span className="text-brand-400">Verse</span>
           </p>
           <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-[1.1]">
-            Free tools. Global Job Finder. Clear paths.
+            Free tools that stay on your device.
           </h1>
           <p className="text-slate-300 text-sm sm:text-base max-w-xl leading-relaxed">
-            ToolVerse is a privacy-first free online tools site: compress and merge PDFs, image utilities, Western tax/pay estimators, writing helpers, a Global Job Finder for remote and local roles, and a Semrush-style SEO Dashboard. Start with Jobs, Tools, SEO Dashboard, Study, or Immigration.
+            Merge a PDF, resize a photo, or run paycheck math without creating an account. Most file tools process in your browser. From here: Job Finder, the tools hub, SEO Dashboard, Study Abroad, or the Cars cost hub.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link
@@ -171,7 +177,7 @@ export default function HomePage() {
         <h2 id="paths-heading" className="text-xl font-bold text-slate-900 dark:text-white">
           Where do you want to go?
         </h2>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {PATHS.map((p) => (
             <Link
               key={p.href}

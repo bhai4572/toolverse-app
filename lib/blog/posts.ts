@@ -2,11 +2,13 @@ import type { BlogPost } from './types';
 import { generateToolGuidePosts, getGuideSlugForTool } from './toolGuides';
 import { getToolsByCategory } from '@/lib/tools/registry';
 import { US_TREND_POSTS } from './usTrendPosts';
+import { CARS_BLOG_POSTS } from './carsPosts';
 
 export type { BlogPost } from './types';
 export { BLOG_HUB_CATEGORIES } from './types';
 export { getGuideSlugForTool, PILLAR_GUIDE_BY_TOOL, toolHasPillarGuide } from './toolGuides';
 export { BLOG_TOPIC_CLUSTERS, US_TREND_POSTS } from './usTrendPosts';
+export { CARS_BLOG_POSTS } from './carsPosts';
 
 /** Hand-written pillar / cluster posts (unique research angles). */
 const PILLAR_POSTS: BlogPost[] = [
@@ -1139,6 +1141,7 @@ To receive exactly $3,000 net, you should have invoiced **$3,141.56**. Use the [
     `
   },
   ...US_TREND_POSTS,
+  ...CARS_BLOG_POSTS,
 ];
 
 /** Pillar posts + one how-to guide per live tool (minus tools already covered by pillars). */

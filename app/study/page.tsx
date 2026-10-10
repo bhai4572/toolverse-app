@@ -22,7 +22,7 @@ export default function StudyAbroadPage() {
           Study abroad by destination
         </h1>
         <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-          Answer-first guides for how admissions, documents, fee bands, and student visas work in Tier-1 markets — with links to official portals (UCAS, Common App, IRCC, Home Office, and more). We do not invent a 20,000-school rankings database; verify tuition and visa rules on government and university sites.
+          Straight talk on admissions, documents, fee bands, and student visas for the destinations people actually ask about — with links to UCAS, Common App, IRCC, Home Office, and the rest. We are not building a fake 20,000-school rankings DB. Check tuition and visa rules on the official sites before you pay anyone.
         </p>
       </header>
 

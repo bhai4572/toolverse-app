@@ -71,21 +71,21 @@ export const STUDY_DESTINATIONS: Record<StudySlug, StudyDestination> = {
       'common app',
     ],
     answerFirst:
-      'Studying in the USA usually means applying directly to universities (often via Common App for undergrad), receiving an I-20, paying the SEVIS fee, then applying for an F-1 student visa. Tuition for international students commonly runs from roughly $25,000–$55,000+ USD per year at many public/private institutions, with living costs often $12,000–$25,000+ depending on city — always verify on the school and Study in the States / EducationUSA pages.',
+      'Here is the short version: you apply to schools (often Common App for undergrad), get an I-20, pay SEVIS, then sit the F-1 visa process. International tuition at many places lands around $25k–$55k+ USD a year; living costs often $12k–$25k+ depending on the city. Treat those as planning bands — the school’s page and EducationUSA / Study in the States are the real source.',
     overview:
-      'The US higher-education system is decentralized: each university sets its own admissions, deadlines, and fees. There is no single national “ranking list” you must follow. Strong applications combine academic records, English proof (when required), essays/recommendations, and clear funding evidence for the visa interview. Community colleges, state universities, and private research universities are different institution types — compare programs and costs on official school sites, not third-party league tables alone.',
+      'There is no single “apply to America” portal. Each campus sets deadlines, essays, and fees. That freestyle setup is liberating and annoying at once. Build a shortlist from programs you can actually fund, then compare community colleges, state universities, and private research schools on official sites — not a random ranking screenshot alone. Strong files usually mix grades, English proof when required, essays/recommendations, and funding evidence the consular officer can follow.',
     pathways: [
       {
         title: 'Undergraduate (bachelor’s)',
-        body: 'Many students apply through the Common Application or school-specific portals for first-year or transfer entry. Typical pieces: secondary transcripts, English test (TOEFL/IELTS/Duolingo if required), personal essay, recommendations, and sometimes SAT/ACT (often optional — check each school). Deadlines often fall months before the start term.',
+        body: 'Common App covers a huge chunk of undergrad; some schools still want their own portal. Expect transcripts, an essay, recommendations, and English scores if the school asks. SAT/ACT is often optional now — read the page for your term, not a friend’s rumor from 2019. Deadlines sneak up months before classes start.',
       },
       {
         title: 'Graduate (master’s / PhD)',
-        body: 'Apply via each university’s graduate portal. Expect transcripts, statement of purpose, CV, recommendations, and program-specific tests (GRE/GMAT) only when listed. Funding (assistantships, scholarships) is competitive and program-dependent — never assume a stipend.',
+        body: 'One portal per university. SOP, CV, transcripts, recommenders, and GRE/GMAT only when listed. Assistantships are nice when they exist; never budget as if a stipend is guaranteed.',
       },
       {
         title: 'Pathway / English / community college',
-        body: 'Some students start at a community college or English pathway, then transfer. Confirm transfer articulation and visa status continuity with the school’s international office before you rely on this route.',
+        body: 'A cheaper on-ramp for some students — then transfer. Get transfer articulations and visa continuity in writing from the international office before you wire a deposit.',
       },
     ],
     documents: [
@@ -170,21 +170,21 @@ export const STUDY_DESTINATIONS: Record<StudySlug, StudyDestination> = {
       'study in england scotland',
     ],
     answerFirst:
-      'Undergraduate entry to most UK universities goes through UCAS; master’s/PhD applications usually go to each university. After an unconditional offer and CAS, most international students apply for a UK Student visa on GOV.UK. International tuition often falls roughly £12,000–£38,000+ per year (medicine and London often higher), with living costs commonly £9,000–£15,000+ outside vs inside London — verify on UCAS, the university, and GOV.UK.',
+      'Undergrad? Usually UCAS. Master’s/PhD? Usually the university’s own form. Once you have an unconditional offer and a CAS, the Student visa lives on GOV.UK. Many international fees sit around £12k–£38k+ a year (medicine and central London climb fast); living costs often £9k–£15k+ outside vs inside London. Confirm on UCAS, the course page, and GOV.UK — not on a WhatsApp forward.',
     overview:
-      'UK degrees are typically three years in England/Wales/Northern Ireland (often four in Scotland for undergrad). Admissions emphasize predicted/achieved grades, personal statement, and sometimes interviews or admissions tests for competitive courses. Scotland, England, Wales, and Northern Ireland share the Student visa framework but have distinct university systems — always read the course page for the campus you want.',
+      'England/Wales/NI undergrads are often three years; Scotland commonly four. Admissions care about grades, a personal statement that sounds like you, and sometimes interviews or admissions tests for the competitive courses. The Student visa framework is UK-wide, but the campuses are not interchangeable — read the exact course page for the city you want to wake up in.',
     pathways: [
       {
         title: 'Undergraduate via UCAS',
-        body: 'Create a UCAS Hub account, choose up to the allowed number of choices, submit a personal statement and reference, and track offers. Some courses (medicine, Oxbridge, etc.) have earlier deadlines and extra tests — follow UCAS and course pages.',
+        body: 'Open a UCAS Hub account, pick your allowed choices, write the statement, get the reference, track offers. Medicine, Oxbridge, and a few others run earlier deadlines and extra tests — UCAS and the course page beat any agent brochure.',
       },
       {
         title: 'Postgraduate',
-        body: 'Apply on university portals with transcripts, references, CV, and a statement. English scores (IELTS/TOEFL/PTE or equivalent) are required unless you qualify for an exemption listed by the school.',
+        body: 'University portals. Transcripts, references, CV, statement. English scores unless the school lists a clear exemption for your background.',
       },
       {
         title: 'Foundation / pathway',
-        body: 'Foundation or pre-master’s programs exist when your current qualifications do not map directly. Confirm progression guarantees in writing with the provider.',
+        body: 'Useful when your current qualifications do not map cleanly. Get any “progression to year 1” promise in writing before you pay.',
       },
     ],
     documents: [
@@ -270,21 +270,21 @@ export const STUDY_DESTINATIONS: Record<StudySlug, StudyDestination> = {
       'IRCC study permit documents',
     ],
     answerFirst:
-      'To study in Canada you typically get an offer from a designated learning institution (DLI), prove funds, then apply for a study permit through IRCC (often with biometrics). International undergrad tuition commonly falls around CAD $15,000–$40,000+ per year, with living costs often CAD $15,000–$25,000+ depending on city — verify on the school and Canada.ca / EduCanada.',
+      'Typical path: offer from a designated learning institution (DLI), proof of funds, then a study permit via IRCC (biometrics are common). Undergrad tuition for many internationals sits around CAD $15k–$40k+ a year; living costs often CAD $15k–$25k+ by city. Check the school plus Canada.ca / EduCanada before you wire money.',
     overview:
-      'Canada’s system includes universities, colleges, and CEGEPs (Québec). Provinces set education frameworks; immigration is federal (IRCC). “College” in Canada often means applied diploma/certificate pathways, not only university. Always confirm the school is a DLI and whether your program length supports a post-graduation work permit (PGWP) under current IRCC rules.',
+      'Universities, colleges, and Québec CEGEPs are different animals. Provinces run education; IRCC runs immigration. In Canada “college” usually means applied diplomas, not a US-style liberal-arts campus. Confirm DLI status and — if you care about working after — whether that exact program still supports a PGWP under today’s IRCC rules.',
     pathways: [
       {
         title: 'Undergraduate university',
-        body: 'Apply via university portals or provincial application services where they exist (e.g. OUAC in Ontario for many undergrad programs). Requirements usually include secondary grades, English/French proof, and sometimes program supplements.',
+        body: 'School portals or provincial services (OUAC is the big Ontario undergrad example). Grades, English/French proof, and the odd program supplement.',
       },
       {
         title: 'College / diploma',
-        body: 'Colleges offer career-focused diplomas and certificates. Check DLI status, co-op work terms, and PGWP eligibility for that exact program on IRCC before paying deposits.',
+        body: 'Career-focused and often co-op heavy. Verify DLI + PGWP eligibility for the program code on IRCC before the deposit deadline panic.',
       },
       {
         title: 'Graduate studies',
-        body: 'Master’s and PhD applications go to graduate faculties with research/supervisor fit mattering for thesis programs. Funding packages vary widely — read offer letters carefully.',
+        body: 'Faculty portals. Thesis routes need supervisor fit. Funding language in the offer letter matters more than Instagram campus tours.',
       },
     ],
     documents: [
@@ -370,21 +370,21 @@ export const STUDY_DESTINATIONS: Record<StudySlug, StudyDestination> = {
       'study australia documents',
     ],
     answerFirst:
-      'Studying in Australia usually means a direct offer from a CRICOS-registered provider, meeting Genuine Student and funds requirements, then applying for a Student visa (subclass 500) via Home Affairs. International tuition often sits around AUD $20,000–$45,000+ per year for many coursework degrees, with living costs commonly AUD $21,000+ as a planning floor — verify on Study Australia and Home Affairs.',
+      'Usually: offer from a CRICOS-registered provider, Genuine Student + funds evidence, then Student visa subclass 500 through Home Affairs. Many coursework degrees sit around AUD $20k–$45k+ a year; living costs often AUD $21k+ as a planning floor. Study Australia and Home Affairs beat any agent PDF.',
     overview:
-      'Australia’s universities and vocational (VET) providers are regulated with CRICOS registration for international delivery. Admissions look at academic equivalence, English scores, and sometimes portfolios or interviews. Cities differ sharply in rent; regional campuses can be cheaper to live in but have fewer industry networks — weigh both on official course pages.',
+      'Universities and VET providers that teach internationals show up on CRICOS — if they do not, walk away. Admissions care about academic equivalence, English, and sometimes a portfolio. Sydney and Melbourne rent can swallow a stipend; regional campuses are quieter and often cheaper. Pick the trade-off on purpose.',
     pathways: [
       {
         title: 'Undergraduate',
-        body: 'Apply directly to universities or through authorized channels listed by the school. Packaged offers (foundation → degree) appear when you need a pathway year.',
+        body: 'Apply on the university’s channels (or ones they list). Foundation → degree packages exist when you need a bridging year — read the progression clause twice.',
       },
       {
         title: 'Postgraduate coursework / research',
-        body: 'Coursework master’s applications are portal-based; research degrees need supervisor alignment and a research proposal. Scholarships (e.g. RTP) are competitive.',
+        body: 'Coursework is portal-driven. Research needs a supervisor who actually wants the topic. RTP and other scholarships are competitive; apply early.',
       },
       {
         title: 'VET / TAFE',
-        body: 'Vocational programs can lead to skilled pathways in some fields, but visa and migration outcomes are not guaranteed — separate skilled-migration rules apply after study.',
+        body: 'Solid skills training. Migration after study is a separate, points-tested story — never treat a diploma as a PR ticket.',
       },
     ],
     documents: [
@@ -470,21 +470,21 @@ export const STUDY_DESTINATIONS: Record<StudySlug, StudyDestination> = {
       'study with new zealand',
     ],
     answerFirst:
-      'Studying in New Zealand means an offer from an approved provider, then a student visa through Immigration New Zealand (often online). International tuition for many bachelor’s/master’s programs falls roughly NZD $22,000–$40,000+ per year, with living costs often NZD $15,000–$25,000+ — verify on Study with New Zealand and Immigration NZ.',
+      'Get an offer from an approved provider, then apply for a student visa with Immigration New Zealand (often online). Many bachelor’s/master’s programs land around NZD $22k–$40k+ a year; living costs often NZD $15k–$25k+. Study with New Zealand + Immigration NZ are the bookmarks that matter.',
     overview:
-      'New Zealand’s universities are research-focused; Te Pūkenga / institutes of technology and private training establishments cover applied learning. The sector is smaller than the US/UK, which can mean clearer campus communities but fewer program niches. Admissions emphasize academic equivalence and English proficiency; some programs need portfolios or interviews.',
+      'Eight universities, plus institutes and other approved providers — smaller than the US/UK, which is either charming or limiting depending on your niche. Admissions look at academic equivalence and English; some creative programs want portfolios. Auckland is the expensive roommate; other cities can be kinder to rent.',
     pathways: [
       {
         title: 'Undergraduate',
-        body: 'Apply on university portals with secondary qualifications assessed against NZ entrance standards (or foundation pathways if needed).',
+        body: 'University portals. Secondary quals mapped to NZ entrance (or a foundation year if you need one).',
       },
       {
         title: 'Postgraduate',
-        body: 'Taught master’s and research degrees use faculty portals. Research applicants should contact supervisors early with a clear proposal.',
+        body: 'Taught master’s vs research — different paperwork. Email supervisors early with a proposal that is not a one-liner.',
       },
       {
         title: 'Pathway / English',
-        body: 'English language and foundation programs can package into degrees. Confirm progression conditions in the offer letter.',
+        body: 'Language and foundation packages are common. Progression conditions belong in the offer letter, not a sales call.',
       },
     ],
     documents: [
@@ -565,21 +565,21 @@ export const STUDY_DESTINATIONS: Record<StudySlug, StudyDestination> = {
       'tuition fees europe international students',
     ],
     answerFirst:
-      '“Study in Europe” is not one system: each country (and often each university) sets admissions, fees, and visas. Many public universities in Germany, Norway, and some other countries charge low or no tuition (admin fees still apply), while the Netherlands, France, Ireland, and others charge moderate-to-high international fees. Apply via national portals (e.g. uni-assist, Studielink, Campus France) or university sites, then follow that country’s student-residence process — use Study in Europe and national immigration sites.',
+      'Europe is not one admissions machine. Germany or Norway public programs can mean low/no tuition (admin fees still bite); the Netherlands, France, Ireland and others often charge real international fees. Apply via national portals (uni-assist, Studielink, Campus France…) or the university, then follow that country’s residence process. Start at Study in Europe, finish on the national immigration site.',
     overview:
-      'The Bologna Process aligns bachelor’s (usually 3 years) and master’s (usually 1–2 years) structures across much of Europe, but language of instruction, numerus clausus, and fees differ. English-taught programs are common in the Netherlands, Germany, Nordics, and increasingly elsewhere — still confirm language requirements per program. The UK and Ireland are covered partly here for geographic search intent; detailed UK guidance lives on our UK page.',
+      'Bologna keeps bachelor’s (~3 years) and master’s (~1–2) roughly aligned, but language rules, numerus clausus, and rent are wildly local. English-taught options are easy to find in NL, DE, and the Nordics — still read the program language line. Want the UK deep-dive? Use our UK page; this hub stays continental + high-level.',
     pathways: [
       {
         title: 'Bachelor’s (Bologna first cycle)',
-        body: 'Apply through national application services or university portals with secondary diplomas recognized for university entrance. Some countries use centralized ranking/selection; others are university-direct.',
+        body: 'National application services or direct university portals. Some countries rank centrally; others let each faculty decide. Bring recognized secondary diplomas (and translations when asked).',
       },
       {
         title: 'Master’s / PhD',
-        body: 'Master’s admissions check bachelor equivalence and ECTS alignment. PhD routes may be structured programs or individual supervisor contracts — especially in Germany and Nordics.',
+        body: 'ECTS equivalence matters. PhDs may be structured cohorts or a handshake with a supervisor — common in Germany and the Nordics.',
       },
       {
         title: 'Exchange / Erasmus+',
-        body: 'Short-term mobility usually goes through your home university’s international office, not a fresh degree admission. Degree-seeking students still need a national residence permit for stays beyond visitor limits.',
+        body: 'Usually arranged by your home university’s international office. Degree-seeking stays still need a proper residence permit once you outgrow tourist rules.',
       },
     ],
     documents: [

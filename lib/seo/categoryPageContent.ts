@@ -135,29 +135,31 @@ export const CATEGORY_PAGE_CONTENT: Record<string, CategoryPageContent> = {
     featuredToolSlugs: [
       'percentage-calculator',
       'emi-calculator',
+      'fuel-trip-cost-calculator',
       'compound-interest-calculator',
       'unit-converter-suite',
     ],
     relatedCategorySlugs: ['business-finance-tools', 'country-regional-tools'],
-    relatedBlogSlugs: ['pakistan-salary-tax-calculator-slabs-guide'],
+    relatedBlogSlugs: ['pakistan-salary-tax-calculator-slabs-guide', 'first-car-budget-usa'],
   },
   'business-finance-tools': {
     seoTitle: 'Business & Freelance Tools — Invoice, Margin, Revenue | ToolVerse',
     seoDescription:
-      'PDF invoice generator, profit margin, AdSense revenue estimates, and freelance-friendly finance utilities.',
+      'PDF invoice generator, profit margin, car loan estimator, AdSense revenue estimates, and freelance-friendly finance utilities.',
     intro:
-      'Business, Finance & Freelance tools help you invoice clients, estimate margins, and model simple revenue scenarios without a heavyweight accounting suite.',
+      'Invoice clients, estimate margins, sketch a car payment, or model simple revenue — without dragging a full accounting suite into the browser.',
     sections: [
       {
         heading: 'Invoices and quotations',
         body: 'Generate a clean PDF invoice or quotation for clients, then merge supporting docs with PDF tools when you need one attachment.',
       },
       {
-        heading: 'Margins and break-even',
-        body: 'Profit margin and break-even calculators are planning helpers — not bookkeeping software. Pair with everyday Calculators for percentage and EMI math.',
+        heading: 'Margins, loans, and break-even',
+        body: 'Profit margin, break-even, and the car loan calculator are planning helpers — not lender offers or bookkeeping software. Deeper ownership bands live on the Cars hub.',
       },
     ],
     featuredToolSlugs: [
+      'car-loan-calculator',
       'freelancer-hourly-rate-calculator',
       'paypal-stripe-fee-calculator',
       'invoice-generator',
@@ -169,6 +171,8 @@ export const CATEGORY_PAGE_CONTENT: Record<string, CategoryPageContent> = {
     relatedBlogSlugs: [
       'freelance-rate-calculator-guide-paypal-stripe-fees',
       'how-to-merge-pdf-files-privately-without-uploading',
+      'used-car-inspection-checklist',
+      'first-car-budget-usa',
     ],
   },
   'creator-social-tools': {

@@ -62,6 +62,7 @@ export function Footer() {
               <li><Link href="/seo" className="hover:text-white transition-colors">SEO Suite</Link></li>
               <li><Link href="/study" className="hover:text-white transition-colors">Study Abroad</Link></li>
               <li><Link href="/immigration" className="hover:text-white transition-colors">Immigration</Link></li>
+              <li><Link href="/cars" className="hover:text-white transition-colors">Cars</Link></li>
               <li><Link href="/pricing" className="hover:text-white transition-colors">Pricing</Link></li>
               <li><Link href="/travel" className="hover:text-white transition-colors">Travel</Link></li>
               <li><Link href="/us" className="hover:text-white transition-colors">US tools</Link></li>

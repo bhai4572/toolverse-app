@@ -59,6 +59,7 @@ import PricingPage from '../app/pricing/page';
 import StudyAbroadPage from '../app/study/page';
 import StudyCountryPage from '../app/study/[slug]/page';
 import ImmigrationPage from '../app/immigration/page';
+import CarsHubPage from '../app/cars/page';
 import DashboardPage from '../app/dashboard/page';
 import UsHubPage from '../app/us/page';
 import UkHubPage from '../app/uk/page';
@@ -217,6 +218,10 @@ export default function App() {
 
     if (parts[0] === 'immigration') {
       return <ImmigrationPage />;
+    }
+
+    if (parts[0] === 'cars') {
+      return <CarsHubPage />;
     }
 
     if (parts[0] === 'tools' && !parts[1]) {

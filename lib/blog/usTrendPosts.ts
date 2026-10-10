@@ -52,6 +52,17 @@ export const BLOG_TOPIC_CLUSTERS: {
     description: 'Image presets, YouTube helpers, and meta tags for gaming and concert content without spammy hype.',
     slugs: ['social-image-sizes-gaming-concert-posts'],
   },
+  {
+    id: 'cars',
+    title: 'Cars & ownership costs',
+    description:
+      'Loan and fuel math, used-car inspections, first-car budgets, and UK road tax/MOT basics — planning data, not fake inventories.',
+    slugs: [
+      'used-car-inspection-checklist',
+      'first-car-budget-usa',
+      'uk-road-tax-mot-basics',
+    ],
+  },
 ];
 
 /** Hand-written US-trend pillars (tool-linked, evergreen how-to / money / privacy angles). */
@@ -94,9 +105,9 @@ export const US_TREND_POSTS: BlogPost[] = [
     contentMarkdown: `
 # GTA 6 Release Prep Checklist: Budget, Receipts & Account Privacy (2026)
 
-**Grand Theft Auto VI** is scheduled for **November 19, 2026** on PlayStation 5 and Xbox Series X|S (confirm on [Rockstar’s official GTA VI page](https://www.rockstargames.com/VI/)). This guide is a **prep checklist** — budget, storage, receipts, and account hygiene — not leak speculation or fake “insider” news.
+Rockstar lists **Grand Theft Auto VI** for **November 19, 2026** on PS5 and Xbox Series X|S — double-check on [their official page](https://www.rockstargames.com/VI/) before you spend. This is a prep checklist: money, storage, receipts, passwords. Not leak gossip. Not Discord “insider” PDFs.
 
-If you want to play at launch without overspending or losing a pre-order email in a spam folder, work through the sections below.
+If you want to play week one without maxing a card or losing the pre-order email in Promotions, work the sections in order.
 
 ---
 
@@ -131,7 +142,7 @@ Run the numbers:
 - [US Sales Tax Calculator](/tools/us-sales-tax-calculator) — rough tax on the taxable subtotal (verify your local rate)
 - [Loan Payoff Calculator](/tools/loan-payoff-calculator) — if you are tempted by “buy now, pay later,” see the interest cost first
 
-**Rule of thumb:** If the total (game + required hardware + tax) exceeds one comfortable paycheck after essentials, delay the hardware upgrade — the base PS5 / Series console is the supported path for launch, not every premium SKU on a reseller site.
+Honest take: if game + required hardware + tax eats more than one comfortable paycheck after rent and food, wait on the shiny upgrade. Base PS5 / Series hardware is the supported launch path — you do not need every “Pro” reseller listing.
 
 ---
 
@@ -225,9 +236,9 @@ Respect Rockstar’s media guidelines when using official assets.
     contentMarkdown: `
 # Concert Ticket PDF Tips: Phone Wallet, Backups & Venue Day Prep
 
-US arena tours sell out in minutes — from multi-night city runs to stadium dates. Entry usually depends on a **mobile ticket**, Apple/Google Wallet pass, or official PDF. This guide focuses on **backups, file hygiene, and venue-day prep** so a dead battery or spotty LTE does not strand you at the door.
+US arena tours still vanish in minutes. Entry is usually a mobile ticket, Wallet pass, or official PDF — and arenas are where phone batteries go to die. This guide is about backups and file hygiene so spotty LTE does not strand you at the door.
 
-*(Example of demand: sold-out multi-night US tour stops remain common in 2026. Always follow your ticket platform’s transfer and screenshot rules.)*
+Follow your issuer’s rules on screenshots and transfers. Some barcodes rotate. “PDF from a guy in DMs” is how people get turned away.
 
 ---
 
@@ -329,7 +340,7 @@ After the encore you still pay for parking, rideshares, and food:
     contentMarkdown: `
 # Prime Day & Deal-Event Checklist: Receipts, Returns & Real Discount Math
 
-US shopping spikes around **Prime Big Deal Days**, Prime Day, and Black Friday. The useful work happens **after** checkout: receipts, return dates, and honest savings math. Amazon’s 2026 Prime Big Deal Days ran **October 6–7** ([About Amazon](https://www.aboutamazon.com/prime-big-deal-days)); the same habits apply to every major deal event.
+The cart is the easy part. The useful work is the 48 hours after: invoices, return-by dates, and whether “40% off” was real. Amazon’s 2026 Prime Big Deal Days ran **October 6–7** ([About Amazon](https://www.aboutamazon.com/prime-big-deal-days)). Same habits work for Black Friday and every other deal dump.
 
 ---
 
@@ -423,7 +434,7 @@ If you reverse-logistics a parcel yourself, draft a clear label with the [Shippi
     contentMarkdown: `
 # US Paycheck After a Raise: Estimate Take-Home Before You Celebrate
 
-A **10% raise** rarely becomes **10% more cash** in your bank account. Federal withholding, FICA, state tax, and benefits deductions all sit between the offer letter and direct deposit. Use a take-home estimate **before** you renegotiate rent or finance a console for launch week.
+A 10% raise on paper is not 10% more in your checking account. Withholding, FICA, state tax, and benefits get a vote first. Run a take-home estimate before you raise rent, tip yourself into a new car payment, or finance a console “because of the raise.”
 
 ---
 
@@ -513,7 +524,7 @@ Pair paycheck math with the [Tip Calculator](/tools/tip-calculator) and [US Sale
     contentMarkdown: `
 # Gaming Console Upgrade Budget: Avoid Panic Pricing Before a Big Launch
 
-Major releases (including **GTA VI on November 19, 2026**) push console demand and sometimes **weird secondary-market prices**. This guide is a calm budget framework so FOMO does not set your hardware price.
+Big launches (yes, including **GTA VI on November 19, 2026**) make people pay silly secondary-market premiums. Pause. Write three numbers. Then decide. FOMO is a terrible purchasing department.
 
 ---
 
@@ -596,7 +607,7 @@ Merge receipt + serial photo notes with [PDF Merge](/tools/pdf-merge), compress 
     contentMarkdown: `
 # Guest Wi‑Fi QR Codes for Watch Parties, Concert Meetups & Roommates
 
-Launch nights, award-show watch parties, and post-concert hangouts all create the same awkward moment: **spelling a 24-character Wi‑Fi password** across a loud room. A **guest-network QR** fixes that — and keeps strangers off your main LAN.
+You know the moment: twelve people shouting letter-by-letter over a TV volume that is already too loud. Encode the guest network once, print the QR, rotate the password after. Your main LAN (and the NAS you forgot about) stays off-limits.
 
 ---
 
@@ -682,7 +693,7 @@ Launch nights, award-show watch parties, and post-concert hangouts all create th
     contentMarkdown: `
 # Social Image Sizes for Gaming & Concert Posts (Plus YouTube Helpers)
 
-When **GTA launch hype** or a **sold-out tour** spikes, creators post faster than they resize. Crooked crops and blurry thumbs kill CTR. Use presets, then ship.
+Launch week and tour season turn creators into speed-posters. Crops get sloppy. Thumbs get soft. CTR notices. Resize once with a preset, keep a clean master file, then post like you meant it.
 
 ---
 
@@ -778,7 +789,7 @@ If you send traffic to your own site:
     contentMarkdown: `
 # US Tipping Guide for Restaurants, Rides & Concert Nights
 
-Show night economics are more than ticket face value: **dinner, rideshares, coat check, and venue concessions**. This short guide helps you tip fairly without doing mental math in a noisy lobby.
+Ticket price is the headline. Dinner, Uber, and the $18 venue soda are the plot. Tip fairly without doing long division under fluorescent lobby lights.
 
 ---
 

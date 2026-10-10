@@ -757,6 +757,7 @@ async function main() {
       routes.push(`/study/${s}`);
     }
     routes.push('/immigration');
+    routes.push('/cars');
     routes.push('/us');
     routes.push('/uk');
     routes.push('/ca');

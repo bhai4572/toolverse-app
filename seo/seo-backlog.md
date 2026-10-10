@@ -1,6 +1,16 @@
 # ToolVerse SEO / AEO / GEO Backlog
 
-Last updated: 2026-10-10 (Study abroad Tier-1 guides + Western markets wave 11). White-hat only. Do not invent rankings or traffic claims.
+Last updated: 2026-10-10 (Cars hub + human voice pass). White-hat only. Do not invent rankings or traffic claims.
+
+## Tone note (shared editorial voice)
+
+When rewriting or adding copy, prefer a human editor voice over “AI brochure”:
+
+- Shorter sentences mixed with longer ones; concrete numbers and examples; light opinion (“honest take,” “walk away”).
+- Avoid opener clichés: “In today’s digital world,” “delve,” “tapestry,” “unlock the power,” buzzword laundry lists.
+- Tools: say what you type and what you get. Hubs: answer first, then ranges + official links.
+- Do **not** rewrite all 100+ auto tool guides in one go — batch high-traffic / robotic pages, keep generator for the long tail.
+- Cars / money: planning bands + disclaimers + gov links. Never scrape dealer inventories or invent millions of listings.
 
 **Workspace lock policy:** SEO Dashboard modules that are not real user-data / fetch / paste analysis stay `status: 'locked'` in `seoNavConfig` (Coming soon panel). Unlock only when real integration is ready — never ship fake Semrush market graphs.
 
@@ -8,19 +18,29 @@ Last updated: 2026-10-10 (Study abroad Tier-1 guides + Western markets wave 11).
 
 | Area | State |
 |---|---|
-| Tool page SEO | **121+ live tools** with registry + `TOOL_PAGE_CONTENT` for new Western tools |
+| Tool page SEO | **123+ live tools** with registry + `TOOL_PAGE_CONTENT` (incl. car loan + fuel trip) |
 | Category pillars | **13 / 13** — updated |
 | Job landings | **5 / 5** thickened + related links |
 | Guides | Pillars + auto `how-to-{slug}` for live tools (incl. new Western tools) |
 | Monetization & Ads | Sticky sidebar ads + in-article ad units inserted across all tools |
 | Blog hub | Category filters + pagination (12/page) |
-| Internal links | Blog↔tool bidirectional; regional hubs `/us` `/uk` `/ca` `/au` + passport hub + study destinations |
-| Study abroad Tier-1 | **Live:** `/study` + `/study/{usa,uk,canada,australia,new-zealand,europe}` — admissions/docs/fees/visa AEO; official portals only (no fake uni DB) |
-| Prerender / CF middleware | Live (`x-toolverse-shell`) — hubs + study guides + tools in prerender/sitemap |
-| AEO homepage FAQ + entity | Done; hubs answer-first intros strengthened |
-| `llms.txt` / sitemap / robots | Wave 11: regenerate via `npm run sitemap` on build |
+| Internal links | Blog↔tool bidirectional; regional hubs + passport + study + **`/cars`** |
+| Study abroad Tier-1 | **Live:** `/study` + country guides — humanized intros/overviews (wave 13) |
+| Cars hub | **Live:** `/cars` + 2 tools + 3 guides; maintainable ranges; NHTSA/GOV.UK links |
+| Prerender / CF middleware | Live (`x-toolverse-shell`) — hubs + study + cars + tools in prerender/sitemap |
+| AEO homepage FAQ + entity | Done; homepage hero humanized |
+| `llms.txt` / sitemap / robots | Regenerate via `npm run sitemap` on build |
 | E-E-A-T legal pages | Done |
 | Semrush / Ahrefs | **Aimed for strong audit** after crawl reindex — no #1 / perfect-score claims |
+
+## Done — wave 13 (Human voice + Cars data hub)
+
+- **Humanize batch:** 8 US trend blogs (openers + key lines); study Tier-1 `answerFirst` / overview / pathways (USA–Europe); homepage hero; study hub blurb; tool SEO for EMI, loan payoff, ChatGPT prompt
+- **Cars hub:** `/cars` with insurance/registration bands, EV vs gas table, buying docs, inspection snapshot, maintenance basics, FAQs + FAQPage schema
+- **New tools:** `car-loan-calculator`, `fuel-trip-cost-calculator`
+- **Guides:** `/blog/used-car-inspection-checklist`, `/blog/first-car-budget-usa`, `/blog/uk-road-tax-mot-basics`
+- **Wiring:** sitemap, prerender, `llms.txt`, Footer/Header/More nav, category featured tools
+- **Explicit non-goal:** no scraped dealer listings / fake million-car inventory
 
 ## Done — wave 12 (Study abroad Tier-1 content)
 

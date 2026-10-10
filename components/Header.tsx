@@ -18,6 +18,7 @@ const PRIMARY_NAV = [
 
 const MORE_NAV = [
   { href: '/seo', label: 'SEO Suite (classic)' },
+  { href: '/cars', label: 'Cars' },
   { href: '/us', label: 'US tools' },
   { href: '/uk', label: 'UK tools' },
   { href: '/ca', label: 'Canada tools' },

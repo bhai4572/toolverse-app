@@ -29,7 +29,9 @@ function isVignettePath(pathname: string): boolean {
     p === '/study' ||
     p.startsWith('/study/') ||
     p === '/immigration' ||
-    p.startsWith('/immigration/')
+    p.startsWith('/immigration/') ||
+    p === '/cars' ||
+    p.startsWith('/cars/')
   );
 }
 

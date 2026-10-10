@@ -37,6 +37,7 @@ import { JobFinderTool } from './JobTools';
 import { SeoTools } from './SeoTools';
 import { TrendingTools } from './TrendingTools';
 import { DocumentConversionTools } from './DocumentConversionTools';
+import { CarTools } from './CarTools';
 import { AlertTriangle, Lock } from 'lucide-react';
 
 export function ToolRenderer({ tool }: { tool: ToolDefinition }) {
@@ -140,6 +141,9 @@ export function ToolRenderer({ tool }: { tool: ToolDefinition }) {
     case 'canada-paycheque-calculator':
     case 'australia-pay-calculator':
       return <WesternFinanceTools tool={tool} />;
+    case 'car-loan-calculator':
+    case 'fuel-trip-cost-calculator':
+      return <CarTools tool={tool} />;
     case 'zakat-calculator':
       return <ZakatCalculatorTool />;
     case 'pakistan-salary-tax-estimator':

@@ -555,39 +555,37 @@ export const TOOL_PAGE_CONTENT: Record<string, ToolPageContent> = {
 
   'emi-calculator': {
     answerFirst:
-      'Loan EMI Calculator estimates monthly Equated Monthly Installments from loan amount, interest rate, and tenure, plus total interest payable.',
+      'Plug in loan amount, annual rate, and months. You get a monthly payment plus total interest — handy before you compare bank or dealer quotes.',
     seoTitle: 'EMI Calculator — Loan Monthly Payment Estimate | ToolVerse',
     seoDescription:
-      'Calculate home, car, or personal loan EMI from amount, rate, and tenure. See total interest and payment estimates privately in your browser.',
+      'Estimate home, car, or personal loan EMI from amount, rate, and tenure. See total interest in your browser — not a credit application.',
     sections: [
       {
-        heading: 'How EMI estimates work',
-        body: 'Standard EMI formulas spread principal and interest across the tenure. Banks may add processing fees, insurance, or floating-rate changes that this simple model does not include.',
+        heading: 'What the math assumes',
+        body: 'A fixed rate and a standard amortization schedule. Real offers often add processing fees, compulsory insurance, or floating rates this model ignores.',
       },
       {
-        heading: 'Compare offers before you sign',
-        body: 'Run the same principal with each bank’s rate and tenure to compare monthly outflow. A slightly lower rate over a long tenure can still mean more total interest — check both EMI and total cost.',
+        heading: 'Compare the whole cost, not just the monthly number',
+        body: 'A “lower EMI” with a longer tenure can cost more interest overall. Line up two quotes with the same principal and check both monthly cash and total interest.',
       },
       {
-        heading: 'Privacy',
-        body: 'Loan figures stay on your device. Nothing is uploaded for this calculator.',
+        heading: 'Buying a car instead?',
+        body: 'For price + down payment + trade-in + tax, use the Car Loan Calculator on the Cars hub. This EMI tool is the simpler principal/rate/tenure version.',
       },
     ],
     faqs: [
       {
-        question: 'What inputs do I need for EMI?',
-        answer:
-          'Loan amount, annual interest rate, and tenure in months or years.',
+        question: 'What inputs do I need?',
+        answer: 'Loan amount, annual interest rate, and tenure in months (or convert years × 12).',
       },
       {
         question: 'Why does my bank EMI differ?',
         answer:
-          'Fees, insurance, rate type, and day-count conventions can change the real payment. Use this as an estimate, then confirm with the lender’s schedule.',
+          'Fees, insurance, rate type, and day-count rules. Treat this as a sanity check, then trust the lender’s schedule.',
       },
       {
         question: 'Is this a credit application?',
-        answer:
-          'No. It is a local calculator only.',
+        answer: 'No. Local math only — nothing is sent to a lender.',
       },
     ],
   },
@@ -1331,72 +1329,74 @@ export const TOOL_PAGE_CONTENT: Record<string, ToolPageContent> = {
 
   'loan-payoff-calculator': {
     answerFirst:
-      'Loan Early Payoff & Extra Payment Calculator calculates the thousands of dollars in interest and years of debt eliminated by making extra monthly principal payments on mortgages, car loans, or personal debt.',
+      'Add an extra monthly amount toward principal and see how much interest you skip — and how many months disappear — on a mortgage, car loan, or personal loan.',
     seoTitle: 'Loan Early Payoff Calculator — Extra Payment Interest Savings | ToolVerse',
     seoDescription:
-      'Calculate interest saved and payoff time eliminated with extra monthly loan payments. Free early mortgage, student loan, and auto loan payoff calculator.',
+      'See interest saved and months cut when you pay extra toward a loan. Works for mortgages, student loans, and auto loans. Runs in your browser.',
     sections: [
       {
-        heading: 'The compounding power of extra principal payments',
-        body: 'Because loan interest compounds on your remaining principal balance, even small extra payments (e.g. $50 to $100 per month) dramatically reduce compound interest accrual over multi-year terms.',
+        heading: 'Why an extra $50 matters',
+        body: 'Interest is charged on what you still owe. Knock the balance down early and later months have less to chew on. Small extras add up on multi-year terms.',
       },
       {
-        heading: 'Shaving years off 15-year and 30-year mortgages',
-        body: 'On a standard $250,000 mortgage at 6.5% interest, an extra $200 monthly principal contribution can save over $65,000 in interest and eliminate more than 6 years of payments.',
+        heading: 'Mortgage example (illustrative)',
+        body: 'On a large fixed mortgage, a steady extra principal payment can wipe years off the calendar. Re-run with your balance and rate — do not trust a blog’s sample numbers as your quote.',
       },
       {
-        heading: 'Confirming principal-only allocation with your lender',
-        body: 'When submitting extra payments, always instruct your bank or loan servicer to apply the funds directly toward the "Principal Balance" rather than advancing the next scheduled payment date.',
+        heading: 'Tell the servicer “principal”',
+        body: 'If the extra just pre-pays next month’s installment, you did not accelerate the loan. Ask for principal-only application when you send more than the minimum.',
       },
     ],
     faqs: [
       {
         question: 'Is there a penalty for paying off a loan early?',
-        answer: 'Most modern consumer loans and mortgages do not have prepayment penalties, but verify your loan contract terms.',
+        answer: 'Many consumer loans allow prepayment, but read your contract. Some older products still charge fees.',
       },
       {
-        question: 'Should I pay off debt or invest extra cash?',
-        answer: 'If your loan interest rate exceeds expected investment returns (e.g. high-interest debt over 7%), paying off debt provides a guaranteed return.',
+        question: 'Should I pay off debt or invest the cash?',
+        answer:
+          'If the loan rate is higher than what you confidently expect to earn after tax, paying the loan is the safer “return.” High-interest debt usually wins that comparison.',
       },
       {
-        question: 'Can I calculate bi-weekly payments?',
-        answer: 'Making bi-weekly payments results in 26 half-payments (13 full payments per year), achieving a similar accelerated payoff effect.',
+        question: 'What about bi-weekly payments?',
+        answer:
+          'Twenty-six half-payments a year equals roughly thirteen full payments — similar acceleration if everything lands on principal.',
       },
     ],
   },
 
   'chatgpt-prompt-generator': {
     answerFirst:
-      'ChatGPT Prompt Generator & Enhancer converts simple thoughts into structured, high-performing prompts with expert personas, contextual constraints, and clear output formatting for ChatGPT, Claude, and Gemini.',
+      'Turn a rough idea into a prompt with a clear role, task, constraints, and output shape — then paste it into ChatGPT, Claude, or Gemini.',
     seoTitle: 'ChatGPT Prompt Generator & Enhancer (AI Prompt Builder) | ToolVerse',
     seoDescription:
-      'Create high-accuracy ChatGPT and Claude prompts. Automatically structures expert personas, tone guidelines, negative constraints, and output formats.',
+      'Build clearer ChatGPT and Claude prompts with persona, task, and format blocks. Free browser tool — no API key.',
     sections: [
       {
-        heading: 'Why structured prompts outperform simple queries',
-        body: 'Large language models produce significantly better results when provided with explicit persona framing, role definitions, negative constraints (what NOT to do), and exact output templates.',
+        heading: 'Say who, what, and what “done” looks like',
+        body: 'Models guess less when you name a role, state the job, ban a few bad habits, and show the output format you want.',
       },
       {
-        heading: 'Eliminating robotic AI clichés and generic filler',
-        body: 'By specifying tone parameters and strict stylistic constraints, you prevent ChatGPT from defaulting to overused filler phrases like "In summary", "delve into", and "it is important to remember".',
+        heading: 'Cut the filler on purpose',
+        body: 'If you hate “delve,” “tapestry,” and “In today’s digital world,” put that in the constraints. The model usually listens.',
       },
       {
-        heading: 'Universal compatibility across ChatGPT, Claude, and Gemini',
-        body: 'Our prompt templates follow universal prompt engineering principles that deliver high-accuracy results across OpenAI GPT-4o, Anthropic Claude 3.5 Sonnet, and Google Gemini 1.5 Pro.',
+        heading: 'Works across major chat apps',
+        body: 'The same structure travels well between ChatGPT, Claude, and Gemini. Tweak tone after you paste if a model is fussy.',
       },
     ],
     faqs: [
       {
-        question: 'What is Prompt Engineering?',
-        answer: 'Prompt engineering is the practice of structuring text inputs so AI models generate the most accurate, relevant, and useful responses possible.',
+        question: 'What is prompt engineering?',
+        answer: 'Writing clearer instructions so the model wastes fewer tokens guessing what you meant.',
       },
       {
-        question: 'Does this tool require an OpenAI API key?',
-        answer: 'No API key needed! The generator runs 100% in your browser and outputs ready-to-use prompt text to copy into any AI app.',
+        question: 'Do I need an OpenAI API key?',
+        answer: 'No. This builds text in your browser. You copy it into whatever chat app you already use.',
       },
       {
         question: 'Can I use this for coding prompts?',
-        answer: 'Yes! Customize the persona to "Principal Software Engineer" to generate precise programming and debugging prompts.',
+        answer: 'Yes — set the persona to a senior engineer and ask for repro steps, edge cases, or a patch-shaped answer.',
       },
     ],
   },
@@ -3812,6 +3812,80 @@ export const TOOL_PAGE_CONTENT: Record<string, ToolPageContent> = {
         question: 'Are results complete?',
         answer:
           'Coverage depends on sources and filters. Cross-check major boards for critical searches.',
+      },
+    ],
+  },
+
+  'car-loan-calculator': {
+    answerFirst:
+      'Enter vehicle price, down payment, trade-in, optional tax/fees, APR, and term. You get a monthly payment, amount financed, and total interest — a clean check against a dealer worksheet.',
+    seoTitle: 'Car Loan Payment Calculator — Auto Finance Estimate | ToolVerse',
+    seoDescription:
+      'Estimate car loan payments from price, down payment, trade-in, tax, APR, and term. Free auto loan calculator in your browser. Pair with the Cars hub.',
+    sections: [
+      {
+        heading: 'Build the financed amount honestly',
+        body: 'Price minus down and trade-in, plus tax and fees you actually owe. If the dealer’s “monthly” assumes a giant balloon or packed products, your number will disagree — that is useful.',
+      },
+      {
+        heading: 'Term vs interest',
+        body: 'Stretching to 72–84 months can shrink the payment and grow total interest. Compare both columns before you sign.',
+      },
+      {
+        heading: 'Next steps on ToolVerse',
+        body: 'Model extra principal with the Loan Payoff Calculator, rough fuel with the Fuel Trip Cost tool, and browse insurance/registration bands on the Cars hub.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is this a loan offer?',
+        answer: 'No. It is a local estimate. Credit approval and APR come from a lender.',
+      },
+      {
+        question: 'Does tax include my city rate?',
+        answer:
+          'You type the %. Use the US Sales Tax calculator for a state starting point, then confirm with the dealer or DMV.',
+      },
+      {
+        question: 'Where is more car cost data?',
+        answer: 'The Cars hub at /cars — insurance bands, EV vs gas ranges, checklists, and official links.',
+      },
+    ],
+  },
+
+  'fuel-trip-cost-calculator': {
+    answerFirst:
+      'Pick MPG or L/100km, enter distance and pump price, and see fuel needed plus trip cost. Good for road trips and commute comparisons.',
+    seoTitle: 'Fuel Trip Cost Calculator — MPG & L/100km | ToolVerse',
+    seoDescription:
+      'Estimate fuel cost for a trip using MPG or litres/100km and current fuel price. Free gas cost calculator — pairs with the Cars hub.',
+    sections: [
+      {
+        heading: 'Use real economy when you can',
+        body: 'Window-sticker MPG is a lab story. If your trip computer says 24 mpg on the commute, use 24. Official US labels live on fueleconomy.gov.',
+      },
+      {
+        heading: 'Two unit systems',
+        body: 'US mode uses miles and gallons. Metric mode uses kilometres and litres per 100 km — common in the UK, CA, and EU.',
+      },
+      {
+        heading: 'Ownership context',
+        body: 'Fuel is one line. Loan, insurance, and maintenance bands sit on the Cars hub so you do not budget fuel alone.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Does this include tolls or parking?',
+        answer: 'No — fuel only. Add those separately.',
+      },
+      {
+        question: 'Can I compare an EV?',
+        answer:
+          'This tool is liquid fuel. The Cars hub has a high-level EV vs gas energy-cost table for planning.',
+      },
+      {
+        question: 'Are prices uploaded?',
+        answer: 'No. Math stays in your browser.',
       },
     ],
   },
