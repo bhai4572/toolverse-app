@@ -12,6 +12,7 @@ const PRIMARY_NAV = [
   { href: '/study', label: 'Study Abroad' },
   { href: '/immigration', label: 'Immigration' },
   { href: '/blog', label: 'Blog' },
+  { href: '/news', label: 'News' },
   { href: '/pricing', label: 'Pricing' },
 ] as const;
 

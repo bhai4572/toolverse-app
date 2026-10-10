@@ -762,6 +762,7 @@ async function main() {
     routes.push('/ca');
     routes.push('/au');
     routes.push('/passport-photos');
+    routes.push('/news');
     routes.push('/dashboard');
 
     for (const route of routes) {

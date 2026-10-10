@@ -102,6 +102,7 @@ export function Footer() {
               <li><Link href="/tools/pakistan-salary-tax-estimator" className="hover:text-white transition-colors">Pakistan Salary Tax Estimator</Link></li>
               <li><Link href="/jobs/remote-jobs" className="hover:text-white transition-colors">Remote Jobs Worldwide</Link></li>
               <li><Link href="/jobs/usa-jobs" className="hover:text-white transition-colors">Jobs in USA</Link></li>
+              <li><Link href="/news" className="hover:text-white transition-colors">Live News Headlines</Link></li>
               <li><Link href="/blog" className="hover:text-white transition-colors">SEO Guides & Blog</Link></li>
             </ul>
             <FooterColumnAd />

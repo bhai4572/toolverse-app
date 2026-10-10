@@ -204,6 +204,7 @@ add('/uk', 'weekly', '0.85');
 add('/ca', 'weekly', '0.85');
 add('/au', 'weekly', '0.85');
 add('/passport-photos', 'weekly', '0.85');
+add('/news', 'hourly', '0.9');
 
 const lines = [
   '<?xml version="1.0" encoding="UTF-8"?>',

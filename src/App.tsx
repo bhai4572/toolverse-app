@@ -65,6 +65,7 @@ import UkHubPage from '../app/uk/page';
 import CaHubPage from '../app/ca/page';
 import AuHubPage from '../app/au/page';
 import PassportPhotosHubPage from '../app/passport-photos/page';
+import NewsHubPage from '../app/news/page';
 
 import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
@@ -236,6 +237,10 @@ export default function App() {
     }
     if (parts[0] === 'passport-photos') {
       return <PassportPhotosHubPage />;
+    }
+
+    if (parts[0] === 'news') {
+      return <NewsHubPage />;
     }
 
     if (parts[0] === 'dashboard') {

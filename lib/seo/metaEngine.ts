@@ -1295,6 +1295,72 @@ export function getMetadataForPath(pathname: string): PageMetadata {
     };
   }
 
+  // 4b. Live News Hub (/news)
+  if (parts[0] === 'news') {
+    const canonicalUrl = `${baseUrl}/news`;
+    const title = 'Live News Headlines (US, UK, Tech, Finance, Gaming) — ToolVerse';
+    const description =
+      'Auto-updating news headlines from public RSS feeds. Browse title, source, date, and a short snippet — then read the full story on the original publisher site.';
+
+    const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+      { name: 'Home', url: `${baseUrl}/` },
+      { name: 'News', url: canonicalUrl },
+    ]);
+
+    const pageFaqs = [
+      {
+        question: 'Does ToolVerse republish full news articles?',
+        answer:
+          'No. We show headlines, source, date, and short RSS snippets only, and link out to the original publisher for the full article.',
+      },
+      {
+        question: 'How often do headlines refresh?',
+        answer:
+          'Feeds are fetched on the edge and cached for about 15 minutes. Use the Refresh button on /news for the latest cached snapshot.',
+      },
+    ];
+
+    const graph: (Record<string, unknown> | null)[] = [
+      buildOrganizationNode(),
+      buildWebSiteNode(),
+      buildWebPageNode({
+        canonicalUrl,
+        name: title,
+        description,
+        type: 'CollectionPage',
+        hasBreadcrumbs: true,
+      }),
+      breadcrumbs,
+      {
+        '@type': 'FAQPage',
+        '@id': `${canonicalUrl}#faq`,
+        mainEntity: pageFaqs.map((faq) => ({
+          '@type': 'Question',
+          name: faq.question,
+          acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+        })),
+      },
+    ];
+
+    return {
+      title,
+      description,
+      keywords: [
+        'live news',
+        'tech news',
+        'uk news',
+        'us news',
+        'finance headlines',
+        'gaming news',
+        'toolverse news',
+      ],
+      canonicalUrl,
+      ogType: 'website',
+      ogImage: DEFAULT_OG_IMAGE,
+      jsonLd: wrapInGraph(graph),
+    };
+  }
+
   // 5. Job Hub Pages (/jobs/[slug])
   if (parts[0] === 'jobs' && parts[1]) {
     const job = getJobPageContent(parts[1]);

@@ -11,11 +11,13 @@ export async function onRequest(context) {
 
   // SEO / text assets must stay static (also excluded in public/_routes.json).
   // Never HTML-fallback these even if _routes include accidentally matches.
+  // API Pages Functions must also pass through (no HTML shell / SPA fallback).
   if (
     pathname === '/sitemap.xml' ||
     pathname === '/robots.txt' ||
     pathname === '/llms.txt' ||
-    pathname === '/ads.txt'
+    pathname === '/ads.txt' ||
+    pathname.startsWith('/api/')
   ) {
     return context.next();
   }
