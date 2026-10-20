@@ -2,14 +2,22 @@
  * Adsterra unit registry — human labels match publisher dashboard names.
  * Tools stay free; these units are display-only (never gate UI).
  *
- * Monetag: In-Page Push + Vignette load from AdGlobals (controlled; no popunder).
+ * Monetag: push/vignette gated by ADSENSE_REVIEW_MODE (off while seeking AdSense approval).
  * Banner zone was never stored in git — set MONETAG_BANNER_ZONE when you create one.
  */
 
-/** Monetag In-Page Push — public pages via AdGlobals */
+/**
+ * When true: content-first layout for AdSense review.
+ * - Monetag push + vignette disabled (overlays look like ad farms to reviewers)
+ * - Callsites should keep ~2–3 display units per page (header + one in-content + footer)
+ * Flip to false only after AdSense is approved and you re-introduce density carefully.
+ */
+export const ADSENSE_REVIEW_MODE = true;
+
+/** Monetag In-Page Push — public pages via AdGlobals (skipped when ADSENSE_REVIEW_MODE) */
 export const MONETAG_PUSH_ZONE = '11986841';
 
-/** Monetag Vignette — inner pages only, gated in AdGlobals */
+/** Monetag Vignette — inner pages only (skipped when ADSENSE_REVIEW_MODE) */
 export const MONETAG_VIGNETTE_ZONE = '11986843';
 
 /** Monetag display/banner zone ID — leave empty until pasted from Monetag dashboard */

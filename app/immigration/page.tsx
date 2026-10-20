@@ -87,7 +87,7 @@ export default function ImmigrationPage() {
         </div>
       </section>
 
-      <UnderCtaAdBand variant="both" region="immigration-under-cta" />
+      <UnderCtaAdBand region="immigration-under-cta" />
     </div>
   );
 }

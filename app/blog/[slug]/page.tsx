@@ -130,8 +130,8 @@ export default function BlogPostPage({ params }: Props) {
             </div>
           )}
 
-          {/* AdSense-style in-article every 1–2 paragraphs */}
-          <InArticleAds markdown={post.contentMarkdown} every={2} />
+          {/* Light in-article ads — max 2 units, spaced for AdSense review */}
+          <InArticleAds markdown={post.contentMarkdown} every={4} />
 
           {post.faqs && post.faqs.length > 0 && (
             <div className="space-y-6 pt-6 border-t border-slate-200 dark:border-slate-800">

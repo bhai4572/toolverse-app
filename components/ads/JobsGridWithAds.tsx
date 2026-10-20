@@ -12,9 +12,10 @@ interface JobsGridWithAdsProps {
 }
 
 /**
- * 2-column jobs grid with a full-width ad break after every `every` cards.
+ * 2-column jobs grid with at most one ad break (after the first chunk).
+ * Default every=8 keeps listing density content-first for AdSense review.
  */
-export function JobsGridWithAds({ cards, every = 4, className = '' }: JobsGridWithAdsProps) {
+export function JobsGridWithAds({ cards, every = 8, className = '' }: JobsGridWithAdsProps) {
   const chunks: React.ReactNode[][] = [];
   for (let i = 0; i < cards.length; i += every) {
     chunks.push(cards.slice(i, i + every));
@@ -25,19 +26,12 @@ export function JobsGridWithAds({ cards, every = 4, className = '' }: JobsGridWi
       {chunks.map((chunk, chunkIdx) => (
         <React.Fragment key={`jobs-chunk-${chunkIdx}`}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">{chunk}</div>
-          {chunkIdx < chunks.length - 1 && (
+          {chunkIdx === 0 && chunkIdx < chunks.length - 1 && (
             <div
-              className="flex justify-center py-2 min-h-[90px] md:min-h-[250px] items-center w-full"
+              className="flex justify-center py-2 min-h-[250px] items-center w-full"
               data-ad-region="incontent"
             >
-              {chunkIdx % 2 === 0 ? (
-                <AdSlot slot="in-content" bare />
-              ) : (
-                <>
-                  <AdSlot slot="leaderboard" bare className="w-full max-w-[728px]" />
-                  <AdSlot slot="mobile-banner" bare className="w-full max-w-[320px]" />
-                </>
-              )}
+              <AdSlot slot="in-content" bare />
             </div>
           )}
         </React.Fragment>

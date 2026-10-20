@@ -98,7 +98,7 @@ export default function StudyAbroadPage() {
         </div>
       </section>
 
-      <UnderCtaAdBand variant="both" region="study-under-cta" />
+      <UnderCtaAdBand region="study-under-cta" />
     </div>
   );
 }

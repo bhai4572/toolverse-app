@@ -1,2 +1,12 @@
-# ToolVerse Official Google AdSense Authorized Digital Sellers (ads.txt)
+# ToolVerse ads.txt — authorized digital sellers
+# https://toolverse.baby/ads.txt
+#
+# Google AdSense: replace YOUR_PUBLISHER_ID below with your real pub-XXXXXXXXXXXXXXXX
+# from AdSense → Sites / ads.txt, OR keep the line if it already matches your account.
+# Do NOT invent a fake pub ID. Leave only networks you are actually authorized for.
+#
+# Format: <domain>, <publisher_account_ID>, <account_type>, <certification_authority_ID>
 google.com, pub-8847204746483890, DIRECT, f08c47fec0942fa0
+
+# When AdSense issues a new publisher ID, update the line above to:
+# google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0

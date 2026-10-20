@@ -64,15 +64,20 @@ export default function NewsHubPage() {
           <div className="space-y-2 min-w-0">
             <p className="text-xs font-semibold uppercase tracking-wide text-brand-600 dark:text-brand-400 inline-flex items-center gap-1.5">
               <Newspaper className="w-3.5 h-3.5" aria-hidden />
-              Live headlines
+              Headline aggregator — not original journalism
             </p>
             <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white tracking-tight">
               ToolVerse News
             </h1>
             <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
               Auto-updating headlines from public RSS feeds (US, UK, tech, finance, gaming). We show
-              title, source, date, and a short snippet — tap through to read the full story on the
-              publisher&apos;s site.
+              title, source, date, and a short snippet only — this is not original reporting. Tap
+              through to read the full story on the publisher&apos;s site.
+            </p>
+            <p className="text-xs text-amber-800 dark:text-amber-200/90 bg-amber-50 dark:bg-amber-950/40 border border-amber-200/70 dark:border-amber-800/50 rounded-lg px-3 py-2 max-w-2xl">
+              Disclaimer: ToolVerse does not write these articles. Headlines link out to the source
+              publishers. For our own guides, see the{' '}
+              <a href="/blog" className="font-semibold underline">Blog</a>.
             </p>
           </div>
           <button

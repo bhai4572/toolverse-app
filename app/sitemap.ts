@@ -36,25 +36,37 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${baseUrl}/legal/about`,
       lastModified: currentDate,
       changeFrequency: 'monthly',
-      priority: 0.4,
+      priority: 0.55,
+    },
+    {
+      url: `${baseUrl}/legal/about-our-tools`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly',
+      priority: 0.5,
     },
     {
       url: `${baseUrl}/legal/contact`,
       lastModified: currentDate,
       changeFrequency: 'monthly',
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/legal/editorial-policy`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly',
+      priority: 0.45,
+    },
+    {
+      url: `${baseUrl}/legal/privacy-policy`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly',
       priority: 0.4,
     },
     {
-      url: `${baseUrl}/legal/privacy`,
+      url: `${baseUrl}/legal/terms-of-use`,
       lastModified: currentDate,
       changeFrequency: 'monthly',
-      priority: 0.3,
-    },
-    {
-      url: `${baseUrl}/legal/terms`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly',
-      priority: 0.3,
+      priority: 0.35,
     },
   ];
 

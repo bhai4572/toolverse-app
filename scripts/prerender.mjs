@@ -20,6 +20,7 @@ const LEGAL_SLUGS = [
   'cookie-policy',
   'dmca',
   'about',
+  'about-our-tools',
   'contact',
   'editorial-policy',
   'security',
@@ -692,10 +693,10 @@ async function main() {
 
     // Business Discovery & Identity System Routes
     routes.push('/business');
-    for (const biz of ['ali-barber-studio', 'apex-digital-marketing', 'blue-sky-dentistry', 'nexus-saas-labs']) {
+    for (const biz of ['ali-barber-studio', 'apex-digital-marketing', 'artisan-coffee-roasters']) {
       routes.push(`/business/${biz}`);
     }
-    for (const bId of ['TV-BIZ-8F4K2P', 'TV-BIZ-99X2M1', 'TV-BIZ-33K7L9', 'TV-BIZ-77P4R2']) {
+    for (const bId of ['TV-BIZ-8F4K2P', 'TV-BIZ-3M9Q7L', 'TV-BIZ-9X2V4W']) {
       routes.push(`/b/${bId}`);
     }
     routes.push('/business/register');
@@ -707,12 +708,14 @@ async function main() {
     routes.push('/how-to');
     for (const ht of [
       'how-to-create-a-business-profile',
+      'how-to-generate-and-print-business-qr',
+      'how-business-rankings-work',
+      'how-to-verify-business-ownership',
       'how-to-verify-your-business',
       'how-to-get-a-toolverse-business-id',
       'how-to-generate-a-business-qr-code',
       'how-to-print-your-toolverse-qr',
       'how-to-collect-honest-customer-reviews',
-      'how-business-rankings-work',
       'how-sponsored-ranking-works',
       'how-to-claim-a-business',
       'how-to-report-a-fake-business',
@@ -727,10 +730,10 @@ async function main() {
     routes.push('/travel/destinations');
     routes.push('/travel/jobs');
     routes.push('/travel/planner');
-    routes.push('/admin/travel');
-    routes.push('/travel/PK/GB');
-    routes.push('/travel/PK/TR');
-    routes.push('/travel/PK/AE');
+    routes.push('/travel/route');
+    for (const corridor of ['AE', 'SA', 'GB', 'CA', 'DE', 'QA', 'OM', 'US', 'TR']) {
+      routes.push(`/travel/PK/${corridor}`);
+    }
 
     // Startup Launch & Discovery Platform Routes
     routes.push('/startups');

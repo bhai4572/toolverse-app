@@ -64,11 +64,13 @@ function renderBlock(trimmed: string, key: number): React.ReactNode {
   );
 }
 
+const MAX_IN_ARTICLE_ADS = 2;
+
 /**
- * AdSense-style in-article ads: render markdown blocks and inject a 300x250
- * (or native) unit after every N prose paragraphs. Never gates content.
+ * Light in-article ads: inject at most two 300×250 units, spaced through prose.
+ * Never gates content. Default every=4 (was denser; tightened for AdSense review).
  */
-export function InArticleAds({ markdown, every = 2, className = '' }: InArticleAdsProps) {
+export function InArticleAds({ markdown, every = 4, className = '' }: InArticleAdsProps) {
   const blocks = markdown.split('\n\n');
   const nodes: React.ReactNode[] = [];
   let proseCount = 0;
@@ -81,7 +83,7 @@ export function InArticleAds({ markdown, every = 2, className = '' }: InArticleA
 
     if (isProseParagraph(trimmed)) {
       proseCount += 1;
-      if (proseCount % every === 0) {
+      if (proseCount % every === 0 && adIdx < MAX_IN_ARTICLE_ADS) {
         adIdx += 1;
         nodes.push(
           <div
@@ -89,11 +91,7 @@ export function InArticleAds({ markdown, every = 2, className = '' }: InArticleA
             className="not-prose flex justify-center py-4 my-2"
             data-ad-region="incontent"
           >
-            {adIdx % 3 === 0 ? (
-              <AdSlot slot="native" bare className="w-full max-w-[728px]" />
-            ) : (
-              <AdSlot slot="in-content" bare />
-            )}
+            <AdSlot slot="in-content" bare />
           </div>
         );
       }

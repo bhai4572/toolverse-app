@@ -22,7 +22,7 @@ const PATHS = [
   {
     href: '/workspace',
     title: 'SEO Dashboard',
-    blurb: 'Semrush-style workspace — audits, keywords, reports. Free.',
+    blurb: 'Audits, keywords, reports — free workspace, honest labels.',
     icon: Globe2,
   },
   {
@@ -34,7 +34,7 @@ const PATHS = [
   {
     href: '/immigration',
     title: 'Immigration',
-    blurb: 'Work visas, embassies, jobs abroad.',
+    blurb: 'Work visas, embassies, jobs abroad — checklists, not hype.',
     icon: Landmark,
   },
   {
@@ -42,6 +42,39 @@ const PATHS = [
     title: 'Cars',
     blurb: 'Loan, fuel, insurance bands & checklists.',
     icon: Car,
+  },
+] as const;
+
+const FLAGSHIP = [
+  {
+    href: '/tools/pdf-merge',
+    name: 'Merge PDF',
+    why: 'Combine CVs, cover letters, and scans in the browser — no upload.',
+  },
+  {
+    href: '/tools/pdf-compress',
+    name: 'Compress PDF',
+    why: 'Shrink PDFs for email and government portals without leaving your device.',
+  },
+  {
+    href: '/tools/compress-image-target-size',
+    name: 'Image to exact KB',
+    why: 'Hit 20KB / 50KB / 100KB caps for job and visa forms.',
+  },
+  {
+    href: '/tools/us-paycheck-calculator',
+    name: 'US Paycheck Estimator',
+    why: 'Rough take-home math from salary, filing status, and state — educational only.',
+  },
+  {
+    href: '/tools/uk-take-home-pay-calculator',
+    name: 'UK Take-Home Pay',
+    why: 'Estimate PAYE-style take-home for planning — not tax advice.',
+  },
+  {
+    href: '/tools/global-job-finder',
+    name: 'Global Job Finder',
+    why: 'Headlines and listings that link out to employer sites — we are not the employer.',
   },
 ] as const;
 
@@ -55,7 +88,6 @@ export default function HomePage() {
 
   return (
     <div className="space-y-14 py-2">
-      {/* Hero — one composition: brand, headline, support, CTA, search */}
       <section className="relative overflow-hidden rounded-3xl border border-slate-200 dark:border-slate-800">
         <div
           className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-brand-900"
@@ -73,26 +105,29 @@ export default function HomePage() {
             Free tools that stay on your device.
           </h1>
           <p className="text-slate-300 text-sm sm:text-base max-w-xl leading-relaxed">
-            Merge a PDF, resize a photo, or run paycheck math without creating an account. Most file tools process in your browser. From here: Job Finder, the tools hub, SEO Dashboard, Study Abroad, or the Cars cost hub.
+            Merge PDFs, hit exact image size caps, or estimate paycheck math without creating an
+            account. Most file tools run in your browser with Canvas and WebAssembly — your files are
+            not the product. Built by an independent operator who maintains working utilities, not
+            scraped filler pages.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link
-              href="/tools/global-job-finder"
+              href="/tools/pdf-merge"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-bold transition-colors"
             >
-              <Briefcase className="w-4 h-4" /> Open Job Finder <ArrowRight className="w-4 h-4" />
+              Merge a PDF free <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
               href="/tools"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-white/25 hover:border-white/50 text-white text-sm font-bold"
             >
-              Browse tools
+              Browse all tools
             </Link>
             <Link
-              href="/workspace"
+              href="/legal/about"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-white/25 hover:border-white/50 text-white text-sm font-bold"
             >
-              SEO Dashboard
+              About ToolVerse
             </Link>
           </div>
           <div className="relative max-w-md pt-2">
@@ -127,42 +162,31 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Featured Job Finder — primary traffic entry */}
-      <section
-        className="relative overflow-hidden rounded-2xl border border-brand-200 dark:border-brand-800 bg-gradient-to-r from-brand-50 via-white to-emerald-50 dark:from-brand-950/50 dark:via-slate-900 dark:to-emerald-950/30 p-6 sm:p-8"
-        aria-labelledby="job-finder-heading"
-      >
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5">
-          <div className="flex items-start gap-4 min-w-0">
-            <div className="w-12 h-12 rounded-xl bg-brand-600 text-white flex items-center justify-center shrink-0 shadow-md">
-              <Briefcase className="w-6 h-6" />
-            </div>
-            <div className="space-y-1 min-w-0">
-              <h2 id="job-finder-heading" className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-                Global Job Finder
-              </h2>
-              <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed max-w-xl">
-                Browse remote, hybrid, and onsite vacancies worldwide — filter by country, sector, and salary. Apply on official employer portals.
-              </p>
-              <div className="flex flex-wrap gap-2 pt-1 text-[11px] font-semibold text-slate-500">
-                <Link href="/jobs/remote-jobs" className="hover:text-brand-600">Remote Jobs</Link>
-                <span>·</span>
-                <Link href="/jobs/usa-jobs" className="hover:text-brand-600">USA Jobs</Link>
-                <span>·</span>
-                <Link href="/tools/global-job-finder" className="hover:text-brand-600">Full Job Search</Link>
-              </div>
-            </div>
-          </div>
-          <Link
-            href="/tools/global-job-finder"
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-bold shadow-lg shadow-brand-600/25 whitespace-nowrap shrink-0 transition-colors"
-          >
-            Search jobs free <ArrowRight className="w-4 h-4" />
-          </Link>
+      <section className="space-y-4" aria-labelledby="flagship-heading">
+        <div>
+          <h2 id="flagship-heading" className="text-xl font-bold text-slate-900 dark:text-white">
+            Flagship tools people actually use
+          </h2>
+          <p className="text-sm text-slate-500 mt-1 max-w-2xl">
+            Each page explains what the tool does, where processing happens, and clear limits —
+            not keyword-stuffed clones.
+          </p>
+        </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {FLAGSHIP.map((t) => (
+            <Link
+              key={t.href}
+              href={t.href}
+              className="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-brand-500/50 transition-colors"
+            >
+              <h3 className="font-semibold text-sm text-slate-900 dark:text-white">{t.name}</h3>
+              <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">{t.why}</p>
+            </Link>
+          ))}
         </div>
       </section>
 
-      {/* Leaderboard under primary Job Finder CTA — 728×90 / 320×50 */}
+      {/* Single mid-page display unit — content first */}
       <div
         className="flex flex-col items-center justify-center gap-1 py-1 min-h-[50px] md:min-h-[90px]"
         data-ad-region="home-leaderboard"
@@ -172,7 +196,6 @@ export default function HomePage() {
         <AdSlot slot="mobile-banner" bare className="my-0 max-w-[320px] w-full" />
       </div>
 
-      {/* Product paths — not card soup in hero; secondary section */}
       <section className="space-y-4" aria-labelledby="paths-heading">
         <h2 id="paths-heading" className="text-xl font-bold text-slate-900 dark:text-white">
           Where do you want to go?
@@ -196,27 +219,23 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Mid-page native after paths — single unit, not stacked */}
-      <div
-        className="flex justify-center py-2"
-        data-ad-region="home-mid"
-        aria-label="Advertisement"
-      >
-        <AdSlot slot="native" bare className="my-0 w-full max-w-[728px]" />
-      </div>
-
       <section className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/60 dark:border-emerald-800/40">
         <div className="flex items-start gap-3">
           <ShieldCheck className="w-6 h-6 text-emerald-600 shrink-0" />
           <div>
             <h2 className="font-bold text-slate-900 dark:text-white text-sm">Browser privacy for file tools</h2>
             <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
-              Client-side PDF/image tools process locally. Free tier is ad-supported — Pro will mean fewer ads + SEO depth.
+              Client-side PDF and image tools process locally. Free tier is ad-supported with light
+              display units — tools stay usable without overlays blocking controls. Read{' '}
+              <Link href="/legal/about-our-tools" className="font-semibold text-brand-600 hover:underline">
+                how our tools work
+              </Link>
+              .
             </p>
           </div>
         </div>
-        <Link href="/pricing" className="text-xs font-bold text-brand-600 whitespace-nowrap hover:underline">
-          Free vs Pro →
+        <Link href="/legal/about" className="text-xs font-bold text-brand-600 whitespace-nowrap hover:underline">
+          About & contact →
         </Link>
       </section>
 

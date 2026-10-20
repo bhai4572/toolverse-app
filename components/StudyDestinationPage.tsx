@@ -218,7 +218,7 @@ export function StudyDestinationPage({ dest }: { dest: StudyDestination }) {
         </div>
       </section>
 
-      <UnderCtaAdBand variant="both" region={`study-${dest.slug}-under-cta`} />
+      <UnderCtaAdBand region={`study-${dest.slug}-under-cta`} />
     </article>
   );
 }

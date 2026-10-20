@@ -1,7 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
 import JobTools from '@/features/tools/JobTools';
-import { AdSlot } from '@/components/AdSlot';
 import { PageSidebarAds } from '@/components/ads/PageSidebarAds';
 import { JobsGridWithAds } from '@/components/ads/JobsGridWithAds';
 import { getJobPageContent } from '@/lib/seo/jobPageContent';
@@ -98,7 +97,9 @@ export default function JobCategoryPage({ params }: Props) {
         }
       >
         <header className="space-y-3">
-          <p className="text-xs font-semibold uppercase tracking-wider text-brand-600">ToolVerse Job Finder</p>
+          <p className="text-xs font-semibold uppercase tracking-wider text-brand-600">
+            Job listing aggregator — apply on employer sites
+          </p>
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
             {config.title}
           </h1>
@@ -106,9 +107,11 @@ export default function JobCategoryPage({ params }: Props) {
             {config.subtitle}
           </p>
           <p className="text-sm text-slate-600 dark:text-slate-400 max-w-3xl leading-relaxed">{config.intro}</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 max-w-3xl leading-relaxed border-l-2 border-brand-500/40 pl-3">
+            ToolVerse is not the employer. Listings and featured cards help you discover openings;
+            always verify details and apply on the original career page or job board.
+          </p>
         </header>
-
-        <AdSlot slot="under-title" className="my-2" />
 
         {featuredCards.length > 0 && (
           <section className="space-y-4">
@@ -123,8 +126,6 @@ export default function JobCategoryPage({ params }: Props) {
         <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-6 shadow-sm">
           <JobTools />
         </div>
-
-        <AdSlot slot="in-content" />
 
         {config.sections.map((section) => (
           <section key={section.heading} className="space-y-2">
@@ -164,8 +165,6 @@ export default function JobCategoryPage({ params }: Props) {
             </ul>
           </section>
         )}
-
-        <AdSlot slot="native" />
       </PageSidebarAds>
     </div>
   );

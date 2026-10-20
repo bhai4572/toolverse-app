@@ -97,6 +97,7 @@ for (const l of [
   'cookie-policy',
   'dmca',
   'about',
+  'about-our-tools',
   'contact',
   'editorial-policy',
   'security',
@@ -161,6 +162,14 @@ for (const ht of [
   'how-to-generate-and-print-business-qr',
   'how-business-rankings-work',
   'how-to-verify-business-ownership',
+  'how-to-verify-your-business',
+  'how-to-get-a-toolverse-business-id',
+  'how-to-generate-a-business-qr-code',
+  'how-to-print-your-toolverse-qr',
+  'how-to-collect-honest-customer-reviews',
+  'how-sponsored-ranking-works',
+  'how-to-claim-a-business',
+  'how-to-report-a-fake-business',
 ]) {
   add(`/how-to/${ht}`, 'weekly', '0.8');
 }
@@ -173,6 +182,9 @@ add('/travel/destinations', 'daily', '0.9');
 add('/travel/jobs', 'daily', '0.9');
 add('/travel/planner', 'daily', '0.9');
 add('/travel/route', 'daily', '0.9');
+for (const corridor of ['AE', 'SA', 'GB', 'CA', 'DE', 'QA', 'OM', 'US', 'TR']) {
+  add(`/travel/PK/${corridor}`, 'daily', '0.85');
+}
 
 // Startup Launch & Discovery Platform Routes
 add('/startups', 'daily', '1.0');

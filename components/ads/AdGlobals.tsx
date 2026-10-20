@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import {
+  ADSENSE_REVIEW_MODE,
   MONETAG_PUSH_ZONE,
   MONETAG_VIGNETTE_ZONE,
   shouldSkipAds,
@@ -65,7 +66,8 @@ function ssSet(key: string, value: string) {
 
 /**
  * Global ad loaders. Adsterra Social Bar removed.
- * Monetag In-Page Push (public) + gated Vignette (inner pages, once/session).
+ * During ADSENSE_REVIEW_MODE: Monetag push + vignette stay off (reviewer UX).
+ * Otherwise: In-Page Push (public) + gated Vignette (inner pages, once/session).
  * Never gates tools. No popunder.
  */
 export function AdGlobals() {
@@ -74,6 +76,7 @@ export function AdGlobals() {
 
   useEffect(() => {
     if (skip || typeof window === 'undefined') return;
+    if (ADSENSE_REVIEW_MODE) return;
 
     // In-Page Push — low layout impact; once per document
     injectOnce(

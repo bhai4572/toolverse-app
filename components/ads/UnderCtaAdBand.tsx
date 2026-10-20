@@ -13,11 +13,11 @@ interface UnderCtaAdBandProps {
 }
 
 /**
- * Clean ad band for under CTA sections (hubs / travel route).
- * Display-only Adsterra units — never gates tools; no popunder.
+ * Single under-CTA ad band. Default is one leaderboard (not stacked units).
+ * Display-only — never gates tools; no popunder.
  */
 export function UnderCtaAdBand({
-  variant = 'both',
+  variant = 'leaderboard',
   region = 'under-cta',
   className = '',
 }: UnderCtaAdBandProps) {

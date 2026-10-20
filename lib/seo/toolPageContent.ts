@@ -2283,11 +2283,15 @@ export const TOOL_PAGE_CONTENT: Record<string, ToolPageContent> = {
     sections: [
       {
         heading: 'When compression helps',
-        body: 'Email caps (often ~10MB), job portals, and GOV.UK / IRCC-style uploads reject large packs. Re-packing can trim bloat from exports and merges.',
+        body: 'Email caps (often ~10MB), job portals, and GOV.UK / IRCC-style uploads reject large packs. Re-packing can trim bloat from exports and merges. We built this because upload-first compressors want your CV and bank statements on their servers — this one keeps bytes in browser memory for the session.',
       },
       {
         heading: 'Scanned photo PDFs',
-        body: 'If your PDF is mostly photos, compress images first or rebuild with Images to PDF after shrinking photos — stream re-pack alone has limits.',
+        body: 'If your PDF is mostly photos, compress images first or rebuild with Images to PDF after shrinking photos — stream re-pack alone has limits. For form photo caps (20KB / 50KB), use Compress Image to Target Size, then rebuild the PDF.',
+      },
+      {
+        heading: 'What “local” means here',
+        body: 'The file is read in your tab, processed with a client-side PDF engine, and offered as a download. We do not store a copy on ToolVerse servers for this tool. Ads on the page are separate display units and never block the compress button.',
       },
     ],
     faqs: [
@@ -2298,6 +2302,10 @@ export const TOOL_PAGE_CONTENT: Record<string, ToolPageContent> = {
       {
         question: 'Why barely smaller?',
         answer: 'Already-optimized or image-heavy PDFs may not shrink much. Try image compression or a lower-quality scan rebuild.',
+      },
+      {
+        question: 'Will this open a password-protected PDF?',
+        answer: 'Encrypted PDFs usually need to be unlocked first in a PDF reader, then compressed.',
       },
     ],
   },
@@ -2310,14 +2318,22 @@ export const TOOL_PAGE_CONTENT: Record<string, ToolPageContent> = {
       'Free tip calculator with 15–25% presets and bill split. Instant tip, total, and per-person amounts in your browser.',
     sections: [
       {
-        heading: 'US tipping norms',
-        body: 'Many US diners tip around 15–20% of pre-tax service; 18–20% is common for full service. Adjust for quality and local custom.',
+        heading: 'US tipping norms (practical, not preachy)',
+        body: 'Many US diners tip around 15–20% of pre-tax service; 18–20% is common for full service. Coffee counters and takeout often use lower custom amounts. Adjust for quality and local custom — this tool is math, not etiquette law.',
+      },
+      {
+        heading: 'Split without awkward spreadsheet math',
+        body: 'Enter the bill, pick a tip percent, and set party size. You get tip dollars, grand total, and per-person share. Useful when the receipt is messy or someone paid tax-included vs pre-tax.',
       },
     ],
     faqs: [
       {
         question: 'Should I tip on tax?',
         answer: 'Customs vary. Enter the amount you want to tip on (pre-tax or total) as the bill field.',
+      },
+      {
+        question: 'Does this store my bill amounts?',
+        answer: 'No. Calculation runs in the browser; we do not save your numbers to a ToolVerse account.',
       },
     ],
   },
