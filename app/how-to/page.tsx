@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles, BookOpen, ArrowRight, ShieldCheck, QrCode, Trophy, HelpCircle } from 'lucide-react';
+import { BookOpen, ArrowRight } from 'lucide-react';
 
 export const HOW_TO_GUIDES = [
   {
@@ -11,7 +11,7 @@ export const HOW_TO_GUIDES = [
   {
     slug: 'how-to-generate-and-print-business-qr',
     title: 'How to Generate & Print Your Toolverse Business QR Badge',
-    description: 'Learn how to generate vector SVG badges and print durable QR identity codes for your store front or menu.',
+    description: 'Learn how to generate vector SVG badges and print durable QR identity codes for your storefront or counter.',
     category: 'QR Identity System',
   },
   {
@@ -25,6 +25,36 @@ export const HOW_TO_GUIDES = [
     title: 'How to Complete Risk-Based Business Verification',
     description: 'Everything you need to know about verification levels, document upload requirements, and admin review approval.',
     category: 'Verification & Safety',
+  },
+  {
+    slug: 'how-to-get-a-toolverse-business-id',
+    title: 'How to Get a Permanent Toolverse Business ID (TV-BIZ)',
+    description: 'Understand how permanent TV-BIZ identifiers work, how they resolve offline scans, and how to claim yours.',
+    category: 'Onboarding & Identity',
+  },
+  {
+    slug: 'how-to-collect-honest-customer-reviews',
+    title: 'How to Collect Honest Customer Reviews with QR Badges',
+    description: 'Strategies to encourage happy customers to scan your QR code and leave authentic, verified feedback.',
+    category: 'Reputation & Growth',
+  },
+  {
+    slug: 'how-sponsored-ranking-works',
+    title: 'How Sponsored Category Rankings Work Transparently',
+    description: 'Learn how daily bidding works for top-of-category placement while preserving organic community integrity.',
+    category: 'Rankings & Trust',
+  },
+  {
+    slug: 'how-to-claim-a-business',
+    title: 'How to Claim an Existing Business Profile on Toolverse',
+    description: 'Claim ownership of your business listing by verifying official domain email or business documentation.',
+    category: 'Verification & Safety',
+  },
+  {
+    slug: 'how-to-report-a-fake-business',
+    title: 'How to Report a Fake or Inaccurate Business Listing',
+    description: 'How our moderation team investigates community reports, removes spam listings, and maintains ecosystem trust.',
+    category: 'Moderation & Community',
   },
 ];
 
