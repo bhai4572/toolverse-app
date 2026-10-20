@@ -93,6 +93,5 @@ Disallow: /
 User-agent: Google-Extended
 Disallow: /
 
-# Sitemap index (children: sitemap-tools.xml, sitemap-content.xml, sitemap-pages.xml)
-# In Google Search Console, submit the index URL alone — that is enough.
+# Combined URL sitemap (all public pages). Submit this single URL in GSC.
 Sitemap: https://toolverse.baby/sitemap.xml

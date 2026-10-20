@@ -1,9 +1,9 @@
 /**
- * Generate sitemap index + 3 child sitemaps under public/ (safe for CF prebuild).
- * - sitemap.xml          → sitemapindex
- * - sitemap-tools.xml    → /tools/* + /category/*
- * - sitemap-content.xml  → blog, how-to, news, study
- * - sitemap-pages.xml    → hubs, legal, jobs, product/travel/etc.
+ * Generate sitemaps under public/ (safe for CF prebuild).
+ * - sitemap.xml          → single combined urlset (GSC submit target)
+ * - sitemap-tools.xml    → /tools/* + /category/* (optional split)
+ * - sitemap-content.xml  → blog, how-to, news, study (optional split)
+ * - sitemap-pages.xml    → hubs, legal, jobs, product/travel/etc. (optional split)
  *
  * Parses slug fields from registry + blog pillar source; adds per-tool how-to guides.
  * Excludes workspace / admin / dashboard / private URLs.
@@ -73,21 +73,6 @@ function writeUrlset(filename, urls) {
   }
   lines.push('</urlset>');
   fs.writeFileSync(path.join(publicDir, filename), lines.join('\n') + '\n');
-}
-
-function writeIndex(children) {
-  const lines = [
-    '<?xml version="1.0" encoding="UTF-8"?>',
-    '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-  ];
-  for (const name of children) {
-    lines.push('  <sitemap>');
-    lines.push(`    <loc>${base}/${name}</loc>`);
-    lines.push(`    <lastmod>${today}</lastmod>`);
-    lines.push('  </sitemap>');
-  }
-  lines.push('</sitemapindex>');
-  fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), lines.join('\n') + '\n');
 }
 
 const registry = fs.readFileSync(path.join(root, 'lib/tools/registry.ts'), 'utf8');
@@ -259,12 +244,15 @@ pagesUrls.push(makeUrl('/ca', 'weekly', '0.85'));
 pagesUrls.push(makeUrl('/au', 'weekly', '0.85'));
 pagesUrls.push(makeUrl('/passport-photos', 'weekly', '0.85'));
 
+// Primary GSC target: one combined urlset at /sitemap.xml
+const allUrls = [...toolsUrls, ...contentUrls, ...pagesUrls];
+writeUrlset('sitemap.xml', allUrls);
+
+// Optional split files (organization / debugging; not required for GSC)
 writeUrlset('sitemap-tools.xml', toolsUrls);
 writeUrlset('sitemap-content.xml', contentUrls);
 writeUrlset('sitemap-pages.xml', pagesUrls);
-writeIndex(['sitemap-tools.xml', 'sitemap-content.xml', 'sitemap-pages.xml']);
 
-const total = toolsUrls.length + contentUrls.length + pagesUrls.length;
 console.log(
-  `Wrote sitemap index + 3 children (${total} URLs): tools=${toolsUrls.length}, content=${contentUrls.length}, pages=${pagesUrls.length} (${tools.length} live tools, ${blog.length} blog posts)`
+  `Wrote combined sitemap.xml (${allUrls.length} URLs) + 3 optional children: tools=${toolsUrls.length}, content=${contentUrls.length}, pages=${pagesUrls.length} (${tools.length} live tools, ${blog.length} blog posts)`
 );

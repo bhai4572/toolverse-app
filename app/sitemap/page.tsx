@@ -365,8 +365,8 @@ export default function HtmlSitemapPage() {
           className="text-brand-600 font-semibold hover:underline"
         >
           sitemap.xml
-        </a>{' '}
-        (index) plus tools, content, and pages child sitemaps.
+        </a>
+        .
       </p>
     </div>
   );

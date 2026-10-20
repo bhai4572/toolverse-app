@@ -42,48 +42,32 @@ export function runTechnicalAudit() {
     });
   }
 
-  // 2. Sitemap index + child sitemaps audit
+  // 2. Combined sitemap.xml (urlset) audit
   const sitemapPath = path.join(root, 'public/sitemap.xml');
-  const childNames = ['sitemap-tools.xml', 'sitemap-content.xml', 'sitemap-pages.xml'];
   if (!fs.existsSync(sitemapPath)) {
     auditReport.errors.push('CRITICAL: public/sitemap.xml missing');
   } else {
     const sitemapContent = fs.readFileSync(sitemapPath, 'utf8');
-    const isIndex = sitemapContent.includes('<sitemapindex');
-    const indexLocs = [...sitemapContent.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
-    let allLocs = [];
-    let childrenPresent = 0;
-    for (const name of childNames) {
-      const childPath = path.join(root, 'public', name);
-      if (!fs.existsSync(childPath)) continue;
-      childrenPresent += 1;
-      const childContent = fs.readFileSync(childPath, 'utf8');
-      allLocs = allLocs.concat([...childContent.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]));
-    }
+    const isUrlset = sitemapContent.includes('<urlset');
+    const allLocs = [...sitemapContent.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
     const validProtocolCount = allLocs.filter((u) => u.startsWith('https://toolverse.baby')).length;
     const hasNoHttp = !allLocs.some((u) => u.startsWith('http://'));
     const hasNoTrailingSlashMismatches = allLocs.every(
       (u) => u === 'https://toolverse.baby/' || !u.endsWith('/')
     );
-    const indexPointsToChildren = childNames.every((n) =>
-      indexLocs.some((u) => u.endsWith(`/${n}`))
-    );
 
     auditReport.checks.push({
       test: 'sitemap.xml Integrity',
       status:
-        isIndex &&
-        childrenPresent === 3 &&
-        indexPointsToChildren &&
+        isUrlset &&
         allLocs.length > 200 &&
         hasNoHttp &&
-        hasNoTrailingSlashMismatches
+        hasNoTrailingSlashMismatches &&
+        validProtocolCount === allLocs.length
           ? 'PASS'
           : 'FAIL',
       details: {
-        isSitemapIndex: isIndex,
-        childSitemapsPresent: childrenPresent,
-        indexPointsToChildren,
+        isCombinedUrlset: isUrlset,
         totalUrls: allLocs.length,
         canonicalDomainMatched: validProtocolCount === allLocs.length,
         strictHttpsEnforced: hasNoHttp,

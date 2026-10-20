@@ -14,6 +14,9 @@ export async function onRequest(context) {
   // API Pages Functions must also pass through (no HTML shell / SPA fallback).
   if (
     pathname === '/sitemap.xml' ||
+    pathname === '/sitemap-tools.xml' ||
+    pathname === '/sitemap-content.xml' ||
+    pathname === '/sitemap-pages.xml' ||
     pathname === '/robots.txt' ||
     pathname === '/llms.txt' ||
     pathname === '/ads.txt' ||
