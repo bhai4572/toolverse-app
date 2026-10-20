@@ -528,7 +528,9 @@ function buildBodyMain(pathname, meta, deps) {
       </article>
     `;
   } else if (parts[0] === 'how-to') {
-    contentHtml = `
+    // Hub vs slug: slug shells must not reuse the hub H1 (soft-duplicate signal for Googlebot).
+    if (!parts[1]) {
+      contentHtml = `
       <article class="space-y-6">
         <header class="space-y-2">
           <h1 class="text-3xl font-extrabold text-slate-900">Toolverse How-To Center &amp; Guides</h1>
@@ -536,6 +538,22 @@ function buildBodyMain(pathname, meta, deps) {
         </header>
       </article>
     `;
+    } else {
+      const guideTitle = (meta.title || '').replace(/\s*[—–-]\s*Toolverse Guide\s*$/i, '').trim() || meta.title;
+      contentHtml = `
+      <article class="space-y-6">
+        <nav aria-label="Breadcrumb" class="text-xs text-slate-500 space-x-2">
+          <a href="/" class="hover:underline">Home</a> &gt;
+          <a href="/how-to" class="hover:underline">How-To</a> &gt;
+          <span class="text-slate-800 font-semibold">${esc(guideTitle)}</span>
+        </nav>
+        <header class="space-y-2">
+          <h1 class="text-3xl font-extrabold text-slate-900">${esc(guideTitle)}</h1>
+          <p class="text-base text-slate-600">${esc(meta.description)}</p>
+        </header>
+      </article>
+    `;
+    }
   } else if (parts[0] === 'admin') {
     contentHtml = `
       <article class="space-y-6 max-w-xl mx-auto py-8">
@@ -767,6 +785,7 @@ async function main() {
     routes.push('/au');
     routes.push('/passport-photos');
     routes.push('/news');
+    routes.push('/sitemap');
     routes.push('/dashboard');
 
     for (const route of routes) {

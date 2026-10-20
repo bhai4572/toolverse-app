@@ -67,6 +67,7 @@ import CaHubPage from '../app/ca/page';
 import AuHubPage from '../app/au/page';
 import PassportPhotosHubPage from '../app/passport-photos/page';
 import NewsHubPage from '../app/news/page';
+import HtmlSitemapPage from '../app/sitemap/page';
 
 import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
@@ -246,6 +247,10 @@ export default function App() {
 
     if (parts[0] === 'news') {
       return <NewsHubPage />;
+    }
+
+    if (parts[0] === 'sitemap' || parts[0] === 'site-map') {
+      return <HtmlSitemapPage />;
     }
 
     if (parts[0] === 'dashboard') {

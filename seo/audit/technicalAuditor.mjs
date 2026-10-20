@@ -42,23 +42,50 @@ export function runTechnicalAudit() {
     });
   }
 
-  // 2. Sitemap.xml audit
+  // 2. Sitemap index + child sitemaps audit
   const sitemapPath = path.join(root, 'public/sitemap.xml');
+  const childNames = ['sitemap-tools.xml', 'sitemap-content.xml', 'sitemap-pages.xml'];
   if (!fs.existsSync(sitemapPath)) {
     auditReport.errors.push('CRITICAL: public/sitemap.xml missing');
   } else {
     const sitemapContent = fs.readFileSync(sitemapPath, 'utf8');
-    const locMatches = [...sitemapContent.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
-    const validProtocolCount = locMatches.filter((u) => u.startsWith('https://toolverse.baby')).length;
-    const hasNoHttp = !locMatches.some((u) => u.startsWith('http://'));
-    const hasNoTrailingSlashMismatches = locMatches.every((u) => u === 'https://toolverse.baby/' || !u.endsWith('/'));
+    const isIndex = sitemapContent.includes('<sitemapindex');
+    const indexLocs = [...sitemapContent.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+    let allLocs = [];
+    let childrenPresent = 0;
+    for (const name of childNames) {
+      const childPath = path.join(root, 'public', name);
+      if (!fs.existsSync(childPath)) continue;
+      childrenPresent += 1;
+      const childContent = fs.readFileSync(childPath, 'utf8');
+      allLocs = allLocs.concat([...childContent.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]));
+    }
+    const validProtocolCount = allLocs.filter((u) => u.startsWith('https://toolverse.baby')).length;
+    const hasNoHttp = !allLocs.some((u) => u.startsWith('http://'));
+    const hasNoTrailingSlashMismatches = allLocs.every(
+      (u) => u === 'https://toolverse.baby/' || !u.endsWith('/')
+    );
+    const indexPointsToChildren = childNames.every((n) =>
+      indexLocs.some((u) => u.endsWith(`/${n}`))
+    );
 
     auditReport.checks.push({
       test: 'sitemap.xml Integrity',
-      status: locMatches.length > 200 && hasNoHttp && hasNoTrailingSlashMismatches ? 'PASS' : 'FAIL',
+      status:
+        isIndex &&
+        childrenPresent === 3 &&
+        indexPointsToChildren &&
+        allLocs.length > 200 &&
+        hasNoHttp &&
+        hasNoTrailingSlashMismatches
+          ? 'PASS'
+          : 'FAIL',
       details: {
-        totalUrls: locMatches.length,
-        canonicalDomainMatched: validProtocolCount === locMatches.length,
+        isSitemapIndex: isIndex,
+        childSitemapsPresent: childrenPresent,
+        indexPointsToChildren,
+        totalUrls: allLocs.length,
+        canonicalDomainMatched: validProtocolCount === allLocs.length,
         strictHttpsEnforced: hasNoHttp,
         trailingSlashConsistent: hasNoTrailingSlashMismatches,
       },

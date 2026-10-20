@@ -1,4 +1,46 @@
 # ToolVerse robots.txt — https://toolverse.baby
+# Standard RFC 9309 Compliant
+
+# Google Search Engine & Google Search Console URL Inspection Tool
+User-agent: Googlebot
+User-agent: Googlebot-Image
+User-agent: Googlebot-News
+User-agent: Googlebot-Video
+User-agent: Google-InspectionTool
+Allow: /
+Allow: /tools/
+Allow: /category/
+Allow: /blog/
+Allow: /jobs/
+Allow: /legal/
+Disallow: /scratch/
+Disallow: /workspace
+Disallow: /workspace/
+Disallow: /seo-dashboard
+Disallow: /seo-dashboard/
+Disallow: /dashboard
+Disallow: /dashboard/
+Disallow: /admin
+Disallow: /admin/
+Disallow: /business/dashboard
+Disallow: /business/dashboard/
+
+# Bing Search Engine
+User-agent: Bingbot
+Allow: /
+Disallow: /scratch/
+Disallow: /workspace
+Disallow: /workspace/
+Disallow: /seo-dashboard
+Disallow: /seo-dashboard/
+Disallow: /dashboard
+Disallow: /dashboard/
+Disallow: /admin
+Disallow: /admin/
+Disallow: /business/dashboard
+Disallow: /business/dashboard/
+
+# Default rules for all other web search crawlers
 User-agent: *
 Allow: /
 Allow: /tools/
@@ -18,20 +60,7 @@ Disallow: /admin/
 Disallow: /business/dashboard
 Disallow: /business/dashboard/
 
-# Training scrapers (disallow). Answer-engine fetchers allowed below for AEO/GEO citations.
-User-agent: GPTBot
-Disallow: /
-
-User-agent: Google-Extended
-Disallow: /
-
-User-agent: CCBot
-Disallow: /
-
-User-agent: Bytespider
-Disallow: /
-
-# Allow answer / browse fetchers so assistants can cite ToolVerse pages
+# Allow answer / browse fetchers so AI assistants can cite ToolVerse pages (AEO / GEO)
 User-agent: ChatGPT-User
 Allow: /
 
@@ -47,8 +76,23 @@ Allow: /
 User-agent: anthropic-ai
 Allow: /
 
+# Training scrapers (disallowed)
+User-agent: GPTBot
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
 User-agent: Applebot-Extended
 Disallow: /
 
-Host: https://toolverse.baby
+# Opt-out exclusively from Google AI training (Googlebot above handles Search indexing)
+User-agent: Google-Extended
+Disallow: /
+
+# Sitemap index (children: sitemap-tools.xml, sitemap-content.xml, sitemap-pages.xml)
+# In Google Search Console, submit the index URL alone — that is enough.
 Sitemap: https://toolverse.baby/sitemap.xml

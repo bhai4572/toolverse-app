@@ -1669,6 +1669,37 @@ export function getMetadataForPath(pathname: string): PageMetadata {
     }
   }
 
+  // Human-readable HTML sitemap
+  if ((parts[0] === 'sitemap' || parts[0] === 'site-map') && parts.length === 1) {
+    const canonicalUrl = `${baseUrl}/sitemap`;
+    const title = 'Sitemap — Browse All ToolVerse Pages | ToolVerse';
+    const description =
+      'HTML sitemap for ToolVerse: tools by category, blog guides, study destinations, cars, jobs, legal pages, and regional hubs. Search and jump to any public page.';
+    return {
+      title,
+      description,
+      keywords: ['toolverse sitemap', 'free online tools directory', 'site map'],
+      canonicalUrl,
+      ogType: 'website',
+      ogImage: DEFAULT_OG_IMAGE,
+      jsonLd: wrapInGraph([
+        buildOrganizationNode(),
+        buildWebSiteNode(),
+        buildWebPageNode({
+          canonicalUrl,
+          name: title,
+          description,
+          type: 'CollectionPage',
+          hasBreadcrumbs: true,
+        }),
+        buildBreadcrumbNode(canonicalUrl, [
+          { name: 'Home', url: `${baseUrl}/` },
+          { name: 'Sitemap', url: canonicalUrl },
+        ]),
+      ]),
+    };
+  }
+
   // Cars hub with FAQ schema
   if (parts[0] === 'cars' && parts.length === 1) {
     const canonicalUrl = `${baseUrl}/cars`;
@@ -1720,24 +1751,307 @@ export function getMetadataForPath(pathname: string): PageMetadata {
     };
   }
 
-  // 7. Fallback / Default
-  const fallbackUrl = `${baseUrl}/`;
-  const fallbackTitle = 'ToolVerse — Free Online Tools';
-  const fallbackDesc = 'Free, fast, privacy-first online tools for everyday work.';
+  // Travel intelligence routes (/travel, /travel/route, /travel/:corridor)
+  if (parts[0] === 'travel') {
+    const travelSub = parts[1];
+    if (parts.length === 3) {
+      const origin = parts[1].toUpperCase();
+      const dest = parts[2].toUpperCase();
+      const canonicalUrl = `${baseUrl}/travel/${parts[1]}/${parts[2]}`;
+      const title = `Travel & Visa Guide: ${origin} to ${dest} — ToolVerse Travel Intelligence`;
+      const description = `Complete visa rules, embassy guidelines, travel corridor requirements, flight routes, and overseas jobs from ${origin} to ${dest}.`;
+      const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+        { name: 'Home', url: `${baseUrl}/` },
+        { name: 'Travel', url: `${baseUrl}/travel` },
+        { name: `${origin} → ${dest}`, url: canonicalUrl },
+      ]);
+      return {
+        title,
+        description,
+        canonicalUrl,
+        ogType: 'article',
+        ogImage: DEFAULT_OG_IMAGE,
+        jsonLd: wrapInGraph([
+          buildOrganizationNode(),
+          buildWebSiteNode(),
+          buildWebPageNode({ canonicalUrl, name: title, description, type: 'ItemPage', hasBreadcrumbs: true }),
+          breadcrumbs,
+        ]),
+      };
+    }
+
+    const travelHubMeta: Record<string, { title: string; description: string; crumb: string }> = {
+      passport: {
+        title: 'Global Passport Power & Visa-Free Index 2026 — ToolVerse',
+        description: 'Explore global passport mobility rankings, visa-free access countries, and consular guidelines.',
+        crumb: 'Passport Index',
+      },
+      embassies: {
+        title: 'Global Embassy & Consulate Directory — ToolVerse',
+        description: 'Find official embassy contacts, consular jurisdiction, visa application requirements, and addresses worldwide.',
+        crumb: 'Embassies',
+      },
+      destinations: {
+        title: 'Top Travel & Expat Work Destinations 2026 — ToolVerse',
+        description: 'Explore leading destinations for tourism, remote work, study abroad, and international immigration.',
+        crumb: 'Destinations',
+      },
+      jobs: {
+        title: 'Jobs Abroad & Overseas Visa Sponsorship — ToolVerse',
+        description: 'Browse international employment opportunities and visa sponsorship pathways across Gulf, Europe, and North America.',
+        crumb: 'Overseas Jobs',
+      },
+      planner: {
+        title: 'Smart Travel Budget & Trip Planner — ToolVerse',
+        description: 'Calculate travel expenses, daily allowances, flight estimations, and foreign exchange budgets.',
+        crumb: 'Travel Planner',
+      },
+      route: {
+        title: 'Travel Route & Visa Checker — ToolVerse',
+        description: 'Check real-time visa requirements, transit rules, and consular requirements between any two countries.',
+        crumb: 'Route Checker',
+      },
+    };
+
+    if (travelSub && travelHubMeta[travelSub]) {
+      const h = travelHubMeta[travelSub];
+      const canonicalUrl = `${baseUrl}/travel/${travelSub}`;
+      const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+        { name: 'Home', url: `${baseUrl}/` },
+        { name: 'Travel', url: `${baseUrl}/travel` },
+        { name: h.crumb, url: canonicalUrl },
+      ]);
+      return {
+        title: h.title,
+        description: h.description,
+        canonicalUrl,
+        ogType: 'website',
+        ogImage: DEFAULT_OG_IMAGE,
+        jsonLd: wrapInGraph([
+          buildOrganizationNode(),
+          buildWebSiteNode(),
+          buildWebPageNode({ canonicalUrl, name: h.title, description: h.description, type: 'CollectionPage', hasBreadcrumbs: true }),
+          breadcrumbs,
+        ]),
+      };
+    }
+
+    const canonicalUrl = `${baseUrl}/travel`;
+    const title = 'Global Travel & Visa Intelligence Platform — ToolVerse';
+    const description = 'Check visa requirements, embassy directories, passport power index, overseas jobs, and international travel routes in one privacy-first platform.';
+    const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+      { name: 'Home', url: `${baseUrl}/` },
+      { name: 'Travel', url: canonicalUrl },
+    ]);
+    return {
+      title,
+      description,
+      canonicalUrl,
+      ogType: 'website',
+      ogImage: DEFAULT_OG_IMAGE,
+      jsonLd: wrapInGraph([
+        buildOrganizationNode(),
+        buildWebSiteNode(),
+        buildWebPageNode({ canonicalUrl, name: title, description, type: 'CollectionPage', hasBreadcrumbs: true }),
+        breadcrumbs,
+      ]),
+    };
+  }
+
+  // Startups & Launch Routes (/startups, /startups/:slug, /submit-startup)
+  if (parts[0] === 'startups' || parts[0] === 'submit-startup') {
+    if (parts[0] === 'submit-startup') {
+      const canonicalUrl = `${baseUrl}/submit-startup`;
+      const title = 'Launch & Submit Your Startup — ToolVerse Startup Hub';
+      const description = 'Submit your tech startup, AI app, or SaaS product to ToolVerse for free community discovery and backlink visibility.';
+      const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+        { name: 'Home', url: `${baseUrl}/` },
+        { name: 'Startups', url: `${baseUrl}/startups` },
+        { name: 'Submit Startup', url: canonicalUrl },
+      ]);
+      return {
+        title,
+        description,
+        canonicalUrl,
+        ogType: 'website',
+        ogImage: DEFAULT_OG_IMAGE,
+        jsonLd: wrapInGraph([
+          buildOrganizationNode(),
+          buildWebSiteNode(),
+          buildWebPageNode({ canonicalUrl, name: title, description, type: 'WebPage', hasBreadcrumbs: true }),
+          breadcrumbs,
+        ]),
+      };
+    }
+
+    if (parts[1]) {
+      const slugFormatted = parts[1].split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+      const canonicalUrl = `${baseUrl}/startups/${parts[1]}`;
+      const title = `${slugFormatted} — Startup Profile, Reviews & Launch | ToolVerse`;
+      const description = `Discover ${slugFormatted} on ToolVerse. Explore product features, founder story, tech stack, and user reviews.`;
+      const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+        { name: 'Home', url: `${baseUrl}/` },
+        { name: 'Startups', url: `${baseUrl}/startups` },
+        { name: slugFormatted, url: canonicalUrl },
+      ]);
+      return {
+        title,
+        description,
+        canonicalUrl,
+        ogType: 'article',
+        ogImage: DEFAULT_OG_IMAGE,
+        jsonLd: wrapInGraph([
+          buildOrganizationNode(),
+          buildWebSiteNode(),
+          buildWebPageNode({ canonicalUrl, name: title, description, type: 'ItemPage', hasBreadcrumbs: true }),
+          breadcrumbs,
+        ]),
+      };
+    }
+
+    const canonicalUrl = `${baseUrl}/startups`;
+    const title = 'Startup Launch & Discovery Directory — ToolVerse';
+    const description = 'Discover trending tech startups, AI tools, SaaS apps, and innovative digital platforms launched on ToolVerse.';
+    const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+      { name: 'Home', url: `${baseUrl}/` },
+      { name: 'Startups', url: canonicalUrl },
+    ]);
+    return {
+      title,
+      description,
+      canonicalUrl,
+      ogType: 'website',
+      ogImage: DEFAULT_OG_IMAGE,
+      jsonLd: wrapInGraph([
+        buildOrganizationNode(),
+        buildWebSiteNode(),
+        buildWebPageNode({ canonicalUrl, name: title, description, type: 'CollectionPage', hasBreadcrumbs: true }),
+        breadcrumbs,
+      ]),
+    };
+  }
+
+  // Guest Posting & Publisher Marketplace (/guest-posts, /become-a-publisher, /publishers/:slug)
+  if (parts[0] === 'guest-posts' || parts[0] === 'become-a-publisher' || parts[0] === 'publishers') {
+    if (parts[0] === 'become-a-publisher') {
+      const canonicalUrl = `${baseUrl}/become-a-publisher`;
+      const title = 'Become a Verified Publisher — ToolVerse Marketplace';
+      const description = 'Monetize your authority blog or publication by accepting high-quality sponsored articles and editorial pitches.';
+      const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+        { name: 'Home', url: `${baseUrl}/` },
+        { name: 'Guest Posts', url: `${baseUrl}/guest-posts` },
+        { name: 'Become a Publisher', url: canonicalUrl },
+      ]);
+      return {
+        title,
+        description,
+        canonicalUrl,
+        ogType: 'website',
+        ogImage: DEFAULT_OG_IMAGE,
+        jsonLd: wrapInGraph([
+          buildOrganizationNode(),
+          buildWebSiteNode(),
+          buildWebPageNode({ canonicalUrl, name: title, description, type: 'WebPage', hasBreadcrumbs: true }),
+          breadcrumbs,
+        ]),
+      };
+    }
+
+    if (parts[0] === 'publishers' && parts[1]) {
+      const pubFormatted = parts[1].split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+      const canonicalUrl = `${baseUrl}/publishers/${parts[1]}`;
+      const title = `${pubFormatted} — Verified Media Publisher | ToolVerse`;
+      const description = `View domain metrics, editorial guidelines, and article pitch requirements for ${pubFormatted} on ToolVerse.`;
+      const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+        { name: 'Home', url: `${baseUrl}/` },
+        { name: 'Publishers', url: `${baseUrl}/guest-posts` },
+        { name: pubFormatted, url: canonicalUrl },
+      ]);
+      return {
+        title,
+        description,
+        canonicalUrl,
+        ogType: 'article',
+        ogImage: DEFAULT_OG_IMAGE,
+        jsonLd: wrapInGraph([
+          buildOrganizationNode(),
+          buildWebSiteNode(),
+          buildWebPageNode({ canonicalUrl, name: title, description, type: 'ItemPage', hasBreadcrumbs: true }),
+          breadcrumbs,
+        ]),
+      };
+    }
+
+    if (parts[1] === 'create-pitch') {
+      const canonicalUrl = `${baseUrl}/guest-posts/create-pitch`;
+      const title = 'Pitch a Guest Post Article — ToolVerse Publisher Network';
+      const description = 'Submit article pitches and guest posts to high-authority technology, finance, and SEO publishers.';
+      const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+        { name: 'Home', url: `${baseUrl}/` },
+        { name: 'Guest Posts', url: `${baseUrl}/guest-posts` },
+        { name: 'Create Pitch', url: canonicalUrl },
+      ]);
+      return {
+        title,
+        description,
+        canonicalUrl,
+        ogType: 'website',
+        ogImage: DEFAULT_OG_IMAGE,
+        jsonLd: wrapInGraph([
+          buildOrganizationNode(),
+          buildWebSiteNode(),
+          buildWebPageNode({ canonicalUrl, name: title, description, type: 'WebPage', hasBreadcrumbs: true }),
+          breadcrumbs,
+        ]),
+      };
+    }
+
+    const canonicalUrl = `${baseUrl}/guest-posts`;
+    const title = 'Guest Posting & Authority Publisher Marketplace — ToolVerse';
+    const description = 'Connect with verified publishers, pitch thought leadership articles, and build high-quality contextual backlinks safely.';
+    const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+      { name: 'Home', url: `${baseUrl}/` },
+      { name: 'Guest Posts', url: canonicalUrl },
+    ]);
+    return {
+      title,
+      description,
+      canonicalUrl,
+      ogType: 'website',
+      ogImage: DEFAULT_OG_IMAGE,
+      jsonLd: wrapInGraph([
+        buildOrganizationNode(),
+        buildWebSiteNode(),
+        buildWebPageNode({ canonicalUrl, name: title, description, type: 'CollectionPage', hasBreadcrumbs: true }),
+        breadcrumbs,
+      ]),
+    };
+  }
+
+  // 7. Fallback / Default (Strictly Self-Referencing Canonical)
+  const fallbackUrl = cleanPath === '/' ? `${baseUrl}/` : `${baseUrl}${cleanPath}`;
+  const fallbackTitleFormatted =
+    parts.length > 0
+      ? parts[parts.length - 1]
+          .split('-')
+          .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+          .join(' ') + ' — ToolVerse'
+      : 'ToolVerse — Free Online Tools';
+  const fallbackDesc = `Explore ${fallbackTitleFormatted} on ToolVerse. Free, fast, privacy-first online tools for everyday work.`;
 
   const fallbackGraph = [
     buildOrganizationNode(),
     buildWebSiteNode(),
     buildWebPageNode({
       canonicalUrl: fallbackUrl,
-      name: fallbackTitle,
+      name: fallbackTitleFormatted,
       description: fallbackDesc,
       type: 'WebPage',
     }),
   ];
 
   return {
-    title: fallbackTitle,
+    title: fallbackTitleFormatted,
     description: fallbackDesc,
     canonicalUrl: fallbackUrl,
     ogType: 'website',

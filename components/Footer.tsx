@@ -98,6 +98,8 @@ export function Footer() {
             <Link href="/legal/contact" className="hover:text-white transition-colors">Contact</Link>
             <span aria-hidden>•</span>
             <Link href="/legal/privacy-policy" className="hover:text-white transition-colors">Privacy</Link>
+            <span aria-hidden>•</span>
+            <Link href="/sitemap" className="hover:text-white transition-colors">Sitemap</Link>
           </div>
         </div>
       </div>
