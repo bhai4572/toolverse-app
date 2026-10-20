@@ -199,4 +199,24 @@ describe('ToolVerse Advanced Schema.org & Structured Data Architecture', () => {
     const privacyPage = privacyGraph.find((n) => n['@type'] === 'WebPage');
     expect(privacyPage).toBeDefined();
   });
+
+  it('noindexes auto tool guides and 404; keeps flagship tools indexable', () => {
+    const guide = BLOG_POSTS.find((p) => p.isToolGuide);
+    expect(guide).toBeDefined();
+    const guideMeta = getMetadataForPath(`/blog/${guide!.slug}`);
+    expect(guideMeta.robots).toMatch(/noindex/i);
+
+    const toolMeta = getMetadataForPath('/tools/pdf-merge');
+    expect(toolMeta.robots).toMatch(/index,\s*follow/i);
+
+    const notFound = getMetadataForPath('/404');
+    expect(notFound.robots).toMatch(/noindex/i);
+
+    const home = getMetadataForPath('/');
+    const graph = home.jsonLd![0]['@graph'] as Record<string, unknown>[];
+    const website = graph.find((n) => n['@type'] === 'WebSite') as Record<string, unknown>;
+    const actions = website.potentialAction as Record<string, unknown>[];
+    const target = (actions[0].target as Record<string, unknown>).urlTemplate as string;
+    expect(target).toContain('/tools?q=');
+  });
 });

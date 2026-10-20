@@ -6,7 +6,10 @@ import { Search, ArrowRight } from 'lucide-react';
 import { CATEGORIES, TOOLS, searchTools, getToolsByCategory } from '@/lib/tools/registry';
 
 export default function ToolsHubPage() {
-  const [q, setQ] = useState('');
+  const [q, setQ] = useState(() => {
+    if (typeof window === 'undefined') return '';
+    return new URLSearchParams(window.location.search).get('q') || '';
+  });
   const results = q.trim() ? searchTools(q) : [];
 
   return (
@@ -34,10 +37,21 @@ export default function ToolsHubPage() {
         <div className="relative max-w-lg">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
           <input
+            type="search"
             value={q}
-            onChange={(e) => setQ(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value;
+              setQ(value);
+              if (typeof window !== 'undefined') {
+                const url = new URL(window.location.href);
+                if (value.trim()) url.searchParams.set('q', value);
+                else url.searchParams.delete('q');
+                window.history.replaceState({}, '', url.pathname + url.search);
+              }
+            }}
             placeholder="Search tools..."
             className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-sm outline-none focus:border-brand-500"
+            aria-label="Search tools"
           />
           {results.length > 0 && (
             <div className="absolute z-20 mt-1 w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl max-h-72 overflow-y-auto py-1">

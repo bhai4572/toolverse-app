@@ -68,6 +68,7 @@ import AuHubPage from '../app/au/page';
 import PassportPhotosHubPage from '../app/passport-photos/page';
 import NewsHubPage from '../app/news/page';
 import HtmlSitemapPage from '../app/sitemap/page';
+import NotFoundPage from '../app/not-found';
 
 import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
@@ -95,6 +96,9 @@ export default function App() {
     pathNormalized.startsWith('/workspace/') ||
     pathNormalized === '/seo-dashboard' ||
     pathNormalized.startsWith('/seo-dashboard/');
+
+  /** Unknown routes render NotFound (not homepage) to avoid soft-404 SEO damage. */
+  let isNotFound = false;
 
   const renderContent = () => {
     const path = pathNormalized;
@@ -335,17 +339,21 @@ export default function App() {
       return <JobCategoryPage params={{ slug: parts[1] }} />;
     }
 
-    // Default fallback to home
-    return <HomePage />;
+    // Soft-404 fix: never serve the homepage for unknown URLs
+    isNotFound = true;
+    return <NotFoundPage />;
   };
 
-  const skipAds = shouldSkipAds(pathNormalized);
+  // Resolve once so isNotFound is known before SEOHead / ad skip
+  const pageContent = renderContent();
+  const skipAds = shouldSkipAds(isNotFound ? '/404' : pathNormalized);
+  const seoPath = isNotFound ? '/404' : currentPath;
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100">
-      <SEOHead pathname={currentPath} />
+      <SEOHead pathname={seoPath} />
       <Header />
-      {/* Persistent header ad bar — skipped on workspace / admin only */}
+      {/* Persistent header ad bar — skipped on workspace / admin / 404 */}
       {!skipAds && <HeaderAdBar />}
       <main
         className={
@@ -354,7 +362,7 @@ export default function App() {
             : 'flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6'
         }
       >
-        {renderContent()}
+        {pageContent}
       </main>
       {!isWorkspace && <Footer />}
       {/* Global ad hooks (Social Bar removed; Monetag push/vignette via AdGlobals) */}

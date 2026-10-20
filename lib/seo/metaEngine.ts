@@ -11,6 +11,12 @@ import { getCollectionBySlug, COLLECTIONS } from '@/lib/products/collectionsRegi
 import { evaluateProductPageQuality, getRobotsDirective } from '@/lib/products/seoQualityEngine';
 import { getStudyDestination } from '@/lib/study/destinations';
 import { CARS_DISCLAIMER, CARS_FAQS } from '@/lib/cars/data';
+import {
+  ROBOTS_INDEX,
+  ROBOTS_NOINDEX,
+  howToSlugShouldNoindex,
+  pathShouldNoindex,
+} from '@/lib/seo/indexability';
 
 export interface PageMetadata {
   title: string;
@@ -20,6 +26,8 @@ export interface PageMetadata {
   ogType?: string;
   ogImage?: string;
   jsonLd?: Record<string, unknown>[];
+  /** Defaults to index,follow when omitted */
+  robots?: string;
 }
 
 /** Always use the live production domain for canonicals/schema (not preview hosts). */
@@ -82,7 +90,8 @@ export function buildWebSiteNode(): Record<string, unknown> {
         '@type': 'SearchAction',
         target: {
           '@type': 'EntryPoint',
-          urlTemplate: `${SITE_URL}/?q={search_term_string}`,
+          // Real search UI lives on /tools (also mirrored on homepage ?q=)
+          urlTemplate: `${SITE_URL}/tools?q={search_term_string}`,
         },
         'query-input': 'required name=search_term_string',
       },
@@ -179,9 +188,39 @@ export function wrapInGraph(nodes: (Record<string, unknown> | null | undefined)[
 }
 
 export function getMetadataForPath(pathname: string): PageMetadata {
+  const meta = buildMetadataForPath(pathname);
+  if (meta.robots) return meta;
+  if (pathShouldNoindex(pathname)) return { ...meta, robots: ROBOTS_NOINDEX };
+  return { ...meta, robots: ROBOTS_INDEX };
+}
+
+function buildMetadataForPath(pathname: string): PageMetadata {
   const baseUrl = SITE_URL;
   const cleanPath = pathname.replace(/\/$/, '') || '/';
   const parts = cleanPath.split('/').filter(Boolean);
+
+  // Dedicated 404 shell (also used by App when route is unknown)
+  if (cleanPath === '/404') {
+    return {
+      title: 'Page Not Found — ToolVerse',
+      description:
+        'That page is missing. Browse popular free ToolVerse tools, categories, or search from the homepage.',
+      canonicalUrl: `${baseUrl}/404`,
+      ogType: 'website',
+      ogImage: DEFAULT_OG_IMAGE,
+      robots: ROBOTS_NOINDEX,
+      jsonLd: wrapInGraph([
+        buildOrganizationNode(),
+        buildWebSiteNode(),
+        buildWebPageNode({
+          canonicalUrl: `${baseUrl}/404`,
+          name: 'Page Not Found — ToolVerse',
+          description: 'That page is missing on ToolVerse.',
+          type: 'WebPage',
+        }),
+      ]),
+    };
+  }
 
   // 1. Homepage (/)
   if (parts.length === 0) {
@@ -455,6 +494,8 @@ export function getMetadataForPath(pathname: string): PageMetadata {
         canonicalUrl,
         ogType: 'article',
         ogImage: DEFAULT_OG_IMAGE,
+        // Soft-dupe business how-tos: see NOINDEX_HOW_TO_SLUGS in indexability.ts
+        robots: howToSlugShouldNoindex(parts[1]) ? ROBOTS_NOINDEX : undefined,
         jsonLd: wrapInGraph(graph),
       };
     }
@@ -555,6 +596,7 @@ export function getMetadataForPath(pathname: string): PageMetadata {
           canonicalUrl,
           ogType: 'website',
           ogImage: product.logoUrl || DEFAULT_OG_IMAGE,
+          robots: getRobotsDirective(quality.isIndexable),
           jsonLd: wrapInGraph(graph),
         };
       }
@@ -880,6 +922,7 @@ export function getMetadataForPath(pathname: string): PageMetadata {
       canonicalUrl,
       ogType: 'website',
       ogImage: DEFAULT_OG_IMAGE,
+      robots: ROBOTS_NOINDEX,
       jsonLd: wrapInGraph(graph),
     };
   }
@@ -911,6 +954,7 @@ export function getMetadataForPath(pathname: string): PageMetadata {
       canonicalUrl,
       ogType: 'website',
       ogImage: DEFAULT_OG_IMAGE,
+      robots: ROBOTS_NOINDEX,
       jsonLd: wrapInGraph(graph),
     };
   }
@@ -942,6 +986,7 @@ export function getMetadataForPath(pathname: string): PageMetadata {
       canonicalUrl,
       ogType: 'website',
       ogImage: DEFAULT_OG_IMAGE,
+      robots: ROBOTS_NOINDEX,
       jsonLd: wrapInGraph(graph),
     };
   }
@@ -1066,6 +1111,16 @@ export function getMetadataForPath(pathname: string): PageMetadata {
         jsonLd: wrapInGraph(graph),
       };
     }
+
+    // Unknown tool slug — do not index soft-404 tool shells
+    return {
+      title: 'Tool Not Found — ToolVerse',
+      description: 'That tool is missing or was renamed. Browse the ToolVerse tools hub for free PDF, image, and calculator utilities.',
+      canonicalUrl: `${baseUrl}/tools/${parts[1]}`,
+      ogType: 'website',
+      ogImage: DEFAULT_OG_IMAGE,
+      robots: ROBOTS_NOINDEX,
+    };
   }
 
   // 3. Category Pages (/category/[slug])
@@ -1254,6 +1309,9 @@ export function getMetadataForPath(pathname: string): PageMetadata {
           canonicalUrl,
           ogType: 'article',
           ogImage,
+          // Auto how-to-{tool} guides largely mirror tool pages — noindex to cut soft-dupe / thin index bloat.
+          // Hand-written pillars (isToolGuide !== true) stay indexable ranking targets.
+          robots: post.isToolGuide ? ROBOTS_NOINDEX : undefined,
           jsonLd: wrapInGraph(graph),
         };
       }
@@ -1495,6 +1553,7 @@ export function getMetadataForPath(pathname: string): PageMetadata {
       canonicalUrl,
       ogType: 'website',
       ogImage: DEFAULT_OG_IMAGE,
+      robots: ROBOTS_NOINDEX,
       jsonLd: wrapInGraph([
         buildOrganizationNode(),
         buildWebSiteNode(),
@@ -2056,6 +2115,8 @@ export function getMetadataForPath(pathname: string): PageMetadata {
     canonicalUrl: fallbackUrl,
     ogType: 'website',
     ogImage: DEFAULT_OG_IMAGE,
+    // Unknown / unmapped paths should not compete in the index (soft-404 risk).
+    robots: ROBOTS_NOINDEX,
     jsonLd: wrapInGraph(fallbackGraph),
   };
 }
@@ -2089,7 +2150,7 @@ export function updateDOMMetadata(meta: PageMetadata) {
     'meta[name="robots"]',
     'name',
     'robots',
-    'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
+    meta.robots || ROBOTS_INDEX
   );
 
   setLinkTag('canonical', meta.canonicalUrl);

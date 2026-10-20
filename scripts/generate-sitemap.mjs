@@ -86,15 +86,22 @@ const pillarBlog = [
   ...slugs(section(trendPosts, 'export const US_TREND_POSTS')),
 ];
 
+// Indexable blog only: pillars + US trend posts + hand-mapped pillar guides.
+// Auto-generated /blog/how-to-{tool} soft-dupes of tool pages are noindex — omit from sitemap.
 const blogSet = new Set(pillarBlog);
 for (const toolSlug of tools) {
   if (PILLAR_GUIDE_BY_TOOL[toolSlug]) {
     blogSet.add(PILLAR_GUIDE_BY_TOOL[toolSlug]);
-  } else {
-    blogSet.add(`how-to-${toolSlug}`);
   }
 }
 const blog = [...blogSet];
+
+/** Soft-dupe /how-to/* — keep in sync with lib/seo/indexability.ts NOINDEX_HOW_TO_SLUGS */
+const NOINDEX_HOW_TO = new Set([
+  'how-to-verify-your-business',
+  'how-to-generate-a-business-qr-code',
+  'how-to-print-your-toolverse-qr',
+]);
 
 // —— Tools: /tools/* + /category/* ——
 const toolsUrls = [];
@@ -123,6 +130,7 @@ for (const ht of [
   'how-to-claim-a-business',
   'how-to-report-a-fake-business',
 ]) {
+  if (NOINDEX_HOW_TO.has(ht)) continue;
   contentUrls.push(makeUrl(`/how-to/${ht}`, 'weekly', '0.8'));
 }
 
@@ -194,9 +202,7 @@ for (const col of [
   pagesUrls.push(makeUrl(`/collections/${col}`, 'weekly', '0.8'));
 }
 
-pagesUrls.push(makeUrl('/submit', 'monthly', '0.6'));
-pagesUrls.push(makeUrl('/badges', 'monthly', '0.6'));
-pagesUrls.push(makeUrl('/claim', 'monthly', '0.6'));
+// Utility forms (/submit, /badges, /claim) are noindex — omit from sitemap
 
 pagesUrls.push(makeUrl('/business', 'daily', '0.9'));
 for (const biz of ['ali-barber-studio', 'apex-digital-marketing', 'artisan-coffee-roasters']) {
@@ -205,9 +211,8 @@ for (const biz of ['ali-barber-studio', 'apex-digital-marketing', 'artisan-coffe
 for (const bId of ['TV-BIZ-8F4K2P', 'TV-BIZ-3M9Q7L', 'TV-BIZ-9X2V4W']) {
   pagesUrls.push(makeUrl(`/b/${bId}`, 'weekly', '0.7'));
 }
-pagesUrls.push(makeUrl('/business/register', 'monthly', '0.7'));
+// /business/register + /business-qr are noindex utility surfaces
 pagesUrls.push(makeUrl('/business/bidding', 'weekly', '0.8'));
-pagesUrls.push(makeUrl('/business-qr', 'monthly', '0.7'));
 
 pagesUrls.push(makeUrl('/travel', 'daily', '1.0'));
 pagesUrls.push(makeUrl('/travel/passport', 'daily', '0.9'));
@@ -221,13 +226,11 @@ for (const corridor of ['AE', 'SA', 'GB', 'CA', 'DE', 'QA', 'OM', 'US', 'TR']) {
 }
 
 pagesUrls.push(makeUrl('/startups', 'daily', '1.0'));
-pagesUrls.push(makeUrl('/submit-startup', 'monthly', '0.7'));
 for (const s of ['nexus-ai-writer', 'devflow-database-studio', 'taskpulse-workspace', 'rankpulse-backlink-monitor']) {
   pagesUrls.push(makeUrl(`/startups/${s}`, 'daily', '0.9'));
 }
 
 pagesUrls.push(makeUrl('/guest-posts', 'daily', '1.0'));
-pagesUrls.push(makeUrl('/guest-posts/create-pitch', 'monthly', '0.7'));
 pagesUrls.push(makeUrl('/become-a-publisher', 'monthly', '0.8'));
 for (const p of ['tech-vision-journal', 'startup-builder-daily', 'seo-growth-digest']) {
   pagesUrls.push(makeUrl(`/publishers/${p}`, 'daily', '0.9'));

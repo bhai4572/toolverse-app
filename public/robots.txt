@@ -24,6 +24,12 @@ Disallow: /admin
 Disallow: /admin/
 Disallow: /business/dashboard
 Disallow: /business/dashboard/
+Disallow: /badges
+Disallow: /claim
+Disallow: /submit
+Disallow: /submit-startup
+Disallow: /guest-posts/create-pitch
+Disallow: /api/
 
 # Bing Search Engine
 User-agent: Bingbot
@@ -39,6 +45,12 @@ Disallow: /admin
 Disallow: /admin/
 Disallow: /business/dashboard
 Disallow: /business/dashboard/
+Disallow: /badges
+Disallow: /claim
+Disallow: /submit
+Disallow: /submit-startup
+Disallow: /guest-posts/create-pitch
+Disallow: /api/
 
 # Default rules for all other web search crawlers
 User-agent: *
@@ -59,6 +71,12 @@ Disallow: /admin
 Disallow: /admin/
 Disallow: /business/dashboard
 Disallow: /business/dashboard/
+Disallow: /badges
+Disallow: /claim
+Disallow: /submit
+Disallow: /submit-startup
+Disallow: /guest-posts/create-pitch
+Disallow: /api/
 
 # Allow answer / browse fetchers so AI assistants can cite ToolVerse pages (AEO / GEO)
 User-agent: ChatGPT-User

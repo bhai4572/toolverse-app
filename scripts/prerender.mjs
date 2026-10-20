@@ -606,6 +606,11 @@ function applyPage(html, pathname, getMetadataForPath, deps) {
   let out = html;
   out = setTitle(out, meta.title);
   out = setMetaByName(out, 'description', meta.description);
+  out = setMetaByName(
+    out,
+    'robots',
+    meta.robots || 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
+  );
   out = setCanonical(out, meta.canonicalUrl);
   out = setMetaByProperty(out, 'og:title', meta.title);
   out = setMetaByProperty(out, 'og:description', meta.description);

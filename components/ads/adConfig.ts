@@ -103,12 +103,15 @@ export const SLOT_TO_BANNER: Partial<Record<AdSlotName, BannerSize>> = {
   'footer-mobile': '320x50',
 };
 
-/** Routes where ads must not load (SEO workspace, admin — homepage is monetized) */
+/** Routes where ads must not load (workspace, admin, legal/policy, 404) */
 export function shouldSkipAds(pathname: string): boolean {
   const p = pathname.replace(/\/$/, '') || '/';
   if (p === '/workspace' || p.startsWith('/workspace/')) return true;
   if (p === '/seo-dashboard' || p.startsWith('/seo-dashboard/')) return true;
   if (p === '/admin' || p.startsWith('/admin/')) return true;
   if (p === '/business/dashboard' || p.startsWith('/business/dashboard/')) return true;
+  if (p === '/404') return true;
+  // Policy / trust pages — keep ad-free for AdSense review & accidental-click risk
+  if (p.startsWith('/legal/')) return true;
   return false;
 }
