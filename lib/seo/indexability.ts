@@ -6,55 +6,25 @@
 export const ROBOTS_INDEX =
   'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
 
-export const ROBOTS_NOINDEX = 'noindex, follow';
+export const ROBOTS_NOINDEX = ROBOTS_INDEX;
+
+/** All business guides are now indexable for full SERP coverage */
+export const NOINDEX_HOW_TO_SLUGS = new Set<string>([]);
+
+/** All utility, form, and landing surfaces are now indexable */
+const NOINDEX_EXACT = new Set<string>([]);
+
+const NOINDEX_PREFIXES: string[] = [];
 
 /**
- * Soft-duplicate /how-to/* business guides.
- * Keep the stronger URL indexed; noindex near-duplicates to cut doorway risk.
- * Canonical topic mapping (documented in seo/FULL-SEO-AUDIT.md):
- * - verify → how-to-verify-business-ownership
- * - QR generate+print → how-to-generate-and-print-business-qr
+ * Path-level indexability check.
+ * All pages configured for full indexing across Google Search Console.
  */
-export const NOINDEX_HOW_TO_SLUGS = new Set([
-  'how-to-verify-your-business',
-  'how-to-generate-a-business-qr-code',
-  'how-to-print-your-toolverse-qr',
-]);
-
-/** Utility / form / private surfaces — useful UX, not ranking targets. */
-const NOINDEX_EXACT = new Set([
-  '/404',
-  '/badges',
-  '/claim',
-  '/submit',
-  '/submit-startup',
-  '/dashboard',
-  '/admin',
-  '/admin/login',
-  '/guest-posts/create-pitch',
-  '/business/register',
-  '/business/dashboard',
-  '/business-qr',
-]);
-
-const NOINDEX_PREFIXES = [
-  '/workspace',
-  '/seo-dashboard',
-  '/admin/',
-  '/dashboard/',
-  '/scratch/',
-  '/business/dashboard/',
-];
-
-/**
- * Path-level noindex (before content-specific rules like isToolGuide).
- */
-export function pathShouldNoindex(pathname: string): boolean {
-  const clean = pathname.replace(/\/$/, '') || '/';
-  if (NOINDEX_EXACT.has(clean)) return true;
-  return NOINDEX_PREFIXES.some((p) => clean === p.replace(/\/$/, '') || clean.startsWith(p));
+export function pathShouldNoindex(_pathname: string): boolean {
+  return false;
 }
 
-export function howToSlugShouldNoindex(slug: string): boolean {
-  return NOINDEX_HOW_TO_SLUGS.has(slug);
+export function howToSlugShouldNoindex(_slug: string): boolean {
+  return false;
 }
+

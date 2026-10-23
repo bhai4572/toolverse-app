@@ -2,11 +2,17 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Search, ArrowRight, Wrench, Globe2, GraduationCap, Landmark, ShieldCheck, Zap, Briefcase, Car } from 'lucide-react';
+import { Search, ArrowRight, Wrench, Globe2, GraduationCap, Landmark, ShieldCheck, Zap, Briefcase, Car, Sparkles, Rocket } from 'lucide-react';
 import { TOOLS, CATEGORIES, getPopularTools, searchTools } from '@/lib/tools/registry';
 import { AdSlot } from '@/components/ads/AdSlot';
 
 const PATHS = [
+  {
+    href: '/products',
+    title: 'Products & SaaS Hub',
+    blurb: 'Discover new software, AI tools & SaaS or launch your product.',
+    icon: Sparkles,
+  },
   {
     href: '/tools/global-job-finder',
     title: 'Job Finder',
@@ -195,6 +201,51 @@ export default function HomePage() {
         <AdSlot slot="leaderboard" bare className="my-0 max-w-[728px] w-full" />
         <AdSlot slot="mobile-banner" bare className="my-0 max-w-[320px] w-full" />
       </div>
+
+      {/* Product Discovery & SaaS Launch Hub (Product Hunt & SaaSHub Style) */}
+      <section className="relative overflow-hidden rounded-3xl border border-indigo-500/30 bg-gradient-to-br from-indigo-950 via-slate-900 to-slate-950 p-6 sm:p-8 text-white shadow-xl">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="space-y-3 max-w-2xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-indigo-500/20 border border-indigo-400/30 rounded-full text-indigo-300 text-xs font-bold uppercase tracking-wider">
+              <Sparkles className="w-3.5 h-3.5" /> Product Hunt &amp; SaaSHub Discovery Network
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-black tracking-tight">
+              Discover &amp; Launch <span className="text-indigo-400">Products, AI Tools &amp; SaaS</span>
+            </h2>
+            <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
+              Explore newly launched software products, indie maker tools, and business directories. Upvote your favorite software or list your own product and business for free global discovery.
+            </p>
+            <div className="flex flex-wrap items-center gap-3 pt-1 text-xs">
+              <Link href="/products" className="text-indigo-300 hover:text-white underline font-semibold">
+                Explore Software Directory →
+              </Link>
+              <span className="text-slate-600">•</span>
+              <Link href="/startups" className="text-indigo-300 hover:text-white underline font-semibold">
+                Startups &amp; Launchpad →
+              </Link>
+              <span className="text-slate-600">•</span>
+              <Link href="/business" className="text-indigo-300 hover:text-white underline font-semibold">
+                Business Directory →
+              </Link>
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row md:flex-col gap-3 shrink-0">
+            <Link
+              href="/submit"
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm shadow-lg shadow-indigo-600/30 transition text-center"
+            >
+              <Rocket className="w-4 h-4" /> List Your Product Free
+            </Link>
+            <Link
+              href="/products"
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold text-sm transition text-center"
+            >
+              Browse All Products
+            </Link>
+          </div>
+        </div>
+      </section>
 
       <section className="space-y-4" aria-labelledby="paths-heading">
         <h2 id="paths-heading" className="text-xl font-bold text-slate-900 dark:text-white">

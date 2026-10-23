@@ -1,25 +1,6 @@
 import { MetadataRoute } from 'next';
 
-/** Keep in sync with public/robots.txt + lib/seo/indexability.ts utility / private surfaces. */
-const UTILITY_AND_PRIVATE_DISALLOW = [
-  '/scratch/',
-  '/workspace',
-  '/workspace/',
-  '/seo-dashboard',
-  '/seo-dashboard/',
-  '/dashboard',
-  '/dashboard/',
-  '/admin',
-  '/admin/',
-  '/business/dashboard',
-  '/business/dashboard/',
-  '/badges',
-  '/claim',
-  '/submit',
-  '/submit-startup',
-  '/guest-posts/create-pitch',
-  '/api/',
-];
+const UTILITY_AND_PRIVATE_DISALLOW: string[] = [];
 
 export default function robots(): MetadataRoute.Robots {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://toolverse.baby';

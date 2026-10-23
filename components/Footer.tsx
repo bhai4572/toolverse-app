@@ -33,6 +33,10 @@ export function Footer() {
           <div>
             <h4 className="text-white font-semibold text-sm mb-4">Product</h4>
             <ul className="space-y-2 text-xs">
+              <li><Link href="/products" className="hover:text-white transition-colors font-semibold text-indigo-400">Products &amp; SaaS</Link></li>
+              <li><Link href="/submit" className="hover:text-white transition-colors">Submit Your Product</Link></li>
+              <li><Link href="/startups" className="hover:text-white transition-colors">Startups Launchpad</Link></li>
+              <li><Link href="/business" className="hover:text-white transition-colors">Business Directory</Link></li>
               <li><Link href="/tools" className="hover:text-white transition-colors">Tools hub</Link></li>
               <li><Link href="/workspace" className="hover:text-white transition-colors">SEO Dashboard</Link></li>
               <li><Link href="/study" className="hover:text-white transition-colors">Study Abroad</Link></li>

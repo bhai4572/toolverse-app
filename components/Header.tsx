@@ -7,15 +7,18 @@ import { searchTools, ToolDefinition } from '@/lib/tools/registry';
 
 const PRIMARY_NAV = [
   { href: '/tools', label: 'Tools' },
+  { href: '/products', label: 'Products' },
   { href: '/workspace', label: 'SEO Dashboard' },
   { href: '/study', label: 'Study Abroad' },
   { href: '/blog', label: 'Blog' },
   { href: '/news', label: 'News' },
-  { href: '/legal/about', label: 'About' },
-  { href: '/legal/contact', label: 'Contact' },
 ] as const;
 
 const MORE_NAV = [
+  { href: '/startups', label: 'Startups & SaaS' },
+  { href: '/business', label: 'Business Directory' },
+  { href: '/submit', label: 'Submit Product' },
+  { href: '/alternatives', label: 'SaaS Alternatives' },
   { href: '/immigration', label: 'Immigration' },
   { href: '/pricing', label: 'Pricing' },
   { href: '/seo', label: 'SEO Suite (classic)' },
@@ -27,6 +30,8 @@ const MORE_NAV = [
   { href: '/passport-photos', label: 'Passport photos' },
   { href: '/travel', label: 'Travel' },
   { href: '/tools/global-job-finder', label: 'Jobs Finder' },
+  { href: '/legal/about', label: 'About' },
+  { href: '/legal/contact', label: 'Contact' },
   { href: '/legal/privacy-policy', label: 'Privacy Policy' },
   { href: '/legal/about-our-tools', label: 'About our tools' },
   { href: '/legal/editorial-policy', label: 'Editorial Policy' },
@@ -157,7 +162,14 @@ export function Header() {
           )}
         </div>
 
-        <div className="hidden md:flex items-center gap-1">
+        <div className="hidden md:flex items-center gap-2">
+          <Link
+            href="/submit"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition shadow-sm"
+          >
+            <span>🚀</span>
+            <span>Submit Product</span>
+          </Link>
           <button
             onClick={toggleDarkMode}
             className="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
@@ -177,13 +189,23 @@ export function Header() {
       </div>
 
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-4 space-y-1">
+        <div className="lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-4 space-y-2">
+          <div className="pb-2">
+            <Link
+              href="/submit"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold shadow-md transition"
+            >
+              <span>🚀</span>
+              <span>Launch / List Your Product</span>
+            </Link>
+          </div>
           {PRIMARY_NAV.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               onClick={() => setMobileMenuOpen(false)}
-              className="block px-3 py-2.5 text-sm font-semibold rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+              className="block px-3 py-2 text-sm font-semibold rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
             >
               {item.label}
             </Link>

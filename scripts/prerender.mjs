@@ -32,6 +32,9 @@ const JOB_SLUGS = [
   'software-engineer-jobs',
   'data-entry-jobs',
   'pakistan-govt-jobs',
+  'government-jobs',
+  'jobs-near-me',
+  'nhs-jobs-uk',
 ];
 
 function esc(str) {
@@ -792,6 +795,9 @@ async function main() {
     routes.push('/news');
     routes.push('/sitemap');
     routes.push('/dashboard');
+    routes.push('/workspace');
+    routes.push('/seo-dashboard');
+    routes.push('/404');
 
     for (const route of routes) {
       const html = applyPage(template, route, getMetadataForPath, deps);

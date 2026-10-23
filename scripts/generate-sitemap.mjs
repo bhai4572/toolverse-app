@@ -86,22 +86,19 @@ const pillarBlog = [
   ...slugs(section(trendPosts, 'export const US_TREND_POSTS')),
 ];
 
-// Indexable blog only: pillars + US trend posts + hand-mapped pillar guides.
-// Auto-generated /blog/how-to-{tool} soft-dupes of tool pages are noindex — omit from sitemap.
+// All blog guides: pillars, US trend posts, and all per-tool how-to guides.
 const blogSet = new Set(pillarBlog);
 for (const toolSlug of tools) {
   if (PILLAR_GUIDE_BY_TOOL[toolSlug]) {
     blogSet.add(PILLAR_GUIDE_BY_TOOL[toolSlug]);
+  } else {
+    blogSet.add(`how-to-${toolSlug}`);
   }
 }
 const blog = [...blogSet];
 
-/** Soft-dupe /how-to/* — keep in sync with lib/seo/indexability.ts NOINDEX_HOW_TO_SLUGS */
-const NOINDEX_HOW_TO = new Set([
-  'how-to-verify-your-business',
-  'how-to-generate-a-business-qr-code',
-  'how-to-print-your-toolverse-qr',
-]);
+/** All /how-to/* guides included */
+const NOINDEX_HOW_TO = new Set([]);
 
 // —— Tools: /tools/* + /category/* ——
 const toolsUrls = [];
@@ -151,6 +148,9 @@ for (const j of [
   'software-engineer-jobs',
   'data-entry-jobs',
   'pakistan-govt-jobs',
+  'government-jobs',
+  'jobs-near-me',
+  'nhs-jobs-uk',
 ]) {
   pagesUrls.push(makeUrl(`/jobs/${j}`, 'daily', '0.8'));
 }
@@ -202,7 +202,16 @@ for (const col of [
   pagesUrls.push(makeUrl(`/collections/${col}`, 'weekly', '0.8'));
 }
 
-// Utility forms (/submit, /badges, /claim) are noindex — omit from sitemap
+// Utility & landing surfaces included in sitemap
+pagesUrls.push(makeUrl('/submit', 'weekly', '0.8'));
+pagesUrls.push(makeUrl('/badges', 'weekly', '0.8'));
+pagesUrls.push(makeUrl('/claim', 'weekly', '0.8'));
+pagesUrls.push(makeUrl('/submit-startup', 'weekly', '0.8'));
+pagesUrls.push(makeUrl('/workspace', 'daily', '0.9'));
+pagesUrls.push(makeUrl('/seo-dashboard', 'daily', '0.9'));
+pagesUrls.push(makeUrl('/dashboard', 'weekly', '0.7'));
+pagesUrls.push(makeUrl('/admin/login', 'monthly', '0.5'));
+pagesUrls.push(makeUrl('/404', 'monthly', '0.3'));
 
 pagesUrls.push(makeUrl('/business', 'daily', '0.9'));
 for (const biz of ['ali-barber-studio', 'apex-digital-marketing', 'artisan-coffee-roasters']) {
@@ -211,7 +220,8 @@ for (const biz of ['ali-barber-studio', 'apex-digital-marketing', 'artisan-coffe
 for (const bId of ['TV-BIZ-8F4K2P', 'TV-BIZ-3M9Q7L', 'TV-BIZ-9X2V4W']) {
   pagesUrls.push(makeUrl(`/b/${bId}`, 'weekly', '0.7'));
 }
-// /business/register + /business-qr are noindex utility surfaces
+pagesUrls.push(makeUrl('/business/register', 'weekly', '0.8'));
+pagesUrls.push(makeUrl('/business-qr', 'weekly', '0.8'));
 pagesUrls.push(makeUrl('/business/bidding', 'weekly', '0.8'));
 
 pagesUrls.push(makeUrl('/travel', 'daily', '1.0'));

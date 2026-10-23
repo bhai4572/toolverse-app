@@ -208,7 +208,7 @@ function buildMetadataForPath(pathname: string): PageMetadata {
       canonicalUrl: `${baseUrl}/404`,
       ogType: 'website',
       ogImage: DEFAULT_OG_IMAGE,
-      robots: ROBOTS_NOINDEX,
+      robots: ROBOTS_INDEX,
       jsonLd: wrapInGraph([
         buildOrganizationNode(),
         buildWebSiteNode(),
@@ -494,8 +494,7 @@ function buildMetadataForPath(pathname: string): PageMetadata {
         canonicalUrl,
         ogType: 'article',
         ogImage: DEFAULT_OG_IMAGE,
-        // Soft-dupe business how-tos: see NOINDEX_HOW_TO_SLUGS in indexability.ts
-        robots: howToSlugShouldNoindex(parts[1]) ? ROBOTS_NOINDEX : undefined,
+        robots: ROBOTS_INDEX,
         jsonLd: wrapInGraph(graph),
       };
     }
@@ -922,7 +921,7 @@ function buildMetadataForPath(pathname: string): PageMetadata {
       canonicalUrl,
       ogType: 'website',
       ogImage: DEFAULT_OG_IMAGE,
-      robots: ROBOTS_NOINDEX,
+      robots: ROBOTS_INDEX,
       jsonLd: wrapInGraph(graph),
     };
   }
@@ -954,7 +953,7 @@ function buildMetadataForPath(pathname: string): PageMetadata {
       canonicalUrl,
       ogType: 'website',
       ogImage: DEFAULT_OG_IMAGE,
-      robots: ROBOTS_NOINDEX,
+      robots: ROBOTS_INDEX,
       jsonLd: wrapInGraph(graph),
     };
   }
@@ -986,7 +985,7 @@ function buildMetadataForPath(pathname: string): PageMetadata {
       canonicalUrl,
       ogType: 'website',
       ogImage: DEFAULT_OG_IMAGE,
-      robots: ROBOTS_NOINDEX,
+      robots: ROBOTS_INDEX,
       jsonLd: wrapInGraph(graph),
     };
   }
@@ -1119,7 +1118,7 @@ function buildMetadataForPath(pathname: string): PageMetadata {
       canonicalUrl: `${baseUrl}/tools/${parts[1]}`,
       ogType: 'website',
       ogImage: DEFAULT_OG_IMAGE,
-      robots: ROBOTS_NOINDEX,
+      robots: ROBOTS_INDEX,
     };
   }
 
@@ -1309,9 +1308,7 @@ function buildMetadataForPath(pathname: string): PageMetadata {
           canonicalUrl,
           ogType: 'article',
           ogImage,
-          // Auto how-to-{tool} guides largely mirror tool pages — noindex to cut soft-dupe / thin index bloat.
-          // Hand-written pillars (isToolGuide !== true) stay indexable ranking targets.
-          robots: post.isToolGuide ? ROBOTS_NOINDEX : undefined,
+          robots: ROBOTS_INDEX,
           jsonLd: wrapInGraph(graph),
         };
       }
@@ -1553,7 +1550,7 @@ function buildMetadataForPath(pathname: string): PageMetadata {
       canonicalUrl,
       ogType: 'website',
       ogImage: DEFAULT_OG_IMAGE,
-      robots: ROBOTS_NOINDEX,
+      robots: ROBOTS_INDEX,
       jsonLd: wrapInGraph([
         buildOrganizationNode(),
         buildWebSiteNode(),
@@ -2115,8 +2112,7 @@ function buildMetadataForPath(pathname: string): PageMetadata {
     canonicalUrl: fallbackUrl,
     ogType: 'website',
     ogImage: DEFAULT_OG_IMAGE,
-    // Unknown / unmapped paths should not compete in the index (soft-404 risk).
-    robots: ROBOTS_NOINDEX,
+    robots: ROBOTS_INDEX,
     jsonLd: wrapInGraph(fallbackGraph),
   };
 }

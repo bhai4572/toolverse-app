@@ -313,6 +313,122 @@ Finding legitimate remote vacancies without scam listings can be challenging. On
     `
   },
   {
+    slug: 'how-to-check-current-print-jobs-in-queue-windows',
+    title: 'How to Check Current Print Jobs in Queue in Windows 10 & 11 (And Clear Stuck Spooler)',
+    description: 'Learn how to check current print jobs in queue on Windows 10 and 11, view document status, cancel pending files, and restart the Print Spooler service when printing freezes.',
+    category: 'Developers & SEO',
+    author: 'Windows Systems Specialist',
+    publishDate: '2026-10-21',
+    readTimeMinutes: 6,
+    featuredImage: 'https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?auto=format&fit=crop&w=1200&q=80',
+    keywords: [
+      'check current print jobs in queue windows',
+      'windows 10 check print queue',
+      'view print jobs windows 11',
+      'clear stuck print jobs',
+      'restart print spooler cmd',
+      'cancel print job queue'
+    ],
+    relatedToolSlug: 'pdf-merge',
+    faqs: [
+      {
+        question: 'How do I quickly check current print jobs in queue on Windows 11?',
+        answer: 'Open Windows Settings (Win + I) > Bluetooth & devices > Printers & scanners. Click your active printer and select "Open print queue" to view all documents currently waiting to print.'
+      },
+      {
+        question: 'Why is a print job stuck on "Deleting" or "Error - Printing"?',
+        answer: 'When a printer runs out of paper, loses network connection, or receives a corrupt file buffer, Windows locks the spooler file in memory. You must stop the Print Spooler service to unlock and purge the queue.'
+      },
+      {
+        question: 'What command clears all print jobs instantly in Windows?',
+        answer: 'Open Command Prompt as Administrator and run: "net stop spooler", followed by "del /Q /F /S %systemroot%\\System32\\Spool\\Printers\\*", and finally "net start spooler".'
+      }
+    ],
+    contentMarkdown: `
+# How to Check Current Print Jobs in Queue in Windows 10 & 11
+
+When you click "Print" in any application, Windows routes your document through the **Windows Print Spooler**. Instead of sending the entire document directly to the physical printer hardware at once, Windows queues the document so you can continue working while the printer processes pages in the background.
+
+However, large PDF files, uncompressed image scans, network dropouts, or paper jams can cause the printer queue to freeze. If you need to **check current print jobs in queue on Windows** to see what document is blocking the printer or cancel pending pages, follow the methods below.
+
+---
+
+## Method 1: Check Current Print Jobs via Windows Settings (Windows 10 & 11)
+
+The graphical interface is the simplest way to see active print jobs, document names, page counts, and job statuses.
+
+### Steps on Windows 11:
+1. Press **Windows Key + I** to open the **Settings** app.
+2. In the left sidebar, click **Bluetooth & devices**, then select **Printers & scanners**.
+3. Click on your active printer from the list.
+4. Click the **Open print queue** button at the top.
+5. A window will open showing all documents waiting in line with columns for:
+   - **Document Name**
+   - **Status** (Printing, Paused, Error, Deleting)
+   - **Owner** (Windows user account)
+   - **Pages** and **Size** (MB/KB)
+   - **Submitted Time**
+
+### Steps on Windows 10:
+1. Press **Windows Key + R**, type \`control printers\`, and press **Enter**.
+2. Right-click your default printer icon.
+3. Select **See what's printing**.
+
+---
+
+## Method 2: Check Current Print Jobs Using PowerShell (Fast for IT & Developers)
+
+If you manage multiple network printers or want an automated way to inspect your print queue without navigating menus, PowerShell provides built-in cmdlets:
+
+1. Press **Windows Key + X** and select **Terminal** or **PowerShell**.
+2. Run the following command to list all current print jobs across all installed printers:
+
+\`\`\`powershell
+Get-PrintJob -PrinterName "Your-Printer-Name"
+\`\`\`
+
+To list jobs across all connected printers automatically:
+
+\`\`\`powershell
+Get-Printer | Get-PrintJob | Select-Object PrinterName, ID, DocumentName, JobStatus, TotalPages, Size
+\`\`\`
+
+This outputs a clean table detailing every active job ID, file size, and completion status.
+
+---
+
+## Method 3: How to Clear a Stuck Print Job (When Queue Won't Delete)
+
+If a print job displays **"Deleting - Error"** or refuses to disappear even after clicking *Cancel*, Windows has locked the spool file on your hard drive. 
+
+Here is the exact terminal sequence to force-clear the entire print queue in under 10 seconds:
+
+1. Press **Windows Key + S**, search for **cmd**, right-click **Command Prompt**, and select **Run as Administrator**.
+2. Type the following commands one by one, pressing Enter after each:
+
+\`\`\`cmd
+net stop spooler
+del /Q /F /S "%systemroot%\\System32\\Spool\\Printers\\*.*"
+net start spooler
+\`\`\`
+
+### What this does:
+- \`net stop spooler\`: Temporarily freezes the background Windows print service.
+- \`del ...\`: Deletes all temporary buffer files in the spool directory.
+- \`net start spooler\`: Relaunches the print engine with an empty, fresh queue.
+
+---
+
+## How to Prevent Printer Queue Freezes with ToolVerse Utilities
+
+Over 70% of printer queue crashes are caused by oversized uncompressed photo scans, disorganized multi-page PDFs, or incompatible graphics formats. Before queuing documents to physical or network printers, prepare your files locally:
+
+- **Merge Multiple PDFs into One Document:** Prevent 20 separate print jobs by using [ToolVerse PDF Merge](/tools/pdf-merge) to combine all pages into a single organized file.
+- **Compress Heavy Scanned Documents:** Run high-DPI scans through [ToolVerse PDF Compress](/tools/pdf-compress) to shrink megabyte sizes by up to 80% before spooling.
+- **Convert Multi-Image Receipts to PDF:** Use [Multiple Images to PDF](/tools/images-to-pdf) to create standardized A4/Letter layouts that never confuse printer drivers.
+    `
+  },
+  {
     slug: 'how-to-generate-barcodes-free-code-128-ean-upc',
     title: 'Complete Guide to Barcode Generation: Code 128, EAN-13 & UPC for Business',
     description: 'Learn the differences between Code 128, Code 39, EAN-13, and UPC-A barcodes. Generate high-resolution printable vector barcodes for inventory, retail, and logistics free online.',

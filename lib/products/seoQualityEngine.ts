@@ -82,9 +82,6 @@ export function evaluateProductPageQuality(product: Product): IndexabilityScore 
   };
 }
 
-export function getRobotsDirective(isIndexable: boolean): string {
-  if (isIndexable) {
-    return 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
-  }
-  return 'noindex, follow';
+export function getRobotsDirective(_isIndexable?: boolean): string {
+  return 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
 }

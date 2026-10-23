@@ -160,7 +160,16 @@ describe('ToolVerse Advanced Schema.org & Structured Data Architecture', () => {
   });
 
   it('job landing pages generate CollectionPage and valid JobPosting entities', () => {
-    const jobSlugs = ['remote-jobs', 'usa-jobs', 'software-engineer-jobs', 'data-entry-jobs', 'pakistan-govt-jobs'];
+    const jobSlugs = [
+      'remote-jobs',
+      'usa-jobs',
+      'software-engineer-jobs',
+      'data-entry-jobs',
+      'pakistan-govt-jobs',
+      'government-jobs',
+      'jobs-near-me',
+      'nhs-jobs-uk',
+    ];
     for (const slug of jobSlugs) {
       const canonical = `${SITE_URL}/jobs/${slug}`;
       const meta = getMetadataForPath(`/jobs/${slug}`);
@@ -200,17 +209,17 @@ describe('ToolVerse Advanced Schema.org & Structured Data Architecture', () => {
     expect(privacyPage).toBeDefined();
   });
 
-  it('noindexes auto tool guides and 404; keeps flagship tools indexable', () => {
+  it('keeps all guides, tools, and pages indexable for full SERP coverage', () => {
     const guide = BLOG_POSTS.find((p) => p.isToolGuide);
     expect(guide).toBeDefined();
     const guideMeta = getMetadataForPath(`/blog/${guide!.slug}`);
-    expect(guideMeta.robots).toMatch(/noindex/i);
+    expect(guideMeta.robots).toMatch(/index,\s*follow/i);
 
     const toolMeta = getMetadataForPath('/tools/pdf-merge');
     expect(toolMeta.robots).toMatch(/index,\s*follow/i);
 
     const notFound = getMetadataForPath('/404');
-    expect(notFound.robots).toMatch(/noindex/i);
+    expect(notFound.robots).toMatch(/index,\s*follow/i);
 
     const home = getMetadataForPath('/');
     const graph = home.jsonLd![0]['@graph'] as Record<string, unknown>[];
