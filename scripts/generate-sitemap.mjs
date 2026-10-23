@@ -16,7 +16,22 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, '..');
 const publicDir = path.join(root, 'public');
 const base = 'https://toolverse.baby';
-const today = new Date().toISOString().slice(0, 10);
+
+/**
+ * Mirror of lib/seo/indexability.ts (this script cannot import TS). Keep in sync.
+ * Anything noindex there must NOT be in the sitemap.
+ */
+const NOINDEX_EXACT = new Set([
+  '/404', '/dashboard', '/seo-dashboard', '/sitemap', '/business', '/business-qr',
+  '/submit-startup', '/startups', '/claim', '/guest-posts', '/guest-posts/create-pitch',
+  '/become-a-publisher', '/how-to',
+]);
+const NOINDEX_PREFIXES = ['/admin', '/b/', '/business/', '/startups/', '/publishers/', '/how-to/'];
+function isNoindex(p) {
+  const x = (p.replace(/\/$/, '') || '/').toLowerCase();
+  if (NOINDEX_EXACT.has(x)) return true;
+  return NOINDEX_PREFIXES.some((pre) => x === pre.replace(/\/$/, '') || x.startsWith(pre));
+}
 
 /** Tools that already have a hand-written pillar guide (keep in sync with lib/blog/toolGuides.ts). */
 const PILLAR_GUIDE_BY_TOOL = {
@@ -32,7 +47,8 @@ const PILLAR_GUIDE_BY_TOOL = {
 };
 
 function makeUrl(pathname, changefreq = 'weekly', priority = '0.8') {
-  return { loc: `${base}${pathname}`, lastmod: today, changefreq, priority };
+  // No <lastmod>: a build-date on every URL is not a real modification date and gets ignored by Google.
+  return { loc: `${base}${pathname}`, changefreq, priority };
 }
 
 function section(src, startMarker, endMarker) {
@@ -66,7 +82,6 @@ function writeUrlset(filename, urls) {
   for (const u of urls) {
     lines.push('  <url>');
     lines.push(`    <loc>${u.loc}</loc>`);
-    lines.push(`    <lastmod>${u.lastmod}</lastmod>`);
     lines.push(`    <changefreq>${u.changefreq}</changefreq>`);
     lines.push(`    <priority>${u.priority}</priority>`);
     lines.push('  </url>');
@@ -258,6 +273,10 @@ pagesUrls.push(makeUrl('/au', 'weekly', '0.85'));
 pagesUrls.push(makeUrl('/passport-photos', 'weekly', '0.85'));
 
 // Primary GSC target: one combined urlset at /sitemap.xml
+const keep = (list) => list.filter((u) => !isNoindex(u.loc.slice(base.length) || '/'));
+toolsUrls.splice(0, toolsUrls.length, ...keep(toolsUrls));
+contentUrls.splice(0, contentUrls.length, ...keep(contentUrls));
+pagesUrls.splice(0, pagesUrls.length, ...keep(pagesUrls));
 const allUrls = [...toolsUrls, ...contentUrls, ...pagesUrls];
 writeUrlset('sitemap.xml', allUrls);
 

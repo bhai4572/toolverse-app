@@ -189,8 +189,8 @@ export function wrapInGraph(nodes: (Record<string, unknown> | null | undefined)[
 
 export function getMetadataForPath(pathname: string): PageMetadata {
   const meta = buildMetadataForPath(pathname);
-  if (meta.robots) return meta;
   if (pathShouldNoindex(pathname)) return { ...meta, robots: ROBOTS_NOINDEX };
+  if (meta.robots) return meta;
   return { ...meta, robots: ROBOTS_INDEX };
 }
 
@@ -555,13 +555,6 @@ function buildMetadataForPath(pathname: string): PageMetadata {
             price: product.pricingPlans[0]?.price.replace(/[^0-9.]/g, '') || '0',
             priceCurrency: 'USD',
             availability: 'https://schema.org/InStock',
-          },
-          aggregateRating: {
-            '@type': 'AggregateRating',
-            ratingValue: product.ratingAverage.toString(),
-            reviewCount: product.ratingCount.toString(),
-            bestRating: '5',
-            worstRating: '1',
           },
           publisher: { '@id': ORGANIZATION_ID },
         };
