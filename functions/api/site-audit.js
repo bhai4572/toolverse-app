@@ -140,7 +140,9 @@ export async function onRequestPost(context) {
   try {
     const payload = await context.request.json().catch(() => ({}));
     const targetUrl = payload.url;
-    const maxPages = Math.min(15, Math.max(1, parseInt(payload.maxPages, 10) || 10));
+    const reqPages = parseInt(payload.maxPages, 10);
+    // 0 or fullSite indicates crawling entire website up to safe edge limit
+    const maxPages = reqPages === 0 || payload.fullSite ? 150 : Math.min(150, Math.max(1, reqPages || 25));
 
     const val = validateUrl(targetUrl);
     if (!val.valid) {
@@ -200,6 +202,26 @@ export async function onRequestPost(context) {
         }
       } catch {}
     }
+
+    // Also check sitemap.xml to discover all website pages
+    try {
+      const sitemapFetch = await safeFetchUrl(`${new URL(val.cleanUrl).origin}/sitemap.xml`, 4000);
+      if (sitemapFetch.statusCode >= 200 && sitemapFetch.statusCode < 300 && sitemapFetch.bodyText) {
+        const locMatches = sitemapFetch.bodyText.matchAll(/<loc>([\s\S]*?)<\/loc>/gi);
+        for (const lm of locMatches) {
+          const sUrl = lm[1]?.replace(/<[^>]+>/g, '').trim();
+          if (sUrl) {
+            try {
+              const parsed = new URL(sUrl);
+              if (parsed.hostname === domain) {
+                parsed.hash = '';
+                internalLinks.add(parsed.href);
+              }
+            } catch {}
+          }
+        }
+      }
+    } catch {}
 
     const crawledPages = [
       {

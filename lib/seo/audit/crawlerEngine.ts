@@ -314,17 +314,26 @@ async function checkSitemapXml(origin: string): Promise<{
   found: boolean;
   url: string;
   urlsFound: number;
+  urls: string[];
 }> {
   const sitemapUrl = `${origin}/sitemap.xml`;
   try {
     const res = await safeFetch(sitemapUrl, { timeoutMs: 5000, maxBytes: 512 * 1024 });
     if (res.statusCode >= 200 && res.statusCode < 300 && res.bodyText) {
-      const locMatches = res.bodyText.match(/<loc>([\s\S]*?)<\/loc>/gi) || [];
+      const locMatches = res.bodyText.matchAll(/<loc>([\s\S]*?)<\/loc>/gi);
+      const urls: string[] = [];
+      for (const m of locMatches) {
+        const u = m[1]?.replace(/<[^>]+>/g, '').trim();
+        if (u && (u.startsWith('http://') || u.startsWith('https://'))) {
+          urls.push(u);
+        }
+      }
       return {
         checked: true,
         found: true,
         url: sitemapUrl,
-        urlsFound: locMatches.length,
+        urlsFound: urls.length,
+        urls,
       };
     }
   } catch {
@@ -336,6 +345,7 @@ async function checkSitemapXml(origin: string): Promise<{
     found: false,
     url: sitemapUrl,
     urlsFound: 0,
+    urls: [],
   };
 }
 
@@ -673,7 +683,10 @@ export async function executeSiteAudit(
   targetUrl: string,
   options: SiteAuditOptions = {}
 ): Promise<SiteAuditReport> {
-  const maxPages = Math.min(25, Math.max(1, options.maxPages || 10));
+  // 0 means Full Website Crawl (unlimited until crawl queue is exhausted)
+  const isFullSite = options.maxPages === 0 || !options.maxPages;
+  const maxPages = isFullSite ? 5000 : Math.max(1, options.maxPages || 5000);
+  const maxDurationMs = isFullSite ? 180000 : 60000;
   const startTime = performance.now();
 
   const validation = validateTargetUrl(targetUrl);
@@ -699,15 +712,25 @@ export async function executeSiteAudit(
     checkSitemapXml(origin),
   ]);
 
-  // 2. Multi-page Crawl Queue
+  // 2. Multi-page Crawl Queue: initial URL + all sitemap URLs
   const crawlQueue: string[] = [initialUrl];
+  if (sitemapInfo.urls && sitemapInfo.urls.length > 0) {
+    for (const sUrl of sitemapInfo.urls) {
+      try {
+        const parsedS = new URL(sUrl);
+        if (parsedS.hostname.toLowerCase() === domain && !crawlQueue.includes(sUrl)) {
+          crawlQueue.push(sUrl);
+        }
+      } catch {}
+    }
+  }
   const visitedUrls = new Set<string>();
   const crawledPages: CrawledPage[] = [];
   let pagesFailed = 0;
 
   while (crawlQueue.length > 0 && crawledPages.length < maxPages) {
-    // Respect overall crawl duration limit (45s max)
-    if (performance.now() - startTime > 45000) {
+    // Respect crawl duration limit
+    if (performance.now() - startTime > maxDurationMs) {
       break;
     }
 

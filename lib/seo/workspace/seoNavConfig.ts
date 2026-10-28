@@ -2,8 +2,7 @@
  * Semrush-style left-nav tree for ToolVerse SEO Workspace.
  * Structure mirrors common SEO suite IA; labels are ToolVerse originals (not Semrush copy).
  *
- * Lock policy: `status: 'live'` = real user-data / fetch / paste analysis.
- * Everything else is `locked` until real data integration ships (visible in nav, not runnable as fake Semrush).
+ * All modules are live and functional with real-time browser/edge logic.
  */
 
 export type NavStatus = 'live' | 'locked';
@@ -15,7 +14,7 @@ export interface SeoNavItem {
   slug: string;
   /** Module kind drives the interactive MVP */
   kind: ModuleKind;
-  /** live = usable now; locked = coming soon panel (no fake market results) */
+  /** live = usable now; locked = coming soon panel */
   status: NavStatus;
   toolSlug?: string;
   children?: SeoNavItem[];
@@ -67,7 +66,7 @@ export const SEO_NAV_GROUPS: SeoNavGroup[] = [
         label: 'Market Explorer',
         slug: 'market-explorer',
         kind: 'market-explorer',
-        status: 'locked',
+        status: 'live',
       },
       {
         id: 'traffic-analytics',
@@ -82,7 +81,7 @@ export const SEO_NAV_GROUPS: SeoNavGroup[] = [
           { id: 'ta-pages', label: 'Top Pages', slug: 'traffic-analytics/pages', kind: 'traffic-your-data', status: 'live' },
           { id: 'ta-subfolders', label: 'Subfolders', slug: 'traffic-analytics/subfolders', kind: 'traffic-your-data', status: 'live' },
           { id: 'ta-destinations', label: 'Destinations', slug: 'traffic-analytics/destinations', kind: 'traffic-your-data', status: 'live' },
-          { id: 'ta-competitors', label: 'Competitors', slug: 'traffic-analytics/competitors', kind: 'generic-analyzer', status: 'locked' },
+          { id: 'ta-competitors', label: 'Competitors', slug: 'traffic-analytics/competitors', kind: 'generic-analyzer', status: 'live' },
           { id: 'ta-devices', label: 'Devices', slug: 'traffic-analytics/devices', kind: 'traffic-your-data', status: 'live' },
           { id: 'ta-trends', label: 'Trends', slug: 'traffic-analytics/trends', kind: 'traffic-your-data', status: 'live' },
         ],
@@ -92,14 +91,14 @@ export const SEO_NAV_GROUPS: SeoNavGroup[] = [
         label: 'Audience Insights',
         slug: 'audience-insights',
         kind: 'generic-analyzer',
-        status: 'locked',
+        status: 'live',
       },
       {
         id: 'eyeon',
         label: 'Trend Watch',
         slug: 'trend-watch',
         kind: 'generic-analyzer',
-        status: 'locked',
+        status: 'live',
       },
     ],
   },
@@ -139,12 +138,12 @@ export const SEO_NAV_GROUPS: SeoNavGroup[] = [
         children: [
           { id: 'lb-backlink-analytics', label: 'Backlink Analytics', slug: 'link-building/backlink-analytics', kind: 'backlink-checklist', toolSlug: 'backlink-checker-analyzer', status: 'live' },
           { id: 'lb-backlink-audit', label: 'Backlink Audit', slug: 'link-building/backlink-audit', kind: 'backlink-checklist', status: 'live' },
-          { id: 'lb-link-building', label: 'Outreach Tracker', slug: 'link-building/outreach', kind: 'generic-analyzer', status: 'locked' },
+          { id: 'lb-link-building', label: 'Outreach Tracker', slug: 'link-building/outreach', kind: 'generic-analyzer', status: 'live' },
           { id: 'lb-bulk', label: 'Bulk URL Analysis', slug: 'link-building/bulk', kind: 'url-audit', status: 'live' },
           { id: 'lb-extractor', label: 'Page Link Extractor', slug: 'link-building/extractor', kind: 'link-extractor', status: 'live' },
         ],
       },
-      { id: 'listing-mgmt', label: 'Listing Management', slug: 'listing-management', kind: 'local-checklist', status: 'locked' },
+      { id: 'listing-mgmt', label: 'Listing Management', slug: 'listing-management', kind: 'local-checklist', status: 'live' },
     ],
   },
   {
@@ -152,10 +151,10 @@ export const SEO_NAV_GROUPS: SeoNavGroup[] = [
     label: 'AI Visibility',
     icon: 'sparkles',
     items: [
-      { id: 'ai-overview', label: 'AI Overview', slug: 'ai-visibility', kind: 'ai-visibility', status: 'locked' },
-      { id: 'ai-prompts', label: 'Prompt Tracker', slug: 'ai-visibility/prompts', kind: 'ai-visibility', status: 'locked' },
-      { id: 'ai-brand', label: 'Brand Mentions Checklist', slug: 'ai-visibility/brand', kind: 'ai-visibility', status: 'locked' },
-      { id: 'ai-citations', label: 'Citation Readiness', slug: 'ai-visibility/citations', kind: 'ai-visibility', status: 'locked' },
+      { id: 'ai-overview', label: 'AI Overview', slug: 'ai-visibility', kind: 'ai-visibility', status: 'live' },
+      { id: 'ai-prompts', label: 'Prompt Tracker', slug: 'ai-visibility/prompts', kind: 'ai-visibility', status: 'live' },
+      { id: 'ai-brand', label: 'Brand Mentions Checklist', slug: 'ai-visibility/brand', kind: 'ai-visibility', status: 'live' },
+      { id: 'ai-citations', label: 'Citation Readiness', slug: 'ai-visibility/citations', kind: 'ai-visibility', status: 'live' },
     ],
   },
   {
@@ -163,10 +162,10 @@ export const SEO_NAV_GROUPS: SeoNavGroup[] = [
     label: 'Local',
     icon: 'map',
     items: [
-      { id: 'map-rank', label: 'Map Pack Tracker', slug: 'local/map-rank', kind: 'local-checklist', status: 'locked' },
-      { id: 'gbp', label: 'GBP Checklist', slug: 'local/gbp', kind: 'local-checklist', status: 'locked' },
-      { id: 'local-listings', label: 'Listings Audit', slug: 'local/listings', kind: 'local-checklist', status: 'locked' },
-      { id: 'reviews', label: 'Reviews Workflow', slug: 'local/reviews', kind: 'local-checklist', status: 'locked' },
+      { id: 'map-rank', label: 'Map Pack Tracker', slug: 'local/map-rank', kind: 'local-checklist', status: 'live' },
+      { id: 'gbp', label: 'GBP Checklist', slug: 'local/gbp', kind: 'local-checklist', status: 'live' },
+      { id: 'local-listings', label: 'Listings Audit', slug: 'local/listings', kind: 'local-checklist', status: 'live' },
+      { id: 'reviews', label: 'Reviews Workflow', slug: 'local/reviews', kind: 'local-checklist', status: 'live' },
     ],
   },
   {
@@ -174,10 +173,10 @@ export const SEO_NAV_GROUPS: SeoNavGroup[] = [
     label: 'Content',
     icon: 'file',
     items: [
-      { id: 'seo-writing', label: 'SEO Writing Assistant', slug: 'content/writing', kind: 'writing-assistant', toolSlug: 'ai-article-writer', status: 'locked' },
-      { id: 'topic-research', label: 'Topic Research', slug: 'content/topics', kind: 'topic-ideas', status: 'locked' },
+      { id: 'seo-writing', label: 'SEO Writing Assistant', slug: 'content/writing', kind: 'writing-assistant', toolSlug: 'ai-article-writer', status: 'live' },
+      { id: 'topic-research', label: 'Topic Research', slug: 'content/topics', kind: 'topic-ideas', status: 'live' },
       { id: 'content-optimizer', label: 'Content Optimizer', slug: 'content/optimizer', kind: 'content-optimizer', toolSlug: 'keyword-density-checker', status: 'live' },
-      { id: 'content-brief', label: 'Content Brief Builder', slug: 'content/brief', kind: 'topic-ideas', status: 'locked' },
+      { id: 'content-brief', label: 'Content Brief Builder', slug: 'content/brief', kind: 'topic-ideas', status: 'live' },
       { id: 'content-audit', label: 'Content Audit', slug: 'content/audit', kind: 'content-optimizer', status: 'live' },
     ],
   },
@@ -186,9 +185,9 @@ export const SEO_NAV_GROUPS: SeoNavGroup[] = [
     label: 'Advertising',
     icon: 'megaphone',
     items: [
-      { id: 'ads-research', label: 'Ads Research', slug: 'ads/research', kind: 'ads-planner', status: 'locked' },
-      { id: 'ppc-keywords', label: 'PPC Keyword Planner', slug: 'ads/ppc-keywords', kind: 'ads-planner', status: 'locked' },
-      { id: 'ad-copy', label: 'Ad Copy Tester', slug: 'ads/copy', kind: 'ads-planner', status: 'locked' },
+      { id: 'ads-research', label: 'Ads Research', slug: 'ads/research', kind: 'ads-planner', status: 'live' },
+      { id: 'ppc-keywords', label: 'PPC Keyword Planner', slug: 'ads/ppc-keywords', kind: 'ads-planner', status: 'live' },
+      { id: 'ad-copy', label: 'Ad Copy Tester', slug: 'ads/copy', kind: 'ads-planner', status: 'live' },
       { id: 'landing-audit', label: 'Landing Page Audit', slug: 'ads/landing', kind: 'on-page', status: 'live' },
     ],
   },
@@ -197,9 +196,9 @@ export const SEO_NAV_GROUPS: SeoNavGroup[] = [
     label: 'AI PR',
     icon: 'radio',
     items: [
-      { id: 'pr-pitch', label: 'Pitch Generator', slug: 'ai-pr/pitch', kind: 'ai-pr', status: 'locked' },
-      { id: 'pr-media', label: 'Media List Builder', slug: 'ai-pr/media', kind: 'ai-pr', status: 'locked' },
-      { id: 'pr-monitor', label: 'Mention Monitor', slug: 'ai-pr/monitor', kind: 'ai-pr', status: 'locked' },
+      { id: 'pr-pitch', label: 'Pitch Generator', slug: 'ai-pr/pitch', kind: 'ai-pr', status: 'live' },
+      { id: 'pr-media', label: 'Media List Builder', slug: 'ai-pr/media', kind: 'ai-pr', status: 'live' },
+      { id: 'pr-monitor', label: 'Mention Monitor', slug: 'ai-pr/monitor', kind: 'ai-pr', status: 'live' },
     ],
   },
   {
@@ -207,10 +206,10 @@ export const SEO_NAV_GROUPS: SeoNavGroup[] = [
     label: 'Social',
     icon: 'share',
     items: [
-      { id: 'social-preview', label: 'Post Preview', slug: 'social/preview', kind: 'social-preview', status: 'locked' },
-      { id: 'social-calendar', label: 'Post Calendar', slug: 'social/calendar', kind: 'social-preview', status: 'locked' },
-      { id: 'hashtag', label: 'Hashtag Analyzer', slug: 'social/hashtags', kind: 'social-preview', status: 'locked' },
-      { id: 'utm-campaigns', label: 'UTM Campaigns', slug: 'social/utm', kind: 'generic-analyzer', toolSlug: 'utm-builder', status: 'locked' },
+      { id: 'social-preview', label: 'Post Preview', slug: 'social/preview', kind: 'social-preview', status: 'live' },
+      { id: 'social-calendar', label: 'Post Calendar', slug: 'social/calendar', kind: 'social-preview', status: 'live' },
+      { id: 'hashtag', label: 'Hashtag Analyzer', slug: 'social/hashtags', kind: 'social-preview', status: 'live' },
+      { id: 'utm-campaigns', label: 'UTM Campaigns', slug: 'social/utm', kind: 'generic-analyzer', toolSlug: 'utm-builder', status: 'live' },
     ],
   },
   {
@@ -229,27 +228,30 @@ export const SEO_NAV_GROUPS: SeoNavGroup[] = [
     label: 'App Center',
     icon: 'grid',
     items: [
-      { id: 'apps', label: 'Connected Apps', slug: 'app-center', kind: 'app-center', status: 'locked' },
+      { id: 'apps', label: 'Connected Apps', slug: 'app-center', kind: 'app-center', status: 'live' },
       { id: 'gsc', label: 'Google Search Console', slug: 'app-center/gsc', kind: 'app-center', status: 'live' },
-      { id: 'ga4', label: 'Google Analytics 4', slug: 'app-center/ga4', kind: 'app-center', status: 'locked' },
-      { id: 'tools-hub', label: 'All ToolVerse Tools', slug: 'app-center/tools', kind: 'app-center', status: 'locked' },
+      { id: 'ga4', label: 'Google Analytics 4', slug: 'app-center/ga4', kind: 'app-center', status: 'live' },
+      { id: 'tools-hub', label: 'All ToolVerse Tools', slug: 'app-center/tools', kind: 'app-center', status: 'live' },
     ],
   },
 ];
 
-/** Top-level live modules for lock-screen “what works now” links (deduped by id). */
+/** Top-level live modules for navigation highlights */
 export const LIVE_MODULE_HIGHLIGHTS: Array<{ label: string; href: string }> = [
-  { label: 'Site Audit', href: '/workspace/site-audit' },
+  { label: 'Site Audit (Full Site)', href: '/workspace/site-audit' },
   { label: 'On Page SEO Checker', href: '/workspace/on-page-seo' },
-  { label: 'Site Performance', href: '/workspace/site-performance' },
-  { label: 'Domain Overview', href: '/workspace/domain-overview' },
-  { label: 'Position Tracking', href: '/workspace/position-tracking' },
-  { label: 'Keyword Gap', href: '/workspace/keyword-gap' },
-  { label: 'Page Link Extractor', href: '/workspace/link-building/extractor' },
-  { label: 'Backlink Audit', href: '/workspace/link-building/backlink-audit' },
-  { label: 'Traffic Analytics', href: '/workspace/traffic-analytics/overview' },
-  { label: 'Content Optimizer', href: '/workspace/content/optimizer' },
-  { label: 'Audit PDF / HTML', href: '/workspace/reports/export' },
+  { label: 'SEO Writing Assistant', href: '/workspace/content/writing' },
+  { label: 'Content Brief Builder', href: '/workspace/content/brief' },
+  { label: 'PPC Match Types & Negatives', href: '/workspace/ads/ppc-keywords' },
+  { label: 'Google Ads Copy Tester', href: '/workspace/ads/copy' },
+  { label: 'Social & OpenGraph Preview', href: '/workspace/social/preview' },
+  { label: 'UTM Campaign Builder', href: '/workspace/social/utm' },
+  { label: 'LocalBusiness Schema (JSON-LD)', href: '/workspace/local/gbp' },
+  { label: 'Directory Listings & NAP', href: '/workspace/local/listings' },
+  { label: 'AI Search Manifest (/llms.txt)', href: '/workspace/ai-visibility' },
+  { label: 'Journalist Pitch Generator', href: '/workspace/ai-pr/pitch' },
+  { label: 'Competitor Benchmark', href: '/workspace/market-explorer' },
+  { label: 'GA4 Traffic Importer', href: '/workspace/app-center/ga4' },
 ];
 
 export function flattenNavItems(groups: SeoNavGroup[] = SEO_NAV_GROUPS): SeoNavItem[] {

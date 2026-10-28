@@ -40,7 +40,7 @@ const STORAGE_KEY_LAST_AUDIT = 'tv_site_audit_v1_last_report';
 
 export function SiteAuditV1Module() {
   const [urlInput, setUrlInput] = useState(() => getProject().primaryUrl || '');
-  const [maxPages, setMaxPages] = useState<number>(10);
+  const [maxPages, setMaxPages] = useState<number>(0);
   const [authorized, setAuthorized] = useState<boolean>(true);
 
   // States: 'idle' | 'running' | 'completed' | 'error'
@@ -117,6 +117,7 @@ export function SiteAuditV1Module() {
           body: JSON.stringify({
             url: validation.sanitizedUrl,
             maxPages,
+            fullSite: maxPages === 0,
           }),
         });
 
@@ -327,7 +328,7 @@ export function SiteAuditV1Module() {
 
             <div className="sm:col-span-2 space-y-1.5">
               <label htmlFor="max-pages" className="text-xs font-bold text-slate-700 dark:text-slate-300">
-                Max Crawl Limit
+                Crawl Scope & Limit
               </label>
               <select
                 id="max-pages"
@@ -336,10 +337,11 @@ export function SiteAuditV1Module() {
                 disabled={status === 'running'}
                 className="w-full py-2.5 px-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-sm font-medium text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40"
               >
-                <option value={5}>5 Pages (Quick)</option>
-                <option value={10}>10 Pages (Standard)</option>
-                <option value={15}>15 Pages (Deep)</option>
-                <option value={20}>20 Pages (Comprehensive)</option>
+                <option value={0}>Entire Website (Full Site Crawl)</option>
+                <option value={250}>250 Pages (Deep Audit)</option>
+                <option value={100}>100 Pages</option>
+                <option value={50}>50 Pages</option>
+                <option value={20}>20 Pages (Sample)</option>
               </select>
             </div>
 

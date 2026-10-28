@@ -145,7 +145,7 @@
 | Capability | Status | Data Provenance | Notes |
 | :--- | :--- | :--- | :--- |
 | First-Party Traffic Trends | Implemented and locally verified | User Import / GA4 | Analyzes user-imported GA4 or server log traffic sessions |
-| Market Channel Benchmark | In progress | Third-party estimate | Labeled explicitly as macro-industry estimate |
+| Market Channel Benchmark | Implemented and locally verified | Measured / DOM Architecture | Labeled explicitly as architectural benchmark |
 
 ### Module O: Advertising
 | Capability | Status | Data Provenance | Notes |

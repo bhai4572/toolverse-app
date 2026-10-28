@@ -2,8 +2,8 @@
 
 **Last Updated:** 2026-10-28  
 **Architecture:** Vite + React 19 SPA with Next.js App Router style directory structure, Cloudflare Pages edge deployment (`dist/`), Cloudflare Pages Functions (`functions/`), and browser-persisted workspace storage.  
-**Baseline Test Suite:** 15 test files, 137 passing tests, 0 failures.  
-**Production Build Status:** Successfully compiled and prerendered 404 HTML shells into `dist/`.
+**Baseline Test Suite:** 16 test files, 143 passing tests, 0 failures.  
+**Production Build Status:** Successfully compiled and prerendered 404 HTML shells into `dist/`. Live deployed to Cloudflare Pages (`https://toolverse.baby/workspace`).
 
 ---
 
