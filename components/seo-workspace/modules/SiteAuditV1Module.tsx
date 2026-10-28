@@ -4,7 +4,14 @@ import React, { useState, useEffect, useMemo } from 'react';
 import type { SiteAuditReport, AuditFinding, CrawledPage, FindingSeverity } from '@/lib/seo/audit/crawlerEngine';
 import { executeSiteAudit } from '@/lib/seo/audit/crawlerEngine';
 import { validateTargetUrl } from '@/lib/seo/audit/ssrfGuard';
-import { getProject, setProject, saveAudit } from '@/lib/seo/workspace/workspaceStorage';
+import {
+  getProject,
+  setProject,
+  saveAudit,
+  saveAuditRun,
+  getActiveProject,
+  createTask,
+} from '@/lib/seo/workspace/workspaceStorage';
 import { ModuleShell, Panel } from '../ModuleShell';
 import {
   Globe,
@@ -177,6 +184,65 @@ export function SiteAuditV1Module() {
           recommendation: f.recommendation,
         })),
         moduleId: 'site-audit',
+      });
+
+      // Save deep audit run for Page Inspector & Executive Reports
+      const activeProj = getActiveProject();
+      saveAuditRun({
+        id: data.auditId || `run_${Date.now()}`,
+        projectId: activeProj.id,
+        targetUrl: data.targetUrl,
+        crawledPagesCount: data.summary.pagesCrawled,
+        healthScore: data.summary.healthScore,
+        criticalCount: data.summary.totalErrors,
+        warningCount: data.summary.totalWarnings,
+        infoCount: data.summary.totalInfo,
+        passedCount: data.summary.totalPassed,
+        pages: data.pages.map((p) => ({
+          requestedUrl: p.requestedUrl,
+          finalUrl: p.finalUrl,
+          httpStatus: p.httpStatus,
+          depth: p.depth,
+          timingMs: p.fetchTimeMs,
+          contentType: p.contentType,
+          title: p.title,
+          titleLength: p.titleLength,
+          metaDescription: p.description,
+          metaDescriptionLength: p.descriptionLength,
+          h1: p.h1List,
+          canonical: p.canonicalUrl || '',
+          isCanonicalSelf: Boolean(p.canonicalUrl && p.canonicalUrl === p.finalUrl),
+          robotsMeta: p.robotsMeta || p.xRobotsTag || '',
+          isNoindex: p.isNoindex,
+          isNofollow: p.isNofollow,
+          wordCount: p.wordCount,
+          isThinContent: p.isThinContent,
+          inboundLinksCount: 0,
+          outboundInternalCount: p.internalLinks.length,
+          outboundExternalCount: p.externalLinks.length,
+          imagesMissingAltCount: p.imagesMissingAlt,
+          issuesCount: p.issues.length,
+        })),
+        findings: data.findings.map((f) => ({
+          id: f.code,
+          ruleId: f.code,
+          ruleVersion: '1.0',
+          category: 'indexability',
+          severity: f.severity === 'error' ? 'critical' : f.severity === 'warning' ? 'warning' : 'info',
+          title: f.title,
+          explanation: f.explanation,
+          recommendation: f.recommendation,
+          affectedUrls: f.affectedUrls,
+        })),
+        internalLinks: data.pages.flatMap((p) =>
+          p.internalLinks.map((l) => ({
+            sourceUrl: p.finalUrl || p.requestedUrl,
+            targetUrl: l.href,
+            anchorText: l.text || '',
+            isNofollow: l.isNofollow,
+          }))
+        ),
+        at: data.timestamp,
       });
     } catch (err: any) {
       setStatus('error');
@@ -639,13 +705,34 @@ export function SiteAuditV1Module() {
                             </div>
 
                             {/* Recommendation */}
-                            <div className="p-3 rounded-xl bg-emerald-50/70 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900/60">
-                              <div className="text-[11px] font-bold text-emerald-800 dark:text-emerald-400 uppercase tracking-wider mb-0.5">
-                                Actionable Recommendation
+                            <div className="p-3 rounded-xl bg-emerald-50/70 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900/60 flex items-start justify-between gap-3">
+                              <div>
+                                <div className="text-[11px] font-bold text-emerald-800 dark:text-emerald-400 uppercase tracking-wider mb-0.5">
+                                  Actionable Recommendation
+                                </div>
+                                <p className="text-xs text-emerald-900 dark:text-emerald-200 leading-relaxed">
+                                  {finding.recommendation}
+                                </p>
                               </div>
-                              <p className="text-xs text-emerald-900 dark:text-emerald-200 leading-relaxed">
-                                {finding.recommendation}
-                              </p>
+                              <button
+                                type="button"
+                                onClick={(ev) => {
+                                  ev.stopPropagation();
+                                  createTask({
+                                    projectId: getActiveProject().id,
+                                    title: `Fix ${finding.title}`,
+                                    description: `${finding.explanation}\n\nRecommended: ${finding.recommendation}`,
+                                    severity: finding.severity === 'error' ? 'critical' : finding.severity === 'warning' ? 'warning' : 'info',
+                                    status: 'open',
+                                    url: finding.affectedUrls[0],
+                                    findingRuleId: finding.code,
+                                  });
+                                  alert(`Task created for "${finding.title}" in your Task Tracker!`);
+                                }}
+                                className="shrink-0 px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs"
+                              >
+                                + Create Task
+                              </button>
                             </div>
 
                             {/* Affected URLs List */}

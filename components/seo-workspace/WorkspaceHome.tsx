@@ -8,12 +8,12 @@ import { BarChart, LineChart, DonutScore } from './SimpleChart';
 import { ArrowRight } from 'lucide-react';
 
 const QUICK = [
-  { href: '/workspace/site-audit', label: 'Site Audit', blurb: 'Fetch URL → health score' },
-  { href: '/workspace/on-page-seo', label: 'On-Page Checker', blurb: 'Meta, headings, alt' },
-  { href: '/workspace/site-performance', label: 'Site Performance', blurb: 'CWV-style estimates' },
-  { href: '/workspace/position-tracking', label: 'Position Tracking', blurb: 'Log your ranks' },
-  { href: '/workspace/traffic-analytics/overview', label: 'Traffic Analytics', blurb: 'Paste GA4 / CSV' },
-  { href: '/workspace/reports/export', label: 'Export Report', blurb: 'HTML / PDF of last audit' },
+  { href: '/workspace/site-audit', label: 'Site Audit (v1 Live)', blurb: 'Server crawl → health score & duplicates' },
+  { href: '/workspace/on-page-seo', label: 'Page Inspector & Links', blurb: 'Direct on-page diagnostics & internal links' },
+  { href: '/workspace/keyword-overview', label: 'Keyword Strategy', blurb: 'Intent expansion & topic clusters' },
+  { href: '/workspace/tasks', label: 'Actionable Tasks', blurb: 'Track & verify crawl remediations' },
+  { href: '/workspace/app-center/gsc', label: 'Search Console', blurb: 'GSC CSV & API query intelligence' },
+  { href: '/workspace/reports', label: 'Executive Reports', blurb: 'Printable executive PDF & CSV summaries' },
 ];
 
 export function WorkspaceHome() {

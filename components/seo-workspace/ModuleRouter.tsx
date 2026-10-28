@@ -6,17 +6,13 @@ import { isNavItemLive } from '@/lib/seo/workspace/seoNavConfig';
 import {
   UrlAuditModule,
   SiteAuditModule,
-  OnPageModule,
   SitePerformanceModule,
   DomainOverviewModule,
-  KeywordMagicModule,
   PositionTrackingModule,
   LinkExtractorModule,
   BacklinkChecklistModule,
   ContentOptimizerModule,
   TopicIdeasModule,
-  TrafficYourDataModule,
-  ReportExportModule,
 } from './modules/PriorityModules';
 import {
   ChecklistModule,
@@ -27,11 +23,30 @@ import {
   OrganicResearchModule,
   AdsPlannerModule,
 } from './modules/GenericModule';
+import { PageInspectorModule } from './modules/PageInspectorModule';
+import { KeywordResearchModule } from './modules/KeywordResearchModule';
+import { SearchConsoleModule } from './modules/SearchConsoleModule';
+import { TaskManagerModule } from './modules/TaskManagerModule';
+import { ReportGeneratorModule } from './modules/ReportGeneratorModule';
 import { LockedModule } from './LockedModule';
 
 export function ModuleRouter({ item }: { item: SeoNavItem }) {
   if (!isNavItemLive(item)) {
     return <LockedModule item={item} />;
+  }
+
+  // Direct Slug Overrides
+  if (item.slug === 'tasks') {
+    return <TaskManagerModule />;
+  }
+  if (item.slug === 'app-center/gsc') {
+    return <SearchConsoleModule />;
+  }
+  if (item.slug === 'on-page-seo') {
+    return <PageInspectorModule />;
+  }
+  if (item.slug === 'reports' || item.slug === 'reports/export' || item.slug === 'reports/brand') {
+    return <ReportGeneratorModule />;
   }
 
   switch (item.kind) {
@@ -41,15 +56,20 @@ export function ModuleRouter({ item }: { item: SeoNavItem }) {
       }
       return <UrlAuditModule title={item.label} moduleId={item.id} />;
     case 'on-page':
-      return <OnPageModule />;
+      return <PageInspectorModule />;
+    case 'task-manager':
+      return <TaskManagerModule />;
+    case 'keyword-overview':
+    case 'keyword-magic':
+      return <KeywordResearchModule title={item.label} />;
+    case 'traffic-your-data':
+      return <SearchConsoleModule />;
+    case 'report-export':
+      return <ReportGeneratorModule />;
     case 'site-performance':
       return <SitePerformanceModule />;
     case 'domain-overview':
       return <DomainOverviewModule />;
-    case 'keyword-overview':
-      return <KeywordMagicModule title="Keyword Overview" />;
-    case 'keyword-magic':
-      return <KeywordMagicModule title="Keyword Magic" />;
     case 'keyword-gap':
       return <KeywordGapModule item={item} />;
     case 'position-tracking':
@@ -66,8 +86,6 @@ export function ModuleRouter({ item }: { item: SeoNavItem }) {
       return <TopicIdeasModule />;
     case 'writing-assistant':
       return <WritingAssistantModule item={item} />;
-    case 'traffic-your-data':
-      return <TrafficYourDataModule title={item.label} />;
     case 'market-explorer':
       return <ChecklistModule item={item} checklistKey="market-explorer" />;
     case 'ai-visibility':
@@ -80,8 +98,6 @@ export function ModuleRouter({ item }: { item: SeoNavItem }) {
       return <ChecklistModule item={item} checklistKey="ai-pr" />;
     case 'social-preview':
       return <SocialPreviewModule item={item} />;
-    case 'report-export':
-      return <ReportExportModule />;
     case 'app-center':
       return <AppCenterModule item={item} />;
     case 'generic-analyzer':

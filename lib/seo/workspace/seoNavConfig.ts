@@ -45,6 +45,7 @@ export type ModuleKind =
   | 'ai-pr'
   | 'social-preview'
   | 'report-export'
+  | 'task-manager'
   | 'app-center'
   | 'generic-analyzer';
 
@@ -121,8 +122,8 @@ export const SEO_NAV_GROUPS: SeoNavGroup[] = [
           { id: 'or-competitors', label: 'Competitors', slug: 'organic-research/competitors', kind: 'keyword-gap', status: 'live' },
         ],
       },
-      { id: 'keyword-overview', label: 'Keyword Overview', slug: 'keyword-overview', kind: 'keyword-overview', toolSlug: 'keyword-research-tool', status: 'locked' },
-      { id: 'keyword-magic', label: 'Keyword Magic', slug: 'keyword-magic', kind: 'keyword-magic', toolSlug: 'keyword-research-tool', status: 'locked' },
+      { id: 'keyword-overview', label: 'Keyword Overview', slug: 'keyword-overview', kind: 'keyword-overview', toolSlug: 'keyword-research-tool', status: 'live' },
+      { id: 'keyword-magic', label: 'Keyword Magic', slug: 'keyword-magic', kind: 'keyword-magic', toolSlug: 'keyword-research-tool', status: 'live' },
       { id: 'keyword-gap', label: 'Keyword Gap', slug: 'keyword-gap', kind: 'keyword-gap', status: 'live' },
       { id: 'keyword-manager', label: 'Keyword Manager', slug: 'keyword-manager', kind: 'position-tracking', status: 'live' },
       { id: 'position-tracking', label: 'Position Tracking', slug: 'position-tracking', kind: 'position-tracking', status: 'live' },
@@ -217,6 +218,7 @@ export const SEO_NAV_GROUPS: SeoNavGroup[] = [
     label: 'Reports',
     icon: 'clipboard',
     items: [
+      { id: 'task-manager', label: 'Actionable Tasks', slug: 'tasks', kind: 'task-manager', status: 'live' },
       { id: 'my-reports', label: 'My Reports', slug: 'reports', kind: 'report-export', status: 'live' },
       { id: 'brand-report', label: 'Brand Report', slug: 'reports/brand', kind: 'report-export', status: 'live' },
       { id: 'audit-export', label: 'Audit PDF / HTML', slug: 'reports/export', kind: 'report-export', status: 'live' },
@@ -228,7 +230,7 @@ export const SEO_NAV_GROUPS: SeoNavGroup[] = [
     icon: 'grid',
     items: [
       { id: 'apps', label: 'Connected Apps', slug: 'app-center', kind: 'app-center', status: 'locked' },
-      { id: 'gsc', label: 'Google Search Console', slug: 'app-center/gsc', kind: 'app-center', status: 'locked' },
+      { id: 'gsc', label: 'Google Search Console', slug: 'app-center/gsc', kind: 'app-center', status: 'live' },
       { id: 'ga4', label: 'Google Analytics 4', slug: 'app-center/ga4', kind: 'app-center', status: 'locked' },
       { id: 'tools-hub', label: 'All ToolVerse Tools', slug: 'app-center/tools', kind: 'app-center', status: 'locked' },
     ],
