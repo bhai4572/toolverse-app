@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { getProductBySlug, PRODUCTS } from '@/lib/products/registry';
-import { ProductReview } from '@/lib/products/types';
+import React, { useState, useEffect } from 'react';
+import { getProductBySlug, getAllProducts } from '@/lib/products/registry';
+import { Product, ProductReview } from '@/lib/products/types';
 import { getStoredReviews, saveReview, isUpvoted, toggleUpvote } from '@/lib/products/storageEngine';
 import { getToolsByCategory, TOOLS } from '@/lib/tools/registry';
 import {
@@ -18,6 +18,7 @@ import {
   Calendar,
   Globe,
   ArrowRight,
+  Trophy,
 } from 'lucide-react';
 
 interface ProductPageProps {
@@ -25,23 +26,8 @@ interface ProductPageProps {
 }
 
 export default function ProductProfilePage({ params }: ProductPageProps) {
-  const product = getProductBySlug(params.slug);
-
-  if (!product) {
-    return (
-      <div className="p-12 text-center space-y-4">
-        <h1 className="text-2xl font-bold text-slate-800">Product Not Found</h1>
-        <p className="text-slate-500">The product page you requested does not exist or has been removed.</p>
-        <a href="/products" className="inline-block text-indigo-600 font-bold hover:underline">
-          &larr; Back to Product Discovery
-        </a>
-      </div>
-    );
-  }
-
-  // Reviews state
-  const storedReviews = getStoredReviews(product.slug);
-  const [reviews, setReviews] = useState<ProductReview[]>(storedReviews);
+  const [product, setProduct] = useState<Product | undefined>(() => getProductBySlug(params.slug));
+  const [reviews, setReviews] = useState<ProductReview[]>([]);
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [newRating, setNewRating] = useState(5);
   const [newReviewTitle, setNewReviewTitle] = useState('');
@@ -49,22 +35,61 @@ export default function ProductProfilePage({ params }: ProductPageProps) {
   const [newUserName, setNewUserName] = useState('');
   const [newProText, setNewProText] = useState('');
   const [newConText, setNewConText] = useState('');
+  const [upvotes, setUpvotes] = useState(0);
+  const [hasVoted, setHasVoted] = useState(false);
 
-  // Upvotes
-  const [upvotes, setUpvotes] = useState(product.upvotesCount);
-  const [hasVoted, setHasVoted] = useState(isUpvoted(product.id));
+  useEffect(() => {
+    const update = () => {
+      const p = getProductBySlug(params.slug);
+      setProduct(p);
+      if (p) {
+        setUpvotes(p.upvotesCount);
+        setHasVoted(isUpvoted(p.id));
+        setReviews(getStoredReviews(p.slug));
+      }
+    };
+
+    update();
+    window.addEventListener('toolverse_products_changed', update);
+    window.addEventListener('storage', update);
+    return () => {
+      window.removeEventListener('toolverse_products_changed', update);
+      window.removeEventListener('storage', update);
+    };
+  }, [params.slug]);
+
+  if (!product) {
+    return (
+      <div className="p-12 text-center space-y-4 max-w-lg mx-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl my-8">
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Product Not Found</h1>
+        <p className="text-slate-500 text-sm">The product page you requested does not exist or has not been loaded yet.</p>
+        <div className="pt-2 flex justify-center gap-3">
+          <a href="/products" className="inline-block px-4 py-2 bg-indigo-600 text-white rounded-xl font-bold text-xs hover:bg-indigo-500">
+            &larr; Back to Products
+          </a>
+          <a href="/submit" className="inline-block px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 rounded-xl font-bold text-xs hover:bg-slate-200">
+            Submit a Product
+          </a>
+        </div>
+      </div>
+    );
+  }
 
   // Related Toolverse Tools
-  const relatedTools = TOOLS.filter((t) => product.relatedToolverseToolSlugs.includes(t.slug) && t.status === 'live');
+  const relatedTools = TOOLS.filter((t) => (product.relatedToolverseToolSlugs || []).includes(t.slug) && t.status === 'live');
 
   // Related Products
-  const relatedProducts = PRODUCTS.filter((p) => product.relatedProductSlugs.includes(p.slug) && p.slug !== product.slug);
+  const allProds = getAllProducts();
+  const relatedProducts = allProds
+    .filter((p) => p.slug !== product.slug && (p.categorySlug === product.categorySlug || (product.relatedProductSlugs || []).includes(p.slug)))
+    .slice(0, 4);
 
   const handleVote = () => {
     const voted = toggleUpvote(product.id);
     setHasVoted(voted);
     setUpvotes((prev) => (voted ? prev + 1 : prev - 1));
   };
+
 
   const handleReviewSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -162,7 +187,7 @@ export default function ProductProfilePage({ params }: ProductPageProps) {
             <p className="text-slate-700 dark:text-slate-300 leading-relaxed text-sm">{product.longDescription}</p>
 
             {/* Screenshots */}
-            {product.screenshots.length > 0 && (
+            {product.screenshots && product.screenshots.length > 0 && (
               <div className="space-y-2 pt-2">
                 <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Product Screenshots</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -178,7 +203,7 @@ export default function ProductProfilePage({ params }: ProductPageProps) {
           <section className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl space-y-4">
             <h2 className="text-xl font-extrabold text-slate-900 dark:text-white">Key Features</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {product.features.map((feat, idx) => (
+              {(product.features || []).map((feat, idx) => (
                 <div key={idx} className="p-4 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-100 dark:border-slate-800 space-y-1">
                   <h3 className="font-bold text-sm text-slate-900 dark:text-white flex items-center gap-1.5">
                     <Check className="w-4 h-4 text-emerald-500" /> {feat.title}
@@ -188,6 +213,7 @@ export default function ProductProfilePage({ params }: ProductPageProps) {
               ))}
             </div>
           </section>
+
 
           {/* Pricing Plans */}
           <section className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl space-y-4">
@@ -199,7 +225,7 @@ export default function ProductProfilePage({ params }: ProductPageProps) {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {product.pricingPlans.map((plan, idx) => (
+              {(product.pricingPlans || []).map((plan, idx) => (
                 <div
                   key={idx}
                   className={`p-4 rounded-xl border space-y-3 flex flex-col justify-between ${
@@ -220,7 +246,7 @@ export default function ProductProfilePage({ params }: ProductPageProps) {
                       {plan.period && <span className="text-xs text-slate-500 font-normal"> / {plan.period}</span>}
                     </div>
                     <ul className="space-y-1.5 text-xs text-slate-600 dark:text-slate-300 pt-2">
-                      {plan.features.map((f, fi) => (
+                      {(plan.features || []).map((f, fi) => (
                         <li key={fi} className="flex items-start gap-1.5">
                           <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
                           <span>{f}</span>
@@ -242,7 +268,7 @@ export default function ProductProfilePage({ params }: ProductPageProps) {
                   <Check className="w-4 h-4 text-emerald-600" /> Key Strengths (Pros)
                 </h3>
                 <ul className="space-y-1.5 text-xs text-slate-700 dark:text-slate-300">
-                  {product.pros.map((p, i) => (
+                  {(product.pros || []).map((p, i) => (
                     <li key={i} className="flex items-start gap-1.5">&bull; {p}</li>
                   ))}
                 </ul>
@@ -253,7 +279,7 @@ export default function ProductProfilePage({ params }: ProductPageProps) {
                   <X className="w-4 h-4 text-rose-600" /> Drawbacks (Cons)
                 </h3>
                 <ul className="space-y-1.5 text-xs text-slate-700 dark:text-slate-300">
-                  {product.cons.map((c, i) => (
+                  {(product.cons || []).map((c, i) => (
                     <li key={i} className="flex items-start gap-1.5">&bull; {c}</li>
                   ))}
                 </ul>
@@ -309,17 +335,18 @@ export default function ProductProfilePage({ params }: ProductPageProps) {
             </h3>
             <div className="space-y-2 text-slate-600 dark:text-slate-300">
               <div>Founder: <strong>{product.founderName || 'Verified Team'}</strong></div>
-              <div>Company: <strong>{product.companyName}</strong></div>
+              <div>Company: <strong>{product.companyName || `${product.name} Inc`}</strong></div>
               <div>Launch Date: <strong>{product.launchDate}</strong></div>
-              <div>Platforms: <strong>{product.platforms.join(', ')}</strong></div>
+              <div>Platforms: <strong>{(product.platforms || ['Web']).join(', ')}</strong></div>
             </div>
 
             <div className="pt-2 border-t flex flex-wrap gap-2">
-              <a href="/claim" className="text-indigo-600 font-bold hover:underline">
-                Claim this Product Profile &rarr;
+              <a href="/leaderboard" className="text-amber-600 dark:text-amber-400 font-bold hover:underline flex items-center gap-1">
+                <Trophy className="w-3.5 h-3.5" /> View on Leaderboard &rarr;
               </a>
             </div>
           </div>
+
 
           {/* Related Toolverse Tools */}
           {relatedTools.length > 0 && (

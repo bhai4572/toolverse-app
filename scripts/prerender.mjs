@@ -122,6 +122,57 @@ function mdToHtml(md) {
     .join('\n');
 }
 
+// ---------- small HTML helpers for crawlable static content ----------
+const wordCount = (html) => html.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
+const para = (t) => `<p class="leading-relaxed my-3 text-slate-700">${esc(t)}</p>`;
+const sec = (h, inner) => `<section class="space-y-2 mt-6"><h2 class="text-xl font-bold text-slate-900">${esc(h)}</h2>${inner}</section>`;
+const li = (href, label, desc) =>
+  `<li class="my-1">${href ? `<a href="${esc(href)}" class="text-indigo-600 hover:underline font-medium">${esc(label)}</a>` : `<span class="font-medium">${esc(label)}</span>`}${desc ? ` <span class="text-sm text-slate-500">— ${esc(desc)}</span>` : ''}</li>`;
+const ul = (items) => `<ul class="list-disc list-inside space-y-1 pl-4 my-3">${items.join('')}</ul>`;
+const page = (title, intro, inner) =>
+  `<article class="space-y-4"><header class="space-y-2"><h1 class="text-3xl font-extrabold text-slate-900">${esc(title)}</h1>${intro ? `<p class="text-base text-slate-600 max-w-3xl">${esc(intro)}</p>` : ''}</header>${inner}</article>`;
+
+const HUB_LINKS = [
+  ['/tools', 'All free tools'],
+  ['/products', 'Software & SaaS directory'],
+  ['/alternatives', 'Software alternatives'],
+  ['/blog', 'Guides & blog'],
+  ['/study', 'Study abroad guides'],
+  ['/immigration', 'Immigration & visas'],
+  ['/travel', 'Travel & visa planner'],
+  ['/jobs/remote-jobs', 'Remote jobs'],
+  ['/us', 'US tools'],
+  ['/uk', 'UK tools'],
+  ['/ca', 'Canada tools'],
+  ['/au', 'Australia tools'],
+  ['/passport-photos', 'Passport photo sizes'],
+  ['/news', 'News headlines'],
+  ['/seo', 'SEO tools suite'],
+  ['/workspace', 'SEO workspace'],
+  ['/pricing', 'Pricing'],
+  ['/legal/about', 'About ToolVerse'],
+  ['/legal/contact', 'Contact'],
+];
+
+/** Site-wide internal-link block appended to any prerendered page that would otherwise be thin. */
+function exploreHtml(deps) {
+  const { TOOLS, CATEGORIES, BLOG_POSTS } = deps;
+  const popular = TOOLS.filter((t) => t.isPopular && t.status === 'live').slice(0, 12);
+  const posts = (BLOG_POSTS || []).slice(0, 8);
+  return `<section class="space-y-4 mt-10 pt-6 border-t" aria-label="Explore ToolVerse">
+    <h2 class="text-2xl font-bold text-slate-900">Explore ToolVerse</h2>
+    <p class="text-sm text-slate-600">ToolVerse is a free, privacy-first toolkit: most file tools run entirely in your browser, so PDFs and photos are not uploaded to our servers.</p>
+    <h3 class="font-semibold">Tool categories</h3>
+    ${ul(CATEGORIES.map((c) => li(`/category/${c.slug}`, c.name)))}
+    <h3 class="font-semibold">Popular tools</h3>
+    ${ul(popular.map((t) => li(`/tools/${t.slug}`, t.canonicalName, t.shortDescription)))}
+    <h3 class="font-semibold">Latest guides</h3>
+    ${ul(posts.map((p) => li(`/blog/${p.slug}`, p.title)))}
+    <h3 class="font-semibold">More from ToolVerse</h3>
+    ${ul(HUB_LINKS.map(([h, l]) => li(h, l)))}
+  </section>`;
+}
+
 function buildBodyMain(pathname, meta, deps) {
   const {
     TOOLS,
@@ -131,6 +182,15 @@ function buildBodyMain(pathname, meta, deps) {
     getCategoryPageContent,
     getBlogPostBySlug,
     getJobPageContent,
+    BLOG_POSTS = [],
+    PRODUCTS = [],
+    ALTERNATIVE_PAGES = [],
+    COMPARISON_PAGES = [],
+    QUESTIONS = [],
+    COLLECTIONS = [],
+    STUDY_DESTINATIONS = {},
+    REGION_HUBS = {},
+    LEGAL_PAGES = {},
   } = deps;
   const parts = pathname.replace(/\/$/, '').split('/').filter(Boolean);
 
@@ -180,6 +240,134 @@ function buildBodyMain(pathname, meta, deps) {
         </section>
       </div>
     `;
+  } else if (parts[0] === 'legal' && parts[1] && LEGAL_PAGES[parts[1]]) {
+    const lp = LEGAL_PAGES[parts[1]];
+    contentHtml = `<article class="space-y-4 max-w-3xl"><h1 class="text-3xl font-extrabold text-slate-900">${esc(lp.title)}</h1><div class="text-sm leading-relaxed space-y-4">${lp.content}</div></article>`;
+  } else if (parts[0] === 'study' && parts[1] && STUDY_DESTINATIONS[parts[1]]) {
+    const s = STUDY_DESTINATIONS[parts[1]];
+    contentHtml = page(
+      s.title,
+      s.answerFirst,
+      [
+        sec(`Study in ${s.name}: overview`, para(s.overview)),
+        sec('Study pathways', (s.pathways || []).map((p) => `<h3 class="font-semibold mt-3">${esc(p.title)}</h3>${para(p.body)}`).join('')),
+        sec('Documents you will usually need', ul((s.documents || []).map((d) => li('', d)))),
+        sec('Typical costs', para(s.feeYearNote) + ul((s.feeRanges || []).map((f) => li('', `${f.label}: ${f.range}`, f.note)))),
+        sec('Student visa summary', para(s.visaSummary)),
+        sec('Popular fields of study', ul((s.fields || []).map((f) => li('', f.name, f.why)))),
+        sec('Official links', ul([...(s.officialLinks || []), ...(s.portals || [])].map((l) => li(l.href, l.label, l.note)))),
+        sec('Free ToolVerse tools for applicants', ul((s.tools || []).map((l) => li(l.href, l.label)))),
+        sec('Frequently asked questions', (s.faqs || []).map((f) => `<h3 class="font-semibold mt-3">${esc(f.question)}</h3>${para(f.answer)}`).join('')),
+      ].join('')
+    );
+  } else if (parts[0] === 'study' && !parts[1]) {
+    contentHtml = page(
+      'Study Abroad Guides',
+      'Admissions steps, documents, costs and student-visa basics for the USA, UK, Canada, Australia, New Zealand and Europe.',
+      sec('Destinations', ul(Object.values(STUDY_DESTINATIONS).map((s) => li(`/study/${s.slug}`, s.name, s.answerFirst))))
+    );
+  } else if (parts.length === 1 && REGION_HUBS[parts[0]]) {
+    const r = REGION_HUBS[parts[0]];
+    contentHtml = page(
+      r.title,
+      r.answerFirst,
+      para(r.description) + sec(`${r.name} tools`, ul((r.tools || []).map((t) => li(`/tools/${t.slug}`, t.label, t.blurb))))
+    );
+  } else if (parts[0] === 'tools' && !parts[1]) {
+    contentHtml = page(
+      'Free Online Tools',
+      `Browse ${TOOLS.filter((t) => t.status === 'live').length}+ free browser tools by category: PDF, image, text, calculators, developer, SEO, jobs and more.`,
+      CATEGORIES.map((c) => {
+        const list = (getToolsByCategory ? getToolsByCategory(c.slug) : []).filter((t) => t.status === 'live');
+        return sec(c.name, para(c.description) + ul(list.map((t) => li(`/tools/${t.slug}`, t.canonicalName, t.shortDescription))));
+      }).join('')
+    );
+  } else if (parts[0] === 'products' && parts[1] && PRODUCTS.find((x) => x.slug === parts[1])) {
+    const p = PRODUCTS.find((x) => x.slug === parts[1]);
+    const alt = ALTERNATIVE_PAGES.find((a) => a.slug === p.slug);
+    contentHtml = page(
+      `${p.name} — ${p.tagline}`,
+      p.description,
+      [
+        sec(`About ${p.name}`, para(p.longDescription)),
+        sec('Key features', ul((p.features || []).map((f) => li('', f.title, f.description)))),
+        sec('Pricing', para(`Pricing model: ${p.pricingModel}.`) + ul((p.pricingPlans || []).map((pl) => li('', `${pl.name} — ${pl.price}${pl.period && pl.period !== 'free' ? ` / ${pl.period}` : ''}`, (pl.features || []).join(', '))))),
+        sec('Pros', ul((p.pros || []).map((x) => li('', x)))),
+        sec('Cons', ul((p.cons || []).map((x) => li('', x)))),
+        sec('Platforms', para((p.platforms || []).join(', '))),
+        alt ? sec('Alternatives', ul([li(`/alternatives/${alt.slug}`, `Best alternatives to ${p.name}`)])) : '',
+        (p.relatedToolverseToolSlugs || []).length
+          ? sec('Related free ToolVerse tools', ul(p.relatedToolverseToolSlugs.map((s) => { const t = TOOLS.find((x) => x.slug === s); return t ? li(`/tools/${t.slug}`, t.canonicalName, t.shortDescription) : ''; })))
+          : '',
+      ].join('')
+    );
+  } else if (parts[0] === 'products' && !parts[1]) {
+    contentHtml = page(
+      'Discover Software, AI Tools & SaaS Products',
+      'Browse software products with features, pricing, pros and cons, and alternatives.',
+      sec('Products', ul(PRODUCTS.filter((p) => p.status === 'approved').map((p) => li(`/products/${p.slug}`, p.name, p.tagline))))
+    );
+  } else if (parts[0] === 'leaderboard') {
+    const topProducts = PRODUCTS.filter((p) => p.status === 'approved').slice(0, 15);
+    contentHtml = page(
+      'Community Leaderboard — Top Rated SaaS, AI Tools & Software',
+      'Explore the ToolVerse Leaderboard featuring the most upvoted and top-rated SaaS products, developer utilities, and AI innovations. Vote for your favorite software and discover daily launches.',
+      [
+        sec('Top 3 Podium Launches', ul(topProducts.slice(0, 3).map((p, i) => li(`/products/${p.slug}`, `#${i + 1} ${p.name}`, `${p.categoryName} • ${p.upvotes || 1} Community Upvotes`)))),
+        sec('All-Time Leaderboard Rankings', ul(topProducts.map((p, i) => li(`/products/${p.slug}`, `Rank #${i + 1}: ${p.name}`, `${p.tagline} (${p.categoryName})`)))),
+        sec('Launch Your Product', para('Have an AI tool, SaaS, or developer application? Submit it to Toolverse to appear on the live leaderboard and reach thousands of daily tech users.') + ul([li('/submit', 'Submit Your Product for Free', 'Instant live listing, SEO schema, and community upvotes')]))
+      ].join('')
+    );
+  } else if (parts[0] === 'alternatives' && parts[1] && ALTERNATIVE_PAGES.find((a) => a.slug === parts[1])) {
+    const a = ALTERNATIVE_PAGES.find((x) => x.slug === parts[1]);
+    contentHtml = page(
+      a.metaTitle,
+      a.summary,
+      [
+        sec(`About ${a.targetProductName}`, para(a.targetProductDescription) + para(`Pricing: ${a.targetProductPricing}. Best for: ${a.bestFor}`)),
+        sec('How to choose an alternative', ul((a.keySelectionCriteria || []).map((c) => li('', c)))),
+        sec('Top alternatives', ul((a.topAlternativeSlugs || []).map((s) => { const p = PRODUCTS.find((x) => x.slug === s); return p ? li(`/products/${p.slug}`, p.name, p.tagline) : ''; }))),
+        sec('Frequently asked questions', (a.faqs || []).map((f) => `<h3 class="font-semibold mt-3">${esc(f.question)}</h3>${para(f.answer)}`).join('')),
+      ].join('')
+    );
+  } else if (parts[0] === 'alternatives' && !parts[1]) {
+    contentHtml = page(
+      'Software & AI Alternatives',
+      'Compare free and paid alternatives to popular design, AI, workspace and developer software.',
+      sec('Alternatives guides', ul(ALTERNATIVE_PAGES.map((a) => li(`/alternatives/${a.slug}`, `Alternatives to ${a.targetProductName}`, a.summary))))
+    );
+  } else if (parts[0] === 'compare' && parts[1] && COMPARISON_PAGES.find((c) => c.slug === parts[1])) {
+    const c = COMPARISON_PAGES.find((x) => x.slug === parts[1]);
+    const pa = PRODUCTS.find((x) => x.slug === c.productASlug);
+    const pb = PRODUCTS.find((x) => x.slug === c.productBSlug);
+    contentHtml = page(
+      c.title,
+      c.metaDescription,
+      [
+        sec('Verdict', para(c.verdict)),
+        sec('Feature comparison', `<table class="border-collapse border border-slate-300 w-full text-sm"><tr><th class="border p-2">Feature</th><th class="border p-2">${esc(pa?.name || c.productASlug)}</th><th class="border p-2">${esc(pb?.name || c.productBSlug)}</th></tr>${(c.comparisonMatrix || []).map((r) => `<tr><td class="border p-2">${esc(r.feature)}</td><td class="border p-2">${esc(r.productAValue)}</td><td class="border p-2">${esc(r.productBValue)}</td></tr>`).join('')}</table>`),
+        sec(`Best for ${pa?.name || 'option A'}`, para(c.bestForProductA)),
+        sec(`Best for ${pb?.name || 'option B'}`, para(c.bestForProductB)),
+        sec('Product pages', ul([pa ? li(`/products/${pa.slug}`, pa.name, pa.tagline) : '', pb ? li(`/products/${pb.slug}`, pb.name, pb.tagline) : ''])),
+      ].join('')
+    );
+  } else if (parts[0] === 'collections' && parts[1] && COLLECTIONS.find((c) => c.slug === parts[1])) {
+    const col = COLLECTIONS.find((x) => x.slug === parts[1]);
+    contentHtml = page(
+      col.title,
+      col.description,
+      sec('In this collection', ul((col.items || []).map((it) => {
+        if (it.type === 'product') { const p = PRODUCTS.find((x) => x.slug === it.slug); return p ? li(`/products/${p.slug}`, p.name, it.note || p.tagline) : ''; }
+        const t = TOOLS.find((x) => x.slug === it.slug); return t ? li(`/tools/${t.slug}`, t.canonicalName, it.note || t.shortDescription) : '';
+      })))
+    );
+  } else if (parts[0] === 'collections' && !parts[1]) {
+    contentHtml = page('Curated Collections', 'Hand-picked lists of useful tools and software.', sec('Collections', ul(COLLECTIONS.map((c) => li(`/collections/${c.slug}`, c.title, c.description)))));
+  } else if (parts[0] === 'questions' && parts[1] && QUESTIONS.find((q) => q.slug === parts[1])) {
+    const q = QUESTIONS.find((x) => x.slug === parts[1]);
+    contentHtml = page(q.title, '', para(q.content) + sec('Answers', (q.answers || []).map((a) => para(a.content)).join('')));
+  } else if (parts[0] === 'questions' && !parts[1]) {
+    contentHtml = page('Software & Tools Questions', 'Questions and answers about software, AI tools and workflows.', sec('Questions', ul(QUESTIONS.map((q) => li(`/questions/${q.slug}`, q.title)))));
   } else if (parts[0] === 'tools' && parts[1]) {
     // Tool Page
     const tool = TOOLS.find((t) => t.slug === parts[1]);
@@ -395,16 +583,12 @@ function buildBodyMain(pathname, meta, deps) {
       `;
     }
   } else if (parts[0] === 'blog') {
-    // Blog Hub
-    contentHtml = `
-      <div class="space-y-6">
-        <header class="space-y-2">
-          <h1 class="text-3xl font-extrabold text-slate-900">ToolVerse Guides &amp; Blog</h1>
-          <p class="text-base text-slate-600">Practical guides, workflows, and tutorials for privacy-first tools, SEO optimization, and calculators.</p>
-        </header>
-        <p class="text-sm text-slate-500">Explore comprehensive how-to tutorials for each of our 113+ free online utilities.</p>
-      </div>
-    `;
+    // Blog Hub: every guide is linked from here so crawlers can discover all posts.
+    contentHtml = page(
+      'ToolVerse Guides & Blog',
+      'Practical guides, workflows, and tutorials for privacy-first tools, SEO optimization, and calculators.',
+      sec(`All ${BLOG_POSTS.length} guides`, ul(BLOG_POSTS.map((p) => li(`/blog/${p.slug}`, p.title, p.description))))
+    );
   } else if (parts[0] === 'jobs' && parts[1]) {
     // Job landing
     const job = getJobPageContent?.(parts[1]);
@@ -566,14 +750,21 @@ function buildBodyMain(pathname, meta, deps) {
         </header>
       </article>
     `;
-  } else {
-    // Generic fallback (e.g. Legal)
+  }
+
+  // Fallback for hubs/apps with no dedicated builder (or an unknown slug)
+  if (!contentHtml.trim()) {
     contentHtml = `
       <article class="space-y-4">
         <h1 class="text-3xl font-extrabold">${esc(meta.title)}</h1>
         <p class="text-base text-slate-600">${esc(meta.description)}</p>
       </article>
     `;
+  }
+
+  // Any page that is still thin (or the homepage) gets real internal links + a site overview.
+  if (parts.length === 0 || wordCount(contentHtml) < 220) {
+    contentHtml += exploreHtml(deps);
   }
 
   return `
@@ -670,6 +861,14 @@ async function main() {
     const { COMPARISON_PAGES } = await vite.ssrLoadModule('/lib/products/comparisonsRegistry.ts');
     const { QUESTIONS } = await vite.ssrLoadModule('/lib/products/questionsRegistry.ts');
     const { COLLECTIONS } = await vite.ssrLoadModule('/lib/products/collectionsRegistry.ts');
+    const { STUDY_DESTINATIONS } = await vite.ssrLoadModule('/lib/study/destinations.ts');
+    const { REGION_HUBS } = await vite.ssrLoadModule('/lib/regions/hubs.ts');
+    let LEGAL_PAGES = {};
+    try {
+      ({ LEGAL_PAGES } = await vite.ssrLoadModule('/app/legal/[slug]/page.tsx'));
+    } catch (e) {
+      console.warn('Legal content not embedded in prerender:', e.message);
+    }
 
     const deps = {
       TOOLS,
@@ -679,6 +878,15 @@ async function main() {
       getCategoryPageContent,
       getBlogPostBySlug,
       getJobPageContent,
+      BLOG_POSTS,
+      PRODUCTS,
+      ALTERNATIVE_PAGES,
+      COMPARISON_PAGES,
+      QUESTIONS,
+      COLLECTIONS,
+      STUDY_DESTINATIONS,
+      REGION_HUBS,
+      LEGAL_PAGES,
     };
     const template = fs.readFileSync(templatePath, 'utf8');
 
@@ -695,6 +903,7 @@ async function main() {
 
     // Product Discovery & Ecosystem Routes
     routes.push('/products');
+    routes.push('/leaderboard');
     for (const prod of PRODUCTS) {
       if (prod.status === 'approved') routes.push(`/products/${prod.slug}`);
     }
@@ -796,7 +1005,6 @@ async function main() {
     routes.push('/sitemap');
     routes.push('/dashboard');
     routes.push('/workspace');
-    routes.push('/seo-dashboard');
     routes.push('/404');
 
     for (const route of routes) {

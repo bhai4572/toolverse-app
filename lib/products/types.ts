@@ -1,6 +1,15 @@
 export type PricingModel = 'Free' | 'Freemium' | 'Paid' | 'Free Trial' | 'Open Source';
 export type TargetPlatform = 'Web' | 'Mac' | 'Windows' | 'Linux' | 'iOS' | 'Android' | 'Chrome Extension' | 'API';
 
+export interface ProductCategory {
+  slug: string;
+  name: string;
+  icon?: string;
+  description?: string;
+  isCustom?: boolean;
+}
+
+
 export interface ProductFeature {
   title: string;
   description: string;

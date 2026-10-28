@@ -5,10 +5,46 @@
  */
 export async function onRequest(context) {
   const url = new URL(context.request.url);
-  let pathname = url.pathname;
-  if (pathname.length > 1 && pathname.endsWith('/')) {
-    pathname = pathname.slice(0, -1);
+  const rawPath = url.pathname;
+
+  // 1. Strict 301 Permanent Redirect for trailing slashes (except root)
+  // Fixes Google Search Console "Alternate page with proper canonical tag"
+  if (rawPath.length > 1 && rawPath.endsWith('/')) {
+    const clean = rawPath.replace(/\/+$/, '') || '/';
+    return new Response(null, {
+      status: 301,
+      headers: {
+        'Location': `${clean}${url.search}`,
+        'Cache-Control': 'public, max-age=86400, must-revalidate',
+      },
+    });
   }
+
+  // 2. Strict 301 Permanent Redirect for duplicate aliases
+  // Fixes GSC "Page with redirect" & "Alternate page with proper canonical tag"
+  if (rawPath === '/seo-dashboard' || rawPath.startsWith('/seo-dashboard/')) {
+    const target = rawPath.replace(/^\/seo-dashboard/, '/workspace');
+    return new Response(null, {
+      status: 301,
+      headers: {
+        'Location': `${target}${url.search}`,
+        'Cache-Control': 'public, max-age=86400, must-revalidate',
+      },
+    });
+  }
+
+  if (rawPath === '/site-map' || rawPath.startsWith('/site-map/')) {
+    const target = rawPath.replace(/^\/site-map/, '/sitemap');
+    return new Response(null, {
+      status: 301,
+      headers: {
+        'Location': `${target}${url.search}`,
+        'Cache-Control': 'public, max-age=86400, must-revalidate',
+      },
+    });
+  }
+
+  let pathname = rawPath;
 
   // SEO / text assets must stay static (also excluded in public/_routes.json).
   // Never HTML-fallback these even if _routes include accidentally matches.
@@ -102,6 +138,7 @@ function isKnownSpaPath(pathname) {
     'jobs',
     'how-to',
     'products',
+    'leaderboard',
     'alternatives',
     'compare',
     'questions',

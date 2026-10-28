@@ -8,11 +8,13 @@ import { searchTools, ToolDefinition } from '@/lib/tools/registry';
 const PRIMARY_NAV = [
   { href: '/tools', label: 'Tools' },
   { href: '/products', label: 'Products' },
+  { href: '/leaderboard', label: 'Leaderboard' },
   { href: '/workspace', label: 'SEO Dashboard' },
   { href: '/study', label: 'Study Abroad' },
   { href: '/blog', label: 'Blog' },
   { href: '/news', label: 'News' },
 ] as const;
+
 
 const MORE_NAV = [
   { href: '/startups', label: 'Startups & SaaS' },

@@ -17,8 +17,10 @@ import QuestionDetailPage from '../app/questions/[slug]/page';
 import CollectionsHubPage from '../app/collections/page';
 import CollectionDetailPage from '../app/collections/[slug]/page';
 import ProductSubmissionPage from '../app/submit/page';
+import LeaderboardPage from '../app/leaderboard/page';
 import BadgesGeneratorPage from '../app/badges/page';
 import ProductClaimPage from '../app/claim/page';
+
 
 // New Global Business Identity & QR System Imports
 import BusinessDirectoryPage from '../app/business/page';
@@ -275,6 +277,11 @@ export default function App() {
       }
       return <ProductDiscoveryHubPage />;
     }
+
+    if (parts[0] === 'leaderboard') {
+      return <LeaderboardPage />;
+    }
+
 
     if (parts[0] === 'alternatives') {
       if (parts[1]) {

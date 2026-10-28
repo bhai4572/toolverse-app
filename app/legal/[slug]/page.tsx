@@ -2,7 +2,7 @@ import React from 'react';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import type { Metadata } from 'next';
 
-const LEGAL_PAGES: Record<string, { title: string; content: string }> = {
+export const LEGAL_PAGES: Record<string, { title: string; content: string }> = {
   'privacy-policy': {
     title: 'Privacy Policy',
     content: `

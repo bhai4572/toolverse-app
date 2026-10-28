@@ -1,4 +1,5 @@
-import { Product } from './types';
+import { Product, ProductCategory } from './types';
+import { getStoredProducts, getStoredCategories, getProductVoteDelta } from './storageEngine';
 
 export const PRODUCT_CATEGORIES = [
   { slug: 'ai-tools', name: 'AI & Machine Learning', icon: 'Sparkles', description: 'Artificial intelligence assistants, image generators, LLMs, and automation engines.' },
@@ -399,22 +400,97 @@ export const PRODUCTS: Product[] = [
   }
 ];
 
+export function getAllCategories(): ProductCategory[] {
+  const custom = getStoredCategories();
+  const map = new Map<string, ProductCategory>();
+  for (const c of PRODUCT_CATEGORIES) {
+    map.set(c.slug, c);
+  }
+  for (const c of custom) {
+    map.set(c.slug, c);
+  }
+  return Array.from(map.values());
+}
+
+export function getAllProducts(): Product[] {
+  const custom = getStoredProducts();
+  const map = new Map<string, Product>();
+
+  // Add custom products first (so they take precedence)
+  for (const p of custom) {
+    const delta = getProductVoteDelta(p.id);
+    map.set(p.slug, {
+      ...p,
+      upvotesCount: Math.max(1, p.upvotesCount + delta),
+    });
+  }
+
+  // Add static products
+  for (const p of PRODUCTS) {
+    if (!map.has(p.slug)) {
+      const delta = getProductVoteDelta(p.id);
+      map.set(p.slug, {
+        ...p,
+        upvotesCount: Math.max(0, p.upvotesCount + delta),
+      });
+    }
+  }
+
+  return Array.from(map.values());
+}
+
 export function getProductBySlug(slug: string): Product | undefined {
-  return PRODUCTS.find((p) => p.slug === slug);
+  if (!slug) return undefined;
+  const normalized = slug.trim().toLowerCase();
+  const all = getAllProducts();
+  return all.find((p) => p.slug.toLowerCase() === normalized || p.id.toLowerCase() === normalized);
 }
 
 export function getProductsByCategory(categorySlug: string): Product[] {
-  return PRODUCTS.filter((p) => p.categorySlug === categorySlug && p.status === 'approved');
+  const all = getAllProducts();
+  if (categorySlug === 'all') return all;
+  return all.filter((p) => p.categorySlug === categorySlug && p.status === 'approved');
 }
 
 export function getFeaturedProducts(): Product[] {
-  return PRODUCTS.filter((p) => p.isFeatured && p.status === 'approved');
+  return getAllProducts().filter((p) => p.isFeatured && p.status === 'approved');
 }
 
 export function getTrendingProducts(): Product[] {
-  return PRODUCTS.filter((p) => p.isTrending && p.status === 'approved');
+  return getAllProducts().filter((p) => p.isTrending && p.status === 'approved');
 }
 
 export function getNewProducts(): Product[] {
-  return PRODUCTS.filter((p) => p.isNew || p.status === 'approved').slice(0, 10);
+  return getAllProducts().filter((p) => p.isNew || p.status === 'approved').slice(0, 10);
 }
+
+export function getLeaderboardProducts(
+  timeframe: 'all' | 'today' | 'week' | 'new' = 'all',
+  categorySlug: string = 'all'
+): Product[] {
+  let list = getAllProducts().filter((p) => p.status === 'approved');
+
+  if (categorySlug && categorySlug !== 'all') {
+    list = list.filter((p) => p.categorySlug === categorySlug);
+  }
+
+  if (timeframe === 'new') {
+    return list.sort((a, b) => new Date(b.launchDate).getTime() - new Date(a.launchDate).getTime());
+  }
+
+  if (timeframe === 'today') {
+    const today = new Date().toISOString().split('T')[0];
+    const todayList = list.filter((p) => p.launchDate === today || p.isNew);
+    if (todayList.length > 0) {
+      return todayList.sort((a, b) => b.upvotesCount - a.upvotesCount);
+    }
+  }
+
+  if (timeframe === 'week') {
+    return list.sort((a, b) => (b.upvotesCount * 2 + b.viewsCount) - (a.upvotesCount * 2 + a.viewsCount));
+  }
+
+  // All-time top voted
+  return list.sort((a, b) => b.upvotesCount - a.upvotesCount);
+}
+

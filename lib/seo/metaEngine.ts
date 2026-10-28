@@ -3,7 +3,7 @@ import { getBlogPostBySlug } from '@/lib/blog/posts';
 import { getToolPageContent } from '@/lib/seo/toolPageContent';
 import { getCategoryPageContent } from '@/lib/seo/categoryPageContent';
 import { getJobPageContent, buildJobPostingJsonLd } from '@/lib/seo/jobPageContent';
-import { getProductBySlug, PRODUCTS } from '@/lib/products/registry';
+import { getProductBySlug, getAllProducts, PRODUCTS } from '@/lib/products/registry';
 import { getAlternativeBySlug } from '@/lib/products/alternativesRegistry';
 import { getComparisonBySlug } from '@/lib/products/comparisonsRegistry';
 import { getQuestionBySlug, QUESTIONS } from '@/lib/products/questionsRegistry';
@@ -187,8 +187,23 @@ export function wrapInGraph(nodes: (Record<string, unknown> | null | undefined)[
   ];
 }
 
+/** Drop only a trailing "| ToolVerse"-style brand suffix when the title is over 65 chars. */
+function fitTitle(t: string): string {
+  if (t.length <= 65) return t;
+  const stripped = t.replace(/\s*[|—–-]\s*Tool[Vv]erse(\s+[A-Za-z&]+){0,3}\s*$/, '').trim();
+  return stripped.length >= 20 ? stripped : t;
+}
+
+/** Trim meta descriptions to ≤160 chars on a word boundary. */
+function fitDesc(d: string): string {
+  if (d.length <= 160) return d;
+  const cut = d.slice(0, 157);
+  return cut.slice(0, cut.lastIndexOf(' ')).replace(/[,;:\s]+$/, '') + '…';
+}
+
 export function getMetadataForPath(pathname: string): PageMetadata {
-  const meta = buildMetadataForPath(pathname);
+  const built = buildMetadataForPath(pathname);
+  const meta = { ...built, title: fitTitle(built.title), description: fitDesc(built.description) };
   if (pathShouldNoindex(pathname)) return { ...meta, robots: ROBOTS_NOINDEX };
   if (meta.robots) return meta;
   return { ...meta, robots: ROBOTS_INDEX };
@@ -549,15 +564,16 @@ function buildMetadataForPath(pathname: string): PageMetadata {
           category: product.categoryName,
           image: product.logoUrl,
           applicationCategory: product.categoryName,
-          operatingSystem: product.platforms.join(', '),
+          operatingSystem: (product.platforms || ['Web']).join(', '),
           offers: {
             '@type': 'Offer',
-            price: product.pricingPlans[0]?.price.replace(/[^0-9.]/g, '') || '0',
+            price: (product.pricingPlans?.[0]?.price ? product.pricingPlans[0].price.replace(/[^0-9.]/g, '') : '0') || '0',
             priceCurrency: 'USD',
             availability: 'https://schema.org/InStock',
           },
           publisher: { '@id': ORGANIZATION_ID },
         };
+
 
         const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
           { name: 'Home', url: `${baseUrl}/` },
@@ -613,6 +629,57 @@ function buildMetadataForPath(pathname: string): PageMetadata {
     });
 
     const graph = [buildOrganizationNode(), buildWebSiteNode(), pageNode, breadcrumbs];
+
+    return {
+      title,
+      description,
+      canonicalUrl,
+      ogType: 'website',
+      ogImage: DEFAULT_OG_IMAGE,
+      jsonLd: wrapInGraph(graph),
+    };
+  }
+
+  // --- Community Leaderboard (/leaderboard) ---
+  if (parts[0] === 'leaderboard') {
+    const canonicalUrl = `${baseUrl}/leaderboard`;
+    const title = 'Product Leaderboard — Top Rated SaaS, AI Tools & Software | ToolVerse';
+    const description = 'Explore the Toolverse Community Leaderboard. Discover top-voted AI tools, SaaS products, developer utilities, and daily trending software launches.';
+
+    const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+      { name: 'Home', url: `${baseUrl}/` },
+      { name: 'Products', url: `${baseUrl}/products` },
+      { name: 'Leaderboard', url: canonicalUrl },
+    ]);
+
+    const pageNode = buildWebPageNode({
+      canonicalUrl,
+      name: title,
+      description,
+      type: 'CollectionPage',
+      hasBreadcrumbs: true,
+    });
+
+    const leaderboardItems = getAllProducts().slice(0, 10).map((p, idx) => ({
+      '@type': 'ListItem',
+      position: idx + 1,
+      item: {
+        '@type': 'SoftwareApplication',
+        name: p.name,
+        url: `${baseUrl}/products/${p.slug}`,
+        description: p.tagline,
+        applicationCategory: p.categoryName,
+        operatingSystem: (p.platforms || ['Web']).join(', '),
+      },
+    }));
+
+    const itemListSchema = {
+      '@type': 'ItemList',
+      name: 'Toolverse Top Software & AI Tools Leaderboard',
+      itemListElement: leaderboardItems,
+    };
+
+    const graph = [buildOrganizationNode(), buildWebSiteNode(), pageNode, breadcrumbs, itemListSchema];
 
     return {
       title,

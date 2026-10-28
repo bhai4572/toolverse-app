@@ -21,17 +21,14 @@ const base = 'https://toolverse.baby';
  * Mirror of lib/seo/indexability.ts (this script cannot import TS). Keep in sync.
  * Anything noindex there must NOT be in the sitemap.
  */
-const NOINDEX_EXACT = new Set([
-  '/404', '/dashboard', '/seo-dashboard', '/sitemap', '/business', '/business-qr',
-  '/submit-startup', '/startups', '/claim', '/guest-posts', '/guest-posts/create-pitch',
-  '/become-a-publisher', '/how-to',
-]);
-const NOINDEX_PREFIXES = ['/admin', '/b/', '/business/', '/startups/', '/publishers/', '/how-to/'];
+const NOINDEX_EXACT = new Set(['/404']);
+const NOINDEX_PREFIXES = ['/admin', '/admin/'];
 function isNoindex(p) {
   const x = (p.replace(/\/$/, '') || '/').toLowerCase();
   if (NOINDEX_EXACT.has(x)) return true;
   return NOINDEX_PREFIXES.some((pre) => x === pre.replace(/\/$/, '') || x.startsWith(pre));
 }
+
 
 /** Tools that already have a hand-written pillar guide (keep in sync with lib/blog/toolGuides.ts). */
 const PILLAR_GUIDE_BY_TOOL = {
@@ -186,9 +183,11 @@ for (const l of [
 }
 
 pagesUrls.push(makeUrl('/products', 'daily', '0.9'));
+pagesUrls.push(makeUrl('/leaderboard', 'daily', '0.92'));
 for (const p of ['canva', 'chatgpt', 'notion', 'figma', 'supabase', 'claude-ai']) {
   pagesUrls.push(makeUrl(`/products/${p}`, 'daily', '0.8'));
 }
+
 
 pagesUrls.push(makeUrl('/alternatives', 'daily', '0.9'));
 for (const alt of ['canva', 'chatgpt', 'notion']) {
@@ -218,15 +217,13 @@ for (const col of [
 }
 
 // Utility & landing surfaces included in sitemap
-pagesUrls.push(makeUrl('/submit', 'weekly', '0.8'));
+pagesUrls.push(makeUrl('/submit', 'weekly', '0.85'));
 pagesUrls.push(makeUrl('/badges', 'weekly', '0.8'));
 pagesUrls.push(makeUrl('/claim', 'weekly', '0.8'));
 pagesUrls.push(makeUrl('/submit-startup', 'weekly', '0.8'));
 pagesUrls.push(makeUrl('/workspace', 'daily', '0.9'));
-pagesUrls.push(makeUrl('/seo-dashboard', 'daily', '0.9'));
-pagesUrls.push(makeUrl('/dashboard', 'weekly', '0.7'));
-pagesUrls.push(makeUrl('/admin/login', 'monthly', '0.5'));
-pagesUrls.push(makeUrl('/404', 'monthly', '0.3'));
+pagesUrls.push(makeUrl('/dashboard', 'weekly', '0.8'));
+
 
 pagesUrls.push(makeUrl('/business', 'daily', '0.9'));
 for (const biz of ['ali-barber-studio', 'apex-digital-marketing', 'artisan-coffee-roasters']) {
