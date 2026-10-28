@@ -219,7 +219,7 @@ describe('ToolVerse Advanced Schema.org & Structured Data Architecture', () => {
     expect(toolMeta.robots).toMatch(/index,\s*follow/i);
 
     const notFound = getMetadataForPath('/404');
-    expect(notFound.robots).toMatch(/index,\s*follow/i);
+    expect(notFound.robots).toMatch(/noindex/i);
 
     const home = getMetadataForPath('/');
     const graph = home.jsonLd![0]['@graph'] as Record<string, unknown>[];

@@ -148,12 +148,14 @@ export function UrlAuditModule({ title, moduleId }: { title: string; moduleId: s
   );
 }
 
+import { SiteAuditV1Module } from './SiteAuditV1Module';
+
 export function OnPageModule() {
   return <UrlAuditModule title="On Page SEO Checker" moduleId="on-page" />;
 }
 
 export function SiteAuditModule() {
-  return <UrlAuditModule title="Site Audit" moduleId="site-audit" />;
+  return <SiteAuditV1Module />;
 }
 
 export function SitePerformanceModule() {

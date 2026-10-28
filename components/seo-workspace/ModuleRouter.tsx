@@ -5,6 +5,7 @@ import type { SeoNavItem } from '@/lib/seo/workspace/seoNavConfig';
 import { isNavItemLive } from '@/lib/seo/workspace/seoNavConfig';
 import {
   UrlAuditModule,
+  SiteAuditModule,
   OnPageModule,
   SitePerformanceModule,
   DomainOverviewModule,
@@ -35,6 +36,9 @@ export function ModuleRouter({ item }: { item: SeoNavItem }) {
 
   switch (item.kind) {
     case 'url-audit':
+      if (item.id === 'site-audit' || item.slug === 'site-audit') {
+        return <SiteAuditModule />;
+      }
       return <UrlAuditModule title={item.label} moduleId={item.id} />;
     case 'on-page':
       return <OnPageModule />;

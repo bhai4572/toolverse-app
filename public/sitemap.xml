@@ -1416,6 +1416,71 @@
     <priority>0.75</priority>
   </url>
   <url>
+    <loc>https://toolverse.baby/how-to</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://toolverse.baby/how-to/how-to-create-a-business-profile</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolverse.baby/how-to/how-to-generate-and-print-business-qr</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolverse.baby/how-to/how-business-rankings-work</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolverse.baby/how-to/how-to-verify-business-ownership</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolverse.baby/how-to/how-to-verify-your-business</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolverse.baby/how-to/how-to-get-a-toolverse-business-id</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolverse.baby/how-to/how-to-generate-a-business-qr-code</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolverse.baby/how-to/how-to-print-your-toolverse-qr</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolverse.baby/how-to/how-to-collect-honest-customer-reviews</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolverse.baby/how-to/how-sponsored-ranking-works</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolverse.baby/how-to/how-to-claim-a-business</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolverse.baby/how-to/how-to-report-a-fake-business</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://toolverse.baby/news</loc>
     <changefreq>hourly</changefreq>
     <priority>0.9</priority>
@@ -1459,6 +1524,11 @@
     <loc>https://toolverse.baby/</loc>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://toolverse.baby/sitemap</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.55</priority>
   </url>
   <url>
     <loc>https://toolverse.baby/jobs/remote-jobs</loc>
@@ -1663,7 +1733,7 @@
   <url>
     <loc>https://toolverse.baby/submit</loc>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://toolverse.baby/badges</loc>
@@ -1671,9 +1741,74 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://toolverse.baby/claim</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolverse.baby/submit-startup</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://toolverse.baby/workspace</loc>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://toolverse.baby/dashboard</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolverse.baby/business</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://toolverse.baby/business/ali-barber-studio</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolverse.baby/business/apex-digital-marketing</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolverse.baby/business/artisan-coffee-roasters</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolverse.baby/b/TV-BIZ-8F4K2P</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://toolverse.baby/b/TV-BIZ-3M9Q7L</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://toolverse.baby/b/TV-BIZ-9X2V4W</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://toolverse.baby/business/register</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolverse.baby/business-qr</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolverse.baby/business/bidding</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://toolverse.baby/travel</loc>
@@ -1754,6 +1889,56 @@
     <loc>https://toolverse.baby/travel/PK/TR</loc>
     <changefreq>daily</changefreq>
     <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://toolverse.baby/startups</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://toolverse.baby/startups/nexus-ai-writer</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://toolverse.baby/startups/devflow-database-studio</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://toolverse.baby/startups/taskpulse-workspace</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://toolverse.baby/startups/rankpulse-backlink-monitor</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://toolverse.baby/guest-posts</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://toolverse.baby/become-a-publisher</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolverse.baby/publishers/tech-vision-journal</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://toolverse.baby/publishers/startup-builder-daily</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://toolverse.baby/publishers/seo-growth-digest</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://toolverse.baby/seo</loc>
