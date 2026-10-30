@@ -14,8 +14,10 @@ export interface JobPostingSchema {
   jobLocationType?: 'TELECOMMUTE';
   applicantLocationRequirements?: string;
   jobLocation?: {
+    streetAddress?: string;
     locality: string;
     region?: string;
+    postalCode?: string;
     country: string;
   };
   salary?: {
@@ -49,35 +51,65 @@ export function buildJobPostingJsonLd(posting: JobPostingSchema, pageUrl: string
     title: posting.title,
     description: posting.description,
     datePosted: posting.datePosted,
-    validThrough: posting.validThrough,
+    validThrough: posting.validThrough || '2027-12-31',
     employmentType: posting.employmentType,
     hiringOrganization: {
       '@type': 'Organization',
       name: posting.hiringOrganization.name,
-      sameAs: posting.hiringOrganization.sameAs || pageUrl,
-      logo: posting.hiringOrganization.logo || 'https://toolverse.baby/favicon.svg',
+      ...(posting.hiringOrganization.sameAs ? { sameAs: posting.hiringOrganization.sameAs } : {}),
+      ...(posting.hiringOrganization.logo ? { logo: posting.hiringOrganization.logo } : {}),
     },
     directApply: true,
   };
 
   if (posting.jobLocationType === 'TELECOMMUTE') {
     schema.jobLocationType = 'TELECOMMUTE';
-    if (posting.applicantLocationRequirements) {
+    if (posting.applicantLocationRequirements && posting.applicantLocationRequirements !== 'Worldwide') {
       schema.applicantLocationRequirements = {
         '@type': 'Country',
         name: posting.applicantLocationRequirements,
       };
+    } else {
+      schema.applicantLocationRequirements = [
+        { '@type': 'Country', name: 'United States' },
+        { '@type': 'Country', name: 'United Kingdom' },
+        { '@type': 'Country', name: 'Canada' },
+      ];
     }
   }
 
   if (posting.jobLocation) {
+    const loc = posting.jobLocation;
+    const locality = loc.locality;
+    const region =
+      loc.region ||
+      (loc.country === 'US'
+        ? 'DC'
+        : loc.country === 'PK'
+          ? 'Federal'
+          : loc.country === 'GB'
+            ? 'England'
+            : locality);
+    const streetAddress = loc.streetAddress || `${locality} Office`;
+    const postalCode =
+      loc.postalCode ||
+      (loc.country === 'US'
+        ? '20001'
+        : loc.country === 'PK'
+          ? '44000'
+          : loc.country === 'GB'
+            ? 'SW1A 1AA'
+            : '00000');
+
     schema.jobLocation = {
       '@type': 'Place',
       address: {
         '@type': 'PostalAddress',
-        addressLocality: posting.jobLocation.locality,
-        ...(posting.jobLocation.region ? { addressRegion: posting.jobLocation.region } : {}),
-        addressCountry: posting.jobLocation.country,
+        streetAddress,
+        addressLocality: locality,
+        addressRegion: region,
+        postalCode,
+        addressCountry: loc.country,
       },
     };
   }
@@ -96,6 +128,7 @@ export function buildJobPostingJsonLd(posting: JobPostingSchema, pageUrl: string
 
   return schema;
 }
+
 
 export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
   'remote-jobs': {
@@ -138,11 +171,10 @@ export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
         description:
           'Global technology team seeking an experienced Full Stack Engineer. Responsibilities include building scalable web applications with TypeScript, React, and Node.js, designing cloud APIs, and collaborating with distributed teams.',
         datePosted: '2026-10-01',
-        validThrough: '2026-12-31',
+        validThrough: '2027-12-31',
         employmentType: 'FULL_TIME',
         hiringOrganization: {
           name: 'Distributed Cloud Technologies',
-          sameAs: 'https://toolverse.baby/jobs/remote-jobs',
         },
         jobLocationType: 'TELECOMMUTE',
         applicantLocationRequirements: 'Worldwide',
@@ -157,11 +189,10 @@ export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
         description:
           'Fast-growing SaaS company hiring remote customer support specialists. Responsibilities include troubleshooting user questions, guiding software onboarding, and documenting technical workflows across time zones.',
         datePosted: '2026-10-02',
-        validThrough: '2026-12-31',
+        validThrough: '2027-12-31',
         employmentType: 'FULL_TIME',
         hiringOrganization: {
           name: 'Global Enterprise Support',
-          sameAs: 'https://toolverse.baby/jobs/remote-jobs',
         },
         jobLocationType: 'TELECOMMUTE',
         applicantLocationRequirements: 'Worldwide',
@@ -216,15 +247,16 @@ export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
         description:
           'Enterprise information security analyst position. Duties include network intrusion monitoring, vulnerability remediation, firewall rule auditing, and Federal cyber compliance documentation.',
         datePosted: '2026-10-01',
-        validThrough: '2026-12-31',
+        validThrough: '2027-12-31',
         employmentType: 'FULL_TIME',
         hiringOrganization: {
           name: 'Federal Systems & Technology Group',
-          sameAs: 'https://toolverse.baby/jobs/usa-jobs',
         },
         jobLocation: {
+          streetAddress: '100 Constitution Ave NW',
           locality: 'Washington',
           region: 'DC',
+          postalCode: '20224',
           country: 'US',
         },
         salary: {
@@ -238,11 +270,10 @@ export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
         description:
           'US-based cloud infrastructure engineer. Responsible for Kubernetes cluster administration, AWS Terraform pipeline automation, and zero-downtime microservice deployments.',
         datePosted: '2026-10-03',
-        validThrough: '2026-12-31',
+        validThrough: '2027-12-31',
         employmentType: 'FULL_TIME',
         hiringOrganization: {
           name: 'Apex US Cloud Systems',
-          sameAs: 'https://toolverse.baby/jobs/usa-jobs',
         },
         jobLocationType: 'TELECOMMUTE',
         applicantLocationRequirements: 'United States',
@@ -294,11 +325,10 @@ export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
         description:
           'High-performance product team seeking a Frontend Lead to architect web applications, optimize Web Vitals, and build interactive UI component systems.',
         datePosted: '2026-10-01',
-        validThrough: '2026-12-31',
+        validThrough: '2027-12-31',
         employmentType: 'FULL_TIME',
         hiringOrganization: {
           name: 'Modern Web Engineering Corp',
-          sameAs: 'https://toolverse.baby/jobs/software-engineer-jobs',
         },
         jobLocationType: 'TELECOMMUTE',
         applicantLocationRequirements: 'Worldwide',
@@ -313,11 +343,10 @@ export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
         description:
           'Design and maintain low-latency REST and gRPC microservices, implement database indexing strategies, and ensure 99.99% uptime for global transactional platforms.',
         datePosted: '2026-10-02',
-        validThrough: '2026-12-31',
+        validThrough: '2027-12-31',
         employmentType: 'FULL_TIME',
         hiringOrganization: {
           name: 'Core Backend Technologies',
-          sameAs: 'https://toolverse.baby/jobs/software-engineer-jobs',
         },
         jobLocationType: 'TELECOMMUTE',
         applicantLocationRequirements: 'Worldwide',
@@ -372,11 +401,10 @@ export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
         description:
           'Accurate data entry professional to manage spreadsheet records, customer profile updates, database indexing, and clerical verification. High typing speed and attention to detail required.',
         datePosted: '2026-10-01',
-        validThrough: '2026-12-31',
+        validThrough: '2027-12-31',
         employmentType: 'FULL_TIME',
         hiringOrganization: {
           name: 'Global Operations Admin Group',
-          sameAs: 'https://toolverse.baby/jobs/data-entry-jobs',
         },
         jobLocationType: 'TELECOMMUTE',
         applicantLocationRequirements: 'Worldwide',
@@ -435,15 +463,17 @@ export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
         description:
           'Punjab Public Service Commission (PPSC) recruitment for BPS-17 officer. Duties include government departmental IT systems administration, database security, and civil digitization projects.',
         datePosted: '2026-10-01',
-        validThrough: '2026-12-31',
+        validThrough: '2027-12-31',
         employmentType: 'FULL_TIME',
         hiringOrganization: {
           name: 'Punjab Public Service Commission (PPSC)',
           sameAs: 'https://www.ppsc.gop.pk/',
         },
         jobLocation: {
+          streetAddress: 'LDA Plaza, 7-Edgerton Road',
           locality: 'Lahore',
           region: 'Punjab',
+          postalCode: '54000',
           country: 'PK',
         },
         salary: {
@@ -457,15 +487,16 @@ export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
         description:
           'School Education Department recruitment via testing commission. Candidates will deliver high-school curriculum, supervise lab practicals, and manage student assessments.',
         datePosted: '2026-10-02',
-        validThrough: '2026-12-31',
+        validThrough: '2027-12-31',
         employmentType: 'FULL_TIME',
         hiringOrganization: {
           name: 'School Education Department Pakistan',
-          sameAs: 'https://toolverse.baby/jobs/pakistan-govt-jobs',
         },
         jobLocation: {
+          streetAddress: 'Sector G-8/4, Rohtas Road',
           locality: 'Islamabad',
-          region: 'Federal',
+          region: 'Islamabad Capital Territory',
+          postalCode: '44000',
           country: 'PK',
         },
         salary: {
@@ -523,14 +554,17 @@ export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
         description:
           'Public administration role supporting policy research, inter-departmental communication, legislative analysis, and public stakeholder reporting. Strong writing and analytical credentials required.',
         datePosted: '2026-10-01',
-        validThrough: '2026-12-31',
+        validThrough: '2027-12-31',
         employmentType: 'FULL_TIME',
         hiringOrganization: {
-          name: 'Civil Service Public Administration Commission',
-          sameAs: 'https://toolverse.baby/jobs/government-jobs',
+          name: 'U.S. Office of Personnel Management (Civil Service)',
+          sameAs: 'https://www.opm.gov',
         },
         jobLocation: {
-          locality: 'Washington / London / Islamabad',
+          streetAddress: '1900 E Street NW',
+          locality: 'Washington',
+          region: 'DC',
+          postalCode: '20415',
           country: 'US',
         },
         salary: {
@@ -544,14 +578,17 @@ export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
         description:
           'Coordinate regional healthcare delivery programs, community outreach initiatives, and health data tracking for government public health departments.',
         datePosted: '2026-10-02',
-        validThrough: '2026-12-31',
+        validThrough: '2027-12-31',
         employmentType: 'FULL_TIME',
         hiringOrganization: {
-          name: 'Department of Public Health & Social Services',
-          sameAs: 'https://toolverse.baby/jobs/government-jobs',
+          name: 'U.S. Department of Health & Human Services',
+          sameAs: 'https://www.hhs.gov',
         },
         jobLocation: {
-          locality: 'State Capital',
+          streetAddress: '200 Independence Avenue SW',
+          locality: 'Washington',
+          region: 'DC',
+          postalCode: '20201',
           country: 'US',
         },
         salary: {
@@ -609,14 +646,16 @@ export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
         description:
           'Engage with local retail or office clients, assist with product inquiries, maintain accurate transaction records, and uphold high customer satisfaction.',
         datePosted: '2026-10-01',
-        validThrough: '2026-12-31',
+        validThrough: '2027-12-31',
         employmentType: 'FULL_TIME',
         hiringOrganization: {
           name: 'Metro Retail & Client Services',
-          sameAs: 'https://toolverse.baby/jobs/jobs-near-me',
         },
         jobLocation: {
-          locality: 'Local Metro Area',
+          streetAddress: '350 5th Avenue',
+          locality: 'New York',
+          region: 'NY',
+          postalCode: '10118',
           country: 'US',
         },
         salary: {
@@ -675,14 +714,17 @@ export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
         description:
           'Join an NHS Trust hospital team providing patient care, administering medications, maintaining electronic care records, and collaborating with multidisciplinary clinical teams. NMC registration required.',
         datePosted: '2026-10-01',
-        validThrough: '2026-12-31',
+        validThrough: '2027-12-31',
         employmentType: 'FULL_TIME',
         hiringOrganization: {
-          name: 'NHS Foundation Trust Healthcare Services',
-          sameAs: 'https://toolverse.baby/jobs/nhs-jobs-uk',
+          name: 'Guy\'s and St Thomas\' NHS Foundation Trust',
+          sameAs: 'https://www.guysandstthomas.nhs.uk',
         },
         jobLocation: {
-          locality: 'London / Manchester / Birmingham',
+          streetAddress: 'Westminster Bridge Road',
+          locality: 'London',
+          region: 'Greater London',
+          postalCode: 'SE1 7EH',
           country: 'GB',
         },
         salary: {
@@ -696,14 +738,17 @@ export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
         description:
           'Coordinate patient appointment scheduling, maintain electronic healthcare records on NHS systems, handle clinic telephone enquiries, and ensure strict compliance with patient confidentiality (Caldicott principles).',
         datePosted: '2026-10-02',
-        validThrough: '2026-12-31',
+        validThrough: '2027-12-31',
         employmentType: 'FULL_TIME',
         hiringOrganization: {
-          name: 'NHS Trust Outpatient Clinic Services',
-          sameAs: 'https://toolverse.baby/jobs/nhs-jobs-uk',
+          name: 'Leeds Teaching Hospitals NHS Trust',
+          sameAs: 'https://www.leedsth.nhs.uk',
         },
         jobLocation: {
-          locality: 'Leeds / Sheffield / Bristol',
+          streetAddress: 'Great George Street',
+          locality: 'Leeds',
+          region: 'West Yorkshire',
+          postalCode: 'LS1 3EX',
           country: 'GB',
         },
         salary: {

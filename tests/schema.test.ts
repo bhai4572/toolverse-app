@@ -178,6 +178,8 @@ describe('ToolVerse Advanced Schema.org & Structured Data Architecture', () => {
       const collection = graph.find((n) => n['@type'] === 'CollectionPage');
       const postings = graph.filter((n) => n['@type'] === 'JobPosting');
 
+      expect(meta.ogImage).toContain('/images/jobs/');
+      expect(meta.twitterImage).toContain('/images/jobs/');
       expect(collection).toBeDefined();
       expect(postings.length).toBeGreaterThan(0);
 
@@ -186,6 +188,24 @@ describe('ToolVerse Advanced Schema.org & Structured Data Architecture', () => {
         expect(posting['title']).toBeDefined();
         expect(posting['hiringOrganization']).toBeDefined();
         expect(posting['directApply']).toBe(true);
+
+        if (posting['jobLocation']) {
+          const loc = posting['jobLocation'] as Record<string, unknown>;
+          expect(loc['@type']).toBe('Place');
+          const address = loc['address'] as Record<string, unknown>;
+          expect(address).toBeDefined();
+          expect(address['@type']).toBe('PostalAddress');
+          expect(typeof address['streetAddress']).toBe('string');
+          expect((address['streetAddress'] as string).length).toBeGreaterThan(0);
+          expect(typeof address['addressLocality']).toBe('string');
+          expect((address['addressLocality'] as string).length).toBeGreaterThan(0);
+          expect(typeof address['addressRegion']).toBe('string');
+          expect((address['addressRegion'] as string).length).toBeGreaterThan(0);
+          expect(typeof address['postalCode']).toBe('string');
+          expect((address['postalCode'] as string).length).toBeGreaterThan(0);
+          expect(typeof address['addressCountry']).toBe('string');
+          expect((address['addressCountry'] as string).length).toBeGreaterThan(0);
+        }
       }
     }
   });

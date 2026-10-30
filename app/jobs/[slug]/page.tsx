@@ -59,8 +59,9 @@ export default function JobCategoryPage({ params }: Props) {
         </div>
         <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
           {posting.hiringOrganization.name} •{' '}
-          {posting.jobLocation?.locality ||
-            (posting.jobLocationType === 'TELECOMMUTE' ? 'Remote Worldwide' : 'United States')}
+          {posting.jobLocation
+            ? `${posting.jobLocation.locality}${posting.jobLocation.region ? `, ${posting.jobLocation.region}` : ''}`
+            : (posting.jobLocationType === 'TELECOMMUTE' ? 'Remote Worldwide' : 'United States')}
         </p>
         <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-3 leading-relaxed">
           {posting.description}
