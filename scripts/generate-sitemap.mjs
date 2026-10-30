@@ -184,7 +184,21 @@ for (const l of [
 
 pagesUrls.push(makeUrl('/products', 'daily', '0.9'));
 pagesUrls.push(makeUrl('/leaderboard', 'daily', '0.92'));
-for (const p of ['canva', 'chatgpt', 'notion', 'figma', 'supabase', 'claude-ai']) {
+
+const productDataDir = path.join(root, 'lib/products/data');
+let productSlugs = [];
+if (fs.existsSync(productDataDir)) {
+  const pFiles = fs.readdirSync(productDataDir).filter((f) => f.endsWith('.ts'));
+  for (const pFile of pFiles) {
+    const pContent = fs.readFileSync(path.join(productDataDir, pFile), 'utf8');
+    productSlugs.push(...slugs(pContent));
+  }
+}
+productSlugs = [...new Set(productSlugs)];
+if (productSlugs.length === 0) {
+  productSlugs = ['canva', 'chatgpt', 'notion', 'figma', 'supabase', 'claude-ai'];
+}
+for (const p of productSlugs) {
   pagesUrls.push(makeUrl(`/products/${p}`, 'daily', '0.8'));
 }
 
