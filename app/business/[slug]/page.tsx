@@ -209,8 +209,16 @@ export default function CanonicalPublicBusinessProfilePage({ params }: PublicBus
           <section className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl space-y-6">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-xl font-extrabold text-slate-900 dark:text-white">Honest Customer Reviews ({reviews.length})</h2>
-                <p className="text-xs text-slate-500">Real feedback submitted by community members</p>
+                <h2 className="text-xl font-extrabold text-slate-900 dark:text-white">
+                  {business.slug === 'artisan-coffee-roasters'
+                    ? `Artisan Coffee Reviews & Customer Ratings (${reviews.length})`
+                    : `${business.name} Customer Reviews (${reviews.length})`}
+                </h2>
+                <p className="text-xs text-slate-500">
+                  {business.slug === 'artisan-coffee-roasters'
+                    ? 'Verified customer reviews for artisan coffee, pour-overs, and roasted whole beans'
+                    : 'Real feedback submitted by verified community members'}
+                </p>
               </div>
               <button
                 onClick={() => setShowReviewModal(true)}

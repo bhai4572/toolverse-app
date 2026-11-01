@@ -18,9 +18,8 @@ export function Footer() {
             <span>ToolVerse</span>
           </Link>
           <p className="text-xs text-slate-400 leading-relaxed">
-            {TOOLS.length}+ free browser utilities for PDFs, images, calculators, SEO helpers, and
-            regional estimates. Most file tools process locally — we do not sell fake reviews or
-            gate core tools behind paywalls.
+            ToolVerse (also searched as Tools Verse, Tooliverse, or Toolverse.com) — {TOOLS.length}+ free browser utilities for PDFs, images, calculators, SEO keyword dashboards, and
+            regional estimates. Most file tools process locally in your browser — zero file uploads.
           </p>
           <div className="inline-flex items-center gap-2 text-xs font-medium text-emerald-400 bg-emerald-950/60 border border-emerald-800/60 px-3 py-1.5 rounded-full">
             <ShieldCheck className="w-4 h-4" />

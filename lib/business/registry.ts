@@ -1,4 +1,4 @@
-import { Business, BusinessCategory } from './types';
+import { Business, BusinessCategory, BusinessReview } from './types';
 
 export const BUSINESS_CATEGORIES: BusinessCategory[] = [
   {
@@ -186,8 +186,8 @@ export const INITIAL_BUSINESSES: Business[] = [
     businessType: 'Restaurant',
     categorySlug: 'coffee-shops-cafes',
     categoryName: 'Coffee Shops & Cafes',
-    description: 'Specialty coffee roastery serving single-origin espresso, pour-overs, and handcrafted pastries.',
-    longDescription: 'Artisan Coffee Roasters sources single-origin green coffee beans directly from ethical farmers in Ethiopia, Colombia, and Guatemala. Roasted in small batches daily, our cafe provides a warm space for remote work, espresso lovers, and fresh sourdough breads.',
+    description: 'Specialty artisan coffee roastery serving single-origin pour-overs, handcrafted espresso drinks, and freshly roasted coffee beans.',
+    longDescription: 'Artisan Coffee Roasters sources single-origin green coffee beans directly from ethical farmers in Ethiopia, Colombia, and Guatemala. Roasted in small batches daily, our cafe provides a warm space for remote work, espresso lovers, and fresh sourdough breads. Check verified customer artisan coffee reviews, tasting notes, and pour-over brewing guides.',
     logoUrl: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=128&h=128&fit=crop',
     photos: [
       'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=800&fit=crop'
@@ -214,8 +214,9 @@ export const INITIAL_BUSINESSES: Business[] = [
       { day: 'Sunday', openTime: '08:00 AM', closeTime: '06:00 PM' }
     ],
     services: [
-      { id: 's1', name: 'Single Origin Pour Over', description: 'Freshly ground Ethiopian Yirgacheffe coffee', price: '$5.50' },
-      { id: 's2', name: 'Roasted Whole Bean 340g', description: 'Take home roasted coffee bag', price: '$18.00' }
+      { id: 's1', name: 'Single Origin Artisan Pour Over', description: 'Freshly ground Ethiopian Yirgacheffe and Colombian artisan coffee', price: '$5.50' },
+      { id: 's2', name: 'Roasted Whole Bean Artisan Coffee 340g', description: 'Freshly roasted whole bean artisan coffee with roast dates stamped', price: '$18.00' },
+      { id: 's3', name: 'Cold Brew & Nitro Artisan Coffee', description: 'Slow-steeped 18-hour single-origin artisan coffee extract served cold', price: '$6.00' }
     ],
     verificationLevel: 2,
     isVerified: true,
@@ -232,6 +233,54 @@ export const INITIAL_BUSINESSES: Business[] = [
     ratingCount: 65,
     createdAt: '2025-03-01',
     updatedAt: '2026-10-04'
+  }
+];
+
+export const INITIAL_REVIEWS: BusinessReview[] = [
+  {
+    id: 'brev-artisan-1',
+    businessId: 'TV-BIZ-9X2V4W',
+    businessSlug: 'artisan-coffee-roasters',
+    userId: 'u-coffee-fanatic',
+    userName: 'Elena Rostova',
+    rating: 5,
+    title: 'Best artisan coffee reviews in Toronto — Exceptional Ethiopian pour-over',
+    content: 'If you appreciate genuine artisan coffee, this cafe is unmatched. The baristas know the roast profile of every bean origin. The Ethiopian Yirgacheffe pour-over had incredible floral and citrus notes. Clean workspace with fast Wi-Fi as well.',
+    pros: ['Ethical single-origin beans', 'Masterful pour-over technique', 'Fresh pastries'],
+    cons: ['Limited seating during weekend rush'],
+    usageExperience: 'Visited in person multiple times',
+    isVerifiedCustomer: true,
+    createdAt: '2026-09-15'
+  },
+  {
+    id: 'brev-artisan-2',
+    businessId: 'TV-BIZ-9X2V4W',
+    businessSlug: 'artisan-coffee-roasters',
+    userId: 'u-coffee-roast',
+    userName: 'Marcus Chen',
+    rating: 5,
+    title: 'Outstanding artisan coffee beans and smooth espresso',
+    content: 'I buy my whole bean artisan coffee here every two weeks. Roasted in small batches with roast dates clearly stamped. Smooth acidity, rich crema on espresso, and friendly staff who gladly share brewing tips.',
+    pros: ['Fresh roast dates stamped on bags', 'Delicious flat white', 'Knowledgeable baristas'],
+    cons: ['None'],
+    usageExperience: 'Regular customer',
+    isVerifiedCustomer: true,
+    createdAt: '2026-10-02'
+  },
+  {
+    id: 'brev-artisan-3',
+    businessId: 'TV-BIZ-9X2V4W',
+    businessSlug: 'artisan-coffee-roasters',
+    userId: 'u-toronto-foodie',
+    userName: 'Sarah Jenkins',
+    rating: 5,
+    title: 'Real artisan coffee experience with cozy cafe atmosphere',
+    content: 'Read multiple artisan coffee reviews before visiting and it fully lived up to the hype. The Guatemala single-origin cappuccino was silky and rich. Love supporting ethical roasters.',
+    pros: ['Cozy atmosphere', 'High quality artisan coffee', 'Great sourdough pastries'],
+    cons: ['Street parking can be busy'],
+    usageExperience: 'Weekend brunch visit',
+    isVerifiedCustomer: true,
+    createdAt: '2026-10-18'
   }
 ];
 

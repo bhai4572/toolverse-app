@@ -489,8 +489,7 @@ export function AiVisibilitySuiteModule({ initialTab = 'llms' }: { initialTab?: 
                 onClick={() => {
                   createTask({
                     title: 'Deploy Organization schema.org and llms.txt manifest',
-                    category: 'technical',
-                    priority: 'high',
+                    severity: 'critical',
                   });
                   setNotice('AI Readiness task created in Task Manager!');
                 }}

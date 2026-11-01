@@ -21,6 +21,44 @@ export interface ToolPageContent {
 }
 
 export const TOOL_PAGE_CONTENT: Record<string, ToolPageContent> = {
+  'keyword-research-tool': {
+    answerFirst:
+      'ToolVerse Keyword Magic is a free SEO keyword dashboard and search intent explorer. Research keyword difficulty, search volume trends, CPC, and topic clusters with zero sign-up or subscription walls.',
+    seoTitle: 'Free SEO Keyword Dashboards & Search Intent Explorer | ToolVerse',
+    seoDescription:
+      'Explore free SEO keyword dashboards, Semrush-style keyword magic, search intent classification, and volume trends. Export CSV keyword roadmaps with zero paywalls.',
+    sections: [
+      {
+        heading: 'What are SEO keyword dashboards and why use them?',
+        body: 'SEO keyword dashboards allow website owners, content marketers, and developers to uncover high-volume, low-competition search queries. Rather than guessing what terms your audience searches, keyword dashboards aggregate search volume, keyword difficulty (KD%), and search intent (informational, commercial, transactional, navigational).',
+      },
+      {
+        heading: 'How to use ToolVerse SEO keyword dashboards for content planning',
+        body: 'Enter any seed keyword to explore long-tail variations, question formats (People Also Ask), and commercial opportunities. Filter by search intent to align your blog posts or landing pages with Google ranking criteria, and export complete CSV keyword matrices in one click.',
+      },
+      {
+        heading: 'Connect with the full ToolVerse SEO Workspace',
+        body: 'Pair this keyword explorer with the free ToolVerse SEO Workspace (/workspace) to track positions, inspect on-page technical health, run site audits, and review search engine performance without paying expensive monthly SaaS fees.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Are ToolVerse SEO keyword dashboards free?',
+        answer:
+          'Yes. Our SEO keyword dashboards and search intent explorer are 100% free with instant browser compilation and CSV export.',
+      },
+      {
+        question: 'What metrics do the keyword dashboards track?',
+        answer:
+          'The dashboard provides estimated monthly search volume, keyword difficulty percentage (KD%), estimated Cost Per Click (CPC), and search intent classification.',
+      },
+      {
+        question: 'Can I export keywords from the dashboard to Excel or Google Sheets?',
+        answer:
+          'Yes, click the "Export CSV" button to download a spreadsheet containing all keyword variations, difficulty scores, and intent tags.',
+      },
+    ],
+  },
   'compress-image-target-size': {
     answerFirst:
       'Compress Image to Target Size shrinks a photo to an exact KB or MB limit (for example 20 KB, 50 KB, or 100 KB) in your browser — useful for job portals and form uploads that reject large files.',

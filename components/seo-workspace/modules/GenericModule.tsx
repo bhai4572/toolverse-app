@@ -156,7 +156,7 @@ export function ChecklistModule({ item, checklistKey }: { item: SeoNavItem; chec
 export function SocialPreviewModule({ item }: { item: SeoNavItem }) {
   const [title, setTitle] = useState('ToolVerse — Free SEO Dashboard');
   const [desc, setDesc] = useState('Audit pages, track your keywords, and export reports — your data only.');
-  const [url, setUrl] = useState(getProject().primaryUrl || 'https://toolverse.baby');
+  const [url, setUrl] = useState(getProject().primaryUrl || '');
   const [hashtags, setHashtags] = useState('#seo #marketing #toolverse');
 
   const tags = hashtags.split(/\s+/).filter((t) => t.startsWith('#'));

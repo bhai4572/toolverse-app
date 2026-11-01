@@ -70,8 +70,8 @@ export function LocalSeoSuiteModule({ initialTab = 'schema' }: { initialTab?: 's
       '@type': businessType,
       name: businessName,
       image: 'https://toolverse.baby/og-image.png',
-      '@id': project.primaryUrl || 'https://toolverse.baby',
-      url: project.primaryUrl || 'https://toolverse.baby',
+      '@id': project.domain,
+      url: project.domain,
       telephone: phone,
       priceRange: priceRange,
       address: {
@@ -97,7 +97,7 @@ export function LocalSeoSuiteModule({ initialTab = 'schema' }: { initialTab?: 's
       ],
     };
     return JSON.stringify(jsonLd, null, 2);
-  }, [businessType, businessName, phone, priceRange, streetAddress, city, region, postalCode, country, latitude, longitude, project.primaryUrl]);
+  }, [businessType, businessName, phone, priceRange, streetAddress, city, region, postalCode, country, latitude, longitude, project.domain]);
 
   // Compute NAP Consistency Score
   const napScore = useMemo(() => {
@@ -387,8 +387,7 @@ export function LocalSeoSuiteModule({ initialTab = 'schema' }: { initialTab?: 's
                 onClick={() => {
                   createTask({
                     title: `Audit NAP consistency across missing directories (${listings.filter((l) => l.status === 'missing').length} missing)`,
-                    category: 'technical',
-                    priority: 'medium',
+                    severity: 'warning',
                   });
                   setNotice('Local citation task added to Task Manager!');
                 }}

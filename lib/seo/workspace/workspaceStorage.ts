@@ -1,6 +1,7 @@
 /**
  * Local-first persistence for SEO Workspace — YOUR data only (no fake market graphs).
- * Comprehensive multi-project tenancy, tasks, audits, keywords, and backup engine.
+ * Multi-project tenancy: every record is owned by exactly one project. Deleting a
+ * project deletes everything it owns. There is NO built-in default project.
  */
 
 import type { AuditResult } from '@/lib/seo/seoEngine';
@@ -12,7 +13,6 @@ import type {
   AuditRunRecord,
   KeywordItem,
   BacklinkItem,
-  VerificationMethod,
 } from './workspaceTypes';
 
 const KEYS = {
@@ -21,18 +21,21 @@ const KEYS = {
   jobs: 'tv_seo_jobs_v1',
   traffic: 'tv_seo_traffic_v1',
   checklists: 'tv_seo_checklists_v1',
-  project: 'tv_seo_project_v1',
-  // V2 Multi-Tenant Keys
   projects: 'tv_seo_projects_v2',
   activeProjectId: 'tv_seo_active_project_id_v2',
   tasks: 'tv_seo_tasks_v2',
   auditRuns: 'tv_seo_audit_runs_v2',
   keywords: 'tv_seo_keywords_v2',
   backlinks: 'tv_seo_backlinks_v2',
+  records: 'tv_seo_module_records_v1',
 } as const;
+
+/** Id used by the placeholder returned when the user has no website yet. */
+export const NO_PROJECT_ID = 'none';
 
 export interface StoredAudit {
   id: string;
+  projectId?: string;
   url: string;
   score: number;
   errorCount: number;
@@ -45,6 +48,7 @@ export interface StoredAudit {
 }
 
 export interface RankEntry {
+  projectId?: string;
   keyword: string;
   domain: string;
   position: number;
@@ -54,6 +58,7 @@ export interface RankEntry {
 
 export interface JobRun {
   id: string;
+  projectId?: string;
   moduleId: string;
   label: string;
   score: number;
@@ -63,6 +68,7 @@ export interface JobRun {
 }
 
 export interface TrafficImportRow {
+  projectId?: string;
   date: string;
   sessions: number;
   users?: number;
@@ -110,12 +116,41 @@ function writeJson(key: string, value: unknown) {
   try {
     getStorage().setItem(key, JSON.stringify(value));
   } catch {
-    // safe fallback
+    // quota / private mode: ignore
   }
 }
 
 // ==========================================
-// 1. Projects & Tenancy Management
+// Ownership helpers
+// ==========================================
+
+type Owned = { projectId?: string };
+
+function firstProjectId(): string {
+  return readJson<Project[]>(KEYS.projects, [])[0]?.id || '';
+}
+
+/** Records written before multi-project support have no projectId: they belong to the first project. */
+function ownerOf(r: Owned): string {
+  return r.projectId ?? firstProjectId();
+}
+
+function readAll<T>(key: string): T[] {
+  return readJson<T[]>(key, []);
+}
+
+function forProject<T extends Owned>(list: T[], projectId: string): T[] {
+  return list.filter((r) => ownerOf(r) === projectId);
+}
+
+/** Replace one project's records, keep every other project's records untouched. */
+function replaceForProject<T extends Owned>(key: string, projectId: string, own: T[]) {
+  const others = readAll<T>(key).filter((r) => ownerOf(r) !== projectId);
+  writeJson(key, [...own.map((r) => ({ ...r, projectId })), ...others]);
+}
+
+// ==========================================
+// 1. Projects & tenancy
 // ==========================================
 
 export function generateVerificationToken(domain: string): string {
@@ -124,51 +159,36 @@ export function generateVerificationToken(domain: string): string {
   return `toolverse-verify-${clean}-${rand}`;
 }
 
-export function createDefaultProject(domain = 'https://toolverse.baby'): Project {
+function placeholderProject(): Project {
+  const now = new Date().toISOString();
   return {
-    id: 'proj_default',
-    name: 'ToolVerse Platform',
-    domain,
+    id: NO_PROJECT_ID,
+    name: 'No website yet',
+    domain: '',
     scope: 'domain',
-    targetCountry: 'United States',
+    targetCountry: 'Global',
     targetLanguage: 'en',
-    businessCategory: 'SaaS / Marketing Tools',
-    competitors: ['semrush.com', 'ahrefs.com', 'moz.com'],
-    verification: {
-      token: generateVerificationToken('toolverse.baby'),
-      verified: true,
-      verifiedAt: new Date().toISOString(),
-      method: 'meta-tag',
-    },
-    settings: {
-      maxCrawlPages: 25,
-      maxCrawlDepth: 3,
-      includeQueryParams: false,
-      respectRobotsTxt: true,
-      userAgent: 'ToolVerseBot/1.0 (+https://toolverse.baby/bot)',
-    },
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    competitors: [],
+    verification: { token: '', verified: false },
+    settings: { maxCrawlPages: 0, maxCrawlDepth: 0, includeQueryParams: false, respectRobotsTxt: true },
+    createdAt: now,
+    updatedAt: now,
   };
 }
 
+export function hasProjects(): boolean {
+  return readJson<Project[]>(KEYS.projects, []).length > 0;
+}
+
 export function getProjects(): Project[] {
-  const projects = readJson<Project[]>(KEYS.projects, []);
-  if (projects.length === 0) {
-    const def = createDefaultProject();
-    writeJson(KEYS.projects, [def]);
-    return [def];
-  }
-  return projects;
+  return readJson<Project[]>(KEYS.projects, []);
 }
 
 export function getActiveProjectId(): string {
-  const stored = readJson<string>(KEYS.activeProjectId, '');
-  if (stored) return stored;
   const list = getProjects();
-  const firstId = list[0]?.id || 'proj_default';
-  setActiveProjectId(firstId);
-  return firstId;
+  const stored = readJson<string>(KEYS.activeProjectId, '');
+  if (stored && list.some((p) => p.id === stored)) return stored;
+  return list[0]?.id || NO_PROJECT_ID;
 }
 
 export function setActiveProjectId(id: string) {
@@ -176,23 +196,31 @@ export function setActiveProjectId(id: string) {
 }
 
 export function getActiveProject(): Project {
-  const activeId = getActiveProjectId();
   const list = getProjects();
-  const found = list.find((p) => p.id === activeId);
-  return found || list[0] || createDefaultProject();
+  const activeId = getActiveProjectId();
+  return list.find((p) => p.id === activeId) || list[0] || placeholderProject();
 }
 
 export function saveProject(project: Project): Project {
   const list = getProjects();
   const idx = list.findIndex((p) => p.id === project.id);
   const updated = { ...project, updatedAt: new Date().toISOString() };
-  if (idx >= 0) {
-    list[idx] = updated;
-  } else {
-    list.push(updated);
-  }
+  if (idx >= 0) list[idx] = updated;
+  else list.push(updated);
   writeJson(KEYS.projects, list);
   return updated;
+}
+
+export function updateProject(id: string, patch: Partial<Omit<Project, 'id' | 'createdAt'>>): Project | null {
+  const current = getProjects().find((p) => p.id === id);
+  if (!current) return null;
+  return saveProject({ ...current, ...patch });
+}
+
+export function normalizeDomain(input: string): string {
+  const trimmed = input.trim();
+  if (!trimmed) return '';
+  return /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
 }
 
 export function createProject(params: {
@@ -201,166 +229,206 @@ export function createProject(params: {
   scope?: ProjectScope;
   targetCountry?: string;
   targetLanguage?: string;
+  businessCategory?: string;
   competitors?: string[];
 }): Project {
   const id = `proj_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
-  const cleanDomain = params.domain.replace(/^https?:\/\//i, '').replace(/\/.*$/, '').trim();
-  const newProj: Project = {
+  const domain = normalizeDomain(params.domain);
+  const cleanDomain = domain.replace(/^https?:\/\//i, '').replace(/\/.*$/, '');
+  const now = new Date().toISOString();
+  const project: Project = {
     id,
-    name: params.name || cleanDomain || 'New Project',
-    domain: params.domain.startsWith('http') ? params.domain : `https://${params.domain}`,
+    name: params.name.trim() || cleanDomain || 'New Project',
+    domain,
     scope: params.scope || 'domain',
-    targetCountry: params.targetCountry || 'United States',
+    targetCountry: params.targetCountry || 'Global',
     targetLanguage: params.targetLanguage || 'en',
+    businessCategory: params.businessCategory,
     competitors: params.competitors || [],
-    verification: {
-      token: generateVerificationToken(cleanDomain),
-      verified: false,
-    },
+    verification: { token: generateVerificationToken(cleanDomain), verified: false },
     settings: {
-      maxCrawlPages: 25,
-      maxCrawlDepth: 3,
+      maxCrawlPages: 0, // 0 = whole website
+      maxCrawlDepth: 0,
       includeQueryParams: false,
       respectRobotsTxt: true,
       userAgent: 'ToolVerseBot/1.0 (+https://toolverse.baby/bot)',
     },
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    createdAt: now,
+    updatedAt: now,
   };
 
+  // First project adopts any pre-multi-project data (it was owned by the first project anyway).
   const list = getProjects();
-  list.push(newProj);
-  writeJson(KEYS.projects, list);
-  setActiveProjectId(newProj.id);
-  return newProj;
+  writeJson(KEYS.projects, [...list, project]);
+  setActiveProjectId(project.id);
+  return project;
 }
 
+/** Deletes the project AND every record it owns. */
 export function deleteProject(id: string): void {
-  const list = getProjects().filter((p) => p.id !== id);
-  if (list.length === 0) {
-    list.push(createDefaultProject());
-  }
-  writeJson(KEYS.projects, list);
-  if (getActiveProjectId() === id) {
-    setActiveProjectId(list[0].id);
+  const list = getProjects();
+  const owner = list[0]?.id;
+  const isOwned = (r: Owned) => (r.projectId ?? owner) === id;
+
+  const purge = <T extends Owned>(key: string) =>
+    writeJson(key, readAll<T>(key).filter((r) => !isOwned(r)));
+
+  purge(KEYS.audits);
+  purge(KEYS.rankings);
+  purge(KEYS.jobs);
+  purge(KEYS.traffic);
+  purge(KEYS.tasks);
+  purge(KEYS.auditRuns);
+  purge(KEYS.keywords);
+  purge(KEYS.backlinks);
+  purge(KEYS.records);
+
+  const checklists = readJson<Record<string, unknown>>(KEYS.checklists, {});
+  for (const k of Object.keys(checklists)) if (k.startsWith(`${id}:`)) delete checklists[k];
+  writeJson(KEYS.checklists, checklists);
+
+  const remaining = list.filter((p) => p.id !== id);
+  writeJson(KEYS.projects, remaining);
+  if (readJson<string>(KEYS.activeProjectId, '') === id) {
+    setActiveProjectId(remaining[0]?.id || '');
   }
 }
 
 // ==========================================
-// 2. Centralized Task Management
+// 2. Tasks
 // ==========================================
 
-export function getTasks(projectId?: string): TaskRecord[] {
-  const allTasks = readJson<TaskRecord[]>(KEYS.tasks, []);
-  if (!projectId) return allTasks;
-  return allTasks.filter((t) => t.projectId === projectId);
+export type NewTaskInput = Pick<TaskRecord, 'title'> & Partial<Omit<TaskRecord, 'id' | 'createdAt' | 'title'>>;
+
+export function getTasks(projectId: string = getActiveProjectId()): TaskRecord[] {
+  return forProject(readAll<TaskRecord>(KEYS.tasks), projectId);
 }
 
-export function createTask(task: Omit<TaskRecord, 'id' | 'createdAt'>): TaskRecord {
-  const allTasks = getTasks();
+export function createTask(task: NewTaskInput): TaskRecord {
   const newTask: TaskRecord = {
+    projectId: getActiveProjectId(),
+    description: '',
+    severity: 'warning',
+    status: 'open',
     ...task,
     id: `task_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
     createdAt: new Date().toISOString(),
   };
-  const list = [newTask, ...allTasks];
-  writeJson(KEYS.tasks, list);
+  writeJson(KEYS.tasks, [newTask, ...readAll<TaskRecord>(KEYS.tasks)]);
   return newTask;
 }
 
 export function updateTaskStatus(taskId: string, status: TaskStatus): void {
-  const allTasks = getTasks();
-  const idx = allTasks.findIndex((t) => t.id === taskId);
+  const all = readAll<TaskRecord>(KEYS.tasks);
+  const idx = all.findIndex((t) => t.id === taskId);
   if (idx >= 0) {
-    allTasks[idx] = {
-      ...allTasks[idx],
+    all[idx] = {
+      ...all[idx],
       status,
       resolvedAt: status === 'resolved' ? new Date().toISOString() : undefined,
     };
-    writeJson(KEYS.tasks, allTasks);
+    writeJson(KEYS.tasks, all);
   }
 }
 
 export function deleteTask(taskId: string): void {
-  const allTasks = getTasks().filter((t) => t.id !== taskId);
-  writeJson(KEYS.tasks, allTasks);
+  writeJson(KEYS.tasks, readAll<TaskRecord>(KEYS.tasks).filter((t) => t.id !== taskId));
 }
 
 // ==========================================
-// 3. Deep Audit Runs with Inventory
+// 3. Deep audit runs
 // ==========================================
 
-export function getAuditRuns(projectId?: string): AuditRunRecord[] {
-  const runs = readJson<AuditRunRecord[]>(KEYS.auditRuns, []);
-  if (!projectId) return runs;
-  return runs.filter((r) => r.projectId === projectId);
+export function getAuditRuns(projectId: string = getActiveProjectId()): AuditRunRecord[] {
+  return forProject(readAll<AuditRunRecord>(KEYS.auditRuns), projectId);
 }
 
 export function saveAuditRun(run: AuditRunRecord): void {
-  const list = [run, ...getAuditRuns()].slice(0, 30);
-  writeJson(KEYS.auditRuns, list);
+  const own = [run, ...getAuditRuns(run.projectId)].slice(0, 30);
+  replaceForProject(KEYS.auditRuns, run.projectId, own);
 }
 
 export function getLatestAuditRun(projectId?: string): AuditRunRecord | null {
-  const runs = getAuditRuns(projectId);
-  return runs[0] || null;
+  return getAuditRuns(projectId)[0] || null;
 }
 
 // ==========================================
-// 4. Keyword & Backlink Repositories
+// 4. Keyword & backlink repositories
 // ==========================================
 
-export function getKeywords(projectId?: string): KeywordItem[] {
-  const items = readJson<KeywordItem[]>(KEYS.keywords, []);
-  if (!projectId) return items;
-  return items.filter((k) => k.projectId === projectId);
+export function getKeywords(projectId: string = getActiveProjectId()): KeywordItem[] {
+  return forProject(readAll<KeywordItem>(KEYS.keywords), projectId);
 }
 
 export function saveKeywords(items: KeywordItem[]): void {
-  const current = getKeywords();
   const map = new Map<string, KeywordItem>();
-  for (const c of current) map.set(c.id, c);
+  for (const c of readAll<KeywordItem>(KEYS.keywords)) map.set(c.id, c);
   for (const item of items) map.set(item.id, item);
-  writeJson(KEYS.keywords, Array.from(map.values()).slice(0, 1000));
+  writeJson(KEYS.keywords, Array.from(map.values()).slice(0, 5000));
 }
 
 export function deleteKeyword(id: string): void {
-  const current = getKeywords().filter((k) => k.id !== id);
-  writeJson(KEYS.keywords, current);
+  writeJson(KEYS.keywords, readAll<KeywordItem>(KEYS.keywords).filter((k) => k.id !== id));
 }
 
-export function getBacklinks(projectId?: string): BacklinkItem[] {
-  const items = readJson<BacklinkItem[]>(KEYS.backlinks, []);
-  if (!projectId) return items;
-  return items.filter((b) => b.projectId === projectId);
+export function getBacklinks(projectId: string = getActiveProjectId()): BacklinkItem[] {
+  return forProject(readAll<BacklinkItem>(KEYS.backlinks), projectId);
 }
 
 export function saveBacklinks(items: BacklinkItem[]): void {
-  const current = getBacklinks();
   const map = new Map<string, BacklinkItem>();
-  for (const c of current) map.set(c.id, c);
+  for (const c of readAll<BacklinkItem>(KEYS.backlinks)) map.set(c.id, c);
   for (const item of items) map.set(item.id, item);
-  writeJson(KEYS.backlinks, Array.from(map.values()).slice(0, 2000));
+  writeJson(KEYS.backlinks, Array.from(map.values()).slice(0, 10000));
 }
 
 // ==========================================
-// 5. Backup & Restore
+// 5. Generic per-project record store (used by tools that keep user-entered lists)
+// ==========================================
+
+interface ModuleRecord extends Owned {
+  collection: string;
+  id: string;
+  data: unknown;
+}
+
+export function getRecords<T>(collection: string, projectId: string = getActiveProjectId()): T[] {
+  return forProject(readAll<ModuleRecord>(KEYS.records), projectId)
+    .filter((r) => r.collection === collection)
+    .map((r) => r.data as T);
+}
+
+export function setRecords<T>(collection: string, items: T[], projectId: string = getActiveProjectId()) {
+  const all = readAll<ModuleRecord>(KEYS.records);
+  const keep = all.filter((r) => !(ownerOf(r) === projectId && r.collection === collection));
+  const fresh: ModuleRecord[] = items.map((data, i) => ({
+    collection,
+    id: `${collection}_${i}`,
+    projectId,
+    data,
+  }));
+  writeJson(KEYS.records, [...fresh, ...keep]);
+}
+
+// ==========================================
+// 6. Backup & restore
 // ==========================================
 
 export function exportFullWorkspaceBackup(): string {
   const dump = {
-    version: '2.0.0',
+    version: '3.0.0',
     exportedAt: new Date().toISOString(),
     projects: getProjects(),
-    activeProjectId: getActiveProjectId(),
-    tasks: getTasks(),
-    auditRuns: getAuditRuns(),
-    keywords: getKeywords(),
-    backlinks: getBacklinks(),
-    audits: getAudits(),
-    rankings: getRankings(),
-    jobs: getJobs(),
-    traffic: getTrafficImports(),
+    activeProjectId: readJson<string>(KEYS.activeProjectId, ''),
+    tasks: readAll(KEYS.tasks),
+    auditRuns: readAll(KEYS.auditRuns),
+    keywords: readAll(KEYS.keywords),
+    backlinks: readAll(KEYS.backlinks),
+    audits: readAll(KEYS.audits),
+    rankings: readAll(KEYS.rankings),
+    jobs: readAll(KEYS.jobs),
+    traffic: readAll(KEYS.traffic),
+    records: readAll(KEYS.records),
   };
   return JSON.stringify(dump, null, 2);
 }
@@ -369,14 +437,18 @@ export function importFullWorkspaceBackup(jsonStr: string): boolean {
   try {
     const data = JSON.parse(jsonStr);
     if (!data || typeof data !== 'object') return false;
-    if (Array.isArray(data.projects)) writeJson(KEYS.projects, data.projects);
+    const arr = (k: keyof typeof KEYS, v: unknown) => Array.isArray(v) && writeJson(KEYS[k], v);
+    arr('projects', data.projects);
     if (typeof data.activeProjectId === 'string') writeJson(KEYS.activeProjectId, data.activeProjectId);
-    if (Array.isArray(data.tasks)) writeJson(KEYS.tasks, data.tasks);
-    if (Array.isArray(data.auditRuns)) writeJson(KEYS.auditRuns, data.auditRuns);
-    if (Array.isArray(data.keywords)) writeJson(KEYS.keywords, data.keywords);
-    if (Array.isArray(data.backlinks)) writeJson(KEYS.backlinks, data.backlinks);
-    if (Array.isArray(data.audits)) writeJson(KEYS.audits, data.audits);
-    if (Array.isArray(data.rankings)) writeJson(KEYS.rankings, data.rankings);
+    arr('tasks', data.tasks);
+    arr('auditRuns', data.auditRuns);
+    arr('keywords', data.keywords);
+    arr('backlinks', data.backlinks);
+    arr('audits', data.audits);
+    arr('rankings', data.rankings);
+    arr('jobs', data.jobs);
+    arr('traffic', data.traffic);
+    arr('records', data.records);
     return true;
   } catch {
     return false;
@@ -384,21 +456,22 @@ export function importFullWorkspaceBackup(jsonStr: string): boolean {
 }
 
 // ==========================================
-// 6. Legacy / Compatibility Adapters
+// 7. Per-project legacy-named accessors
 // ==========================================
 
-export function getAudits(): StoredAudit[] {
-  return readJson<StoredAudit[]>(KEYS.audits, []);
+export function getAudits(projectId: string = getActiveProjectId()): StoredAudit[] {
+  return forProject(readAll<StoredAudit>(KEYS.audits), projectId);
 }
 
 export function saveAudit(audit: Omit<StoredAudit, 'id' | 'at'> & { id?: string; at?: string }): StoredAudit {
+  const projectId = audit.projectId ?? getActiveProjectId();
   const entry: StoredAudit = {
     ...audit,
+    projectId,
     id: audit.id || `audit_${Date.now()}`,
     at: audit.at || new Date().toISOString(),
   };
-  const list = [entry, ...getAudits()].slice(0, 50);
-  writeJson(KEYS.audits, list);
+  replaceForProject(KEYS.audits, projectId, [entry, ...getAudits(projectId)].slice(0, 50));
   pushJob({
     moduleId: audit.moduleId,
     label: `Audit: ${audit.url}`,
@@ -413,75 +486,107 @@ export function saveAudit(audit: Omit<StoredAudit, 'id' | 'at'> & { id?: string;
   return entry;
 }
 
-export function getRankings(): RankEntry[] {
-  return readJson<RankEntry[]>(KEYS.rankings, []);
+export function getRankings(projectId: string = getActiveProjectId()): RankEntry[] {
+  return forProject(readAll<RankEntry>(KEYS.rankings), projectId);
 }
 
 export function addRankEntry(entry: RankEntry) {
-  const list = [...getRankings(), entry].slice(-200);
-  writeJson(KEYS.rankings, list);
+  const projectId = entry.projectId ?? getActiveProjectId();
+  const list = [...getRankings(projectId), { ...entry, projectId }].slice(-500);
+  replaceForProject(KEYS.rankings, projectId, list);
   return list;
 }
 
 export function clearRankings() {
-  writeJson(KEYS.rankings, []);
+  replaceForProject<RankEntry>(KEYS.rankings, getActiveProjectId(), []);
 }
 
-export function getJobs(): JobRun[] {
-  return readJson<JobRun[]>(KEYS.jobs, []);
+export function getJobs(projectId: string = getActiveProjectId()): JobRun[] {
+  return forProject(readAll<JobRun>(KEYS.jobs), projectId);
 }
 
 export function pushJob(partial: Omit<JobRun, 'id' | 'at'> & { id?: string; at?: string }): JobRun {
+  const projectId = partial.projectId ?? getActiveProjectId();
   const job: JobRun = {
     ...partial,
-    id: partial.id || `job_${Date.now()}`,
+    projectId,
+    id: partial.id || `job_${Date.now()}_${Math.random().toString(36).substring(2, 5)}`,
     at: partial.at || new Date().toISOString(),
   };
-  const list = [job, ...getJobs()].slice(0, 80);
-  writeJson(KEYS.jobs, list);
+  replaceForProject(KEYS.jobs, projectId, [job, ...getJobs(projectId)].slice(0, 80));
   return job;
 }
 
-export function getTrafficImports(): TrafficImportRow[] {
-  return readJson<TrafficImportRow[]>(KEYS.traffic, []);
+export function getTrafficImports(projectId: string = getActiveProjectId()): TrafficImportRow[] {
+  return forProject(readAll<TrafficImportRow>(KEYS.traffic), projectId);
 }
 
 export function setTrafficImports(rows: TrafficImportRow[]) {
-  writeJson(KEYS.traffic, rows.slice(0, 365));
+  replaceForProject(KEYS.traffic, getActiveProjectId(), rows.slice(0, 730));
 }
 
 export function getChecklistState(id: string): Record<string, boolean> {
   const all = readJson<Record<string, Record<string, boolean>>>(KEYS.checklists, {});
-  return all[id] || {};
+  return all[`${getActiveProjectId()}:${id}`] || {};
 }
 
 export function setChecklistState(id: string, state: Record<string, boolean>) {
   const all = readJson<Record<string, Record<string, boolean>>>(KEYS.checklists, {});
-  all[id] = state;
+  all[`${getActiveProjectId()}:${id}`] = state;
   writeJson(KEYS.checklists, all);
 }
 
 export function getProject(): ProjectMeta {
   const active = getActiveProject();
-  return {
-    name: active.name,
-    primaryUrl: active.domain,
-    updatedAt: active.updatedAt,
-  };
+  return { name: active.name, primaryUrl: active.domain, updatedAt: active.updatedAt };
 }
 
 export function setProject(meta: Partial<ProjectMeta>) {
+  if (!hasProjects()) {
+    if (!meta.primaryUrl) return getProject();
+    const created = createProject({ name: meta.name || '', domain: meta.primaryUrl });
+    return { name: created.name, primaryUrl: created.domain, updatedAt: created.updatedAt };
+  }
   const active = getActiveProject();
   const next = saveProject({
     ...active,
     name: meta.name ?? active.name,
     domain: meta.primaryUrl ?? active.domain,
-    updatedAt: new Date().toISOString(),
   });
+  return { name: next.name, primaryUrl: next.domain, updatedAt: next.updatedAt };
+}
+
+// ==========================================
+// 8. Dashboard aggregates (all per project)
+// ==========================================
+
+export interface ProjectSummary {
+  projectId: string;
+  auditCount: number;
+  latestScore: number | null;
+  latestAuditAt: string | null;
+  pagesCrawled: number;
+  criticalIssues: number;
+  openTasks: number;
+  keywordCount: number;
+  trackedRankings: number;
+}
+
+export function getProjectSummary(projectId: string): ProjectSummary {
+  const runs = getAuditRuns(projectId);
+  const audits = getAudits(projectId);
+  const latestRun = runs[0];
+  const latestAudit = audits[0];
   return {
-    name: next.name,
-    primaryUrl: next.domain,
-    updatedAt: next.updatedAt,
+    projectId,
+    auditCount: Math.max(runs.length, audits.length),
+    latestScore: latestRun ? latestRun.healthScore : latestAudit ? latestAudit.score : null,
+    latestAuditAt: latestRun?.at || latestAudit?.at || null,
+    pagesCrawled: latestRun?.crawledPagesCount || 0,
+    criticalIssues: latestRun?.criticalCount || 0,
+    openTasks: getTasks(projectId).filter((t) => t.status !== 'resolved').length,
+    keywordCount: getKeywords(projectId).length,
+    trackedRankings: new Set(getRankings(projectId).map((r) => r.keyword.toLowerCase())).size,
   };
 }
 
@@ -490,8 +595,7 @@ export function getDashboardStats() {
   const jobs = getJobs();
   const rankings = getRankings();
   const traffic = getTrafficImports();
-  const tasks = getTasks();
-  const openTasks = tasks.filter((t) => t.status !== 'resolved').length;
+  const openTasks = getTasks().filter((t) => t.status !== 'resolved').length;
   const avgScore =
     audits.length === 0 ? 0 : Math.round(audits.reduce((s, a) => s + a.score, 0) / audits.length);
   const scoreHistory = audits

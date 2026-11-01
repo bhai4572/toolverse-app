@@ -38,7 +38,7 @@ export function SocialWorkspaceModule({ initialTab = 'preview' }: { initialTab?:
   const [notice, setNotice] = useState('');
 
   // 1. Social Preview State
-  const [targetUrl, setTargetUrl] = useState(() => project.primaryUrl || 'https://toolverse.baby/workspace');
+  const [targetUrl, setTargetUrl] = useState(() => project.domain);
   const [ogTitle, setOgTitle] = useState('ToolVerse — Advanced SEO & Marketing Intelligence Platform');
   const [ogDescription, setOgDescription] = useState(
     'Free technical site audits, on-page SEO diagnostics, rank tracking, and marketing tools. Empowering creators and developers.'
@@ -47,7 +47,7 @@ export function SocialWorkspaceModule({ initialTab = 'preview' }: { initialTab?:
   const [selectedPlatform, setSelectedPlatform] = useState<'facebook' | 'x' | 'linkedin'>('x');
 
   // 2. UTM Builder State
-  const [utmBaseUrl, setUtmBaseUrl] = useState(() => project.primaryUrl || 'https://toolverse.baby');
+  const [utmBaseUrl, setUtmBaseUrl] = useState(() => project.domain);
   const [utmSource, setUtmSource] = useState('twitter');
   const [utmMedium, setUtmMedium] = useState('social');
   const [utmCampaign, setUtmCampaign] = useState('spring_launch_2026');

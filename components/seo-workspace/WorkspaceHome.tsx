@@ -31,8 +31,8 @@ export function WorkspaceHome() {
 
   return (
     <ModuleShell
-      title="SEO Dashboard"
-      purpose="ToolVerse SEO Dashboard is a free Semrush-style workspace: run Site Audit and On-Page checks on URLs you choose, track positions you log, import GA4/CSV for traffic panels, and export HTML/PDF reports. Charts and stats come only from audits and jobs you run in this browser — not fake market graphs."
+      title="SEO Keyword Dashboards & Workspace"
+      purpose="ToolVerse SEO Keyword Dashboards & Workspace is a free Semrush-style suite: run SEO keyword dashboards, Keyword Magic, Site Audit and On-Page checks on URLs you choose, track positions you log, import GA4/CSV for traffic panels, and export HTML/PDF reports. Charts and stats come only from audits and jobs you run in this browser — not fake market graphs."
       honesty="No fake global traffic or competitor market share. Locked nav items stay visible but show Coming soon until real data is ready."
     >
       <Panel title="Primary project URL">

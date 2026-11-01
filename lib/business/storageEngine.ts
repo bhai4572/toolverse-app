@@ -1,5 +1,5 @@
 import { Business, BusinessReview, BusinessCategory } from './types';
-import { INITIAL_BUSINESSES, BUSINESS_CATEGORIES } from './registry';
+import { INITIAL_BUSINESSES, BUSINESS_CATEGORIES, INITIAL_REVIEWS } from './registry';
 import { logAdminAudit } from '../admin/authEngine';
 
 const STORED_BUSINESSES_KEY = 'toolverse_stored_businesses';
@@ -73,7 +73,7 @@ export function updateBusinessSpamStatus(businessId: string, status: Business['s
   if (typeof window !== 'undefined') {
     const raw = localStorage.getItem(STORED_BUSINESSES_KEY);
     const userCreated: Business[] = raw ? JSON.parse(raw) : [];
-    const idx = userCreated.findIndex((b) => b.id === businessId);
+    const idx = userCreated.findIndex((b) => businessId === businessId);
     if (idx !== -1) {
       userCreated[idx] = target;
     } else {
@@ -108,13 +108,18 @@ export function getQRScanCount(businessId: string): number {
 
 // --- Reviews ---
 export function getStoredBusinessReviews(businessId: string): BusinessReview[] {
-  if (typeof window === 'undefined') return [];
+  const seed = INITIAL_REVIEWS.filter((r) => r.businessId === businessId);
+  if (typeof window === 'undefined') return seed;
   try {
     const raw = localStorage.getItem(STORED_REVIEWS_KEY);
-    const all: BusinessReview[] = raw ? JSON.parse(raw) : [];
-    return all.filter((r) => r.businessId === businessId);
+    const userReviews: BusinessReview[] = raw ? JSON.parse(raw) : [];
+    const matchedUserReviews = userReviews.filter((r) => r.businessId === businessId);
+    const map = new Map<string, BusinessReview>();
+    seed.forEach((r) => map.set(r.id, r));
+    matchedUserReviews.forEach((r) => map.set(r.id, r));
+    return Array.from(map.values());
   } catch {
-    return [];
+    return seed;
   }
 }
 

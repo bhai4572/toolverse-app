@@ -17,8 +17,14 @@ export const ADSENSE_REVIEW_MODE = true;
 /** Monetag In-Page Push — public pages via AdGlobals (skipped when ADSENSE_REVIEW_MODE) */
 export const MONETAG_PUSH_ZONE = '11986841';
 
-/** Monetag Vignette — inner pages only (skipped when ADSENSE_REVIEW_MODE) */
-export const MONETAG_VIGNETTE_ZONE = '11986843';
+/** Monetag Vignette zone ID (12140232) */
+export const MONETAG_VIGNETTE_ZONE = '12140232';
+
+/**
+ * Enable Monetag Vignette specifically when users open the Jobs section or a shared job link.
+ * Fires once per session.
+ */
+export const MONETAG_JOB_VIGNETTE_ENABLED = true;
 
 /** Monetag display/banner zone ID — leave empty until pasted from Monetag dashboard */
 export const MONETAG_BANNER_ZONE = '';

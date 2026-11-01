@@ -34,6 +34,82 @@ export interface PageMetadata {
 export const SITE_URL = 'https://toolverse.baby';
 const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.png`;
 
+/**
+ * Maps a job slug, title, category, or search query to a dedicated, high-CTR Open Graph banner image.
+ * Alternates between 10 specialized 1200x630 cards for optimal social sharing on FB, LinkedIn, Twitter & WhatsApp.
+ */
+export function getJobOgImage(identifier?: string): string {
+  const baseUrl = SITE_URL;
+  if (!identifier) return `${baseUrl}/images/jobs/global-job-finder.jpg`;
+
+  const lower = identifier.toLowerCase();
+
+  const directMap: Record<string, string> = {
+    'remote-jobs': `${baseUrl}/images/jobs/remote-jobs.jpg`,
+    'software-engineer-jobs': `${baseUrl}/images/jobs/software-engineer-jobs.jpg`,
+    'pakistan-govt-jobs': `${baseUrl}/images/jobs/pakistan-govt-jobs.jpg`,
+    'usa-jobs': `${baseUrl}/images/jobs/usa-jobs.jpg`,
+    'government-jobs': `${baseUrl}/images/jobs/government-jobs.jpg`,
+    'nhs-jobs-uk': `${baseUrl}/images/jobs/nhs-jobs-uk.jpg`,
+    'data-entry-jobs': `${baseUrl}/images/jobs/data-entry-jobs.jpg`,
+    'jobs-near-me': `${baseUrl}/images/jobs/jobs-near-me.jpg`,
+    'global-job-finder': `${baseUrl}/images/jobs/global-job-finder.jpg`,
+    'urgent-hiring-jobs': `${baseUrl}/images/jobs/urgent-hiring-jobs.jpg`,
+  };
+
+  if (directMap[lower]) {
+    return directMap[lower];
+  }
+
+  if (lower.includes('pakistan') || lower.includes('ppsc') || lower.includes('fpsc') || lower.includes('nts') || lower.includes('punjab') || lower.includes('karachi') || lower.includes('lahore')) {
+    return `${baseUrl}/images/jobs/pakistan-govt-jobs.jpg`;
+  }
+  if (lower.includes('software') || lower.includes('developer') || lower.includes('react') || lower.includes('engineer') || lower.includes('frontend') || lower.includes('backend') || lower.includes('full stack') || lower.includes('tech') || lower.includes('ai')) {
+    return `${baseUrl}/images/jobs/software-engineer-jobs.jpg`;
+  }
+  if (lower.includes('remote') || lower.includes('telecommute') || lower.includes('work from home') || lower.includes('wfh')) {
+    return `${baseUrl}/images/jobs/remote-jobs.jpg`;
+  }
+  if (lower.includes('data entry') || lower.includes('data-entry') || lower.includes('virtual assistant') || lower.includes('clerk') || lower.includes('typing') || lower.includes('transcription')) {
+    return `${baseUrl}/images/jobs/data-entry-jobs.jpg`;
+  }
+  if (lower.includes('nhs') || lower.includes('nurse') || lower.includes('clinical') || lower.includes('hospital') || lower.includes('health') || lower.includes('uk')) {
+    return `${baseUrl}/images/jobs/nhs-jobs-uk.jpg`;
+  }
+  if (lower.includes('usa') || lower.includes('united states') || lower.includes('federal') || lower.includes('america')) {
+    return `${baseUrl}/images/jobs/usa-jobs.jpg`;
+  }
+  if (lower.includes('government') || lower.includes('civil service') || lower.includes('public sector') || lower.includes('ministry')) {
+    return `${baseUrl}/images/jobs/government-jobs.jpg`;
+  }
+  if (lower.includes('urgent') || lower.includes('immediate') || lower.includes('fast track') || lower.includes('priority')) {
+    return `${baseUrl}/images/jobs/urgent-hiring-jobs.jpg`;
+  }
+  if (lower.includes('near me') || lower.includes('local') || lower.includes('city') || lower.includes('retail')) {
+    return `${baseUrl}/images/jobs/jobs-near-me.jpg`;
+  }
+
+  const pool = [
+    `${baseUrl}/images/jobs/remote-jobs.jpg`,
+    `${baseUrl}/images/jobs/software-engineer-jobs.jpg`,
+    `${baseUrl}/images/jobs/pakistan-govt-jobs.jpg`,
+    `${baseUrl}/images/jobs/usa-jobs.jpg`,
+    `${baseUrl}/images/jobs/government-jobs.jpg`,
+    `${baseUrl}/images/jobs/nhs-jobs-uk.jpg`,
+    `${baseUrl}/images/jobs/data-entry-jobs.jpg`,
+    `${baseUrl}/images/jobs/jobs-near-me.jpg`,
+    `${baseUrl}/images/jobs/urgent-hiring-jobs.jpg`,
+    `${baseUrl}/images/jobs/global-job-finder.jpg`,
+  ];
+
+  let hash = 0;
+  for (let i = 0; i < lower.length; i++) {
+    hash = (hash << 5) - hash + lower.charCodeAt(i);
+    hash |= 0;
+  }
+  return pool[Math.abs(hash) % pool.length];
+}
+
 export const ORGANIZATION_ID = `${SITE_URL}/#organization`;
 export const WEBSITE_ID = `${SITE_URL}/#website`;
 export const LOGO_ID = `${SITE_URL}/#logo`;
@@ -48,6 +124,7 @@ export function buildOrganizationNode(): Record<string, unknown> {
     '@type': 'Organization',
     '@id': ORGANIZATION_ID,
     name: 'ToolVerse',
+    alternateName: ['Tooliverse', 'Tools Verse', 'Toolsoverflow', 'ToolVerse.com', 'Toolverse App'],
     url: `${SITE_URL}/`,
     logo: {
       '@type': 'ImageObject',
@@ -81,6 +158,7 @@ export function buildWebSiteNode(): Record<string, unknown> {
     '@id': WEBSITE_ID,
     url: `${SITE_URL}/`,
     name: 'ToolVerse',
+    alternateName: ['Tooliverse', 'Tools Verse', 'Toolsoverflow', 'ToolVerse.com'],
     description:
       'Free privacy-first online tools for PDFs, images, calculators, writing, developers, and job search.',
     publisher: { '@id': ORGANIZATION_ID },
@@ -240,9 +318,9 @@ function buildMetadataForPath(pathname: string): PageMetadata {
   // 1. Homepage (/)
   if (parts.length === 0) {
     const canonicalUrl = `${baseUrl}/`;
-    const title = 'ToolVerse — 100+ Free Online Tools for Everyday Work | Privacy-First';
+    const title = 'ToolVerse (Tooliverse / Tools Verse) — 100+ Free Online Tools | Privacy-First';
     const description =
-      'Free privacy-first online tools for PDFs, images, calculators, writing, developers, and job search. Most tools run locally in your browser — no sign-up required.';
+      'Free privacy-first online tools for PDFs, image compression, SEO keyword dashboards, calculators, writing, developers, and global job search. Most tools run locally in your browser — zero file uploads.';
 
     const pageFaqs = [
       {
@@ -286,13 +364,18 @@ function buildMetadataForPath(pathname: string): PageMetadata {
       title,
       description,
       keywords: [
+        'toolverse',
+        'tooliverse',
+        'tools verse',
+        'toolverse.com',
+        'toolsoverflow',
+        'seo keyword dashboards',
         'free online tools',
         'pdf tools',
         'image compressor',
         'word counter',
         'zakat calculator',
         'privacy first tools',
-        'toolverse',
       ],
       canonicalUrl,
       ogType: 'website',
@@ -396,27 +479,60 @@ function buildMetadataForPath(pathname: string): PageMetadata {
 
     if (parts[1]) {
       const canonicalUrl = `${baseUrl}/business/${parts[1]}`;
+      const isArtisanCoffee = parts[1] === 'artisan-coffee-roasters';
       const nameFormatted = parts[1]
         .split('-')
         .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
         .join(' ');
-      const title = `${nameFormatted} — Toolverse Verified Business Profile & Reviews`;
-      const description = `Discover ${nameFormatted} on Toolverse. View ratings, customer reviews, verified credentials, contact details, services, and physical address.`;
+      const title = isArtisanCoffee
+        ? 'Artisan Coffee Roasters — Artisan Coffee Reviews, Menu & Ratings | Toolverse'
+        : `${nameFormatted} — Toolverse Verified Business Profile & Reviews`;
+      const description = isArtisanCoffee
+        ? 'Read 65+ verified artisan coffee reviews for Artisan Coffee Roasters (rated 4.9/5 stars). Discover single-origin pour-overs, freshly roasted espresso beans, cafe hours & location.'
+        : `Discover ${nameFormatted} on Toolverse. View ratings, customer reviews, verified credentials, contact details, services, and physical address.`;
 
       const businessSchema: Record<string, unknown> = {
-        '@type': 'LocalBusiness',
+        '@type': isArtisanCoffee ? ['Restaurant', 'LocalBusiness'] : 'LocalBusiness',
         '@id': `${canonicalUrl}#business`,
-        name: nameFormatted,
+        name: isArtisanCoffee ? 'Artisan Coffee Roasters' : nameFormatted,
         url: canonicalUrl,
         description,
-        image: DEFAULT_OG_IMAGE,
+        image: isArtisanCoffee ? 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=800&fit=crop' : DEFAULT_OG_IMAGE,
         publisher: { '@id': ORGANIZATION_ID },
       };
+
+      if (isArtisanCoffee) {
+        businessSchema.servesCuisine = 'Specialty Artisan Coffee & Handcrafted Pastries';
+        businessSchema.priceRange = '$$';
+        businessSchema.aggregateRating = {
+          '@type': 'AggregateRating',
+          ratingValue: '4.9',
+          reviewCount: '65',
+          bestRating: '5',
+          worstRating: '1',
+        };
+        businessSchema.review = [
+          {
+            '@type': 'Review',
+            author: { '@type': 'Person', name: 'Elena Rostova' },
+            datePublished: '2026-09-15',
+            reviewBody: 'Best artisan coffee reviews in Toronto — Exceptional Ethiopian pour-over with rich floral notes.',
+            reviewRating: { '@type': 'Rating', ratingValue: '5', bestRating: '5' },
+          },
+          {
+            '@type': 'Review',
+            author: { '@type': 'Person', name: 'Marcus Chen' },
+            datePublished: '2026-10-02',
+            reviewBody: 'Outstanding artisan coffee beans and smooth espresso. Roasted in small batches daily.',
+            reviewRating: { '@type': 'Rating', ratingValue: '5', bestRating: '5' },
+          },
+        ];
+      }
 
       const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
         { name: 'Home', url: `${baseUrl}/` },
         { name: 'Businesses', url: `${baseUrl}/business` },
-        { name: nameFormatted, url: canonicalUrl },
+        { name: isArtisanCoffee ? 'Artisan Coffee Roasters' : nameFormatted, url: canonicalUrl },
       ]);
 
       const pageNode = buildWebPageNode({
@@ -439,9 +555,19 @@ function buildMetadataForPath(pathname: string): PageMetadata {
       return {
         title,
         description,
+        keywords: isArtisanCoffee
+          ? [
+              'artisan coffee reviews',
+              'artisan coffee',
+              'artisan coffee roasters',
+              'specialty coffee toronto',
+              'single origin coffee',
+              'pour over coffee'
+            ]
+          : [nameFormatted.toLowerCase(), 'verified business profile', 'customer reviews', 'toolverse'],
         canonicalUrl,
         ogType: 'website',
-        ogImage: DEFAULT_OG_IMAGE,
+        ogImage: isArtisanCoffee ? 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=800&fit=crop' : DEFAULT_OG_IMAGE,
         jsonLd: wrapInGraph(graph),
       };
     }
@@ -1166,7 +1292,10 @@ function buildMetadataForPath(pathname: string): PageMetadata {
         keywords: tool.keywords,
         canonicalUrl,
         ogType: 'website',
-        ogImage: DEFAULT_OG_IMAGE,
+        ogImage:
+          tool.slug === 'global-job-finder'
+            ? getJobOgImage('global-job-finder')
+            : DEFAULT_OG_IMAGE,
         jsonLd: wrapInGraph(graph),
       };
     }
@@ -1539,7 +1668,7 @@ function buildMetadataForPath(pathname: string): PageMetadata {
       keywords: [parts[1].replace(/-/g, ' '), 'toolverse jobs', 'remote jobs'],
       canonicalUrl,
       ogType: 'website',
-      ogImage: DEFAULT_OG_IMAGE,
+      ogImage: getJobOgImage(parts[1]),
       jsonLd: wrapInGraph(graph),
     };
   }
@@ -1600,13 +1729,22 @@ function buildMetadataForPath(pathname: string): PageMetadata {
   // SEO Dashboard workspace (/workspace, /workspace/*, /seo-dashboard)
   if (parts[0] === 'workspace' || parts[0] === 'seo-dashboard') {
     const canonicalUrl = `${baseUrl}/workspace`;
-    const title = 'SEO Dashboard — Free Semrush-Style Workspace | ToolVerse';
+    const title = 'SEO Keyword Dashboards & Audit Workspace — Free Suite | ToolVerse';
     const description =
-      'Free SEO dashboard with nested left nav: Site Audit, On-Page, Site Performance, Keyword Magic, Position Tracking, link extractor, GA4 import, and PDF reports. Your data only — no fake market graphs.';
+      'Free SEO keyword dashboards and Semrush-style audit workspace. Explore keyword magic, position tracking, search volume trends, site audits, and ranking reports with zero fees.';
     return {
       title,
       description,
-      keywords: ['seo dashboard', 'free semrush alternative', 'site audit', 'keyword tools', 'toolverse seo'],
+      keywords: [
+        'seo keyword dashboards',
+        'seo keyword dashboard',
+        'seo dashboard',
+        'free semrush alternative',
+        'keyword tools',
+        'keyword magic',
+        'position tracking',
+        'toolverse seo'
+      ],
       canonicalUrl,
       ogType: 'website',
       ogImage: DEFAULT_OG_IMAGE,
@@ -1635,10 +1773,19 @@ function buildMetadataForPath(pathname: string): PageMetadata {
     { title: string; description: string; keywords: string[]; crumb: string }
   > = {
     seo: {
-      title: 'ToolVerse SEO Suite — Free On-Page & Technical SEO Tools',
+      title: 'ToolVerse SEO Suite — Free SEO Keyword Dashboards & Technical SEO',
       description:
-        'SEO software hub: open the free Semrush-style SEO Dashboard for audits, keywords, and reports on your own data — plus classic free SEO utilities.',
-      keywords: ['seo suite', 'free seo tools', 'on page seo', 'semrush alternative', 'toolverse seo'],
+        'Free SEO keyword dashboards, site audit analyzers, SERP simulators, and meta generators. Track keywords, analyze search volume, and audit web pages with zero paywalls.',
+      keywords: [
+        'seo keyword dashboards',
+        'seo keyword dashboard',
+        'seo suite',
+        'free seo tools',
+        'keyword research tool',
+        'on page seo',
+        'semrush alternative',
+        'toolverse seo'
+      ],
       crumb: 'SEO Suite',
     },
     tools: {

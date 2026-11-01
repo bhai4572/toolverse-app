@@ -135,17 +135,17 @@ export function AiPrSuiteModule({ initialTab = 'pitch' }: { initialTab?: 'pitch'
 
     if (angle === 'data') {
       subject = `Data: ${storyHook.slice(0, 38)}…`;
-      body = `Hi ${jName},\n\nI’ve followed your coverage of tech infrastructure at ${oName} and thought your readers would find this proprietary dataset compelling:\n\n${keyFinding}\n\nWe’ve packaged these findings into an open technical report along with interactive reproduction steps using our zero-cost crawler (${productName}).\n\nWould you be interested in reviewing the full benchmark dataset or an embargoed preview of the research?\n\nBest regards,\n[Your Name]\n${project.primaryUrl || 'https://toolverse.baby'}`;
+      body = `Hi ${jName},\n\nI’ve followed your coverage of tech infrastructure at ${oName} and thought your readers would find this proprietary dataset compelling:\n\n${keyFinding}\n\nWe’ve packaged these findings into an open technical report along with interactive reproduction steps using our zero-cost crawler (${productName}).\n\nWould you be interested in reviewing the full benchmark dataset or an embargoed preview of the research?\n\nBest regards,\n[Your Name]\n${project.domain}`;
     } else if (angle === 'contrarian') {
       subject = `Why traditional SEO tools fail modern developers`;
       body = `Hi ${jName},\n\nMost modern dev teams still rely on legacy SEO suites that gate basic diagnostics behind $200/mo paywalls. With modern search algorithms enforcing strict Core Web Vitals and machine-readable data, developers need browser-native diagnostics.\n\nWe launched ${productName} to offer complete technical auditing with zero synthetic search volume fluff.\n\nHere's the core story: ${storyHook}.\n\nWould love to share early access and developer insights if this aligns with an upcoming piece at ${oName}.\n\nBest,\n[Your Name]`;
     } else {
       subject = `Launch: ${productName} brings free technical audits to webmasters`;
-      body = `Hi ${jName},\n\nExcited to share that we’ve launched ${productName} — a free, browser-native suite of over 100 web utilities and SSRF-guarded site audit crawlers designed for creators and webmasters.\n\nKey highlights:\n- Full-site technical crawl with 0 arbitrary page limits\n- Real-time DOM inspection for canonical, metadata, and schema\n- Exportable client reports with zero fake metrics\n\nFull announcement: ${project.primaryUrl || 'https://toolverse.baby'}\n\nHappy to provide quotes, screenshots, or background context for ${oName}.\n\nWarm regards,\n[Your Name]`;
+      body = `Hi ${jName},\n\nExcited to share that we’ve launched ${productName} — a free, browser-native suite of over 100 web utilities and SSRF-guarded site audit crawlers designed for creators and webmasters.\n\nKey highlights:\n- Full-site technical crawl with 0 arbitrary page limits\n- Real-time DOM inspection for canonical, metadata, and schema\n- Exportable client reports with zero fake metrics\n\nFull announcement: ${project.domain}\n\nHappy to provide quotes, screenshots, or background context for ${oName}.\n\nWarm regards,\n[Your Name]`;
     }
 
     return { subject, body };
-  }, [angle, journalistName, outletName, storyHook, keyFinding, productName, project.primaryUrl]);
+  }, [angle, journalistName, outletName, storyHook, keyFinding, productName, project.domain]);
 
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -345,9 +345,8 @@ export function AiPrSuiteModule({ initialTab = 'pitch' }: { initialTab?: 'pitch'
                       onClick={() => {
                         createTask({
                           title: `Pitch ${outletName} (${journalistName}) with ${angle} angle`,
-                          category: 'content',
-                          priority: 'high',
-                          suggestedFix: pitchOutput.subject,
+                          severity: 'critical',
+                          description: pitchOutput.subject,
                         });
                         setNotice('Pitch task saved to Task Manager!');
                       }}
@@ -538,9 +537,8 @@ export function AiPrSuiteModule({ initialTab = 'pitch' }: { initialTab?: 'pitch'
                         onClick={() => {
                           createTask({
                             title: `Reach out to ${m.outletName} for unlinked brand mention backlink`,
-                            category: 'technical',
-                            priority: 'medium',
-                            suggestedFix: `Source: ${m.sourceUrl}`,
+                            severity: 'warning',
+                            description: `Source: ${m.sourceUrl}`,
                           });
                           setNotice('Outreach task created in Task Manager!');
                         }}

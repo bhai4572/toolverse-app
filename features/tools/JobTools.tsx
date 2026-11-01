@@ -17,6 +17,8 @@ import {
 } from 'lucide-react';
 import { AdSlot } from '@/components/ads/AdSlot';
 import { JobsGridWithAds } from '@/components/ads/JobsGridWithAds';
+import { triggerJobVignetteOnce } from '@/components/ads/AdGlobals';
+import { getJobOgImage } from '@/lib/seo/metaEngine';
 
 const POPULAR_COUNTRIES = [
   { code: 'all', name: 'All Countries 🌐' },
@@ -155,6 +157,7 @@ function JobFinderContent() {
       const searchParams = new URLSearchParams(window.location.search);
       const sharedJobId = searchParams.get('job') || searchParams.get('id');
       if (sharedJobId) {
+        triggerJobVignetteOnce();
         const found = allMasterJobs.find(j => j && j.id === sharedJobId);
         if (found) {
           setSelectedJob(found);
@@ -451,7 +454,10 @@ function JobFinderContent() {
               return (
                 <div
                   key={jobId}
-                  onClick={() => setSelectedJob(job)}
+                  onClick={() => {
+                    setSelectedJob(job);
+                    triggerJobVignetteOnce();
+                  }}
                   className="group relative cursor-pointer p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-brand-500 dark:hover:border-brand-500 hover:shadow-xl transition-all duration-200 flex flex-col justify-between"
                 >
                   <div>
@@ -714,66 +720,79 @@ function JobFinderContent() {
               </button>
             </div>
 
-            {/* Card Preview */}
-            <div className="p-4 rounded-xl bg-gradient-to-br from-slate-900 to-brand-950 text-white space-y-2 border border-brand-800/40 shadow-inner">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-brand-600 text-white font-bold text-sm flex items-center justify-center shrink-0">
-                  {(shareModalJob?.company || 'C').charAt(0).toUpperCase()}
-                </div>
-                <div className="min-w-0">
-                  <div className="text-[11px] text-brand-300 font-semibold">{shareModalJob?.company || 'Employer'}</div>
-                  <h4 className="text-xs font-bold truncate">{shareModalJob?.title || 'Job Opportunity'}</h4>
+            {/* Social Media Card Image Preview */}
+            <div className="rounded-xl overflow-hidden border border-brand-800/40 shadow-lg bg-slate-900">
+              <div className="relative aspect-[16/9] w-full bg-slate-950 overflow-hidden">
+                <img
+                  src={getJobOgImage(shareModalJob?.title || shareModalJob?.sector || shareModalJob?.location)}
+                  alt={shareModalJob?.title || 'Job Preview Card'}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute top-2 right-2 px-2 py-0.5 rounded-full bg-slate-900/80 backdrop-blur-md border border-white/20 text-[10px] font-bold text-white flex items-center gap-1 shadow">
+                  <span>📸 Social Share Card</span>
                 </div>
               </div>
-
-              <div className="text-[11px] text-slate-300 flex items-center gap-3">
-                <span>📍 {shareModalJob?.location || 'Worldwide'}</span>
-                <span>💼 {shareModalJob?.jobType || 'Full-Time'}</span>
-              </div>
-
-              <div className="pt-2 border-t border-white/10 text-[10px] text-emerald-400 font-mono flex items-center gap-1">
-                <Globe className="w-3 h-3" />
-                <span className="truncate">{getToolVerseShareUrl(shareModalJob?.id)}</span>
+              <div className="p-3.5 bg-gradient-to-br from-slate-900 to-brand-950 text-white space-y-1.5">
+                <div className="flex items-center justify-between text-[11px]">
+                  <span className="font-bold text-brand-300 truncate">{shareModalJob?.company || 'Verified Employer'}</span>
+                  <span className="text-emerald-400 font-semibold shrink-0">{shareModalJob?.salary || 'Competitive Pay'}</span>
+                </div>
+                <h4 className="text-xs font-bold truncate text-white">{shareModalJob?.title || 'Job Opportunity'}</h4>
+                <div className="text-[11px] text-slate-300 flex items-center justify-between pt-1.5 border-t border-white/10">
+                  <span>📍 {shareModalJob?.location || 'Worldwide'}</span>
+                  <span>💼 {shareModalJob?.jobType || 'Full-Time'}</span>
+                </div>
               </div>
             </div>
 
             {/* Action Buttons */}
-            <div className="grid grid-cols-2 gap-3 pt-1">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 pt-1">
               <a
                 href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
                   `🔥 NEW JOB: ${shareModalJob?.title || 'Job'} at ${shareModalJob?.company || 'Employer'}\n📍 Location: ${shareModalJob?.location || 'Worldwide'} | 💼 Type: ${shareModalJob?.jobType || 'Full-Time'}\n\n👉 View Details & Apply on ToolVerse:\n${getToolVerseShareUrl(shareModalJob?.id)}`
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 p-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shadow-sm transition"
+                className="flex items-center justify-center gap-1.5 p-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shadow-sm transition"
               >
-                <MessageSquare className="w-4 h-4" /> Share WhatsApp
-              </a>
-
-              <button
-                onClick={() => copyShareLink(shareModalJob)}
-                className="flex items-center justify-center gap-2 p-2.5 bg-brand-600 hover:bg-brand-500 text-white rounded-xl text-xs font-bold shadow-sm transition"
-              >
-                <Copy className="w-4 h-4" /> Copy Link
-              </button>
-
-              <a
-                href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(getToolVerseShareUrl(shareModalJob?.id))}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 p-2.5 bg-blue-700 hover:bg-blue-600 text-white rounded-xl text-xs font-bold shadow-sm transition"
-              >
-                <Linkedin className="w-4 h-4" /> LinkedIn
+                <MessageSquare className="w-4 h-4" /> WhatsApp
               </a>
 
               <a
                 href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(getToolVerseShareUrl(shareModalJob?.id))}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 p-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold shadow-sm transition"
+                className="flex items-center justify-center gap-1.5 p-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold shadow-sm transition"
               >
                 <Facebook className="w-4 h-4" /> Facebook
               </a>
+
+              <a
+                href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(getToolVerseShareUrl(shareModalJob?.id))}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-1.5 p-2.5 bg-blue-700 hover:bg-blue-600 text-white rounded-xl text-xs font-bold shadow-sm transition"
+              >
+                <Linkedin className="w-4 h-4" /> LinkedIn
+              </a>
+
+              <a
+                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                  `🔥 NEW JOB: ${shareModalJob?.title || 'Job'} at ${shareModalJob?.company || 'Employer'} (${shareModalJob?.location || 'Worldwide'}).\n\nApply on ToolVerse:`
+                )}&url=${encodeURIComponent(getToolVerseShareUrl(shareModalJob?.id))}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-1.5 p-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold shadow-sm transition border border-white/20"
+              >
+                <span>𝕏 Twitter</span>
+              </a>
+
+              <button
+                onClick={() => copyShareLink(shareModalJob)}
+                className="col-span-2 sm:col-span-2 flex items-center justify-center gap-1.5 p-2.5 bg-brand-600 hover:bg-brand-500 text-white rounded-xl text-xs font-bold shadow-sm transition"
+              >
+                <Copy className="w-4 h-4" /> Copy Direct Link
+              </button>
             </div>
           </div>
         </div>

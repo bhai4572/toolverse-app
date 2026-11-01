@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import {
   getProjects,
+  hasProjects,
   createProject,
   getActiveProject,
   setActiveProjectId,
@@ -13,6 +14,10 @@ import {
   importFullWorkspaceBackup,
   generateVerificationToken,
   clearWorkspaceMemoryStore,
+  addRankEntry,
+  getRankings,
+  getProjectSummary,
+  NO_PROJECT_ID,
 } from '../lib/seo/workspace/workspaceStorage';
 
 describe('Workspace Storage & Tenancy Foundation', () => {
@@ -20,11 +25,43 @@ describe('Workspace Storage & Tenancy Foundation', () => {
     clearWorkspaceMemoryStore();
   });
 
-  it('initializes default project when empty', () => {
-    const projects = getProjects();
-    expect(projects.length).toBeGreaterThanOrEqual(1);
-    expect(projects[0].domain).toBeDefined();
-    expect(projects[0].verification.token).toMatch(/^toolverse-verify-/);
+  it('starts with NO project (no hard-coded default website)', () => {
+    expect(getProjects()).toHaveLength(0);
+    expect(hasProjects()).toBe(false);
+    expect(getActiveProject().id).toBe(NO_PROJECT_ID);
+    expect(getActiveProject().domain).toBe('');
+  });
+
+  it('keeps data isolated per project and cascades on delete', () => {
+    const a = createProject({ name: 'A', domain: 'a.example' });
+    addRankEntry({ keyword: 'alpha', domain: 'a.example', position: 3, at: new Date().toISOString() });
+    createTask({ title: 'task A' });
+    const b = createProject({ name: 'B', domain: 'b.example' });
+    addRankEntry({ keyword: 'beta', domain: 'b.example', position: 9, at: new Date().toISOString() });
+
+    expect(getRankings(a.id).map((r) => r.keyword)).toEqual(['alpha']);
+    expect(getRankings(b.id).map((r) => r.keyword)).toEqual(['beta']);
+    expect(getTasks(a.id)).toHaveLength(1);
+    expect(getTasks(b.id)).toHaveLength(0);
+    expect(getProjectSummary(a.id).openTasks).toBe(1);
+
+    deleteProject(a.id);
+    expect(getProjects().map((p) => p.id)).toEqual([b.id]);
+    expect(getRankings(a.id)).toHaveLength(0);
+    expect(getTasks(a.id)).toHaveLength(0);
+    expect(getRankings(b.id)).toHaveLength(1);
+    expect(getActiveProject().id).toBe(b.id);
+
+    deleteProject(b.id);
+    expect(hasProjects()).toBe(false);
+  });
+
+  it('createTask fills projectId/status/severity defaults', () => {
+    const p = createProject({ name: 'T', domain: 't.example' });
+    const t = createTask({ title: 'quick' });
+    expect(t.projectId).toBe(p.id);
+    expect(t.status).toBe('open');
+    expect(t.severity).toBe('warning');
   });
 
   it('creates and switches active projects', () => {

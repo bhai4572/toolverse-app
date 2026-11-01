@@ -23,10 +23,10 @@ export function MarketExplorerModule({ initialTab = 'competitors' }: { initialTa
   const [notice, setNotice] = useState('');
 
   // 1. Competitor Comparison State
-  const [yourDomain, setYourDomain] = useState(() => (project.primaryUrl ? new URL(project.primaryUrl).hostname : 'toolverse.baby'));
-  const [comp1, setComp1] = useState('ahrefs.com');
-  const [comp2, setComp2] = useState('semrush.com');
-  const [comp3, setComp3] = useState('moz.com');
+  const [yourDomain, setYourDomain] = useState(() => project.domain || '');
+  const [comp1, setComp1] = useState(() => project.competitors?.[0] || '');
+  const [comp2, setComp2] = useState(() => project.competitors?.[1] || '');
+  const [comp3, setComp3] = useState(() => project.competitors?.[2] || '');
 
   // 2. Audience Persona State
   const [industry, setIndustry] = useState('Software / SaaS / Web Tools');

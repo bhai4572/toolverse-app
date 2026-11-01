@@ -8,11 +8,17 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://toolverse.baby';
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'ToolVerse — 95+ Free Online Utility Tools & Global Job Finder',
+    default: 'ToolVerse (Tooliverse / Tools Verse) — 100+ Free Online Tools & Job Finder',
     template: '%s | ToolVerse'
   },
-  description: '100% free, browser-private online tools for PDFs, image compression, calculators, writing & grammar checks, developer tools, and global live job finder.',
+  description: 'ToolVerse (also known as Tooliverse or Tools Verse) offers 100+ free, privacy-first online tools for PDFs, image compression, SEO keyword dashboards, calculators, developer utilities, and global job search.',
   keywords: [
+    'toolverse',
+    'tooliverse',
+    'tools verse',
+    'toolverse.com',
+    'toolsoverflow',
+    'seo keyword dashboards',
     'free online tools',
     'pdf merger',
     'image compressor',

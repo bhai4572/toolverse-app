@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import {
   ADSENSE_REVIEW_MODE,
+  MONETAG_JOB_VIGNETTE_ENABLED,
   MONETAG_PUSH_ZONE,
   MONETAG_VIGNETTE_ZONE,
   shouldSkipAds,
@@ -36,6 +37,63 @@ function isVignettePath(pathname: string): boolean {
   );
 }
 
+/** Check if current page is the jobs section or a shared job link */
+export function isJobTarget(pathname: string, search?: string): boolean {
+  const p = pathname.replace(/\/$/, '') || '/';
+  if (p === '/jobs' || p.startsWith('/jobs/') || p === '/tools/global-job-finder') {
+    return true;
+  }
+  const s = search ?? (typeof window !== 'undefined' ? window.location.search : '');
+  if (s) {
+    try {
+      const params = new URLSearchParams(s);
+      if (params.has('job') || params.has('jobId') || params.has('job_id') || params.has('id')) {
+        return true;
+      }
+    } catch {}
+  }
+  return false;
+}
+
+/**
+ * Standard Monetag Vignette loader matching official snippet:
+ * (function(s){s.dataset.zone='12140232',s.src='https://n6wxm.com/vignette.min.js'})(...)
+ */
+export function injectMonetagVignette(zone: string = MONETAG_VIGNETTE_ZONE): boolean {
+  if (typeof document === 'undefined') return false;
+  if (document.documentElement.getAttribute('data-tv-monetag-vignette') === '1') {
+    return false;
+  }
+  document.documentElement.setAttribute('data-tv-monetag-vignette', '1');
+
+  try {
+    const parent = [document.documentElement, document.body].filter(Boolean).pop();
+    if (!parent) return false;
+    const s = document.createElement('script');
+    s.dataset.zone = zone;
+    s.src = 'https://n6wxm.com/vignette.min.js';
+    parent.appendChild(s);
+    return true;
+  } catch (err) {
+    console.error('Monetag vignette injection error:', err);
+    return false;
+  }
+}
+
+/** Helper to trigger Monetag vignette once per session (e.g. from job card clicks) */
+export function triggerJobVignetteOnce(): boolean {
+  if (typeof window === 'undefined') return false;
+  if (shouldSkipAds(window.location.pathname)) return false;
+  if (sessionStorage.getItem(VIGNETTE_DONE_KEY) === '1') return false;
+  const ok = injectMonetagVignette(MONETAG_VIGNETTE_ZONE);
+  if (ok) {
+    try {
+      sessionStorage.setItem(VIGNETTE_DONE_KEY, '1');
+    } catch {}
+  }
+  return ok;
+}
+
 function injectOnce(markerAttr: string, src: string, zone: string): boolean {
   if (typeof document === 'undefined') return false;
   if (document.documentElement.getAttribute(markerAttr) === '1') return false;
@@ -65,10 +123,9 @@ function ssSet(key: string, value: string) {
 }
 
 /**
- * Global ad loaders. Adsterra Social Bar removed.
- * During ADSENSE_REVIEW_MODE: Monetag push + vignette stay off (reviewer UX).
- * Otherwise: In-Page Push (public) + gated Vignette (inner pages, once/session).
- * Never gates tools. No popunder.
+ * Global ad loaders.
+ * - When users enter the Jobs section or open a shared job link: Monetag Vignette loads once.
+ * - During ADSENSE_REVIEW_MODE: other intrusive overlays stay off.
  */
 export function AdGlobals() {
   const skip = useSkipAds();
@@ -76,6 +133,18 @@ export function AdGlobals() {
 
   useEffect(() => {
     if (skip || typeof window === 'undefined') return;
+
+    // 1. Jobs Section or Shared Job Link: Show Monetag Vignette once per session
+    if (MONETAG_JOB_VIGNETTE_ENABLED && isJobTarget(pathname, window.location.search)) {
+      if (ssGet(VIGNETTE_DONE_KEY) !== '1') {
+        if (injectMonetagVignette(MONETAG_VIGNETTE_ZONE)) {
+          ssSet(VIGNETTE_DONE_KEY, '1');
+        }
+      }
+      return;
+    }
+
+    // 2. General site monetization (inactive while ADSENSE_REVIEW_MODE is on)
     if (ADSENSE_REVIEW_MODE) return;
 
     // In-Page Push — low layout impact; once per document
@@ -94,13 +163,7 @@ export function AdGlobals() {
       if (ssGet(VIGNETTE_OK_KEY) !== '1') return;
       if (ssGet(VIGNETTE_DONE_KEY) === '1') return;
       if (!isVignettePath(window.location.pathname)) return;
-      if (
-        injectOnce(
-          'data-tv-monetag-vignette',
-          'https://n6wxm.com/vignette.min.js',
-          MONETAG_VIGNETTE_ZONE
-        )
-      ) {
+      if (injectMonetagVignette(MONETAG_VIGNETTE_ZONE)) {
         ssSet(VIGNETTE_DONE_KEY, '1');
       }
     };
@@ -128,3 +191,4 @@ export function AdGlobals() {
 
   return null;
 }
+

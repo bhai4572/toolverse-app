@@ -41,7 +41,7 @@ export function LinkOutreachModule() {
   const [articleUrl, setArticleUrl] = useState('');
   const [contactEmail, setContactEmail] = useState('');
   const [desiredAnchor, setDesiredAnchor] = useState('technical SEO audit');
-  const [targetLandingPage, setTargetLandingPage] = useState(() => project.primaryUrl || 'https://toolverse.baby');
+  const [targetLandingPage, setTargetLandingPage] = useState(() => project.domain);
   const [notes, setNotes] = useState('');
 
   useEffect(() => {

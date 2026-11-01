@@ -104,17 +104,20 @@ export default function HomePage() {
           aria-hidden
         />
         <div className="relative px-6 py-14 sm:px-12 sm:py-20 max-w-3xl space-y-6">
-          <p className="text-sm font-bold tracking-tight text-white">
-            Tool<span className="text-brand-400">Verse</span>
-          </p>
+          <div className="flex items-center gap-2">
+            <p className="text-sm font-bold tracking-tight text-white">
+              Tool<span className="text-brand-400">Verse</span>
+            </p>
+            <span className="text-xs text-slate-400 font-normal">
+              (also searched as Tools Verse / Tooliverse)
+            </span>
+          </div>
           <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-[1.1]">
             Free tools that stay on your device.
           </h1>
           <p className="text-slate-300 text-sm sm:text-base max-w-xl leading-relaxed">
-            Merge PDFs, hit exact image size caps, or estimate paycheck math without creating an
-            account. Most file tools run in your browser with Canvas and WebAssembly — your files are
-            not the product. Built by an independent operator who maintains working utilities, not
-            scraped filler pages.
+            Merge PDFs, hit exact image size caps, explore free SEO keyword dashboards, or estimate paycheck math without creating an
+            account. ToolVerse is a private in-browser alternative to toolsoverflow and cloud converter websites — your files and data stay on your device.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link

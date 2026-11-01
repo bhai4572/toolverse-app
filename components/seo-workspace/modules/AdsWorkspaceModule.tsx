@@ -53,7 +53,7 @@ export function AdsWorkspaceModule({ initialTab = 'ppc-keywords' }: Props) {
   const [previewDevice, setPreviewDevice] = useState<'mobile' | 'desktop'>('mobile');
   const [displayPath1, setDisplayPath1] = useState('seo-tools');
   const [displayPath2, setDisplayPath2] = useState('audit');
-  const [finalUrl, setFinalUrl] = useState(() => project.primaryUrl || 'https://toolverse.baby/workspace');
+  const [finalUrl, setFinalUrl] = useState(() => project.domain);
 
   const [headlines, setHeadlines] = useState<string[]>([
     'Free Technical SEO Site Audit',
@@ -658,9 +658,8 @@ export function AdsWorkspaceModule({ initialTab = 'ppc-keywords' }: Props) {
                     onClick={() => {
                       createTask({
                         title: `Review RSA Copy for Campaign: ${campaignName}`,
-                        category: 'content',
-                        priority: 'high',
-                        suggestedFix: `Headlines: ${headlines.filter(Boolean).slice(0, 3).join(' | ')}`,
+                        severity: 'critical',
+                        description: `Headlines: ${headlines.filter(Boolean).slice(0, 3).join(' | ')}`,
                       });
                       setNotice('Ad copy task saved to Task Manager!');
                     }}

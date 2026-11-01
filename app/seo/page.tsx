@@ -12,20 +12,19 @@ export default function SeoSuitePage() {
       <section className="relative overflow-hidden rounded-3xl border border-slate-800 bg-slate-950 text-white px-6 py-10 sm:px-12 sm:py-14">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(37,99,235,0.35),_transparent_55%)] pointer-events-none" />
         <div className="relative max-w-2xl space-y-4">
-          <p className="text-xs font-bold uppercase tracking-widest text-brand-300">SEO Suite</p>
+          <p className="text-xs font-bold uppercase tracking-widest text-brand-300">SEO Suite &amp; Keyword Workspace</p>
           <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">
-            Tool<span className="text-brand-400">Verse</span> SEO Software
+            Tool<span className="text-brand-400">Verse</span> Free SEO Keyword Dashboards
           </h1>
           <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-            ToolVerse SEO Suite is a free Semrush-style workspace with nested left nav for Site Audit, keywords, performance, and reports — plus classic free SEO utilities.
-            Everything is free right now. Charts use your audits and imports — not fake market data. Incomplete modules stay locked until real integrations ship.
+            ToolVerse SEO Suite provides free SEO keyword dashboards, Semrush-style audit workspaces, keyword magic explorers, and ranking reports. Track keyword difficulty, search volume trends, on-page health, and SERP visibility with 100% free tools.
           </p>
           <div className="flex flex-wrap gap-3 pt-2">
             <Link href="/workspace" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-bold">
-              Open SEO Dashboard <ArrowRight className="w-4 h-4" />
+              Open SEO Keyword Dashboards <ArrowRight className="w-4 h-4" />
             </Link>
-            <Link href="/tools/seo-audit-analyzer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-slate-600 hover:border-brand-400 text-sm font-bold text-slate-100">
-              Classic free audit
+            <Link href="/tools/keyword-research-tool" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-slate-600 hover:border-brand-400 text-sm font-bold text-slate-100">
+              Keyword Magic Explorer
             </Link>
           </div>
         </div>
@@ -45,8 +44,8 @@ export default function SeoSuitePage() {
             >
               <div className="flex items-center justify-between gap-2">
                 <div>
-                  <h3 className="font-bold text-slate-900 dark:text-white">Launch full workspace</h3>
-                  <p className="text-xs text-slate-500 mt-1">Left sidebar · nested modules · local history · free</p>
+                  <h3 className="font-bold text-slate-900 dark:text-white">Launch SEO Keyword Dashboards &amp; Workspace</h3>
+                  <p className="text-xs text-slate-500 mt-1">Left sidebar · SEO keyword dashboards · position tracking · site audit · free</p>
                 </div>
                 <ArrowRight className="w-5 h-5 text-brand-600" />
               </div>
