@@ -781,38 +781,41 @@ export const TOOL_PAGE_CONTENT: Record<string, ToolPageContent> = {
     ],
   },
 
-  'keyword-research-tool': {
+  'b2b-email-finder': {
     answerFirst:
-      'Keyword Magic & Search Intent Explorer uncovers high-value keyword variations, search volume tiers, keyword difficulty (KD%), search intent (Informational, Commercial, Transactional), and CPC estimates with instant CSV export.',
-    seoTitle: 'Free Keyword Research Tool — Semrush Magic & Ahrefs Alternative | ToolVerse',
+      'B2B Email Finder discovers real, publicly available business emails and company details from official websites and verified third-party email verification providers — never fabricating or guessing unverified addresses.',
+    seoTitle: 'B2B Email Finder & Domain Verifier | ToolVerse',
     seoDescription:
-      'Free keyword research tool & keyword difficulty checker. Discover search volume, search intent, long-tail variations, and CPC benchmarks with free CSV export.',
+      'Find real, verified business email addresses and company profiles from official websites and verification providers. Zero guessed emails, MX & DMARC checks.',
     sections: [
       {
-        heading: 'Semrush Keyword Magic & Ahrefs Keyword Explorer Alternative',
-        body: 'Stop paying high monthly subscriptions just to generate long-tail keyword ideas. ToolVerse expands any seed topic into dozens of commercial, informational, and transactional variations with search difficulty modeling.',
+        heading: 'Policy-compliant, zero-hallucination B2B email discovery',
+        body: 'Unlike scrapers that fabricate role addresses or guess unverified patterns, our B2B Email Finder strictly extracts publicly published business contacts from 12 official website routes and verifies deliverability via DNS MX records and verification APIs.',
       },
       {
-        heading: 'Targeting Search Intent to win top Google rankings',
-        body: 'Google prioritizes pages that accurately satisfy user intent. Classifying keywords into Informational (guides, tutorials), Commercial (best-of comparisons, reviews), and Transactional (buy, download, online tools) ensures your content matches what searchers want.',
+        heading: 'How the multi-provider verification waterfall works',
+        body: 'When you enter a company name or domain, the system resolves the official website, checks robots.txt and DNS MX/SPF/DMARC records, queries configured verification providers (Hunter.io, ZeroBounce, EmailListVerify), and crawls public contact, about, team, and press pages.',
       },
       {
-        heading: 'How to use Keyword Difficulty (KD%) to rank faster',
-        body: 'For new websites and young domains, target keywords with KD under 35%. As your domain authority grows through backlinks and content clusters, you can compete for higher KD terms.',
+        heading: 'Export only verified business contacts',
+        body: 'Every discovered email displays its exact source URL, verification status badge (Verified, Accept-all, Risky, or Not found), confidence score, and check timestamp. Export verified contacts to CSV or XLSX with one click.',
       },
     ],
     faqs: [
       {
-        question: 'How many keywords can I research for free?',
-        answer: 'Unlimited! There are no daily search limits or query throttling.',
+        question: 'Does this B2B Email Finder guess or fabricate email addresses?',
+        answer:
+          'No. It never shows a guessed email as found. Emails are only returned if publicly found on an official source URL or verified as valid/accept-all by a verification provider.',
       },
       {
-        question: 'Can I export keywords to Excel or Google Sheets?',
-        answer: 'Yes, click "Export CSV" to instantly download the full dataset with search volume, KD, CPC, and intent tags.',
+        question: 'What does an Accept-all domain warning mean?',
+        answer:
+          'Accept-all (catch-all) mail servers accept incoming mail for any address at that domain initially, meaning individual mailbox existence cannot be guaranteed without sending a message.',
       },
       {
-        question: 'What does Search Intent mean?',
-        answer: 'Search Intent reflects what the user wants to accomplish: learn something (Informational), evaluate choices (Commercial), or take action (Transactional).',
+        question: 'Are credits charged when no verified email is found?',
+        answer:
+          'No. Free users receive 5 company searches and 10 verifications per month, and credits are never deducted for "No verified email found" results.',
       },
     ],
   },

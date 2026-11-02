@@ -26,6 +26,7 @@ export interface PageMetadata {
   canonicalUrl: string;
   ogType?: string;
   ogImage?: string;
+  twitterImage?: string;
   jsonLd?: Record<string, unknown>[];
   /** Defaults to index,follow when omitted */
   robots?: string;
@@ -213,6 +214,10 @@ export function buildWebPageNode(params: {
     isPartOf: { '@id': WEBSITE_ID },
     about: { '@id': ORGANIZATION_ID },
     inLanguage: 'en-US',
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: ['h1', 'h2', 'meta[name="description"]'],
+    },
   };
 
   if (params.hasBreadcrumbs) {
@@ -266,11 +271,17 @@ export function wrapInGraph(nodes: (Record<string, unknown> | null | undefined)[
   ];
 }
 
-/** Drop only a trailing "| ToolVerse"-style brand suffix when the title is over 65 chars. */
+/** Enforce strict <= 60 character SEO title limit across all pages. */
 function fitTitle(t: string): string {
-  if (t.length <= 65) return t;
+  if (t.length <= 60) return t;
   const stripped = t.replace(/\s*[|—–-]\s*Tool[Vv]erse(\s+[A-Za-z&]+){0,3}\s*$/, '').trim();
-  return stripped.length >= 20 ? stripped : t;
+  if (stripped.length >= 15 && stripped.length <= 60) return stripped;
+  const candidate = stripped.length >= 15 ? stripped : t;
+  if (candidate.length <= 60) return candidate;
+  const cut = candidate.slice(0, 59);
+  const lastSpace = cut.lastIndexOf(' ');
+  const trimmed = (lastSpace > 24 ? cut.slice(0, lastSpace) : candidate.slice(0, 58)).replace(/[\s|—–\-,;:]+$/, '');
+  return trimmed.slice(0, 60);
 }
 
 /** Trim meta descriptions to ≤160 chars on a word boundary. */
@@ -282,7 +293,14 @@ function fitDesc(d: string): string {
 
 export function getMetadataForPath(pathname: string): PageMetadata {
   const built = buildMetadataForPath(pathname);
-  const meta = { ...built, title: fitTitle(built.title), description: fitDesc(built.description) };
+  const ogImage = built.ogImage || DEFAULT_OG_IMAGE;
+  const meta: PageMetadata = {
+    ...built,
+    title: fitTitle(built.title),
+    description: fitDesc(built.description),
+    ogImage,
+    twitterImage: built.twitterImage || ogImage,
+  };
   if (pathShouldNoindex(pathname)) return { ...meta, robots: ROBOTS_NOINDEX };
   if (meta.robots) return meta;
   return { ...meta, robots: ROBOTS_INDEX };

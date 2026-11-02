@@ -874,6 +874,7 @@ async function main() {
     const { QUESTIONS } = await vite.ssrLoadModule('/lib/products/questionsRegistry.ts');
     const { COLLECTIONS } = await vite.ssrLoadModule('/lib/products/collectionsRegistry.ts');
     const { STUDY_DESTINATIONS } = await vite.ssrLoadModule('/lib/study/destinations.ts');
+    const { ALL_COUNTRY_STUDY_SUMMARIES } = await vite.ssrLoadModule('/lib/study/globalUniversityEngine.ts');
     const { REGION_HUBS } = await vite.ssrLoadModule('/lib/regions/hubs.ts');
     let LEGAL_PAGES = {};
     try {
@@ -1003,7 +1004,11 @@ async function main() {
     routes.push('/tools');
     routes.push('/pricing');
     routes.push('/study');
-    for (const s of ['usa', 'uk', 'canada', 'australia', 'new-zealand', 'europe']) {
+    const studyRouteSlugs = new Set(['usa', 'uk', 'canada', 'australia', 'new-zealand', 'europe']);
+    for (const c of ALL_COUNTRY_STUDY_SUMMARIES) {
+      studyRouteSlugs.add(c.slug);
+    }
+    for (const s of studyRouteSlugs) {
       routes.push(`/study/${s}`);
     }
     routes.push('/immigration');

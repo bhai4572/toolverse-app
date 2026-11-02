@@ -145,7 +145,20 @@ for (const ht of [
 
 contentUrls.push(makeUrl('/news', 'hourly', '0.9'));
 contentUrls.push(makeUrl('/study', 'daily', '0.9'));
-for (const s of ['usa', 'uk', 'canada', 'australia', 'new-zealand', 'europe']) {
+const unRowsSrc = fs.readFileSync(path.join(root, 'lib/travel/unMemberRows.ts'), 'utf8');
+const studySlugs = new Set(['usa', 'uk', 'canada', 'australia', 'new-zealand', 'europe']);
+for (const m of unRowsSrc.matchAll(/\[\s*"([A-Z]{2})",\s*"[A-Z]{3}",\s*"([^"]+)"/g)) {
+  const iso2 = m[1];
+  const commonName = m[2];
+  const slug =
+    iso2 === 'US'
+      ? 'usa'
+      : iso2 === 'GB'
+      ? 'uk'
+      : commonName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  studySlugs.add(slug);
+}
+for (const s of studySlugs) {
   contentUrls.push(makeUrl(`/study/${s}`, 'weekly', '0.88'));
 }
 

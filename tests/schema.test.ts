@@ -247,5 +247,13 @@ describe('ToolVerse Advanced Schema.org & Structured Data Architecture', () => {
     const actions = website.potentialAction as Record<string, unknown>[];
     const target = (actions[0].target as Record<string, unknown>).urlTemplate as string;
     expect(target).toContain('/tools?q=');
+
+    // Verify strict <= 60 character SEO title cap across all routes
+    for (const p of ['/', '/tools', '/study', '/study/germany', '/study/usa', '/tools/b2b-email-finder', '/tools/pdf-merge', '/blog']) {
+      const m = getMetadataForPath(p);
+      expect(m.title.length).toBeLessThanOrEqual(60);
+      expect(m.canonicalUrl).toMatch(/^https:\/\/toolverse\.baby/);
+      expect(m.robots).toMatch(/index,\s*follow/i);
+    }
   });
 });

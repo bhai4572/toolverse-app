@@ -26,16 +26,25 @@ function siteAuditDevPlugin() {
       });
 
       server.middlewares.use('/api/email-finder', async (req: any, res: any, next: any) => {
+        const clientIp = req.socket?.remoteAddress || '127.0.0.1';
         if (req.method === 'GET') {
           try {
-            const { readCompanyDatabase } = await server.ssrLoadModule('/lib/b2b/serverCrawlerAndDb.ts');
-            const savedRecords = readCompanyDatabase();
+            const { getAdminDashboardStats, discoverAndVerifyCompanyEmails } = await server.ssrLoadModule('/lib/b2b/serverCrawlerAndDb.ts');
+            const urlObj = new URL(req.url || '', 'http://localhost');
+            const q = urlObj.searchParams.get('q') || urlObj.searchParams.get('query');
+            if (q) {
+              const result = await discoverAndVerifyCompanyEmails({ query: q });
+              res.setHeader('Content-Type', 'application/json');
+              res.end(JSON.stringify(result));
+              return;
+            }
+            const adminStats = getAdminDashboardStats();
             res.setHeader('Content-Type', 'application/json');
-            res.end(JSON.stringify({ savedRecords }));
+            res.end(JSON.stringify(adminStats));
           } catch (err: any) {
             res.statusCode = 500;
             res.setHeader('Content-Type', 'application/json');
-            res.end(JSON.stringify({ error: err.message || 'DB read failed' }));
+            res.end(JSON.stringify({ error: err.message || 'Admin stats fetch failed' }));
           }
           return;
         }
@@ -44,16 +53,41 @@ function siteAuditDevPlugin() {
         req.on('data', (chunk: any) => { body += chunk; });
         req.on('end', async () => {
           try {
-            const { lookupOrCrawlCompany, addExecutiveToCompanyDb } = await server.ssrLoadModule('/lib/b2b/serverCrawlerAndDb.ts');
-            const parsed = JSON.parse(body || '{}');
-            if (parsed.action === 'add_executive' && parsed.domain) {
-              const updated = addExecutiveToCompanyDb(parsed.domain, parsed.executive || {});
+            const {
+              checkRateLimit,
+              discoverAndVerifyCompanyEmails,
+              purchaseCreditPack,
+              getAdminDashboardStats,
+            } = await server.ssrLoadModule('/lib/b2b/serverCrawlerAndDb.ts');
+
+            const rl = checkRateLimit(clientIp, 25);
+            if (!rl.allowed) {
+              res.statusCode = 429;
               res.setHeader('Content-Type', 'application/json');
-              res.end(JSON.stringify({ record: updated }));
+              res.end(JSON.stringify({ error: `Rate limit exceeded. Retry in ${rl.retryAfterSec}s.` }));
               return;
             }
-            const result = await lookupOrCrawlCompany(parsed.query, {
+
+            const parsed = JSON.parse(body || '{}');
+            if (parsed.action === 'purchase_pack' && parsed.packId) {
+              const packResult = purchaseCreditPack(parsed.userId || 'default_user', parsed.packId);
+              res.setHeader('Content-Type', 'application/json');
+              res.end(JSON.stringify(packResult));
+              return;
+            }
+            if (parsed.action === 'admin_stats') {
+              const stats = getAdminDashboardStats(parsed.userId || 'default_user');
+              res.setHeader('Content-Type', 'application/json');
+              res.end(JSON.stringify(stats));
+              return;
+            }
+
+            const result = await discoverAndVerifyCompanyEmails({
+              query: parsed.query || '',
+              filters: parsed.filters || {},
+              providerKeys: parsed.providerKeys || {},
               forceRefresh: Boolean(parsed.forceRefresh),
+              userId: parsed.userId || 'default_user',
             });
             res.setHeader('Content-Type', 'application/json');
             res.end(JSON.stringify(result));

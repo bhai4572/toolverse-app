@@ -1,141 +1,153 @@
 import { describe, it, expect } from 'vitest';
 import {
-  parseSearchInput,
-  formatEmailFromPattern,
-  generateEmailPermutations,
-  extractCompanyIntelligenceFromPages,
-  findCompanyInRecords,
-  INITIAL_COMPANY_INTEL_DB,
+  ACCEPT_ALL_WARNING,
+  COMPLIANCE_DISCLAIMER,
+  LOW_CONFIDENCE_LABEL,
+  MONETIZATION_CONFIG,
+  NO_MX_MESSAGE,
+  NO_VERIFIED_EMAIL_MESSAGE,
+  PUBLIC_CRAWL_PATHS,
+  WEBSITE_UNREACHABLE_MESSAGE,
+  computeEmailConfidence,
+  detectEmailPatternFromPublicEmails,
+  generateCandidateFromPattern,
+  isValidExtractedBusinessEmail,
+  mapStatusToBadge,
+  normalizeCompanyOrDomainInput,
 } from '../lib/b2b/emailIntelligenceEngine';
-import {
-  lookupOrCrawlCompany,
-  addExecutiveToCompanyDb,
-  readCompanyDatabase,
-} from '../lib/b2b/serverCrawlerAndDb';
-import { getToolBySlug } from '../lib/tools/registry';
 
-describe('B2B Email Finder & Company Executive Intelligence Engine', () => {
-  it('registers b2b-email-finder and resolves email-scraper / email-finder aliases', () => {
-    const main = getToolBySlug('b2b-email-finder');
-    const alias1 = getToolBySlug('email-scraper');
-    const alias2 = getToolBySlug('email-finder');
-
-    expect(main).toBeDefined();
-    expect(main?.status).toBe('live');
-    expect(alias1?.slug).toBe('b2b-email-finder');
-    expect(alias2?.slug).toBe('b2b-email-finder');
+describe('Policy-Compliant Zero-Hallucination B2B Email Finder Engine', () => {
+  it('crawls all 12 required public website paths', () => {
+    expect(PUBLIC_CRAWL_PATHS).toEqual([
+      '/',
+      '/contact',
+      '/contact-us',
+      '/about',
+      '/about-us',
+      '/team',
+      '/people',
+      '/staff',
+      '/support',
+      '/careers',
+      '/privacy',
+      '/terms',
+    ]);
   });
 
-  it('parses domain URLs, email addresses, and company names accurately', () => {
-    expect(parseSearchInput('https://www.stripe.com/pricing')).toEqual({
-      mode: 'domain',
-      cleanDomain: 'stripe.com',
-      cleanQuery: 'stripe.com',
-    });
-    expect(parseSearchInput('OpenAI')).toEqual({
-      mode: 'company_name',
-      cleanQuery: 'OpenAI',
-    });
-    expect(parseSearchInput('patrick@stripe.com')).toEqual({
-      mode: 'domain',
-      cleanDomain: 'stripe.com',
-      cleanQuery: 'stripe.com',
-    });
+  it('normalizes company names and domains while rejecting invalid TLDs', () => {
+    const d1 = normalizeCompanyOrDomainInput('https://www.intercom.com/pricing?ref=nav');
+    expect(d1.isDomainInput).toBe(true);
+    expect(d1.normalizedDomain).toBe('intercom.com');
+
+    const c1 = normalizeCompanyOrDomainInput('Intercom');
+    expect(c1.isDomainInput).toBe(false);
+    expect(c1.normalizedDomain).toBe('intercom.com');
+
+    const bad = normalizeCompanyOrDomainInput('company.invalid');
+    expect(bad.normalizedDomain).toBeNull();
+    expect(bad.error).toBeDefined();
   });
 
-  it('finds existing companies in database by either domain or company name', () => {
-    const byDomain = findCompanyInRecords('https://stripe.com', INITIAL_COMPANY_INTEL_DB);
-    const byName = findCompanyInRecords('Systems Limited', INITIAL_COMPANY_INTEL_DB);
-    const byName2 = findCompanyInRecords('OpenAI', INITIAL_COMPANY_INTEL_DB);
+  it('never invents an email pattern from generic role emails (contact@, finance@, careers@)', () => {
+    const res = detectEmailPatternFromPublicEmails(
+      [
+        { email: 'contact@acme.com' },
+        { email: 'finance@acme.com' },
+        { email: 'careers@acme.com' },
+        { email: 'support@acme.com' },
+      ],
+      'acme.com'
+    );
+    expect(res.patternType).toBeNull();
+    expect(res.formattedPattern).toBeNull();
 
-    expect(byDomain?.companyName).toBe('Stripe');
-    expect(byDomain?.executives.some((e) => e.role.includes('CEO'))).toBe(true);
-    expect(byDomain?.executives.some((e) => e.role.includes('CFO'))).toBe(true);
-
-    expect(byName?.domain).toBe('systemsltd.com');
-    expect(byName2?.domain).toBe('openai.com');
+    // Candidate generation must return null when no pattern is detected
+    const candidate = generateCandidateFromPattern('Jane', 'Doe', 'acme.com', res.patternType);
+    expect(candidate).toBeNull();
   });
 
-  it('extracts public emails, CEO/CFO executives, and JSON-LD leadership from HTML', () => {
-    const sampleHtml = `
-      <html>
-        <head>
-          <title>AcmeCloud — Enterprise Cloud Infrastructure</title>
-          <meta name="description" content="AcmeCloud builds cloud tools for global teams." />
-          <script type="application/ld+json">
-            {
-              "@context": "https://schema.org",
-              "@type": "Organization",
-              "name": "AcmeCloud",
-              "email": "press@acmecloud.io",
-              "founder": [
-                { "@type": "Person", "name": "Elena Vance", "jobTitle": "CEO & Co-Founder" },
-                { "@type": "Person", "name": "Marcus Sterling", "jobTitle": "Chief Financial Officer (CFO)" }
-              ]
-            }
-          </script>
-        </head>
-        <body>
-          <p>Contact our team at <a href="mailto:elena.vance@acmecloud.io">elena.vance@acmecloud.io</a> or sales@acmecloud.io</p>
-        </body>
-      </html>
-    `;
-
-    const record = extractCompanyIntelligenceFromPages(
-      'acmecloud.io',
-      [{ url: 'https://acmecloud.io', html: sampleHtml }],
-      {
-        mxValid: true,
-        mxRecords: ['aspmx.l.google.com'],
-        mailProvider: 'Google Workspace (Gmail Enterprise)',
-        spfConfigured: true,
-        dmarcConfigured: true,
-        acceptsMail: true,
-      }
+  it('detects all 6 supported personal email patterns when real personal emails exist', () => {
+    const firstDotLast = detectEmailPatternFromPublicEmails(
+      [{ email: 'sarah.connor@acme.com', firstName: 'Sarah', lastName: 'Connor' }],
+      'acme.com'
+    );
+    expect(firstDotLast.patternType).toBe('{first}.{last}');
+    expect(firstDotLast.formattedPattern).toBe('{first}.{last}@acme.com');
+    expect(generateCandidateFromPattern('John', 'Smith', 'acme.com', firstDotLast.patternType)).toBe(
+      'john.smith@acme.com'
     );
 
-    expect(record.companyName).toBe('AcmeCloud');
-    expect(record.emailPattern).toBe('{first}.{last}');
-    expect(record.executives.length).toBeGreaterThanOrEqual(2);
-    expect(record.executives.some((e) => e.name === 'Elena Vance' && e.role.includes('CEO'))).toBe(true);
-    expect(record.executives.some((e) => e.name === 'Marcus Sterling' && e.role.includes('CFO'))).toBe(true);
-    expect(record.emails.some((e) => e.email === 'elena.vance@acmecloud.io')).toBe(true);
-    expect(record.emails.some((e) => e.email === 'press@acmecloud.io')).toBe(true);
+    const fDotLast = detectEmailPatternFromPublicEmails(
+      [{ email: 's.connor@acme.com', firstName: 'Sarah', lastName: 'Connor' }],
+      'acme.com'
+    );
+    expect(fDotLast.patternType).toBe('{f}.{last}');
+    expect(generateCandidateFromPattern('John', 'Smith', 'acme.com', fDotLast.patternType)).toBe(
+      'j.smith@acme.com'
+    );
+
+    const firstUnderscoreLast = detectEmailPatternFromPublicEmails(
+      [{ email: 'sarah_connor@acme.com', firstName: 'Sarah', lastName: 'Connor' }],
+      'acme.com'
+    );
+    expect(firstUnderscoreLast.patternType).toBe('{first}_{last}');
+    expect(generateCandidateFromPattern('John', 'Smith', 'acme.com', firstUnderscoreLast.patternType)).toBe(
+      'john_smith@acme.com'
+    );
   });
 
-  it('saves newly searched companies to the persistent database and serves them from cache on repeat lookup', async () => {
-    const testDomain = 'nexustech-demo-b2b.io';
-
-    // First lookup: crawls & saves to database
-    const first = await lookupOrCrawlCompany(testDomain, { forceRefresh: true });
-    expect(first.record.domain).toBe(testDomain);
-    expect(first.record.cacheStatus).toBe('LIVE_CRAWL_SAVED');
-
-    // Second lookup by another user: must hit the saved database immediately
-    const second = await lookupOrCrawlCompany(testDomain, { forceRefresh: false });
-    expect(second.record.domain).toBe(testDomain);
-    expect(second.record.cacheStatus).toBe('DATABASE_HIT');
-    expect(second.record.searchCount).toBeGreaterThanOrEqual(2);
-
-    // Add an executive (e.g. CFO) and verify it persists in the database
-    const updated = addExecutiveToCompanyDb(testDomain, {
-      firstName: 'Tariq',
-      lastName: 'Mehmood',
-      role: 'Chief Financial Officer (CFO)',
-      department: 'Finance & Legal',
+  it('enforces anti-hallucination confidence labels (<70%) and status badges', () => {
+    const acceptAllScore = computeEmailConfidence({
+      hasPublicSourceUrl: true,
+      foundInMailtoOrSchema: true,
+      providerVerifiedStatus: 'accept_all',
+      hasMx: true,
+      hasSpf: true,
+      hasDmarc: true,
+      isAcceptAll: true,
     });
-    expect(updated).not.toBeNull();
-    expect(updated?.executives.some((e) => e.email === `tariq.mehmood@${testDomain}`)).toBe(true);
+    expect(acceptAllScore.confidence).toBeLessThan(70);
+    expect(acceptAllScore.lowConfidenceWarning).toBe(LOW_CONFIDENCE_LABEL);
 
-    const dbNow = readCompanyDatabase();
-    expect(dbNow.some((r) => r.domain === testDomain)).toBe(true);
+    const verifiedScore = computeEmailConfidence({
+      hasPublicSourceUrl: true,
+      foundInMailtoOrSchema: true,
+      providerVerifiedStatus: 'valid',
+      hasMx: true,
+      hasSpf: true,
+      hasDmarc: true,
+      isAcceptAll: false,
+    });
+    expect(verifiedScore.confidence).toBeGreaterThanOrEqual(90);
+    expect(verifiedScore.lowConfidenceWarning).toBeUndefined();
+
+    expect(mapStatusToBadge('valid')).toBe('Verified');
+    expect(mapStatusToBadge('accept_all')).toBe('Accept-all');
+    expect(mapStatusToBadge('risky')).toBe('Risky');
+    expect(mapStatusToBadge('not_found')).toBe('Not found');
   });
 
-  it('generates ranked corporate email permutations', () => {
-    const perms = generateEmailPermutations('John', 'Collison', 'stripe.com', '{first}');
-    expect(perms[0].email).toBe('john@stripe.com');
-    expect(perms[0].probability).toBe(96);
-    expect(perms.some((p) => p.email === 'john.collison@stripe.com')).toBe(true);
+  it('rejects asset filenames, placeholder domains, and Sentry hashes during HTML extraction', () => {
+    expect(isValidExtractedBusinessEmail('banner@2x.png', 'acme.com')).toBe(false);
+    expect(isValidExtractedBusinessEmail('user@example.com', 'acme.com')).toBe(false);
+    expect(isValidExtractedBusinessEmail('a8f9d0c1e2b3a4f5d6e7c8b9@sentry.io', 'acme.com')).toBe(false);
+    expect(isValidExtractedBusinessEmail('press@iana.org', 'iana.org')).toBe(true);
+  });
+
+  it('matches required monetization limits, credit packs, and compliance messages', () => {
+    expect(MONETIZATION_CONFIG.freeMonthlyCompanySearches).toBe(5);
+    expect(MONETIZATION_CONFIG.freeMonthlyEmailVerifications).toBe(10);
+    expect(MONETIZATION_CONFIG.creditPacks).toEqual([
+      { id: 'pack_100', credits: 100, priceUsd: 9, label: '100 Credits — $9', costPerCredit: '$0.09/email' },
+      { id: 'pack_500', credits: 500, priceUsd: 29, label: '500 Credits — $29', costPerCredit: '$0.058/email' },
+      { id: 'pack_1000', credits: 1000, priceUsd: 49, label: '1,000 Credits — $49', costPerCredit: '$0.049/email' },
+    ]);
+    expect(COMPLIANCE_DISCLAIMER).toBe(
+      'Emails are sourced from public web pages and verified through third-party verification services.'
+    );
+    expect(ACCEPT_ALL_WARNING).toBe('Domain accepts all emails; individual mailbox may not exist.');
+    expect(NO_MX_MESSAGE).toBe('No valid email infrastructure found');
+    expect(WEBSITE_UNREACHABLE_MESSAGE).toBe('Website unreachable');
+    expect(NO_VERIFIED_EMAIL_MESSAGE).toBe('No verified email found');
   });
 });
-
