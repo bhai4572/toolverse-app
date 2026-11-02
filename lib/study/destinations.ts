@@ -3,7 +3,13 @@
  * Honest ranges + official portals only — no invented university rankings DB.
  */
 
-export type StudySlug = 'usa' | 'uk' | 'canada' | 'australia' | 'new-zealand' | 'europe';
+import {
+  CountryStudySummary,
+  getCountryStudyBySlugOrIso,
+  PROGRAM_CATEGORIES,
+} from './globalUniversityEngine';
+
+export type StudySlug = 'usa' | 'uk' | 'canada' | 'australia' | 'new-zealand' | 'europe' | (string & {});
 
 export interface StudyLink {
   label: string;
@@ -38,6 +44,7 @@ export interface StudyDestination {
   tools: StudyLink[];
   travelHref?: string;
   regionHubHref?: string;
+  countryStudy?: CountryStudySummary;
 }
 
 const SHARED_TOOLS: StudyLink[] = [
@@ -657,10 +664,134 @@ export const STUDY_DESTINATIONS: Record<StudySlug, StudyDestination> = {
 
 export const STUDY_SLUGS = Object.keys(STUDY_DESTINATIONS) as StudySlug[];
 
+function buildDestinationFromCountrySummary(cs: CountryStudySummary): StudyDestination {
+  const uniNames = cs.universities.map((u) => u.name).join(', ');
+  return {
+    slug: cs.slug,
+    name: cs.name,
+    flag: cs.flag,
+    title: `Study in ${cs.name} — Universities, Programs, Fees, Documents & DIY Admission | ToolVerse`,
+    description: `Complete DIY guide to studying in ${cs.name}: universities (${uniNames}), programs across 9 faculties, tuition fees (${cs.tuitionBandLabel}), required documents, scholarships, and ${cs.visaCategoryName}.`,
+    keywords: [
+      `study in ${cs.name.toLowerCase()}`,
+      `${cs.name.toLowerCase()} universities for international students`,
+      `${cs.name.toLowerCase()} student visa documents`,
+      `${cs.name.toLowerCase()} tuition fees`,
+      `how to apply to ${cs.name.toLowerCase()} universities without agent`,
+    ],
+    answerFirst: `Planning to study in ${cs.name} (${cs.capital})? International tuition typically ranges around ${cs.tuitionBandLabel}, with living costs near ${cs.livingCostYearUsd}. Applications run via ${cs.nationalPortalName} or directly on university portals (${uniNames}) for ${cs.mainIntakes.join(' and ')} intakes, followed by the ${cs.visaCategoryName}.`,
+    overview: `${cs.name} (${cs.region}, ${cs.continent}) offers recognized degree pathways across Computer Science, Engineering, Medicine & Health, Business, Sciences, Law, and Arts. Instruction is available in ${cs.instructionLanguages.join(', ')}. ${cs.moiFriendly ? 'Many universities accept an official Medium of Instruction (MOI / English Proficiency Certificate) alongside IELTS/TOEFL/PTE.' : 'Standardized English proficiency (IELTS/TOEFL/PTE) is generally required for English-taught programs.'} Below you will find every university profile, offered programs by category, tuition and living budgets, required document checklists, and a 6-step DIY self-application procedure so you can file your admission yourself without paying an agent.`,
+    pathways: [
+      {
+        title: 'Undergraduate (Bachelor’s / MBBS / MD — 3 to 6 years)',
+        body: `Requires Higher Secondary / High School Certificate (12 years of schooling / A-Levels / IB) with attested transcripts, passport, and language proof. Apply directly via ${cs.nationalPortalName} or the university’s online admissions portal.`,
+      },
+      {
+        title: 'Postgraduate (Master’s / MBA — 1 to 2 years)',
+        body: `Requires a completed Bachelor’s degree (16 years of education or 3–4 year honours), official academic transcripts, Statement of Purpose (SOP), Academic CV, and 2 Letters of Recommendation.`,
+      },
+      {
+        title: 'Doctorate (PhD / Research — 3 to 4 years)',
+        body: `Requires a Master’s degree, a 1,500–2,500 word Research Proposal, academic publications (if any), and often a faculty supervisor acceptance letter prior to formal portal submission.`,
+      },
+    ],
+    documents: [
+      'Valid International Passport (at least 12–18 months validity)',
+      'High School / Secondary & Higher Secondary Certificates & Transcripts (attested by Board & MOFA/Apostille)',
+      'Bachelor’s / Master’s Degree & Semester Transcripts (for MS/PhD applicants)',
+      cs.moiFriendly
+        ? 'IELTS / TOEFL / PTE Score Report OR Official Medium of Instruction (MOI) Certificate'
+        : 'Official IELTS Academic / TOEFL iBT / PTE Academic Score Report',
+      'Statement of Purpose (SOP) / Motivation Letter (500–800 words)',
+      'Academic CV / Europass Resume & 2 Letters of Recommendation (LORs)',
+      `Official Unconditional Offer Letter & Visa Document (${cs.visaCategoryName})`,
+      `Bank Statement / Financial Proof (${cs.bankStatementRequirementUsd}) + Sponsor Affidavit`,
+      'Medical Fitness / TB Clearance, Police Character Certificate & Biometric Visa Photos',
+    ],
+    feeYearNote: FEE_DISCLAIMER,
+    feeRanges: [
+      {
+        label: `International Tuition Range (${cs.name})`,
+        range: cs.tuitionBandLabel,
+        note: `Local currency: ${cs.currencyCode} (${cs.currencySymbol}). Public national universities sit at the lower end; private & clinical medicine sit higher.`,
+      },
+      {
+        label: 'Estimated Living Costs (Accommodation, Food, Transport)',
+        range: cs.livingCostYearUsd,
+        note: `Capital city (${cs.capital}) typically costs 15%–25% more than regional university towns.`,
+      },
+      {
+        label: 'Bank Statement / Visa Financial Proof Requirement',
+        range: cs.bankStatementRequirementUsd,
+        note: `Required for ${cs.visaCategoryName} (${cs.visaProcessingWeeks} typical processing).`,
+      },
+    ],
+    visaSummary: `After receiving your unconditional admission offer from a recognized institution in ${cs.name}, you apply for the ${cs.visaCategoryName}. Typical processing time is ${cs.visaProcessingWeeks}. Students are permitted ${cs.workHoursAllowed}, with post-study stay/career options including: ${cs.postStudyStay}.`,
+    officialLinks: [
+      {
+        label: cs.nationalPortalName,
+        href: cs.nationalPortalUrl,
+        external: true,
+        note: `Official higher education / admission portal for ${cs.name}`,
+      },
+      ...cs.universities.map((u) => ({
+        label: `${u.name} (${u.city})`,
+        href: u.website,
+        external: true,
+        note: `${u.type} • Tuition: ${u.tuitionLabel}`,
+      })),
+    ],
+    portals: cs.universities.map((u) => ({
+      label: `${u.name} — Official Admissions Portal`,
+      href: u.admissionsPortalUrl,
+      external: true,
+      note: `${u.city} • Apply online directly`,
+    })),
+    fields: PROGRAM_CATEGORIES.slice(0, 5).map((cat) => ({
+      name: `${cat.icon} ${cat.name}`,
+      why: `${cat.description} Popular majors: ${cat.sampleMajors.slice(0, 3).join(', ')}.`,
+    })),
+    faqs: [
+      {
+        question: `How can I apply to universities in ${cs.name} by myself without an agent?`,
+        answer: `Open the official university website (${uniNames}) or ${cs.nationalPortalName}, create a free student applicant account with your own email, upload your scanned transcripts, passport, CV, and SOP as PDFs, and submit directly. Never hand over your personal portal password to third-party agents.`,
+      },
+      {
+        question: `What is the tuition fee and bank statement requirement for ${cs.name}?`,
+        answer: `Annual tuition in ${cs.name} typically ranges around ${cs.tuitionBandLabel}, while living costs average ${cs.livingCostYearUsd}. For the ${cs.visaCategoryName}, embassies generally require financial proof of ${cs.bankStatementRequirementUsd}.`,
+      },
+      {
+        question: `Can I study in ${cs.name} without IELTS on an MOI (English Proficiency Certificate)?`,
+        answer: cs.moiFriendly
+          ? `Yes, several universities in ${cs.name} accept an official Medium of Instruction (MOI) certificate if your previous degree was taught entirely in English, though having IELTS 6.0+ or PTE can still strengthen your visa file.`
+          : `Most universities and visa officers for ${cs.name} require a standardized test such as IELTS Academic (6.0–6.5), TOEFL iBT, or PTE Academic.`,
+      },
+      {
+        question: `Can international students work part-time in ${cs.name} during studies?`,
+        answer: `Work policy for international students in ${cs.name}: ${cs.workHoursAllowed}. Post-graduation pathway: ${cs.postStudyStay}.`,
+      },
+    ],
+    tools: SHARED_TOOLS,
+    travelHref: `/travel/PK/${cs.iso2}`,
+    countryStudy: cs,
+  };
+}
+
 export function getStudyDestination(slug: string): StudyDestination | undefined {
-  return STUDY_DESTINATIONS[slug as StudySlug];
+  if (!slug) return undefined;
+  const clean = slug.trim().toLowerCase();
+  const existing = STUDY_DESTINATIONS[clean as keyof typeof STUDY_DESTINATIONS];
+  const countrySummary = getCountryStudyBySlugOrIso(clean);
+
+  if (existing) {
+    return countrySummary ? { ...existing, countryStudy: countrySummary } : existing;
+  }
+  if (countrySummary) {
+    return buildDestinationFromCountrySummary(countrySummary);
+  }
+  return undefined;
 }
 
 export function listStudyDestinations(): StudyDestination[] {
-  return STUDY_SLUGS.map((s) => STUDY_DESTINATIONS[s]);
+  return STUDY_SLUGS.map((s) => getStudyDestination(s)!);
 }

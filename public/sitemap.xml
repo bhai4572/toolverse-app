@@ -711,6 +711,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://toolverse.baby/tools/b2b-email-finder</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://toolverse.baby/blog</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
@@ -1412,6 +1417,11 @@
   </url>
   <url>
     <loc>https://toolverse.baby/blog/how-to-solar-panel-calculator</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://toolverse.baby/blog/how-to-b2b-email-finder</loc>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>

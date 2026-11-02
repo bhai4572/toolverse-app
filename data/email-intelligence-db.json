@@ -1,0 +1,1918 @@
+[
+  {
+    "id": "comp-nexustech-demo-b2b-io",
+    "domain": "nexustech-demo-b2b.io",
+    "companyName": "Nexustech Demo B2b",
+    "websiteUrl": "https://nexustech-demo-b2b.io",
+    "industry": "Technology & Business Services",
+    "headquarters": "Global / Verified Domain",
+    "companySize": "50–500 Employees",
+    "description": "Official business profile, verified domain emails, and leadership contacts for Nexustech Demo B2b (nexustech-demo-b2b.io).",
+    "emailPattern": "{first}.{last}",
+    "emailPatternDescription": "firstname.lastname@domain.com (Standard Corporate Format)",
+    "patternConfidence": 85,
+    "dns": {
+      "mxValid": false,
+      "mxRecords": [],
+      "mailProvider": "Unverified / No Public MX",
+      "spfConfigured": false,
+      "dmarcConfigured": false,
+      "acceptsMail": false
+    },
+    "executives": [
+      {
+        "id": "nexustech-demo-b2b.io-exec-1793600055571",
+        "name": "Tariq Mehmood",
+        "role": "Chief Financial Officer (CFO)",
+        "seniority": "C-Suite",
+        "department": "Finance & Legal",
+        "email": "tariq.mehmood@nexustech-demo-b2b.io",
+        "confidence": 85,
+        "source": "Domain Pattern Match",
+        "sourceUrl": "https://nexustech-demo-b2b.io"
+      }
+    ],
+    "emails": [
+      {
+        "email": "tariq.mehmood@nexustech-demo-b2b.io",
+        "type": "personal",
+        "department": "Finance & Legal",
+        "firstName": "Tariq",
+        "lastName": "Mehmood",
+        "position": "Chief Financial Officer (CFO)",
+        "confidence": 85,
+        "mxVerified": false,
+        "source": "Domain Pattern Match",
+        "foundOnUrl": "https://nexustech-demo-b2b.io"
+      },
+      {
+        "email": "contact@nexustech-demo-b2b.io",
+        "type": "generic",
+        "department": "Customer Support",
+        "position": "General & Business Inquiries",
+        "confidence": 75,
+        "mxVerified": false,
+        "source": "Standard Role Inbox",
+        "foundOnUrl": "https://nexustech-demo-b2b.io"
+      },
+      {
+        "email": "info@nexustech-demo-b2b.io",
+        "type": "generic",
+        "department": "Customer Support",
+        "position": "Corporate Information Desk",
+        "confidence": 75,
+        "mxVerified": false,
+        "source": "Standard Role Inbox",
+        "foundOnUrl": "https://nexustech-demo-b2b.io"
+      },
+      {
+        "email": "sales@nexustech-demo-b2b.io",
+        "type": "generic",
+        "department": "Sales & Marketing",
+        "position": "Enterprise Sales & Partnerships",
+        "confidence": 75,
+        "mxVerified": false,
+        "source": "Standard Role Inbox",
+        "foundOnUrl": "https://nexustech-demo-b2b.io"
+      },
+      {
+        "email": "press@nexustech-demo-b2b.io",
+        "type": "generic",
+        "department": "Media & PR",
+        "position": "Media & Public Relations",
+        "confidence": 75,
+        "mxVerified": false,
+        "source": "Standard Role Inbox",
+        "foundOnUrl": "https://nexustech-demo-b2b.io"
+      },
+      {
+        "email": "careers@nexustech-demo-b2b.io",
+        "type": "generic",
+        "department": "HR & Recruiting",
+        "position": "HR & Talent Acquisition",
+        "confidence": 75,
+        "mxVerified": false,
+        "source": "Standard Role Inbox",
+        "foundOnUrl": "https://nexustech-demo-b2b.io"
+      },
+      {
+        "email": "finance@nexustech-demo-b2b.io",
+        "type": "generic",
+        "department": "Finance & Legal",
+        "position": "Finance, Billing & CFO Desk",
+        "confidence": 75,
+        "mxVerified": false,
+        "source": "Standard Role Inbox",
+        "foundOnUrl": "https://nexustech-demo-b2b.io"
+      }
+    ],
+    "socialLinks": {},
+    "phoneNumbers": [],
+    "pagesScanned": 0,
+    "createdAt": "2026-11-02",
+    "updatedAt": "2026-11-02",
+    "searchCount": 2,
+    "cacheStatus": "LIVE_CRAWL_SAVED"
+  },
+  {
+    "id": "comp-stripe-com",
+    "domain": "stripe.com",
+    "companyName": "Stripe",
+    "websiteUrl": "https://stripe.com",
+    "industry": "FinTech & Global Payment Infrastructure",
+    "headquarters": "San Francisco, CA & Dublin, Ireland",
+    "foundedYear": 2010,
+    "companySize": "7,000+ Employees",
+    "description": "Financial infrastructure platform for businesses to accept payments, grow revenue, and automate financial operations.",
+    "emailPattern": "{first}",
+    "emailPatternDescription": "{first}@stripe.com",
+    "patternConfidence": 96,
+    "dns": {
+      "mxValid": true,
+      "mxRecords": [
+        "aspmx.l.google.com"
+      ],
+      "mailProvider": "Google Workspace (Gmail Enterprise)",
+      "spfConfigured": true,
+      "dmarcConfigured": true,
+      "acceptsMail": true
+    },
+    "executives": [
+      {
+        "id": "stripe.com-exec-1",
+        "name": "Patrick Collison",
+        "role": "CEO & Co-Founder",
+        "seniority": "Founder",
+        "department": "Executive / C-Suite",
+        "email": "patrick@stripe.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://stripe.com",
+        "linkedinUrl": "https://www.linkedin.com/company/stripe"
+      },
+      {
+        "id": "stripe.com-exec-2",
+        "name": "John Collison",
+        "role": "President & Co-Founder",
+        "seniority": "Founder",
+        "department": "Executive / C-Suite",
+        "email": "john@stripe.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://stripe.com",
+        "linkedinUrl": "https://www.linkedin.com/company/stripe"
+      },
+      {
+        "id": "stripe.com-exec-3",
+        "name": "Steffan Tomlinson",
+        "role": "Chief Financial Officer (CFO)",
+        "seniority": "C-Suite",
+        "department": "Finance & Legal",
+        "email": "steffan@stripe.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://stripe.com",
+        "linkedinUrl": "https://www.linkedin.com/company/stripe"
+      },
+      {
+        "id": "stripe.com-exec-4",
+        "name": "David Singleton",
+        "role": "Chief Technology Officer (CTO)",
+        "seniority": "C-Suite",
+        "department": "Engineering & Product",
+        "email": "david.singleton@stripe.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://stripe.com",
+        "linkedinUrl": "https://www.linkedin.com/company/stripe"
+      },
+      {
+        "id": "stripe.com-exec-5",
+        "name": "Will Gaybrick",
+        "role": "President, Product & Business",
+        "seniority": "C-Suite",
+        "department": "Sales & Marketing",
+        "email": "will@stripe.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://stripe.com",
+        "linkedinUrl": "https://www.linkedin.com/company/stripe"
+      }
+    ],
+    "emails": [
+      {
+        "email": "patrick@stripe.com",
+        "type": "personal",
+        "department": "Executive / C-Suite",
+        "firstName": "Patrick",
+        "lastName": "Collison",
+        "position": "CEO & Co-Founder",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://stripe.com"
+      },
+      {
+        "email": "john@stripe.com",
+        "type": "personal",
+        "department": "Executive / C-Suite",
+        "firstName": "John",
+        "lastName": "Collison",
+        "position": "President & Co-Founder",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://stripe.com"
+      },
+      {
+        "email": "steffan@stripe.com",
+        "type": "personal",
+        "department": "Finance & Legal",
+        "firstName": "Steffan",
+        "lastName": "Tomlinson",
+        "position": "Chief Financial Officer (CFO)",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://stripe.com"
+      },
+      {
+        "email": "david.singleton@stripe.com",
+        "type": "personal",
+        "department": "Engineering & Product",
+        "firstName": "David",
+        "lastName": "Singleton",
+        "position": "Chief Technology Officer (CTO)",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://stripe.com"
+      },
+      {
+        "email": "will@stripe.com",
+        "type": "personal",
+        "department": "Sales & Marketing",
+        "firstName": "Will",
+        "lastName": "Gaybrick",
+        "position": "President, Product & Business",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://stripe.com"
+      },
+      {
+        "email": "press@stripe.com",
+        "type": "generic",
+        "department": "Media & PR",
+        "position": "Global Press & Media Relations",
+        "confidence": 96,
+        "mxVerified": true,
+        "source": "Public Webpage HTML",
+        "foundOnUrl": "https://stripe.com/contact"
+      },
+      {
+        "email": "sales@stripe.com",
+        "type": "generic",
+        "department": "Sales & Marketing",
+        "position": "Enterprise Sales Desk",
+        "confidence": 96,
+        "mxVerified": true,
+        "source": "Public Webpage HTML",
+        "foundOnUrl": "https://stripe.com/contact"
+      },
+      {
+        "email": "support@stripe.com",
+        "type": "generic",
+        "department": "Customer Support",
+        "position": "Merchant Support",
+        "confidence": 96,
+        "mxVerified": true,
+        "source": "Public Webpage HTML",
+        "foundOnUrl": "https://stripe.com/contact"
+      },
+      {
+        "email": "security@stripe.com",
+        "type": "generic",
+        "department": "Engineering & Product",
+        "position": "Security & Vulnerability Disclosure",
+        "confidence": 96,
+        "mxVerified": true,
+        "source": "Public Webpage HTML",
+        "foundOnUrl": "https://stripe.com/contact"
+      }
+    ],
+    "socialLinks": {
+      "linkedin": "https://www.linkedin.com/company/stripe",
+      "twitter": "https://x.com/stripe",
+      "contactPage": "https://stripe.com/contact"
+    },
+    "phoneNumbers": [],
+    "pagesScanned": 5,
+    "createdAt": "2026-10-15",
+    "updatedAt": "2026-11-01",
+    "searchCount": 12,
+    "cacheStatus": "DATABASE_HIT"
+  },
+  {
+    "id": "comp-openai-com",
+    "domain": "openai.com",
+    "companyName": "OpenAI",
+    "websiteUrl": "https://openai.com",
+    "industry": "Artificial Intelligence Research & Deployment",
+    "headquarters": "San Francisco, California, USA",
+    "foundedYear": 2015,
+    "companySize": "2,000+ Employees",
+    "description": "AI research and deployment company behind ChatGPT, GPT-4, Sora, and enterprise AI APIs.",
+    "emailPattern": "{first}",
+    "emailPatternDescription": "{first}@openai.com",
+    "patternConfidence": 96,
+    "dns": {
+      "mxValid": true,
+      "mxRecords": [
+        "aspmx.l.google.com"
+      ],
+      "mailProvider": "Google Workspace (Gmail Enterprise)",
+      "spfConfigured": true,
+      "dmarcConfigured": true,
+      "acceptsMail": true
+    },
+    "executives": [
+      {
+        "id": "openai.com-exec-1",
+        "name": "Sam Altman",
+        "role": "Chief Executive Officer (CEO)",
+        "seniority": "C-Suite",
+        "department": "Executive / C-Suite",
+        "email": "sama@openai.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://openai.com",
+        "linkedinUrl": "https://www.linkedin.com/company/openai"
+      },
+      {
+        "id": "openai.com-exec-2",
+        "name": "Sarah Friar",
+        "role": "Chief Financial Officer (CFO)",
+        "seniority": "C-Suite",
+        "department": "Finance & Legal",
+        "email": "sarah.friar@openai.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://openai.com",
+        "linkedinUrl": "https://www.linkedin.com/company/openai"
+      },
+      {
+        "id": "openai.com-exec-3",
+        "name": "Greg Brockman",
+        "role": "President & Co-Founder",
+        "seniority": "Founder",
+        "department": "Executive / C-Suite",
+        "email": "gdb@openai.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://openai.com",
+        "linkedinUrl": "https://www.linkedin.com/company/openai"
+      },
+      {
+        "id": "openai.com-exec-4",
+        "name": "Brad Lightcap",
+        "role": "Chief Operating Officer (COO)",
+        "seniority": "C-Suite",
+        "department": "Executive / C-Suite",
+        "email": "brad@openai.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://openai.com",
+        "linkedinUrl": "https://www.linkedin.com/company/openai"
+      },
+      {
+        "id": "openai.com-exec-5",
+        "name": "Kevin Weil",
+        "role": "Chief Product Officer (CPO)",
+        "seniority": "C-Suite",
+        "department": "Engineering & Product",
+        "email": "kevin@openai.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://openai.com",
+        "linkedinUrl": "https://www.linkedin.com/company/openai"
+      }
+    ],
+    "emails": [
+      {
+        "email": "sama@openai.com",
+        "type": "personal",
+        "department": "Executive / C-Suite",
+        "firstName": "Sam",
+        "lastName": "Altman",
+        "position": "Chief Executive Officer (CEO)",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://openai.com"
+      },
+      {
+        "email": "sarah.friar@openai.com",
+        "type": "personal",
+        "department": "Finance & Legal",
+        "firstName": "Sarah",
+        "lastName": "Friar",
+        "position": "Chief Financial Officer (CFO)",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://openai.com"
+      },
+      {
+        "email": "gdb@openai.com",
+        "type": "personal",
+        "department": "Executive / C-Suite",
+        "firstName": "Greg",
+        "lastName": "Brockman",
+        "position": "President & Co-Founder",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://openai.com"
+      },
+      {
+        "email": "brad@openai.com",
+        "type": "personal",
+        "department": "Executive / C-Suite",
+        "firstName": "Brad",
+        "lastName": "Lightcap",
+        "position": "Chief Operating Officer (COO)",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://openai.com"
+      },
+      {
+        "email": "kevin@openai.com",
+        "type": "personal",
+        "department": "Engineering & Product",
+        "firstName": "Kevin",
+        "lastName": "Weil",
+        "position": "Chief Product Officer (CPO)",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://openai.com"
+      },
+      {
+        "email": "press@openai.com",
+        "type": "generic",
+        "department": "Media & PR",
+        "position": "Communications & Media",
+        "confidence": 96,
+        "mxVerified": true,
+        "source": "Public Webpage HTML",
+        "foundOnUrl": "https://openai.com/contact"
+      },
+      {
+        "email": "sales@openai.com",
+        "type": "generic",
+        "department": "Sales & Marketing",
+        "position": "ChatGPT Enterprise & API Sales",
+        "confidence": 96,
+        "mxVerified": true,
+        "source": "Public Webpage HTML",
+        "foundOnUrl": "https://openai.com/contact"
+      },
+      {
+        "email": "support@openai.com",
+        "type": "generic",
+        "department": "Customer Support",
+        "position": "Platform Support",
+        "confidence": 96,
+        "mxVerified": true,
+        "source": "Public Webpage HTML",
+        "foundOnUrl": "https://openai.com/contact"
+      },
+      {
+        "email": "careers@openai.com",
+        "type": "generic",
+        "department": "HR & Recruiting",
+        "position": "Talent & Recruiting",
+        "confidence": 96,
+        "mxVerified": true,
+        "source": "Public Webpage HTML",
+        "foundOnUrl": "https://openai.com/contact"
+      }
+    ],
+    "socialLinks": {
+      "linkedin": "https://www.linkedin.com/company/openai",
+      "twitter": "https://x.com/openai",
+      "contactPage": "https://openai.com/contact"
+    },
+    "phoneNumbers": [],
+    "pagesScanned": 5,
+    "createdAt": "2026-10-15",
+    "updatedAt": "2026-11-01",
+    "searchCount": 12,
+    "cacheStatus": "DATABASE_HIT"
+  },
+  {
+    "id": "comp-shopify-com",
+    "domain": "shopify.com",
+    "companyName": "Shopify",
+    "websiteUrl": "https://shopify.com",
+    "industry": "E-Commerce & Retail Cloud",
+    "headquarters": "Ottawa, Ontario, Canada",
+    "foundedYear": 2006,
+    "companySize": "8,000+ Employees",
+    "description": "Global commerce company providing internet infrastructure for merchants of all sizes.",
+    "emailPattern": "{first}.{last}",
+    "emailPatternDescription": "{first}.{last}@shopify.com",
+    "patternConfidence": 96,
+    "dns": {
+      "mxValid": true,
+      "mxRecords": [
+        "aspmx.l.google.com"
+      ],
+      "mailProvider": "Google Workspace (Gmail Enterprise)",
+      "spfConfigured": true,
+      "dmarcConfigured": true,
+      "acceptsMail": true
+    },
+    "executives": [
+      {
+        "id": "shopify.com-exec-1",
+        "name": "Tobi Lütke",
+        "role": "CEO & Co-Founder",
+        "seniority": "Founder",
+        "department": "Executive / C-Suite",
+        "email": "tobi@shopify.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://shopify.com",
+        "linkedinUrl": "https://www.linkedin.com/company/shopify"
+      },
+      {
+        "id": "shopify.com-exec-2",
+        "name": "Harley Finkelstein",
+        "role": "President",
+        "seniority": "C-Suite",
+        "department": "Executive / C-Suite",
+        "email": "harley@shopify.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://shopify.com",
+        "linkedinUrl": "https://www.linkedin.com/company/shopify"
+      },
+      {
+        "id": "shopify.com-exec-3",
+        "name": "Jeff Hoffmeister",
+        "role": "Chief Financial Officer (CFO)",
+        "seniority": "C-Suite",
+        "department": "Finance & Legal",
+        "email": "jeff.hoffmeister@shopify.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://shopify.com",
+        "linkedinUrl": "https://www.linkedin.com/company/shopify"
+      },
+      {
+        "id": "shopify.com-exec-4",
+        "name": "Kasra Nejatian",
+        "role": "COO & VP Product",
+        "seniority": "C-Suite",
+        "department": "Executive / C-Suite",
+        "email": "kaz@shopify.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://shopify.com",
+        "linkedinUrl": "https://www.linkedin.com/company/shopify"
+      }
+    ],
+    "emails": [
+      {
+        "email": "tobi@shopify.com",
+        "type": "personal",
+        "department": "Executive / C-Suite",
+        "firstName": "Tobi",
+        "lastName": "Lütke",
+        "position": "CEO & Co-Founder",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://shopify.com"
+      },
+      {
+        "email": "harley@shopify.com",
+        "type": "personal",
+        "department": "Executive / C-Suite",
+        "firstName": "Harley",
+        "lastName": "Finkelstein",
+        "position": "President",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://shopify.com"
+      },
+      {
+        "email": "jeff.hoffmeister@shopify.com",
+        "type": "personal",
+        "department": "Finance & Legal",
+        "firstName": "Jeff",
+        "lastName": "Hoffmeister",
+        "position": "Chief Financial Officer (CFO)",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://shopify.com"
+      },
+      {
+        "email": "kaz@shopify.com",
+        "type": "personal",
+        "department": "Executive / C-Suite",
+        "firstName": "Kasra",
+        "lastName": "Nejatian",
+        "position": "COO & VP Product",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://shopify.com"
+      },
+      {
+        "email": "press@shopify.com",
+        "type": "generic",
+        "department": "Media & PR",
+        "position": "Global Communications",
+        "confidence": 96,
+        "mxVerified": true,
+        "source": "Public Webpage HTML",
+        "foundOnUrl": "https://shopify.com/contact"
+      },
+      {
+        "email": "investors@shopify.com",
+        "type": "generic",
+        "department": "Finance & Legal",
+        "position": "Investor Relations & CFO Office",
+        "confidence": 96,
+        "mxVerified": true,
+        "source": "Public Webpage HTML",
+        "foundOnUrl": "https://shopify.com/contact"
+      },
+      {
+        "email": "partners@shopify.com",
+        "type": "generic",
+        "department": "Sales & Marketing",
+        "position": "Partner Ecosystem",
+        "confidence": 96,
+        "mxVerified": true,
+        "source": "Public Webpage HTML",
+        "foundOnUrl": "https://shopify.com/contact"
+      }
+    ],
+    "socialLinks": {
+      "linkedin": "https://www.linkedin.com/company/shopify",
+      "twitter": "https://x.com/shopify",
+      "contactPage": "https://shopify.com/contact"
+    },
+    "phoneNumbers": [],
+    "pagesScanned": 5,
+    "createdAt": "2026-10-15",
+    "updatedAt": "2026-11-01",
+    "searchCount": 12,
+    "cacheStatus": "DATABASE_HIT"
+  },
+  {
+    "id": "comp-vercel-com",
+    "domain": "vercel.com",
+    "companyName": "Vercel",
+    "websiteUrl": "https://vercel.com",
+    "industry": "Cloud Developer Platform & Frontend Infrastructure",
+    "headquarters": "San Francisco, California, USA",
+    "foundedYear": 2015,
+    "companySize": "500–1,000 Employees",
+    "description": "Frontend cloud platform and creators of Next.js, enabling developers to build and deploy web experiences.",
+    "emailPattern": "{first}.{last}",
+    "emailPatternDescription": "{first}.{last}@vercel.com",
+    "patternConfidence": 96,
+    "dns": {
+      "mxValid": true,
+      "mxRecords": [
+        "aspmx.l.google.com"
+      ],
+      "mailProvider": "Google Workspace (Gmail Enterprise)",
+      "spfConfigured": true,
+      "dmarcConfigured": true,
+      "acceptsMail": true
+    },
+    "executives": [
+      {
+        "id": "vercel.com-exec-1",
+        "name": "Guillermo Rauch",
+        "role": "CEO & Founder",
+        "seniority": "Founder",
+        "department": "Executive / C-Suite",
+        "email": "rauchg@vercel.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://vercel.com",
+        "linkedinUrl": "https://www.linkedin.com/company/vercel"
+      },
+      {
+        "id": "vercel.com-exec-2",
+        "name": "isteve",
+        "role": "Chief Financial Officer (CFO)",
+        "seniority": "C-Suite",
+        "department": "Finance & Legal",
+        "email": "finance@vercel.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://vercel.com",
+        "linkedinUrl": "https://www.linkedin.com/company/vercel"
+      },
+      {
+        "id": "vercel.com-exec-3",
+        "name": "Malte Ubl",
+        "role": "Chief Technology Officer (CTO)",
+        "seniority": "C-Suite",
+        "department": "Engineering & Product",
+        "email": "malte.ubl@vercel.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://vercel.com",
+        "linkedinUrl": "https://www.linkedin.com/company/vercel"
+      },
+      {
+        "id": "vercel.com-exec-4",
+        "name": "Jeanne DeWitt Grosser",
+        "role": "Chief Operating Officer (COO)",
+        "seniority": "C-Suite",
+        "department": "Sales & Marketing",
+        "email": "jeanne@vercel.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://vercel.com",
+        "linkedinUrl": "https://www.linkedin.com/company/vercel"
+      }
+    ],
+    "emails": [
+      {
+        "email": "rauchg@vercel.com",
+        "type": "personal",
+        "department": "Executive / C-Suite",
+        "firstName": "Guillermo",
+        "lastName": "Rauch",
+        "position": "CEO & Founder",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://vercel.com"
+      },
+      {
+        "email": "finance@vercel.com",
+        "type": "personal",
+        "department": "Finance & Legal",
+        "firstName": "isteve",
+        "lastName": "",
+        "position": "Chief Financial Officer (CFO)",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://vercel.com"
+      },
+      {
+        "email": "malte.ubl@vercel.com",
+        "type": "personal",
+        "department": "Engineering & Product",
+        "firstName": "Malte",
+        "lastName": "Ubl",
+        "position": "Chief Technology Officer (CTO)",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://vercel.com"
+      },
+      {
+        "email": "jeanne@vercel.com",
+        "type": "personal",
+        "department": "Sales & Marketing",
+        "firstName": "Jeanne",
+        "lastName": "DeWitt Grosser",
+        "position": "Chief Operating Officer (COO)",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://vercel.com"
+      },
+      {
+        "email": "sales@vercel.com",
+        "type": "generic",
+        "department": "Sales & Marketing",
+        "position": "Enterprise Cloud Sales",
+        "confidence": 96,
+        "mxVerified": true,
+        "source": "Public Webpage HTML",
+        "foundOnUrl": "https://vercel.com/contact"
+      },
+      {
+        "email": "press@vercel.com",
+        "type": "generic",
+        "department": "Media & PR",
+        "position": "Media & Analyst Relations",
+        "confidence": 96,
+        "mxVerified": true,
+        "source": "Public Webpage HTML",
+        "foundOnUrl": "https://vercel.com/contact"
+      },
+      {
+        "email": "security@vercel.com",
+        "type": "generic",
+        "department": "Engineering & Product",
+        "position": "Information Security",
+        "confidence": 96,
+        "mxVerified": true,
+        "source": "Public Webpage HTML",
+        "foundOnUrl": "https://vercel.com/contact"
+      }
+    ],
+    "socialLinks": {
+      "linkedin": "https://www.linkedin.com/company/vercel",
+      "twitter": "https://x.com/vercel",
+      "contactPage": "https://vercel.com/contact"
+    },
+    "phoneNumbers": [],
+    "pagesScanned": 5,
+    "createdAt": "2026-10-15",
+    "updatedAt": "2026-11-01",
+    "searchCount": 12,
+    "cacheStatus": "DATABASE_HIT"
+  },
+  {
+    "id": "comp-cloudflare-com",
+    "domain": "cloudflare.com",
+    "companyName": "Cloudflare",
+    "websiteUrl": "https://cloudflare.com",
+    "industry": "Cybersecurity, CDN & Edge Cloud Network",
+    "headquarters": "San Francisco, California, USA",
+    "foundedYear": 2009,
+    "companySize": "4,000+ Employees",
+    "description": "Global connectivity cloud protecting and accelerating websites, APIs, and enterprise networks.",
+    "emailPattern": "{first}",
+    "emailPatternDescription": "{first}@cloudflare.com",
+    "patternConfidence": 96,
+    "dns": {
+      "mxValid": true,
+      "mxRecords": [
+        "aspmx.l.google.com"
+      ],
+      "mailProvider": "Google Workspace (Gmail Enterprise)",
+      "spfConfigured": true,
+      "dmarcConfigured": true,
+      "acceptsMail": true
+    },
+    "executives": [
+      {
+        "id": "cloudflare.com-exec-1",
+        "name": "Matthew Prince",
+        "role": "CEO & Co-Founder",
+        "seniority": "Founder",
+        "department": "Executive / C-Suite",
+        "email": "mp@cloudflare.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://cloudflare.com",
+        "linkedinUrl": "https://www.linkedin.com/company/cloudflare"
+      },
+      {
+        "id": "cloudflare.com-exec-2",
+        "name": "Michelle Zatlyn",
+        "role": "President, COO & Co-Founder",
+        "seniority": "Founder",
+        "department": "Executive / C-Suite",
+        "email": "michelle@cloudflare.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://cloudflare.com",
+        "linkedinUrl": "https://www.linkedin.com/company/cloudflare"
+      },
+      {
+        "id": "cloudflare.com-exec-3",
+        "name": "Thomas Seifert",
+        "role": "Chief Financial Officer (CFO)",
+        "seniority": "C-Suite",
+        "department": "Finance & Legal",
+        "email": "thomas.seifert@cloudflare.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://cloudflare.com",
+        "linkedinUrl": "https://www.linkedin.com/company/cloudflare"
+      },
+      {
+        "id": "cloudflare.com-exec-4",
+        "name": "Dane Knecht",
+        "role": "Chief Technology Officer (CTO)",
+        "seniority": "C-Suite",
+        "department": "Engineering & Product",
+        "email": "dane@cloudflare.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://cloudflare.com",
+        "linkedinUrl": "https://www.linkedin.com/company/cloudflare"
+      }
+    ],
+    "emails": [
+      {
+        "email": "mp@cloudflare.com",
+        "type": "personal",
+        "department": "Executive / C-Suite",
+        "firstName": "Matthew",
+        "lastName": "Prince",
+        "position": "CEO & Co-Founder",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://cloudflare.com"
+      },
+      {
+        "email": "michelle@cloudflare.com",
+        "type": "personal",
+        "department": "Executive / C-Suite",
+        "firstName": "Michelle",
+        "lastName": "Zatlyn",
+        "position": "President, COO & Co-Founder",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://cloudflare.com"
+      },
+      {
+        "email": "thomas.seifert@cloudflare.com",
+        "type": "personal",
+        "department": "Finance & Legal",
+        "firstName": "Thomas",
+        "lastName": "Seifert",
+        "position": "Chief Financial Officer (CFO)",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://cloudflare.com"
+      },
+      {
+        "email": "dane@cloudflare.com",
+        "type": "personal",
+        "department": "Engineering & Product",
+        "firstName": "Dane",
+        "lastName": "Knecht",
+        "position": "Chief Technology Officer (CTO)",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://cloudflare.com"
+      },
+      {
+        "email": "press@cloudflare.com",
+        "type": "generic",
+        "department": "Media & PR",
+        "position": "Global Press Desk",
+        "confidence": 96,
+        "mxVerified": true,
+        "source": "Public Webpage HTML",
+        "foundOnUrl": "https://cloudflare.com/contact"
+      },
+      {
+        "email": "investor@cloudflare.com",
+        "type": "generic",
+        "department": "Finance & Legal",
+        "position": "Investor Relations",
+        "confidence": 96,
+        "mxVerified": true,
+        "source": "Public Webpage HTML",
+        "foundOnUrl": "https://cloudflare.com/contact"
+      },
+      {
+        "email": "sales@cloudflare.com",
+        "type": "generic",
+        "department": "Sales & Marketing",
+        "position": "Enterprise Solutions",
+        "confidence": 96,
+        "mxVerified": true,
+        "source": "Public Webpage HTML",
+        "foundOnUrl": "https://cloudflare.com/contact"
+      }
+    ],
+    "socialLinks": {
+      "linkedin": "https://www.linkedin.com/company/cloudflare",
+      "twitter": "https://x.com/cloudflare",
+      "contactPage": "https://cloudflare.com/contact"
+    },
+    "phoneNumbers": [],
+    "pagesScanned": 5,
+    "createdAt": "2026-10-15",
+    "updatedAt": "2026-11-01",
+    "searchCount": 12,
+    "cacheStatus": "DATABASE_HIT"
+  },
+  {
+    "id": "comp-notion-so",
+    "domain": "notion.so",
+    "companyName": "Notion",
+    "websiteUrl": "https://notion.so",
+    "industry": "Productivity Software & AI Workspace",
+    "headquarters": "San Francisco, California, USA",
+    "foundedYear": 2013,
+    "companySize": "600–1,000 Employees",
+    "description": "Connected workspace for docs, wikis, project management, and AI productivity.",
+    "emailPattern": "{first}",
+    "emailPatternDescription": "{first}@notion.so",
+    "patternConfidence": 96,
+    "dns": {
+      "mxValid": true,
+      "mxRecords": [
+        "aspmx.l.google.com"
+      ],
+      "mailProvider": "Google Workspace (Gmail Enterprise)",
+      "spfConfigured": true,
+      "dmarcConfigured": true,
+      "acceptsMail": true
+    },
+    "executives": [
+      {
+        "id": "notion.so-exec-1",
+        "name": "Ivan Zhao",
+        "role": "CEO & Co-Founder",
+        "seniority": "Founder",
+        "department": "Executive / C-Suite",
+        "email": "ivan@makenotion.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://notion.so",
+        "linkedinUrl": "https://www.linkedin.com/company/notionhq"
+      },
+      {
+        "id": "notion.so-exec-2",
+        "name": "Simon Last",
+        "role": "Co-Founder & CTO",
+        "seniority": "Founder",
+        "department": "Engineering & Product",
+        "email": "simon@makenotion.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://notion.so",
+        "linkedinUrl": "https://www.linkedin.com/company/notionhq"
+      },
+      {
+        "id": "notion.so-exec-3",
+        "name": "Akshay Kothari",
+        "role": "COO & Co-Founder",
+        "seniority": "Founder",
+        "department": "Executive / C-Suite",
+        "email": "akshay@makenotion.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://notion.so",
+        "linkedinUrl": "https://www.linkedin.com/company/notionhq"
+      },
+      {
+        "id": "notion.so-exec-4",
+        "name": "Rama Katkar",
+        "role": "Chief Financial Officer (CFO)",
+        "seniority": "C-Suite",
+        "department": "Finance & Legal",
+        "email": "rama@makenotion.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://notion.so",
+        "linkedinUrl": "https://www.linkedin.com/company/notionhq"
+      }
+    ],
+    "emails": [
+      {
+        "email": "ivan@makenotion.com",
+        "type": "personal",
+        "department": "Executive / C-Suite",
+        "firstName": "Ivan",
+        "lastName": "Zhao",
+        "position": "CEO & Co-Founder",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://notion.so"
+      },
+      {
+        "email": "simon@makenotion.com",
+        "type": "personal",
+        "department": "Engineering & Product",
+        "firstName": "Simon",
+        "lastName": "Last",
+        "position": "Co-Founder & CTO",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://notion.so"
+      },
+      {
+        "email": "akshay@makenotion.com",
+        "type": "personal",
+        "department": "Executive / C-Suite",
+        "firstName": "Akshay",
+        "lastName": "Kothari",
+        "position": "COO & Co-Founder",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://notion.so"
+      },
+      {
+        "email": "rama@makenotion.com",
+        "type": "personal",
+        "department": "Finance & Legal",
+        "firstName": "Rama",
+        "lastName": "Katkar",
+        "position": "Chief Financial Officer (CFO)",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://notion.so"
+      },
+      {
+        "email": "team@makenotion.com",
+        "type": "generic",
+        "department": "Customer Support",
+        "position": "Workspace Support",
+        "confidence": 96,
+        "mxVerified": true,
+        "source": "Public Webpage HTML",
+        "foundOnUrl": "https://notion.so/contact"
+      },
+      {
+        "email": "press@makenotion.com",
+        "type": "generic",
+        "department": "Media & PR",
+        "position": "Media & PR",
+        "confidence": 96,
+        "mxVerified": true,
+        "source": "Public Webpage HTML",
+        "foundOnUrl": "https://notion.so/contact"
+      },
+      {
+        "email": "sales@makenotion.com",
+        "type": "generic",
+        "department": "Sales & Marketing",
+        "position": "Enterprise Sales",
+        "confidence": 96,
+        "mxVerified": true,
+        "source": "Public Webpage HTML",
+        "foundOnUrl": "https://notion.so/contact"
+      }
+    ],
+    "socialLinks": {
+      "linkedin": "https://www.linkedin.com/company/notionhq",
+      "twitter": "https://x.com/NotionHQ",
+      "contactPage": "https://notion.so/contact"
+    },
+    "phoneNumbers": [],
+    "pagesScanned": 5,
+    "createdAt": "2026-10-15",
+    "updatedAt": "2026-11-01",
+    "searchCount": 12,
+    "cacheStatus": "DATABASE_HIT"
+  },
+  {
+    "id": "comp-canva-com",
+    "domain": "canva.com",
+    "companyName": "Canva",
+    "websiteUrl": "https://canva.com",
+    "industry": "Visual Communication & Design Platform",
+    "headquarters": "Sydney, Australia",
+    "foundedYear": 2013,
+    "companySize": "4,500+ Employees",
+    "description": "All-in-one visual communication platform empowering the world to design.",
+    "emailPattern": "{first}",
+    "emailPatternDescription": "{first}@canva.com",
+    "patternConfidence": 96,
+    "dns": {
+      "mxValid": true,
+      "mxRecords": [
+        "aspmx.l.google.com"
+      ],
+      "mailProvider": "Google Workspace (Gmail Enterprise)",
+      "spfConfigured": true,
+      "dmarcConfigured": true,
+      "acceptsMail": true
+    },
+    "executives": [
+      {
+        "id": "canva.com-exec-1",
+        "name": "Melanie Perkins",
+        "role": "CEO & Co-Founder",
+        "seniority": "Founder",
+        "department": "Executive / C-Suite",
+        "email": "melanie@canva.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://canva.com",
+        "linkedinUrl": "https://www.linkedin.com/company/canva"
+      },
+      {
+        "id": "canva.com-exec-2",
+        "name": "Cliff Obrecht",
+        "role": "COO & Co-Founder",
+        "seniority": "Founder",
+        "department": "Executive / C-Suite",
+        "email": "cliff@canva.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://canva.com",
+        "linkedinUrl": "https://www.linkedin.com/company/canva"
+      },
+      {
+        "id": "canva.com-exec-3",
+        "name": "Cameron Adams",
+        "role": "Chief Product Officer & Co-Founder",
+        "seniority": "Founder",
+        "department": "Engineering & Product",
+        "email": "cameron@canva.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://canva.com",
+        "linkedinUrl": "https://www.linkedin.com/company/canva"
+      },
+      {
+        "id": "canva.com-exec-4",
+        "name": "Kelly Steckelberg",
+        "role": "Chief Financial Officer (CFO)",
+        "seniority": "C-Suite",
+        "department": "Finance & Legal",
+        "email": "kelly@canva.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://canva.com",
+        "linkedinUrl": "https://www.linkedin.com/company/canva"
+      }
+    ],
+    "emails": [
+      {
+        "email": "melanie@canva.com",
+        "type": "personal",
+        "department": "Executive / C-Suite",
+        "firstName": "Melanie",
+        "lastName": "Perkins",
+        "position": "CEO & Co-Founder",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://canva.com"
+      },
+      {
+        "email": "cliff@canva.com",
+        "type": "personal",
+        "department": "Executive / C-Suite",
+        "firstName": "Cliff",
+        "lastName": "Obrecht",
+        "position": "COO & Co-Founder",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://canva.com"
+      },
+      {
+        "email": "cameron@canva.com",
+        "type": "personal",
+        "department": "Engineering & Product",
+        "firstName": "Cameron",
+        "lastName": "Adams",
+        "position": "Chief Product Officer & Co-Founder",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://canva.com"
+      },
+      {
+        "email": "kelly@canva.com",
+        "type": "personal",
+        "department": "Finance & Legal",
+        "firstName": "Kelly",
+        "lastName": "Steckelberg",
+        "position": "Chief Financial Officer (CFO)",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://canva.com"
+      },
+      {
+        "email": "pr@canva.com",
+        "type": "generic",
+        "department": "Media & PR",
+        "position": "Global PR & Press",
+        "confidence": 96,
+        "mxVerified": true,
+        "source": "Public Webpage HTML",
+        "foundOnUrl": "https://canva.com/contact"
+      },
+      {
+        "email": "sales@canva.com",
+        "type": "generic",
+        "department": "Sales & Marketing",
+        "position": "Canva Enterprise",
+        "confidence": 96,
+        "mxVerified": true,
+        "source": "Public Webpage HTML",
+        "foundOnUrl": "https://canva.com/contact"
+      }
+    ],
+    "socialLinks": {
+      "linkedin": "https://www.linkedin.com/company/canva",
+      "twitter": "https://x.com/canva",
+      "contactPage": "https://canva.com/contact"
+    },
+    "phoneNumbers": [],
+    "pagesScanned": 5,
+    "createdAt": "2026-10-15",
+    "updatedAt": "2026-11-01",
+    "searchCount": 12,
+    "cacheStatus": "DATABASE_HIT"
+  },
+  {
+    "id": "comp-hubspot-com",
+    "domain": "hubspot.com",
+    "companyName": "HubSpot",
+    "websiteUrl": "https://hubspot.com",
+    "industry": "CRM, Marketing & Sales Software",
+    "headquarters": "Cambridge, Massachusetts, USA",
+    "foundedYear": 2006,
+    "companySize": "7,500+ Employees",
+    "description": "AI-powered customer platform with software and integrations for marketing, sales, and customer service.",
+    "emailPattern": "{f}{last}",
+    "emailPatternDescription": "{f}{last}@hubspot.com",
+    "patternConfidence": 96,
+    "dns": {
+      "mxValid": true,
+      "mxRecords": [
+        "aspmx.l.google.com"
+      ],
+      "mailProvider": "Google Workspace (Gmail Enterprise)",
+      "spfConfigured": true,
+      "dmarcConfigured": true,
+      "acceptsMail": true
+    },
+    "executives": [
+      {
+        "id": "hubspot.com-exec-1",
+        "name": "Yamini Rangan",
+        "role": "Chief Executive Officer (CEO)",
+        "seniority": "C-Suite",
+        "department": "Executive / C-Suite",
+        "email": "yrangan@hubspot.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://hubspot.com",
+        "linkedinUrl": "https://www.linkedin.com/company/hubspot"
+      },
+      {
+        "id": "hubspot.com-exec-2",
+        "name": "Dharmesh Shah",
+        "role": "Co-Founder & CTO",
+        "seniority": "Founder",
+        "department": "Engineering & Product",
+        "email": "dharmesh@hubspot.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://hubspot.com",
+        "linkedinUrl": "https://www.linkedin.com/company/hubspot"
+      },
+      {
+        "id": "hubspot.com-exec-3",
+        "name": "Brian Halligan",
+        "role": "Co-Founder & Executive Chair",
+        "seniority": "Founder",
+        "department": "Executive / C-Suite",
+        "email": "bhalligan@hubspot.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://hubspot.com",
+        "linkedinUrl": "https://www.linkedin.com/company/hubspot"
+      },
+      {
+        "id": "hubspot.com-exec-4",
+        "name": "Kate Bueker",
+        "role": "Chief Financial Officer (CFO)",
+        "seniority": "C-Suite",
+        "department": "Finance & Legal",
+        "email": "kbueker@hubspot.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://hubspot.com",
+        "linkedinUrl": "https://www.linkedin.com/company/hubspot"
+      }
+    ],
+    "emails": [
+      {
+        "email": "yrangan@hubspot.com",
+        "type": "personal",
+        "department": "Executive / C-Suite",
+        "firstName": "Yamini",
+        "lastName": "Rangan",
+        "position": "Chief Executive Officer (CEO)",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://hubspot.com"
+      },
+      {
+        "email": "dharmesh@hubspot.com",
+        "type": "personal",
+        "department": "Engineering & Product",
+        "firstName": "Dharmesh",
+        "lastName": "Shah",
+        "position": "Co-Founder & CTO",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://hubspot.com"
+      },
+      {
+        "email": "bhalligan@hubspot.com",
+        "type": "personal",
+        "department": "Executive / C-Suite",
+        "firstName": "Brian",
+        "lastName": "Halligan",
+        "position": "Co-Founder & Executive Chair",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://hubspot.com"
+      },
+      {
+        "email": "kbueker@hubspot.com",
+        "type": "personal",
+        "department": "Finance & Legal",
+        "firstName": "Kate",
+        "lastName": "Bueker",
+        "position": "Chief Financial Officer (CFO)",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://hubspot.com"
+      },
+      {
+        "email": "media@hubspot.com",
+        "type": "generic",
+        "department": "Media & PR",
+        "position": "Public Relations",
+        "confidence": 96,
+        "mxVerified": true,
+        "source": "Public Webpage HTML",
+        "foundOnUrl": "https://hubspot.com/contact"
+      },
+      {
+        "email": "investors@hubspot.com",
+        "type": "generic",
+        "department": "Finance & Legal",
+        "position": "Investor Relations",
+        "confidence": 96,
+        "mxVerified": true,
+        "source": "Public Webpage HTML",
+        "foundOnUrl": "https://hubspot.com/contact"
+      },
+      {
+        "email": "sales@hubspot.com",
+        "type": "generic",
+        "department": "Sales & Marketing",
+        "position": "Sales Inquiries",
+        "confidence": 96,
+        "mxVerified": true,
+        "source": "Public Webpage HTML",
+        "foundOnUrl": "https://hubspot.com/contact"
+      }
+    ],
+    "socialLinks": {
+      "linkedin": "https://www.linkedin.com/company/hubspot",
+      "twitter": "https://x.com/HubSpot",
+      "contactPage": "https://hubspot.com/contact"
+    },
+    "phoneNumbers": [],
+    "pagesScanned": 5,
+    "createdAt": "2026-10-15",
+    "updatedAt": "2026-11-01",
+    "searchCount": 12,
+    "cacheStatus": "DATABASE_HIT"
+  },
+  {
+    "id": "comp-figma-com",
+    "domain": "figma.com",
+    "companyName": "Figma",
+    "websiteUrl": "https://figma.com",
+    "industry": "Collaborative Interface Design & DevMode",
+    "headquarters": "San Francisco, California, USA",
+    "foundedYear": 2012,
+    "companySize": "1,400+ Employees",
+    "description": "Collaborative web application for interface design, prototyping, and design systems.",
+    "emailPattern": "{first}",
+    "emailPatternDescription": "{first}@figma.com",
+    "patternConfidence": 96,
+    "dns": {
+      "mxValid": true,
+      "mxRecords": [
+        "aspmx.l.google.com"
+      ],
+      "mailProvider": "Google Workspace (Gmail Enterprise)",
+      "spfConfigured": true,
+      "dmarcConfigured": true,
+      "acceptsMail": true
+    },
+    "executives": [
+      {
+        "id": "figma.com-exec-1",
+        "name": "Dylan Field",
+        "role": "CEO & Co-Founder",
+        "seniority": "Founder",
+        "department": "Executive / C-Suite",
+        "email": "dylan@figma.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://figma.com",
+        "linkedinUrl": "https://www.linkedin.com/company/figma"
+      },
+      {
+        "id": "figma.com-exec-2",
+        "name": "Praveer Melwani",
+        "role": "Chief Financial Officer (CFO)",
+        "seniority": "C-Suite",
+        "department": "Finance & Legal",
+        "email": "praveer@figma.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://figma.com",
+        "linkedinUrl": "https://www.linkedin.com/company/figma"
+      },
+      {
+        "id": "figma.com-exec-3",
+        "name": "Kris Rasmussen",
+        "role": "Chief Technology Officer (CTO)",
+        "seniority": "C-Suite",
+        "department": "Engineering & Product",
+        "email": "kris@figma.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://figma.com",
+        "linkedinUrl": "https://www.linkedin.com/company/figma"
+      }
+    ],
+    "emails": [
+      {
+        "email": "dylan@figma.com",
+        "type": "personal",
+        "department": "Executive / C-Suite",
+        "firstName": "Dylan",
+        "lastName": "Field",
+        "position": "CEO & Co-Founder",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://figma.com"
+      },
+      {
+        "email": "praveer@figma.com",
+        "type": "personal",
+        "department": "Finance & Legal",
+        "firstName": "Praveer",
+        "lastName": "Melwani",
+        "position": "Chief Financial Officer (CFO)",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://figma.com"
+      },
+      {
+        "email": "kris@figma.com",
+        "type": "personal",
+        "department": "Engineering & Product",
+        "firstName": "Kris",
+        "lastName": "Rasmussen",
+        "position": "Chief Technology Officer (CTO)",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://figma.com"
+      },
+      {
+        "email": "press@figma.com",
+        "type": "generic",
+        "department": "Media & PR",
+        "position": "Press Inquiries",
+        "confidence": 96,
+        "mxVerified": true,
+        "source": "Public Webpage HTML",
+        "foundOnUrl": "https://figma.com/contact"
+      },
+      {
+        "email": "sales@figma.com",
+        "type": "generic",
+        "department": "Sales & Marketing",
+        "position": "Enterprise Accounts",
+        "confidence": 96,
+        "mxVerified": true,
+        "source": "Public Webpage HTML",
+        "foundOnUrl": "https://figma.com/contact"
+      },
+      {
+        "email": "support@figma.com",
+        "type": "generic",
+        "department": "Customer Support",
+        "position": "User Support",
+        "confidence": 96,
+        "mxVerified": true,
+        "source": "Public Webpage HTML",
+        "foundOnUrl": "https://figma.com/contact"
+      }
+    ],
+    "socialLinks": {
+      "linkedin": "https://www.linkedin.com/company/figma",
+      "twitter": "https://x.com/figma",
+      "contactPage": "https://figma.com/contact"
+    },
+    "phoneNumbers": [],
+    "pagesScanned": 5,
+    "createdAt": "2026-10-15",
+    "updatedAt": "2026-11-01",
+    "searchCount": 12,
+    "cacheStatus": "DATABASE_HIT"
+  },
+  {
+    "id": "comp-systemsltd-com",
+    "domain": "systemsltd.com",
+    "companyName": "Systems Limited",
+    "websiteUrl": "https://systemsltd.com",
+    "industry": "Enterprise IT Services, Cloud & AI Consulting",
+    "headquarters": "Lahore, Pakistan & Dubai, UAE",
+    "foundedYear": 1977,
+    "companySize": "7,000+ Employees",
+    "description": "Premier global technology powerhouse delivering digital transformation, cloud, AI, and BPO services across APAC, MEA, Europe, and North America.",
+    "emailPattern": "{first}.{last}",
+    "emailPatternDescription": "{first}.{last}@systemsltd.com",
+    "patternConfidence": 96,
+    "dns": {
+      "mxValid": true,
+      "mxRecords": [
+        "systemsltd-com.mail.protection.outlook.com"
+      ],
+      "mailProvider": "Microsoft 365 (Exchange Online)",
+      "spfConfigured": true,
+      "dmarcConfigured": true,
+      "acceptsMail": true
+    },
+    "executives": [
+      {
+        "id": "systemsltd.com-exec-1",
+        "name": "Asif Peer",
+        "role": "Group CEO & Managing Director",
+        "seniority": "C-Suite",
+        "department": "Executive / C-Suite",
+        "email": "asif.peer@systemsltd.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://systemsltd.com",
+        "linkedinUrl": "https://www.linkedin.com/company/systems-limited"
+      },
+      {
+        "id": "systemsltd.com-exec-2",
+        "name": "Roohi Khan",
+        "role": "Chief Financial Officer (CFO)",
+        "seniority": "C-Suite",
+        "department": "Finance & Legal",
+        "email": "roohi.khan@systemsltd.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://systemsltd.com",
+        "linkedinUrl": "https://www.linkedin.com/company/systems-limited"
+      },
+      {
+        "id": "systemsltd.com-exec-3",
+        "name": "Khurram Majeed",
+        "role": "General Manager & Executive VP",
+        "seniority": "C-Suite",
+        "department": "Sales & Marketing",
+        "email": "khurram.majeed@systemsltd.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://systemsltd.com",
+        "linkedinUrl": "https://www.linkedin.com/company/systems-limited"
+      }
+    ],
+    "emails": [
+      {
+        "email": "asif.peer@systemsltd.com",
+        "type": "personal",
+        "department": "Executive / C-Suite",
+        "firstName": "Asif",
+        "lastName": "Peer",
+        "position": "Group CEO & Managing Director",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://systemsltd.com"
+      },
+      {
+        "email": "roohi.khan@systemsltd.com",
+        "type": "personal",
+        "department": "Finance & Legal",
+        "firstName": "Roohi",
+        "lastName": "Khan",
+        "position": "Chief Financial Officer (CFO)",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://systemsltd.com"
+      },
+      {
+        "email": "khurram.majeed@systemsltd.com",
+        "type": "personal",
+        "department": "Sales & Marketing",
+        "firstName": "Khurram",
+        "lastName": "Majeed",
+        "position": "General Manager & Executive VP",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://systemsltd.com"
+      },
+      {
+        "email": "info@systemsltd.com",
+        "type": "generic",
+        "department": "Customer Support",
+        "position": "Corporate Inquiries",
+        "confidence": 96,
+        "mxVerified": true,
+        "source": "Public Webpage HTML",
+        "foundOnUrl": "https://systemsltd.com/contact"
+      },
+      {
+        "email": "careers@systemsltd.com",
+        "type": "generic",
+        "department": "HR & Recruiting",
+        "position": "Global Talent Acquisition",
+        "confidence": 96,
+        "mxVerified": true,
+        "source": "Public Webpage HTML",
+        "foundOnUrl": "https://systemsltd.com/contact"
+      },
+      {
+        "email": "investors@systemsltd.com",
+        "type": "generic",
+        "department": "Finance & Legal",
+        "position": "Investor Relations & Corporate Secretariat",
+        "confidence": 96,
+        "mxVerified": true,
+        "source": "Public Webpage HTML",
+        "foundOnUrl": "https://systemsltd.com/contact"
+      }
+    ],
+    "socialLinks": {
+      "linkedin": "https://www.linkedin.com/company/systems-limited",
+      "twitter": "https://x.com/SystemsLtd",
+      "contactPage": "https://systemsltd.com/contact"
+    },
+    "phoneNumbers": [],
+    "pagesScanned": 5,
+    "createdAt": "2026-10-15",
+    "updatedAt": "2026-11-01",
+    "searchCount": 12,
+    "cacheStatus": "DATABASE_HIT"
+  },
+  {
+    "id": "comp-devsinc-com",
+    "domain": "devsinc.com",
+    "companyName": "Devsinc",
+    "websiteUrl": "https://devsinc.com",
+    "industry": "Software Development, AI & Staff Augmentation",
+    "headquarters": "Lahore, Pakistan & San Francisco, USA",
+    "foundedYear": 2009,
+    "companySize": "2,000+ Employees",
+    "description": "Global software engineering and AI solutions company serving startups and Fortune 500 enterprises.",
+    "emailPattern": "{first}.{last}",
+    "emailPatternDescription": "{first}.{last}@devsinc.com",
+    "patternConfidence": 96,
+    "dns": {
+      "mxValid": true,
+      "mxRecords": [
+        "aspmx.l.google.com"
+      ],
+      "mailProvider": "Google Workspace (Gmail Enterprise)",
+      "spfConfigured": true,
+      "dmarcConfigured": true,
+      "acceptsMail": true
+    },
+    "executives": [
+      {
+        "id": "devsinc.com-exec-1",
+        "name": "Usman Asif",
+        "role": "Founder & Chief Executive Officer (CEO)",
+        "seniority": "Founder",
+        "department": "Executive / C-Suite",
+        "email": "usman.asif@devsinc.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://devsinc.com",
+        "linkedinUrl": "https://www.linkedin.com/company/devsinc"
+      },
+      {
+        "id": "devsinc.com-exec-2",
+        "name": "Rehanrasool",
+        "role": "Chief Financial Officer (CFO)",
+        "seniority": "C-Suite",
+        "department": "Finance & Legal",
+        "email": "finance@devsinc.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://devsinc.com",
+        "linkedinUrl": "https://www.linkedin.com/company/devsinc"
+      },
+      {
+        "id": "devsinc.com-exec-3",
+        "name": "Badar Khushnood",
+        "role": "Growth & Strategic Advisor",
+        "seniority": "C-Suite",
+        "department": "Sales & Marketing",
+        "email": "sales@devsinc.com",
+        "confidence": 98,
+        "source": "Verified B2B Directory",
+        "sourceUrl": "https://devsinc.com",
+        "linkedinUrl": "https://www.linkedin.com/company/devsinc"
+      }
+    ],
+    "emails": [
+      {
+        "email": "usman.asif@devsinc.com",
+        "type": "personal",
+        "department": "Executive / C-Suite",
+        "firstName": "Usman",
+        "lastName": "Asif",
+        "position": "Founder & Chief Executive Officer (CEO)",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://devsinc.com"
+      },
+      {
+        "email": "finance@devsinc.com",
+        "type": "personal",
+        "department": "Finance & Legal",
+        "firstName": "Rehanrasool",
+        "lastName": "",
+        "position": "Chief Financial Officer (CFO)",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://devsinc.com"
+      },
+      {
+        "email": "sales@devsinc.com",
+        "type": "personal",
+        "department": "Sales & Marketing",
+        "firstName": "Badar",
+        "lastName": "Khushnood",
+        "position": "Growth & Strategic Advisor",
+        "confidence": 98,
+        "mxVerified": true,
+        "source": "Verified B2B Directory",
+        "foundOnUrl": "https://devsinc.com"
+      },
+      {
+        "email": "sales@devsinc.com",
+        "type": "generic",
+        "department": "Sales & Marketing",
+        "position": "Client Partnerships",
+        "confidence": 96,
+        "mxVerified": true,
+        "source": "Public Webpage HTML",
+        "foundOnUrl": "https://devsinc.com/contact"
+      },
+      {
+        "email": "careers@devsinc.com",
+        "type": "generic",
+        "department": "HR & Recruiting",
+        "position": "HR & Recruitment",
+        "confidence": 96,
+        "mxVerified": true,
+        "source": "Public Webpage HTML",
+        "foundOnUrl": "https://devsinc.com/contact"
+      },
+      {
+        "email": "info@devsinc.com",
+        "type": "generic",
+        "department": "Customer Support",
+        "position": "General Office",
+        "confidence": 96,
+        "mxVerified": true,
+        "source": "Public Webpage HTML",
+        "foundOnUrl": "https://devsinc.com/contact"
+      }
+    ],
+    "socialLinks": {
+      "linkedin": "https://www.linkedin.com/company/devsinc",
+      "twitter": "https://x.com/devsinc",
+      "contactPage": "https://devsinc.com/contact"
+    },
+    "phoneNumbers": [],
+    "pagesScanned": 5,
+    "createdAt": "2026-10-15",
+    "updatedAt": "2026-11-01",
+    "searchCount": 12,
+    "cacheStatus": "DATABASE_HIT"
+  }
+]

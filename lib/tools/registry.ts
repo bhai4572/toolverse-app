@@ -4111,10 +4111,69 @@ export const TOOLS: ToolDefinition[] = [
     processingMode: 'api',
     status: 'live',
     icon: 'Briefcase',
+  },
+  {
+    id: 'b2b-email-finder',
+    slug: 'b2b-email-finder',
+    canonicalName: 'B2B Email Finder & Company Executive Intelligence',
+    aliases: [
+      'email scraper',
+      'email finder',
+      'company email finder',
+      'domain email search',
+      'find ceo email',
+      'find cfo email',
+      'hunter io alternative',
+      'apollo io alternative',
+      'website email extractor',
+      'b2b lead intelligence',
+    ],
+    category: 'Business, Finance & Freelance',
+    categorySlug: 'business-finance-tools',
+    subcategory: 'B2B Sales & Contact Intelligence',
+    shortDescription:
+      'Free B2B domain email finder & executive contact lookup. Enter any website URL or company name to discover verified emails, CEO/CFO/CTO contacts, DNS MX health, and email patterns — automatically saved to our database.',
+    longDescription:
+      'Professional B2B Email Finder and Company Intelligence platform (like Hunter.io and Apollo.io). Search any website link or company name to extract public business emails, C-Suite decision makers (CEO, CFO, CTO, Founders), corporate email format patterns ({first}.{last}@domain.com), and live DNS MX/SPF/DMARC deliverability. Every searched company is automatically saved to our persistent database so repeat lookups load instantaneously.',
+    instructions: [
+      'Enter any company website URL (e.g. stripe.com, https://shopify.com) or Company Name (e.g. OpenAI, Systems Limited).',
+      'Click "Find Emails & Executives" — if the company is already in our database, its verified profile loads immediately; if new, our engine scans public pages & DNS MX records and saves it to the database.',
+      'Browse C-Suite Executives (CEO, CFO, CTO, Founders) or filter all domain emails by department (Finance, Sales, Engineering, HR, Press).',
+      'Use the Corporate Email Pattern Permutator to generate & save any employee’s email by First & Last Name, or export the full list to CRM-ready CSV.'
+    ],
+    useCases: [
+      'B2B sales outreach, partnership proposals, and enterprise account research.',
+      'Finding direct or pattern-verified emails for a company’s CEO, CFO, CTO, or HR team.',
+      'Verifying a domain’s mail server provider (Google Workspace, Microsoft 365) and MX deliverability before sending outreach.'
+    ],
+    privacyMessage:
+      '100% Free B2B Contact Intelligence Tool. Discovers publicly published business contacts, Schema.org metadata, and DNS MX records.',
+    limitations: [
+      'Indexes publicly published corporate contacts, Schema.org leadership metadata, and verified corporate domain email patterns.'
+    ],
+    keywords: [
+      'b2b email finder',
+      'email scraper tool',
+      'find company emails by domain',
+      'ceo cfo email finder',
+      'free hunter io alternative',
+      'free apollo io alternative',
+      'domain email extractor',
+      'corporate email pattern finder',
+    ],
+    relatedToolIds: ['seo-audit-analyzer', 'global-job-finder', 'invoice-generator'],
+    featured: true,
+    popular: true,
+    processingMode: 'api',
+    status: 'live',
+    icon: 'Mail',
   }
 ];
 
 export function getToolBySlug(slug: string): ToolDefinition | undefined {
+  if (slug === 'email-scraper' || slug === 'email-finder') {
+    return TOOLS.find((tool) => tool.slug === 'b2b-email-finder');
+  }
   return TOOLS.find((tool) => tool.slug === slug);
 }
 

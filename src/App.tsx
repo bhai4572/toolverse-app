@@ -218,7 +218,7 @@ export default function App() {
 
     if (parts[0] === 'study') {
       if (parts[1]) {
-        return <StudyCountryPage params={{ slug: parts[1] }} />;
+        return <StudyCountryPage params={{ slug: parts[1], uniSlug: parts[2] }} />;
       }
       return <StudyAbroadPage />;
     }

@@ -10,6 +10,7 @@ import { getQuestionBySlug, QUESTIONS } from '@/lib/products/questionsRegistry';
 import { getCollectionBySlug, COLLECTIONS } from '@/lib/products/collectionsRegistry';
 import { evaluateProductPageQuality, getRobotsDirective } from '@/lib/products/seoQualityEngine';
 import { getStudyDestination } from '@/lib/study/destinations';
+import { getUniversityBySlugs } from '@/lib/study/globalUniversityEngine';
 import { CARS_DISCLAIMER, CARS_FAQS } from '@/lib/cars/data';
 import {
   ROBOTS_INDEX,
@@ -1886,7 +1887,46 @@ function buildMetadataForPath(pathname: string): PageMetadata {
     };
   }
 
-  // Study destination guides: /study/{slug}
+  // Study destination guides: /study/{slug} and /study/{slug}/{uniSlug}
+  if (parts[0] === 'study' && parts[1] && parts.length === 3) {
+    const uni = getUniversityBySlugs(parts[1], parts[2]);
+    if (uni) {
+      const canonicalUrl = `${baseUrl}/study/${uni.countrySlug}/${uni.slug}`;
+      const title = `${uni.name} (${uni.countryName}) — Programs, Fees & DIY Admission | ToolVerse`;
+      const description = `Apply to ${uni.name} in ${uni.city}, ${uni.countryName}: offered degree programs, annual tuition (${uni.tuitionLabel}), scholarships, required documents, and 6-step DIY admission guide.`;
+      return {
+        title,
+        description,
+        keywords: [
+          uni.name.toLowerCase(),
+          `${uni.name.toLowerCase()} admission`,
+          `${uni.name.toLowerCase()} tuition fees`,
+          `study in ${uni.countryName.toLowerCase()}`,
+        ],
+        canonicalUrl,
+        ogType: 'article',
+        ogImage: DEFAULT_OG_IMAGE,
+        jsonLd: wrapInGraph([
+          buildOrganizationNode(),
+          buildWebSiteNode(),
+          buildWebPageNode({
+            canonicalUrl,
+            name: title,
+            description,
+            type: 'WebPage',
+            hasBreadcrumbs: true,
+          }),
+          buildBreadcrumbNode(canonicalUrl, [
+            { name: 'Home', url: `${baseUrl}/` },
+            { name: 'Study Abroad', url: `${baseUrl}/study` },
+            { name: uni.countryName, url: `${baseUrl}/study/${uni.countrySlug}` },
+            { name: uni.name, url: canonicalUrl },
+          ]),
+        ]),
+      };
+    }
+  }
+
   if (parts[0] === 'study' && parts[1] && parts.length === 2) {
     const dest = getStudyDestination(parts[1]);
     if (dest) {

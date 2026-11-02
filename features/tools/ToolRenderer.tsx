@@ -38,6 +38,7 @@ import { SeoTools } from './SeoTools';
 import { TrendingTools } from './TrendingTools';
 import { DocumentConversionTools } from './DocumentConversionTools';
 import { CarTools } from './CarTools';
+import { EmailFinderTool } from './EmailFinderTool';
 import { AlertTriangle, Lock } from 'lucide-react';
 
 export function ToolRenderer({ tool }: { tool: ToolDefinition }) {
@@ -250,6 +251,11 @@ export function ToolRenderer({ tool }: { tool: ToolDefinition }) {
 
     case 'global-job-finder':
       return <JobFinderTool />;
+
+    case 'b2b-email-finder':
+    case 'email-finder':
+    case 'email-scraper':
+      return <EmailFinderTool />;
 
     default:
       return <ImageCompressorTool />;
