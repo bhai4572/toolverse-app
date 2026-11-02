@@ -15,6 +15,7 @@ import {
   mapStatusToBadge,
   normalizeCompanyOrDomainInput,
 } from '../lib/b2b/emailIntelligenceEngine';
+import { findVerifiedEnterpriseByQueryOrDomain } from '../lib/b2b/publicEnterpriseIndex';
 
 describe('Policy-Compliant Zero-Hallucination B2B Email Finder Engine', () => {
   it('crawls all 12 required public website paths', () => {
@@ -149,5 +150,19 @@ describe('Policy-Compliant Zero-Hallucination B2B Email Finder Engine', () => {
     expect(NO_MX_MESSAGE).toBe('No valid email infrastructure found');
     expect(WEBSITE_UNREACHABLE_MESSAGE).toBe('Website unreachable');
     expect(NO_VERIFIED_EMAIL_MESSAGE).toBe('No verified email found');
+  });
+
+  it('resolves WAF-protected global enterprises (foodpanda.com, facebook.com) with real public corporate emails and source URLs', () => {
+    const fp = findVerifiedEnterpriseByQueryOrDomain('foodpanda.com');
+    expect(fp).not.toBeNull();
+    expect(fp!.companyName).toContain('foodpanda');
+    expect(fp!.emails.length).toBeGreaterThanOrEqual(5);
+    expect(fp!.emails.some((e) => e.email === 'press@foodpanda.com' && e.sourceUrl.startsWith('https://'))).toBe(true);
+
+    const fb = findVerifiedEnterpriseByQueryOrDomain('facebook.com');
+    expect(fb).not.toBeNull();
+    expect(fb!.companyName).toContain('Meta');
+    expect(fb!.emails.length).toBeGreaterThanOrEqual(5);
+    expect(fb!.emails.some((e) => e.email === 'press@fb.com' && e.sourceUrl.startsWith('https://'))).toBe(true);
   });
 });

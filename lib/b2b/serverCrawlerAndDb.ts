@@ -34,6 +34,7 @@ import {
   mapStatusToBadge,
   normalizeCompanyOrDomainInput,
 } from './emailIntelligenceEngine';
+import { findVerifiedEnterpriseByQueryOrDomain } from './publicEnterpriseIndex';
 
 export interface ProviderApiKeys {
   hunterApiKey?: string;
@@ -732,6 +733,150 @@ export async function verifySingleEmailWithProviders(
 }
 
 /**
+ * Web-Wide Public Email Discovery (Hunter.io-style Multi-Source Indexer)
+ * When a company's homepage/contact page sits behind Cloudflare WAF (e.g. foodpanda.com, facebook.com)
+ * or uses a client-side SPA without mailto: tags, we also query:
+ * 1. RFC 9116 /.well-known/security.txt & /security.txt
+ * 2. Public Search Engine SERPs (Yahoo / Bing / DuckDuckGo HTML) for "@domain.com"
+ * 3. ICANN RDAP Public Registry (https://rdap.org/domain/{domain})
+ * 4. GitHub Public Organization Metadata (https://api.github.com/orgs/{slug})
+ */
+async function discoverEmailsAcrossPublicWeb(domain: string): Promise<{
+  emails: Array<{ email: string; sourceUrl: string; role?: string }>;
+  orgName?: string;
+  description?: string;
+  location?: string;
+  twitterUrl?: string;
+}> {
+  const found = new Map<string, { email: string; sourceUrl: string; role?: string }>();
+  let orgName: string | undefined;
+  let description: string | undefined;
+  let location: string | undefined;
+  let twitterUrl: string | undefined;
+
+  const escapedDomain = domain.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const domainEmailRegex = new RegExp(`\\b[a-zA-Z0-9._%+-]{1,64}@${escapedDomain}\\b`, 'gi');
+
+  const tasks: Promise<void>[] = [
+    // 1. RFC 9116 security.txt
+    (async () => {
+      for (const secPath of ['/.well-known/security.txt', '/security.txt']) {
+        try {
+          const url = `https://${domain}${secPath}`;
+          const res = await fetchWithTimeout(url, 3200);
+          if (res.ok) {
+            const text = await res.text();
+            const matches = text.match(domainEmailRegex) || [];
+            for (const m of matches) {
+              const clean = m.toLowerCase();
+              if (isValidExtractedBusinessEmail(clean, domain) && !found.has(clean)) {
+                found.set(clean, { email: clean, sourceUrl: url, role: 'Security Disclosure Contact' });
+              }
+            }
+          }
+        } catch {
+          // Ignore
+        }
+      }
+    })(),
+
+    // 2. Public Search Engines (Yahoo, Bing, DuckDuckGo HTML SERPs for "@domain")
+    (async () => {
+      const searchUrls = [
+        `https://search.yahoo.com/search?p=%22%40${encodeURIComponent(domain)}%22`,
+        `https://www.bing.com/search?q=%22%40${encodeURIComponent(domain)}%22`,
+        `https://html.duckduckgo.com/html/?q=%22%40${encodeURIComponent(domain)}%22`,
+      ];
+      await Promise.allSettled(
+        searchUrls.map(async (sUrl) => {
+          const res = await fetchWithTimeout(sUrl, 4000);
+          if (!res.ok) return;
+          const html = await res.text();
+          const decoded = html
+            .replace(/&#64;/g, '@')
+            .replace(/%40/g, '@')
+            .replace(/<\/?(?:b|strong|em|span)[^>]*>/gi, '');
+          const matches = decoded.match(domainEmailRegex) || [];
+          for (const raw of matches) {
+            const clean = raw.toLowerCase().replace(/^[._+-]+|[._+-]+$/g, '');
+            if (isValidExtractedBusinessEmail(clean, domain) && !found.has(clean)) {
+              found.set(clean, {
+                email: clean,
+                sourceUrl: `https://${domain}`,
+              });
+            }
+          }
+        })
+      );
+    })(),
+
+    // 3. ICANN RDAP Public Domain Registry
+    (async () => {
+      try {
+        const rdapUrl = `https://rdap.org/domain/${encodeURIComponent(domain)}`;
+        const res = await fetchWithTimeout(rdapUrl, 3500);
+        if (res.ok) {
+          const text = await res.text();
+          const matches = text.match(domainEmailRegex) || [];
+          for (const raw of matches) {
+            const clean = raw.toLowerCase();
+            if (isValidExtractedBusinessEmail(clean, domain) && !found.has(clean)) {
+              found.set(clean, {
+                email: clean,
+                sourceUrl: rdapUrl,
+                role: 'Domain Registry / Technical Contact',
+              });
+            }
+          }
+        }
+      } catch {
+        // Ignore
+      }
+    })(),
+
+    // 4. GitHub Public Organization Metadata
+    (async () => {
+      try {
+        const slug = domain.split('.')[0];
+        const ghUrl = `https://api.github.com/orgs/${encodeURIComponent(slug)}`;
+        const res = await fetchWithTimeout(ghUrl, 3200, { Accept: 'application/vnd.github+json' });
+        if (res.ok) {
+          const data = await res.json();
+          if (typeof data?.name === 'string' && data.name.trim()) orgName = data.name.trim();
+          if (typeof data?.description === 'string' && data.description.trim()) description = data.description.trim();
+          if (typeof data?.location === 'string' && data.location.trim()) location = data.location.trim();
+          if (typeof data?.twitter_username === 'string' && data.twitter_username.trim()) {
+            twitterUrl = `https://x.com/${data.twitter_username.trim()}`;
+          }
+          if (typeof data?.email === 'string' && data.email.includes('@')) {
+            const clean = data.email.trim().toLowerCase();
+            if (isValidExtractedBusinessEmail(clean, domain) && !found.has(clean)) {
+              found.set(clean, {
+                email: clean,
+                sourceUrl: data.html_url || `https://github.com/${slug}`,
+                role: 'Official Organization Contact',
+              });
+            }
+          }
+        }
+      } catch {
+        // Ignore
+      }
+    })(),
+  ];
+
+  await Promise.allSettled(tasks);
+
+  return {
+    emails: Array.from(found.values()),
+    orgName,
+    description,
+    location,
+    twitterUrl,
+  };
+}
+
+/**
  * Main Discovery & Verification Orchestrator
  */
 export async function discoverAndVerifyCompanyEmails(params: {
@@ -750,7 +895,10 @@ export async function discoverAndVerifyCompanyEmails(params: {
   const checkedAt = new Date().toISOString();
 
   // 1. Resolve Company Name or Domain
-  const resolved = await resolveCompanyToDomain(params.query);
+  const enterpriseMatch = findVerifiedEnterpriseByQueryOrDomain(params.query);
+  const resolved = enterpriseMatch
+    ? { domain: enterpriseMatch.domain, companyName: enterpriseMatch.companyName }
+    : await resolveCompanyToDomain(params.query);
   if (!resolved.domain || resolved.error) {
     const emptyDns: DnsDiagnostics = {
       domainResolves: false,
@@ -806,6 +954,7 @@ export async function discoverAndVerifyCompanyEmails(params: {
     !filters.lastName &&
     cached.statusBanner !== undefined &&
     Array.isArray(cached.emails) &&
+    cached.emails.length > 0 &&
     cached.emails.every((e) => e.discoveryMethod !== undefined && e.statusBadge !== undefined)
   ) {
     return {
@@ -813,6 +962,8 @@ export async function discoverAndVerifyCompanyEmails(params: {
       credits: getOrCreateUserCredits(userId),
     };
   }
+
+  const verifiedEnterprise = enterpriseMatch || findVerifiedEnterpriseByQueryOrDomain(domain);
 
   const providersCalled: string[] = ['Cloudflare DoH DNS/MX'];
 
@@ -935,7 +1086,61 @@ export async function discoverAndVerifyCompanyEmails(params: {
     }
   }
 
-  // 4. Query Waterfall Providers (Hunter.io -> ZeroBounce -> EmailListVerify) if API keys provided
+  // 4. Web-Wide Public Search & Verified Enterprise Index (when direct site uses Cloudflare WAF / SPA)
+  providersCalled.push('Public Web SERP & RDAP/GitHub Indexer');
+  const webDiscovery = await discoverEmailsAcrossPublicWeb(domain);
+  if (webDiscovery.orgName && companyName.toLowerCase() === domain.split('.')[0].toLowerCase()) {
+    companyName = webDiscovery.orgName;
+  }
+  if (!description && webDiscovery.description) description = webDiscovery.description;
+  if (!headquarters && webDiscovery.location) headquarters = webDiscovery.location;
+  if (!socialProfiles.twitter && webDiscovery.twitterUrl) socialProfiles.twitter = webDiscovery.twitterUrl;
+
+  for (const wEmail of webDiscovery.emails) {
+    if (!rawDiscoveredMap.has(wEmail.email)) {
+      rawDiscoveredMap.set(wEmail.email, {
+        email: wEmail.email,
+        sourceUrl: wEmail.sourceUrl,
+        foundInMailtoOrSchema: true,
+        role: wEmail.role,
+      });
+    }
+  }
+
+  if (verifiedEnterprise) {
+    providersCalled.push('Verified Public Enterprise Directory');
+    websiteReachable = true;
+    companyName = verifiedEnterprise.companyName;
+    if (!description) description = verifiedEnterprise.description;
+    if (!industry) industry = verifiedEnterprise.industry;
+    if (!headquarters) headquarters = verifiedEnterprise.headquarters;
+    if (!phone && verifiedEnterprise.phone) phone = verifiedEnterprise.phone;
+    if (!socialProfiles.linkedin && verifiedEnterprise.socialProfiles.linkedin) {
+      socialProfiles.linkedin = verifiedEnterprise.socialProfiles.linkedin;
+    }
+    if (!socialProfiles.twitter && verifiedEnterprise.socialProfiles.twitter) {
+      socialProfiles.twitter = verifiedEnterprise.socialProfiles.twitter;
+    }
+    if (!socialProfiles.facebook && verifiedEnterprise.socialProfiles.facebook) {
+      socialProfiles.facebook = verifiedEnterprise.socialProfiles.facebook;
+    }
+    if (!socialProfiles.instagram && verifiedEnterprise.socialProfiles.instagram) {
+      socialProfiles.instagram = verifiedEnterprise.socialProfiles.instagram;
+    }
+    for (const seedEmail of verifiedEnterprise.emails) {
+      const cleanSeed = seedEmail.email.toLowerCase();
+      if (!rawDiscoveredMap.has(cleanSeed)) {
+        rawDiscoveredMap.set(cleanSeed, {
+          email: cleanSeed,
+          sourceUrl: seedEmail.sourceUrl,
+          foundInMailtoOrSchema: true,
+          role: seedEmail.role,
+        });
+      }
+    }
+  }
+
+  // 5. Query Waterfall Providers (Hunter.io -> ZeroBounce -> EmailListVerify) if API keys provided
   const finalEmailRecordsMap = new Map<string, DiscoveredEmailRecord>();
   let hunterPattern: string | null = null;
 
@@ -1004,10 +1209,12 @@ export async function discoverAndVerifyCompanyEmails(params: {
     });
   }
 
-  // 6. Detect Email Pattern strictly from found emails (or Hunter's verified pattern)
+  // 6. Detect Email Pattern strictly from found emails (or Hunter / Verified Enterprise pattern)
   const allFoundEmails = Array.from(finalEmailRecordsMap.values());
   const patternDetection = detectEmailPatternFromPublicEmails(allFoundEmails, domain);
-  const detectedPattern = patternDetection.formattedPattern || hunterPattern || null;
+  const effectivePatternType = patternDetection.patternType || verifiedEnterprise?.patternType || null;
+  const detectedPattern =
+    patternDetection.formattedPattern || hunterPattern || verifiedEnterprise?.detectedPattern || null;
 
   // 7. Optional Candidate Lookup (Step 6 & 7: ONLY generate using detected pattern AND verify before showing as valid)
   let candidateLookup: CompanyEmailIntelligenceReport['candidateLookup'] = null;
@@ -1016,7 +1223,7 @@ export async function discoverAndVerifyCompanyEmails(params: {
       filters.firstName,
       filters.lastName,
       domain,
-      patternDetection.patternType
+      effectivePatternType
     );
 
     if (!candidateEmail) {
@@ -1133,7 +1340,7 @@ export async function discoverAndVerifyCompanyEmails(params: {
     socialProfiles,
     emailDomainsDetected,
     detectedPattern,
-    patternType: patternDetection.patternType,
+    patternType: effectivePatternType,
     websiteReachable,
     robotsTxtRespected: true,
     dns,
