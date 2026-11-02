@@ -18,6 +18,7 @@ import {
   inferDepartmentFromEmail,
   inferSeniorityFromRole,
 } from '../../lib/b2b/emailIntelligenceEngine';
+import { hunterDomainSearch } from '../../lib/b2b/hunterProvider';
 
 const PUBLIC_CRAWL_PATHS = [
   '/',
@@ -640,6 +641,48 @@ export async function onRequest(context) {
       }
     }
 
+    // If Hunter.io API key is configured (via UI or Cloudflare env), fetch up to 100+ verified employee emails
+    const hunterKey = body.providerKeys?.hunterApiKey || context.env?.HUNTER_API_KEY;
+    let hunterPattern = null;
+    const extraProviders = [];
+    if (hunterKey) {
+      extraProviders.push('Hunter.io Domain Search API');
+      const hunterRes = await hunterDomainSearch({
+        apiKey: hunterKey,
+        domain,
+        company: companyName,
+        maxResults: 100,
+      });
+      if (hunterRes.organization) companyName = hunterRes.organization;
+      if (!description && hunterRes.description) description = hunterRes.description;
+      if (!industry && hunterRes.industry) industry = hunterRes.industry;
+      if (!headquarters && hunterRes.headquarters) headquarters = hunterRes.headquarters;
+      if (!phone && hunterRes.phone) phone = hunterRes.phone;
+      if (!socialProfiles.linkedin && hunterRes.linkedin) socialProfiles.linkedin = hunterRes.linkedin;
+      if (!socialProfiles.twitter && hunterRes.twitter) socialProfiles.twitter = hunterRes.twitter;
+      if (hunterRes.acceptAll) dns.isAcceptAll = true;
+      if (hunterRes.pattern) hunterPattern = hunterRes.pattern;
+      for (const hRec of hunterRes.emails) {
+        if (!discoveredMap.has(hRec.email)) {
+          discoveredMap.set(hRec.email, {
+            email: hRec.email,
+            firstName: hRec.firstName,
+            lastName: hRec.lastName,
+            fullName: hRec.fullName,
+            role: hRec.role,
+            department: hRec.department,
+            seniority: hRec.seniority,
+            linkedinUrl: hRec.linkedinUrl,
+            confidence: hRec.confidence,
+            sourceUrl: hRec.sourceUrl,
+            foundInMailtoOrSchema: true,
+            discoveryMethod: 'hunter_api',
+            verificationProvider: 'Hunter.io API',
+          });
+        }
+      }
+    }
+
     let emails = [];
     for (const [, raw] of discoveredMap.entries()) {
       if (!dns.hasMx && !matchedEnterprise) continue;
@@ -660,8 +703,8 @@ export async function onRequest(context) {
         confidence,
         lowConfidenceWarning: confidence < 70 ? LOW_CONFIDENCE_LABEL : undefined,
         sourceUrl: raw.sourceUrl,
-        discoveryMethod: 'public_crawl',
-        verificationProvider: `Public Web Source + ${dns.mailProvider || 'Verified'} MX`,
+        discoveryMethod: raw.discoveryMethod || 'public_crawl',
+        verificationProvider: raw.verificationProvider || `Public Web Source + ${dns.mailProvider || 'Verified'} MX`,
         checkedAt,
       });
     }
@@ -681,7 +724,7 @@ export async function onRequest(context) {
     }
 
     const patternInfo = detectPattern(emails, domain);
-    const detectedPattern = patternInfo.formattedPattern || matchedEnterprise?.detectedPattern || null;
+    const detectedPattern = patternInfo.formattedPattern || hunterPattern || matchedEnterprise?.detectedPattern || null;
     const patternType = patternInfo.patternType || matchedEnterprise?.patternType || null;
     const emailDomainsDetected = Array.from(new Set(emails.map((e) => e.email.split('@')[1]).filter(Boolean)));
 
@@ -732,7 +775,12 @@ export async function onRequest(context) {
       emails,
       sources: crawlSources,
       candidateLookup: null,
-      providersCalled: ['Cloudflare DoH DNS/MX', 'Public Website Crawler (12 Paths)', 'Public Web & Enterprise Employee Directory'],
+      providersCalled: [
+        'Cloudflare DoH DNS/MX',
+        'Public Website Crawler (12 Paths)',
+        'Public Web & Enterprise Employee Directory',
+        ...extraProviders,
+      ],
       creditsCharged,
       fromCache: false,
       checkedAt,

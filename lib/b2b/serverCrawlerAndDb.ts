@@ -36,6 +36,7 @@ import {
   normalizeCompanyOrDomainInput,
 } from './emailIntelligenceEngine';
 import { findVerifiedEnterpriseByQueryOrDomain } from './publicEnterpriseIndex';
+import { hunterDomainSearch } from './hunterProvider';
 
 export interface ProviderApiKeys {
   hunterApiKey?: string;
@@ -554,62 +555,23 @@ async function queryHunterDomainSearch(
   acceptAll?: boolean;
 } | null> {
   try {
-    const url = `https://api.hunter.io/v2/domain-search?domain=${encodeURIComponent(domain)}&api_key=${encodeURIComponent(apiKey)}&limit=100`;
-    const res = await fetchWithTimeout(url, 6500);
-    if (!res.ok) return null;
-    const json = await res.json();
-    const data = json?.data;
-    if (!data) return null;
-
-    const checkedAt = new Date().toISOString();
-    const acceptAll = Boolean(data.accept_all);
-    const records: DiscoveredEmailRecord[] = [];
-
-    for (const item of Array.isArray(data.emails) ? data.emails : []) {
-      const email = String(item.value || '').toLowerCase();
-      if (!email) continue;
-      const verStatusRaw = String(item.verification?.status || '').toLowerCase();
-      let status: VerificationStatus = 'unknown';
-      if (verStatusRaw === 'valid') status = 'valid';
-      else if (verStatusRaw === 'accept_all' || acceptAll) status = 'accept_all';
-      else if (verStatusRaw === 'invalid') continue;
-      else status = Number(item.confidence) >= 75 ? 'valid' : 'risky';
-
-      const confidence = Number(item.confidence) || (status === 'valid' ? 90 : 65);
-      const firstSource = Array.isArray(item.sources) && item.sources[0]?.uri ? String(item.sources[0].uri) : `https://${domain}`;
-      const role = item.position || undefined;
-
-      records.push({
-        email,
-        firstName: item.first_name || undefined,
-        lastName: item.last_name || undefined,
-        fullName: [item.first_name, item.last_name].filter(Boolean).join(' ') || undefined,
-        role,
-        department: item.department || inferDepartmentFromEmail(email, role),
-        seniority: item.seniority || inferSeniorityFromRole(role, email),
-        linkedinUrl: item.linkedin || undefined,
-        status,
-        statusBadge: mapStatusToBadge(status),
-        confidence,
-        lowConfidenceWarning: confidence < 70 ? 'Low confidence — do not use for outreach' : undefined,
-        sourceUrl: firstSource,
-        discoveryMethod: 'hunter_api',
-        verificationProvider: 'Hunter.io API',
-        checkedAt: item.verification?.date || checkedAt,
-      });
-    }
-
+    const res = await hunterDomainSearch({
+      apiKey,
+      domain,
+      maxResults: 100,
+    });
+    if (res.error && res.emails.length === 0) return null;
     return {
-      emails: records,
-      pattern: data.pattern ? `${data.pattern}@${domain}` : null,
-      organization: data.organization || undefined,
-      description: data.description || undefined,
-      industry: data.industry || undefined,
-      country: data.country || undefined,
-      headquarters: [data.city, data.state, data.country].filter(Boolean).join(', ') || undefined,
-      linkedin: data.linkedin || undefined,
-      twitter: data.twitter ? `https://x.com/${String(data.twitter).replace(/^@/, '')}` : undefined,
-      acceptAll,
+      emails: res.emails,
+      pattern: res.pattern,
+      organization: res.organization,
+      description: res.description,
+      industry: res.industry,
+      country: res.country,
+      headquarters: res.headquarters,
+      linkedin: res.linkedin,
+      twitter: res.twitter,
+      acceptAll: res.acceptAll,
     };
   } catch {
     return null;
