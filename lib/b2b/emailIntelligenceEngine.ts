@@ -37,6 +37,8 @@ export interface DiscoveredEmailRecord {
   fullName?: string;
   role?: string;
   department?: string;
+  seniority?: string;
+  linkedinUrl?: string;
   status: VerificationStatus;
   statusBadge: 'Verified' | 'Accept-all' | 'Risky' | 'Not found';
   confidence: number; // 0 - 100
@@ -335,15 +337,45 @@ export function isRoleOrGenericEmail(email: string): boolean {
 export function inferDepartmentFromEmail(email: string, role?: string): string {
   const local = (email.split('@')[0] || '').toLowerCase();
   const r = (role || '').toLowerCase();
-  if (local.includes('sales') || local.includes('partner') || r.includes('sales')) return 'Sales & Partnerships';
-  if (local.includes('press') || local.includes('media') || local.includes('marketing') || r.includes('marketing')) return 'Marketing & PR';
-  if (local.includes('career') || local.includes('job') || local.includes('hr') || r.includes('hr') || r.includes('talent')) return 'HR & Recruiting';
-  if (local.includes('legal') || local.includes('privacy') || local.includes('dpo') || local.includes('compliance')) return 'Legal & Privacy';
-  if (local.includes('support') || local.includes('help') || local.includes('success')) return 'Customer Support';
-  if (local.includes('finance') || local.includes('billing') || r.includes('cfo') || r.includes('finance')) return 'Finance';
-  if (local.includes('security') || r.includes('cto') || r.includes('engineer')) return 'Engineering & Security';
-  if (r.includes('ceo') || r.includes('founder') || r.includes('president')) return 'Executive';
+  if (r.includes('ceo') || r.includes('founder') || r.includes('president') || r.includes('managing director') || r.includes('chairman')) return 'Executive';
+  if (local.includes('sales') || local.includes('partner') || r.includes('sales') || r.includes('commercial') || r.includes('account')) return 'Sales & Partnerships';
+  if (local.includes('press') || local.includes('media') || local.includes('marketing') || r.includes('marketing') || r.includes('communications') || r.includes('brand') || r.includes('growth')) return 'Marketing & PR';
+  if (local.includes('career') || local.includes('job') || local.includes('hr') || r.includes('hr') || r.includes('talent') || r.includes('people') || r.includes('recruiter')) return 'HR & Recruiting';
+  if (local.includes('legal') || local.includes('privacy') || local.includes('dpo') || local.includes('compliance') || r.includes('legal') || r.includes('counsel') || r.includes('policy')) return 'Legal & Privacy';
+  if (local.includes('support') || local.includes('help') || local.includes('success') || r.includes('support') || r.includes('care')) return 'Customer Support';
+  if (local.includes('finance') || local.includes('billing') || local.includes('investor') || r.includes('cfo') || r.includes('finance') || r.includes('controller') || r.includes('investment')) return 'Finance';
+  if (local.includes('security') || r.includes('cto') || r.includes('engineer') || r.includes('developer') || r.includes('architect') || r.includes('security') || r.includes('ai') || r.includes('scientist') || r.includes('data')) return 'Engineering & Security';
+  if (r.includes('product') || r.includes('design') || r.includes('cpo') || r.includes('ux')) return 'Product & Design';
+  if (r.includes('coo') || r.includes('operation') || r.includes('logistics') || r.includes('supply')) return 'Operations';
   return 'General Business';
+}
+
+export function inferSeniorityFromRole(role?: string, email?: string): string {
+  const r = (role || '').toLowerCase();
+  if (
+    /\b(ceo|cfo|cto|coo|cmo|cpo|ciso|clo|cso|chief|founder|co-founder|president|chairman)\b/i.test(r)
+  ) {
+    return 'C-Suite';
+  }
+  if (/\b(vp|vice president|svp|evp|managing director)\b/i.test(r)) {
+    return 'VP';
+  }
+  if (/\b(director|general manager)\b/i.test(r)) {
+    return 'Director';
+  }
+  if (/\b(head of|head|lead|principal)\b/i.test(r)) {
+    return 'Head / Lead';
+  }
+  if (/\b(manager|controller)\b/i.test(r)) {
+    return 'Manager';
+  }
+  if (email && isRoleOrGenericEmail(email)) {
+    return 'Department Inbox';
+  }
+  if (r) {
+    return 'Specialist';
+  }
+  return 'Business Contact';
 }
 
 /**

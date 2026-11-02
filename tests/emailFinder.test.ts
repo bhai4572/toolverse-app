@@ -152,17 +152,19 @@ describe('Policy-Compliant Zero-Hallucination B2B Email Finder Engine', () => {
     expect(NO_VERIFIED_EMAIL_MESSAGE).toBe('No verified email found');
   });
 
-  it('resolves WAF-protected global enterprises (foodpanda.com, facebook.com) with real public corporate emails and source URLs', () => {
+  it('resolves WAF-protected global enterprises (foodpanda.com, facebook.com) with 30+ real worker & department emails, designations, and source URLs', () => {
     const fp = findVerifiedEnterpriseByQueryOrDomain('foodpanda.com');
     expect(fp).not.toBeNull();
     expect(fp!.companyName).toContain('foodpanda');
-    expect(fp!.emails.length).toBeGreaterThanOrEqual(5);
+    expect(fp!.emails.length).toBeGreaterThanOrEqual(35);
+    expect(fp!.emails.some((e) => Boolean(e.fullName && e.role && e.department && e.seniority))).toBe(true);
     expect(fp!.emails.some((e) => e.email === 'press@foodpanda.com' && e.sourceUrl.startsWith('https://'))).toBe(true);
 
     const fb = findVerifiedEnterpriseByQueryOrDomain('facebook.com');
     expect(fb).not.toBeNull();
     expect(fb!.companyName).toContain('Meta');
-    expect(fb!.emails.length).toBeGreaterThanOrEqual(5);
+    expect(fb!.emails.length).toBeGreaterThanOrEqual(30);
+    expect(fb!.emails.some((e) => Boolean(e.fullName && e.role && e.department && e.seniority))).toBe(true);
     expect(fb!.emails.some((e) => e.email === 'press@fb.com' && e.sourceUrl.startsWith('https://'))).toBe(true);
   });
 });

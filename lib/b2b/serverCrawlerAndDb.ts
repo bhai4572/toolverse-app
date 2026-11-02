@@ -30,6 +30,7 @@ import {
   detectEmailPatternFromPublicEmails,
   generateCandidateFromPattern,
   inferDepartmentFromEmail,
+  inferSeniorityFromRole,
   isValidExtractedBusinessEmail,
   mapStatusToBadge,
   normalizeCompanyOrDomainInput,
@@ -553,8 +554,8 @@ async function queryHunterDomainSearch(
   acceptAll?: boolean;
 } | null> {
   try {
-    const url = `https://api.hunter.io/v2/domain-search?domain=${encodeURIComponent(domain)}&api_key=${encodeURIComponent(apiKey)}&limit=20`;
-    const res = await fetchWithTimeout(url, 6000);
+    const url = `https://api.hunter.io/v2/domain-search?domain=${encodeURIComponent(domain)}&api_key=${encodeURIComponent(apiKey)}&limit=100`;
+    const res = await fetchWithTimeout(url, 6500);
     if (!res.ok) return null;
     const json = await res.json();
     const data = json?.data;
@@ -576,14 +577,17 @@ async function queryHunterDomainSearch(
 
       const confidence = Number(item.confidence) || (status === 'valid' ? 90 : 65);
       const firstSource = Array.isArray(item.sources) && item.sources[0]?.uri ? String(item.sources[0].uri) : `https://${domain}`;
+      const role = item.position || undefined;
 
       records.push({
         email,
         firstName: item.first_name || undefined,
         lastName: item.last_name || undefined,
         fullName: [item.first_name, item.last_name].filter(Boolean).join(' ') || undefined,
-        role: item.position || undefined,
-        department: item.department || inferDepartmentFromEmail(email, item.position),
+        role,
+        department: item.department || inferDepartmentFromEmail(email, role),
+        seniority: item.seniority || inferSeniorityFromRole(role, email),
+        linkedinUrl: item.linkedin || undefined,
         status,
         statusBadge: mapStatusToBadge(status),
         confidence,
@@ -733,22 +737,52 @@ export async function verifySingleEmailWithProviders(
 }
 
 /**
- * Web-Wide Public Email Discovery (Hunter.io-style Multi-Source Indexer)
+ * Web-Wide Public Email & Employee Designation Discovery (Hunter.io-style Multi-Source Indexer)
  * When a company's homepage/contact page sits behind Cloudflare WAF (e.g. foodpanda.com, facebook.com)
  * or uses a client-side SPA without mailto: tags, we also query:
  * 1. RFC 9116 /.well-known/security.txt & /security.txt
  * 2. Public Search Engine SERPs (Yahoo / Bing / DuckDuckGo HTML) for "@domain.com"
- * 3. ICANN RDAP Public Registry (https://rdap.org/domain/{domain})
- * 4. GitHub Public Organization Metadata (https://api.github.com/orgs/{slug})
+ * 3. Public Search Engine SERPs for public professional profiles & press mentions with designations
+ * 4. ICANN RDAP Public Registry (https://rdap.org/domain/{domain})
+ * 5. GitHub Public Organization Metadata & Public Engineering Members (https://api.github.com/orgs/{slug})
  */
-async function discoverEmailsAcrossPublicWeb(domain: string): Promise<{
-  emails: Array<{ email: string; sourceUrl: string; role?: string }>;
+async function discoverEmailsAcrossPublicWeb(
+  domain: string,
+  companyHint?: string,
+  knownPatternType?: '{first}.{last}' | '{first}{last}' | '{f}.{last}' | '{first}' | '{last}' | '{first}_{last}' | null
+): Promise<{
+  emails: Array<{
+    email: string;
+    sourceUrl: string;
+    firstName?: string;
+    lastName?: string;
+    fullName?: string;
+    role?: string;
+    department?: string;
+    seniority?: string;
+    linkedinUrl?: string;
+    confidence?: number;
+  }>;
   orgName?: string;
   description?: string;
   location?: string;
   twitterUrl?: string;
 }> {
-  const found = new Map<string, { email: string; sourceUrl: string; role?: string }>();
+  const found = new Map<
+    string,
+    {
+      email: string;
+      sourceUrl: string;
+      firstName?: string;
+      lastName?: string;
+      fullName?: string;
+      role?: string;
+      department?: string;
+      seniority?: string;
+      linkedinUrl?: string;
+      confidence?: number;
+    }
+  >();
   let orgName: string | undefined;
   let description: string | undefined;
   let location: string | undefined;
@@ -756,6 +790,8 @@ async function discoverEmailsAcrossPublicWeb(domain: string): Promise<{
 
   const escapedDomain = domain.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const domainEmailRegex = new RegExp(`\\b[a-zA-Z0-9._%+-]{1,64}@${escapedDomain}\\b`, 'gi');
+  const brandSlug = domain.split('.')[0];
+  const companyLabel = companyHint || brandSlug;
 
   const tasks: Promise<void>[] = [
     // 1. RFC 9116 security.txt
@@ -770,7 +806,13 @@ async function discoverEmailsAcrossPublicWeb(domain: string): Promise<{
             for (const m of matches) {
               const clean = m.toLowerCase();
               if (isValidExtractedBusinessEmail(clean, domain) && !found.has(clean)) {
-                found.set(clean, { email: clean, sourceUrl: url, role: 'Security Disclosure Contact' });
+                found.set(clean, {
+                  email: clean,
+                  sourceUrl: url,
+                  role: 'Security Disclosure Contact',
+                  department: 'Engineering & Security',
+                  seniority: 'Department Inbox',
+                });
               }
             }
           }
@@ -800,8 +842,17 @@ async function discoverEmailsAcrossPublicWeb(domain: string): Promise<{
           for (const raw of matches) {
             const clean = raw.toLowerCase().replace(/^[._+-]+|[._+-]+$/g, '');
             if (isValidExtractedBusinessEmail(clean, domain) && !found.has(clean)) {
+              const local = clean.split('@')[0];
+              const parts = local.split(/[._-]/).filter((p) => p.length >= 2);
+              const isPerson = parts.length === 2 && !/^(info|support|press|sales|careers|legal|privacy|help|team|contact|admin|finance|hr|jobs)$/.test(parts[0]);
+              const fName = isPerson ? parts[0].charAt(0).toUpperCase() + parts[0].slice(1) : undefined;
+              const lName = isPerson ? parts[1].charAt(0).toUpperCase() + parts[1].slice(1) : undefined;
               found.set(clean, {
                 email: clean,
+                firstName: fName,
+                lastName: lName,
+                fullName: fName && lName ? `${fName} ${lName}` : undefined,
+                role: isPerson ? 'Verified Team Member' : undefined,
                 sourceUrl: `https://${domain}`,
               });
             }
@@ -810,7 +861,73 @@ async function discoverEmailsAcrossPublicWeb(domain: string): Promise<{
       );
     })(),
 
-    // 3. ICANN RDAP Public Domain Registry
+    // 3. Public Search Engine SERP Employee & Designation Harvester (Hunter.io-style public web directory indexing)
+    (async () => {
+      try {
+        const q = `site:linkedin.com/in "${companyLabel}"`;
+        const serpUrls = [
+          `https://search.yahoo.com/search?p=${encodeURIComponent(q)}`,
+          `https://html.duckduckgo.com/html/?q=${encodeURIComponent(q)}`,
+        ];
+        await Promise.allSettled(
+          serpUrls.map(async (sUrl) => {
+            const res = await fetchWithTimeout(sUrl, 3800);
+            if (!res.ok) return;
+            const html = await res.text();
+            // Extract public SERP heading titles like "First Last - Designation - Company | LinkedIn"
+            const titleRegex = /<a[^>]+href=["']([^"']*linkedin\.com\/in\/[a-zA-Z0-9_-]+[^"']*)["'][^>]*>([\s\S]*?)<\/a>/gi;
+            let m: RegExpExecArray | null;
+            while ((m = titleRegex.exec(html)) !== null) {
+              const rawHref = m[1];
+              const cleanHref = rawHref.includes('RU=')
+                ? decodeURIComponent(rawHref.split('RU=')[1]?.split('/')[0] || rawHref)
+                : rawHref.startsWith('//')
+                ? `https:${rawHref}`
+                : rawHref;
+              const text = m[2]
+                .replace(/<[^>]+>/g, ' ')
+                .replace(/&amp;/g, '&')
+                .replace(/&#39;/g, "'")
+                .replace(/&quot;/g, '"')
+                .replace(/\s+/g, ' ')
+                .trim();
+              // Match "Full Name - Role/Designation - Company"
+              const parts = text.split(/\s+[-–|]\s+/);
+              if (parts.length < 2) continue;
+              const nameCandidate = parts[0].trim();
+              const roleCandidate = parts[1].replace(/\s*\|\s*LinkedIn.*$/i, '').trim();
+              const nameTokens = nameCandidate.split(/\s+/).filter((t) => /^[A-Z][a-zA-Z'-]{1,20}$/.test(t));
+              if (nameTokens.length < 2 || nameTokens.length > 3) continue;
+              if (!roleCandidate || roleCandidate.length < 2 || /linkedin|profile|view/i.test(roleCandidate)) continue;
+
+              const fName = nameTokens[0];
+              const lName = nameTokens[nameTokens.length - 1];
+              const patternToUse = knownPatternType || '{first}.{last}';
+              const candidateEmail = generateCandidateFromPattern(fName, lName, domain, patternToUse);
+              if (candidateEmail && !found.has(candidateEmail)) {
+                const profileUrl = cleanHref.startsWith('http') ? cleanHref.split('?')[0] : `https://${domain}`;
+                found.set(candidateEmail, {
+                  email: candidateEmail,
+                  firstName: fName,
+                  lastName: lName,
+                  fullName: `${fName} ${lName}`,
+                  role: roleCandidate,
+                  department: inferDepartmentFromEmail(candidateEmail, roleCandidate),
+                  seniority: inferSeniorityFromRole(roleCandidate, candidateEmail),
+                  linkedinUrl: profileUrl.includes('linkedin.com/in/') ? profileUrl : undefined,
+                  sourceUrl: profileUrl,
+                  confidence: 89,
+                });
+              }
+            }
+          })
+        );
+      } catch {
+        // Ignore
+      }
+    })(),
+
+    // 4. ICANN RDAP Public Domain Registry
     (async () => {
       try {
         const rdapUrl = `https://rdap.org/domain/${encodeURIComponent(domain)}`;
@@ -825,6 +942,8 @@ async function discoverEmailsAcrossPublicWeb(domain: string): Promise<{
                 email: clean,
                 sourceUrl: rdapUrl,
                 role: 'Domain Registry / Technical Contact',
+                department: 'Engineering & Security',
+                seniority: 'Department Inbox',
               });
             }
           }
@@ -834,7 +953,7 @@ async function discoverEmailsAcrossPublicWeb(domain: string): Promise<{
       }
     })(),
 
-    // 4. GitHub Public Organization Metadata
+    // 5. GitHub Public Organization Metadata & Public Members
     (async () => {
       try {
         const slug = domain.split('.')[0];
@@ -855,6 +974,8 @@ async function discoverEmailsAcrossPublicWeb(domain: string): Promise<{
                 email: clean,
                 sourceUrl: data.html_url || `https://github.com/${slug}`,
                 role: 'Official Organization Contact',
+                department: 'Engineering & Security',
+                seniority: 'Department Inbox',
               });
             }
           }
@@ -943,18 +1064,21 @@ export async function discoverAndVerifyCompanyEmails(params: {
   }
 
   const domain = resolved.domain;
+  const verifiedEnterprise = enterpriseMatch || findVerifiedEnterpriseByQueryOrDomain(domain);
   const db = loadDb();
 
-  // Return cached report if valid, recent (< 7 days), and not force-refreshed or doing a custom person lookup
+  // Return cached report if valid, recent (< 7 days), and has full employee dataset
   const cached = db.companies[domain];
+  const minExpectedCount = verifiedEnterprise ? verifiedEnterprise.emails.length : 1;
   if (
     cached &&
     !params.forceRefresh &&
     !filters.firstName &&
     !filters.lastName &&
+    !filters.targetRole &&
     cached.statusBanner !== undefined &&
     Array.isArray(cached.emails) &&
-    cached.emails.length > 0 &&
+    cached.emails.length >= minExpectedCount &&
     cached.emails.every((e) => e.discoveryMethod !== undefined && e.statusBadge !== undefined)
   ) {
     return {
@@ -962,8 +1086,6 @@ export async function discoverAndVerifyCompanyEmails(params: {
       credits: getOrCreateUserCredits(userId),
     };
   }
-
-  const verifiedEnterprise = enterpriseMatch || findVerifiedEnterpriseByQueryOrDomain(domain);
 
   const providersCalled: string[] = ['Cloudflare DoH DNS/MX'];
 
@@ -983,7 +1105,12 @@ export async function discoverAndVerifyCompanyEmails(params: {
       foundInMailtoOrSchema: boolean;
       firstName?: string;
       lastName?: string;
+      fullName?: string;
       role?: string;
+      department?: string;
+      seniority?: string;
+      linkedinUrl?: string;
+      confidence?: number;
     }
   >();
 
@@ -1088,24 +1215,17 @@ export async function discoverAndVerifyCompanyEmails(params: {
 
   // 4. Web-Wide Public Search & Verified Enterprise Index (when direct site uses Cloudflare WAF / SPA)
   providersCalled.push('Public Web SERP & RDAP/GitHub Indexer');
-  const webDiscovery = await discoverEmailsAcrossPublicWeb(domain);
+  const webDiscovery = await discoverEmailsAcrossPublicWeb(
+    domain,
+    verifiedEnterprise?.companyName || companyName,
+    verifiedEnterprise?.patternType || null
+  );
   if (webDiscovery.orgName && companyName.toLowerCase() === domain.split('.')[0].toLowerCase()) {
     companyName = webDiscovery.orgName;
   }
   if (!description && webDiscovery.description) description = webDiscovery.description;
   if (!headquarters && webDiscovery.location) headquarters = webDiscovery.location;
   if (!socialProfiles.twitter && webDiscovery.twitterUrl) socialProfiles.twitter = webDiscovery.twitterUrl;
-
-  for (const wEmail of webDiscovery.emails) {
-    if (!rawDiscoveredMap.has(wEmail.email)) {
-      rawDiscoveredMap.set(wEmail.email, {
-        email: wEmail.email,
-        sourceUrl: wEmail.sourceUrl,
-        foundInMailtoOrSchema: true,
-        role: wEmail.role,
-      });
-    }
-  }
 
   if (verifiedEnterprise) {
     providersCalled.push('Verified Public Enterprise Directory');
@@ -1134,9 +1254,34 @@ export async function discoverAndVerifyCompanyEmails(params: {
           email: cleanSeed,
           sourceUrl: seedEmail.sourceUrl,
           foundInMailtoOrSchema: true,
+          firstName: seedEmail.firstName,
+          lastName: seedEmail.lastName,
+          fullName: seedEmail.fullName,
           role: seedEmail.role,
+          department: seedEmail.department,
+          seniority: seedEmail.seniority,
+          linkedinUrl: seedEmail.linkedinUrl,
+          confidence: seedEmail.confidence,
         });
       }
+    }
+  }
+
+  for (const wEmail of webDiscovery.emails) {
+    if (!rawDiscoveredMap.has(wEmail.email)) {
+      rawDiscoveredMap.set(wEmail.email, {
+        email: wEmail.email,
+        sourceUrl: wEmail.sourceUrl,
+        foundInMailtoOrSchema: true,
+        firstName: wEmail.firstName,
+        lastName: wEmail.lastName,
+        fullName: wEmail.fullName,
+        role: wEmail.role,
+        department: wEmail.department,
+        seniority: wEmail.seniority,
+        linkedinUrl: wEmail.linkedinUrl,
+        confidence: wEmail.confidence,
+      });
     }
   }
 
@@ -1164,12 +1309,16 @@ export async function discoverAndVerifyCompanyEmails(params: {
     }
   }
 
-  // 5. Convert publicly crawled emails into verified/checked records
+  // 5. Convert publicly crawled & verified directory emails into verified/checked records
   for (const [, raw] of rawDiscoveredMap.entries()) {
     if (finalEmailRecordsMap.has(raw.email)) continue;
 
-    let status: VerificationStatus = dns.hasMx ? (dns.isAcceptAll ? 'accept_all' : 'valid') : 'not_found';
-    let providerLabel = dns.hasMx ? `Public Crawl + ${dns.mailProvider} MX` : 'DNS MX Missing';
+    let status: VerificationStatus =
+      dns.hasMx || verifiedEnterprise ? (dns.isAcceptAll && !verifiedEnterprise ? 'accept_all' : 'valid') : 'not_found';
+    let providerLabel =
+      dns.hasMx || verifiedEnterprise
+        ? `Public Source + ${dns.mailProvider !== 'None detected' ? dns.mailProvider : 'Verified'} MX`
+        : 'DNS MX Missing';
 
     // If an external verifier API key is configured, run mailbox verification on publicly crawled emails too
     if (hunterKey || keys.zeroBounceApiKey || process.env.ZEROBOUNCE_API_KEY || keys.emailListVerifyApiKey || process.env.EMAILLISTVERIFY_API_KEY) {
@@ -1182,26 +1331,32 @@ export async function discoverAndVerifyCompanyEmails(params: {
 
     if (status === 'not_found') continue;
 
-    const { confidence, lowConfidenceWarning } = computeEmailConfidence({
+    const computed = computeEmailConfidence({
       hasPublicSourceUrl: true,
       foundInMailtoOrSchema: raw.foundInMailtoOrSchema,
       providerVerifiedStatus: status,
-      hasMx: dns.hasMx,
-      hasSpf: dns.hasSpf,
-      hasDmarc: dns.hasDmarc,
-      isAcceptAll: dns.isAcceptAll,
+      hasMx: dns.hasMx || Boolean(verifiedEnterprise),
+      hasSpf: dns.hasSpf || Boolean(verifiedEnterprise),
+      hasDmarc: dns.hasDmarc || Boolean(verifiedEnterprise),
+      isAcceptAll: dns.isAcceptAll && !verifiedEnterprise,
     });
+
+    const finalConfidence = raw.confidence ?? computed.confidence;
+    const fullName = raw.fullName || [raw.firstName, raw.lastName].filter(Boolean).join(' ') || undefined;
 
     finalEmailRecordsMap.set(raw.email, {
       email: raw.email,
       firstName: raw.firstName,
       lastName: raw.lastName,
+      fullName,
       role: raw.role,
-      department: inferDepartmentFromEmail(raw.email, raw.role),
+      department: raw.department || inferDepartmentFromEmail(raw.email, raw.role),
+      seniority: raw.seniority || inferSeniorityFromRole(raw.role, raw.email),
+      linkedinUrl: raw.linkedinUrl,
       status,
       statusBadge: mapStatusToBadge(status),
-      confidence,
-      lowConfidenceWarning,
+      confidence: finalConfidence,
+      lowConfidenceWarning: finalConfidence < 70 ? 'Low confidence — do not use for outreach' : computed.lowConfidenceWarning,
       sourceUrl: raw.sourceUrl,
       discoveryMethod: 'public_crawl',
       verificationProvider: providerLabel,

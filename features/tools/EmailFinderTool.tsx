@@ -44,6 +44,9 @@ export const EmailFinderTool: React.FC = () => {
   const [report, setReport] = useState<CompanyEmailIntelligenceReport | null>(null);
   const [activeTab, setActiveTab] = useState<ActiveTab>('overview');
   const [copiedEmail, setCopiedEmail] = useState<string | null>(null);
+  const [workerSearchFilter, setWorkerSearchFilter] = useState('');
+  const [selectedDepartmentFilter, setSelectedDepartmentFilter] = useState<string>('ALL');
+  const [selectedSeniorityFilter, setSelectedSeniorityFilter] = useState<string>('ALL');
 
   // Admin & Credits State
   const [credits, setCredits] = useState<UserCreditSummary>({
@@ -128,8 +131,13 @@ export const EmailFinderTool: React.FC = () => {
     const emails: DiscoveredEmailRecord[] = ent
       ? ent.emails.map((item) => ({
           email: item.email,
+          firstName: item.firstName,
+          lastName: item.lastName,
+          fullName: item.fullName || [item.firstName, item.lastName].filter(Boolean).join(' ') || undefined,
           role: item.role,
           department: item.department,
+          seniority: item.seniority,
+          linkedinUrl: item.linkedinUrl,
           status: 'valid',
           statusBadge: 'Verified',
           confidence: item.confidence,
@@ -202,6 +210,9 @@ export const EmailFinderTool: React.FC = () => {
 
     setLoading(true);
     setError(null);
+    setWorkerSearchFilter('');
+    setSelectedDepartmentFilter('ALL');
+    setSelectedSeniorityFilter('ALL');
 
     const filters: CompanySearchFilters = {
       country: country.trim() || undefined,
@@ -233,9 +244,10 @@ export const EmailFinderTool: React.FC = () => {
         throw new Error(data.error || 'Failed to execute B2B email discovery.');
       }
 
+      const knownEnt = findVerifiedEnterpriseByQueryOrDomain(targetQ);
       if (data.report && Array.isArray(data.report.emails) && data.report.statusBanner) {
-        // If server returned 0 emails for a known WAF-protected enterprise, enrich from Verified Enterprise Index
-        if (data.report.emails.length === 0 && findVerifiedEnterpriseByQueryOrDomain(targetQ)) {
+        // If server returned fewer emails than our verified enterprise employee directory, enrich with full worker directory
+        if (knownEnt && data.report.emails.length < knownEnt.emails.length && !filters.targetRole) {
           const fallbackReport = await buildClientEnterpriseOrDnsReport(targetQ, filters);
           setReport(fallbackReport);
           setActiveTab('emails');
@@ -294,15 +306,51 @@ export const EmailFinderTool: React.FC = () => {
     (item) => item.status === 'valid'
   );
 
+  // Compute unique departments & seniorities for Hunter.io / Apollo.io-style interactive filtering
+  const allReportEmails: DiscoveredEmailRecord[] = report?.emails || [];
+  const departmentCounts = allReportEmails.reduce<Record<string, number>>((acc, item) => {
+    const dept = item.department || 'General Business';
+    acc[dept] = (acc[dept] || 0) + 1;
+    return acc;
+  }, {});
+
+  const seniorityCounts = allReportEmails.reduce<Record<string, number>>((acc, item) => {
+    const sen = item.seniority || 'Individual Contributor';
+    acc[sen] = (acc[sen] || 0) + 1;
+    return acc;
+  }, {});
+
+  const filteredReportEmails = allReportEmails.filter((item) => {
+    if (selectedDepartmentFilter !== 'ALL' && (item.department || 'General Business') !== selectedDepartmentFilter) {
+      return false;
+    }
+    if (selectedSeniorityFilter !== 'ALL' && (item.seniority || 'Individual Contributor') !== selectedSeniorityFilter) {
+      return false;
+    }
+    if (workerSearchFilter.trim()) {
+      const q = workerSearchFilter.trim().toLowerCase();
+      const matchName = item.fullName?.toLowerCase().includes(q);
+      const matchRole = item.role?.toLowerCase().includes(q);
+      const matchDept = item.department?.toLowerCase().includes(q);
+      const matchEmail = item.email.toLowerCase().includes(q);
+      return Boolean(matchName || matchRole || matchDept || matchEmail);
+    }
+    return true;
+  });
+
   const handleExportCsv = () => {
     if (!report || verifiedEmailsForExport.length === 0) return;
     const headers = [
       'Company Name',
       'Domain',
+      'Worker Full Name',
+      'Designation / Job Title',
+      'Department',
+      'Seniority Level',
       'Email',
       'Verification Status',
       'Confidence %',
-      'Department / Role',
+      'LinkedIn / Profile URL',
       'Source URL',
       'Verification Provider',
       'Date Checked',
@@ -310,10 +358,14 @@ export const EmailFinderTool: React.FC = () => {
     const rows = verifiedEmailsForExport.map((e) => [
       report.companyName,
       report.domain,
+      e.fullName || 'Department Inbox',
+      e.role || 'Official Contact',
+      e.department || 'General Business',
+      e.seniority || 'Department Inbox',
       e.email,
       e.statusBadge,
       `${e.confidence}%`,
-      e.role || e.department || 'General Business',
+      e.linkedinUrl || '',
       e.sourceUrl,
       e.verificationProvider,
       e.checkedAt,
@@ -327,7 +379,7 @@ export const EmailFinderTool: React.FC = () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${report.domain}-verified-emails.csv`;
+    a.download = `${report.domain}-verified-worker-emails.csv`;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -337,18 +389,22 @@ export const EmailFinderTool: React.FC = () => {
     const worksheetData = verifiedEmailsForExport.map((e) => ({
       Company: report.companyName,
       Domain: report.domain,
+      WorkerName: e.fullName || 'Department Inbox',
+      Designation: e.role || 'Official Contact',
+      Department: e.department || 'General Business',
+      Seniority: e.seniority || 'Department Inbox',
       Email: e.email,
       Status: e.statusBadge,
       Confidence: `${e.confidence}%`,
-      Department: e.role || e.department || 'General Business',
+      LinkedIn: e.linkedinUrl || '',
       SourceURL: e.sourceUrl,
       Provider: e.verificationProvider,
       CheckedAt: e.checkedAt,
     }));
     const ws = XLSX.utils.json_to_sheet(worksheetData);
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Verified Business Emails');
-    XLSX.writeFile(wb, `${report.domain}-verified-emails.xlsx`);
+    XLSX.utils.book_append_sheet(wb, ws, 'Verified Worker Emails');
+    XLSX.writeFile(wb, `${report.domain}-verified-worker-emails.xlsx`);
   };
 
   const renderStatusBadge = (badge: DiscoveredEmailRecord['statusBadge']) => {
@@ -881,46 +937,101 @@ export const EmailFinderTool: React.FC = () => {
                   </ul>
                 </div>
               ) : (
-                <div className="space-y-3">
+                <div className="space-y-4">
+                  {/* Department Breakdown Bar */}
+                  <div className="flex flex-wrap items-center gap-2 pb-2 border-b border-slate-200 dark:border-slate-800">
+                    <span className="text-xs font-bold text-slate-500 uppercase tracking-wider mr-1">
+                      Departments Breakdown:
+                    </span>
+                    {Object.entries(departmentCounts).map(([dept, count]) => (
+                      <button
+                        key={dept}
+                        type="button"
+                        onClick={() => {
+                          setSelectedDepartmentFilter(dept);
+                          setActiveTab('emails');
+                        }}
+                        className="px-2.5 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 text-xs font-semibold hover:bg-indigo-100 transition"
+                      >
+                        {dept} ({count})
+                      </button>
+                    ))}
+                  </div>
+
                   <div className="flex items-center justify-between">
                     <h4 className="text-sm font-bold text-slate-900 dark:text-white">
-                      Discovered Public &amp; Verified Business Contacts ({report.emails.length})
+                      All Discovered Employees, Executives &amp; Department Contacts ({report.emails.length})
                     </h4>
                     <button
                       type="button"
                       onClick={() => setActiveTab('emails')}
                       className="text-xs font-bold text-indigo-600 hover:underline"
                     >
-                      View Full Emails Table →
+                      Open Filterable Directory Table ({report.emails.length}) →
                     </button>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {report.emails.slice(0, 6).map((item) => (
+                    {report.emails.map((item) => (
                       <div
                         key={item.email}
-                        className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3"
+                        className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/40 dark:bg-slate-800/30 flex items-start justify-between gap-3"
                       >
-                        <div className="min-w-0">
-                          <div className="font-mono font-bold text-sm text-slate-900 dark:text-white truncate">
+                        <div className="min-w-0 space-y-1">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="font-bold text-sm text-slate-900 dark:text-white">
+                              {item.fullName || 'Official Department Inbox'}
+                            </span>
+                            {item.seniority && (
+                              <span className="px-2 py-0.5 rounded-md bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 text-[10px] font-bold">
+                                {item.seniority}
+                              </span>
+                            )}
+                          </div>
+                          <div className="text-xs font-semibold text-indigo-600 dark:text-indigo-400">
+                            {item.role || item.department || 'Business Contact'}
+                            {item.department && item.role ? ` • ${item.department}` : ''}
+                          </div>
+                          <div className="font-mono font-bold text-xs sm:text-sm text-slate-800 dark:text-slate-200 truncate">
                             {item.email}
                           </div>
-                          <div className="text-xs text-slate-500 truncate">
-                            {item.role || item.department} • Source:{' '}
-                            <a
-                              href={item.sourceUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-indigo-600 hover:underline"
-                            >
-                              {item.sourceUrl}
-                            </a>
+                          <div className="text-[11px] text-slate-500 truncate flex items-center gap-2">
+                            <span>
+                              Source:{' '}
+                              <a
+                                href={item.sourceUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-indigo-600 hover:underline"
+                              >
+                                {item.sourceUrl}
+                              </a>
+                            </span>
+                            {item.linkedinUrl && (
+                              <a
+                                href={item.linkedinUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="px-1.5 py-0.5 rounded bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 font-semibold hover:underline"
+                              >
+                                LinkedIn ↗
+                              </a>
+                            )}
                           </div>
                         </div>
-                        <div className="flex items-center gap-2 shrink-0">
-                          {renderStatusBadge(item.statusBadge)}
-                          <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
-                            {item.confidence}%
-                          </span>
+                        <div className="flex flex-col items-end gap-1.5 shrink-0">
+                          <div className="flex items-center gap-1.5">
+                            {renderStatusBadge(item.statusBadge)}
+                            <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                              {item.confidence}%
+                            </span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleCopyEmail(item.email)}
+                            className="px-2.5 py-1 rounded-md bg-slate-200/80 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-200 text-[11px] font-semibold"
+                          >
+                            {copiedEmail === item.email ? 'Copied!' : 'Copy Email'}
+                          </button>
                         </div>
                       </div>
                     ))}
@@ -930,7 +1041,7 @@ export const EmailFinderTool: React.FC = () => {
             </div>
           )}
 
-          {/* TAB 2: EMAILS */}
+          {/* TAB 2: EMAILS (Full Worker + Designation Directory with Department & Seniority Filters) */}
           {activeTab === 'emails' && (
             <div className="p-5 sm:p-6 space-y-4">
               {report.emails.length === 0 ? (
@@ -943,77 +1054,187 @@ export const EmailFinderTool: React.FC = () => {
                   </p>
                 </div>
               ) : (
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left border-collapse text-xs sm:text-sm">
-                    <thead>
-                      <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-500 uppercase text-[11px]">
-                        <th className="py-3 px-3">Email</th>
-                        <th className="py-3 px-3">Status Badge</th>
-                        <th className="py-3 px-3">Confidence %</th>
-                        <th className="py-3 px-3">Source URL</th>
-                        <th className="py-3 px-3">Verification Date</th>
-                        <th className="py-3 px-3 text-right">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
-                      {report.emails.map((item) => (
-                        <tr key={item.email} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40">
-                          <td className="py-3.5 px-3">
-                            <div className="font-mono font-bold text-slate-900 dark:text-white">
-                              {item.email}
-                            </div>
-                            <div className="text-[11px] text-slate-500">
-                              {item.fullName ? `${item.fullName} • ` : ''}
-                              {item.role || item.department || 'Business Contact'}
-                            </div>
-                          </td>
-                          <td className="py-3.5 px-3">{renderStatusBadge(item.statusBadge)}</td>
-                          <td className="py-3.5 px-3">
-                            <div className="font-bold text-slate-900 dark:text-white">
-                              {item.confidence}%
-                            </div>
-                            {item.confidence < 70 && (
-                              <div className="text-[11px] font-semibold text-amber-600 dark:text-amber-400">
-                                {LOW_CONFIDENCE_LABEL}
-                              </div>
-                            )}
-                          </td>
-                          <td className="py-3.5 px-3 max-w-xs truncate">
-                            {item.sourceUrl.startsWith('http') ? (
-                              <a
-                                href={item.sourceUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-indigo-600 dark:text-indigo-400 hover:underline font-mono text-xs"
-                              >
-                                {item.sourceUrl} ↗
-                              </a>
-                            ) : (
-                              <span className="text-xs text-slate-600 dark:text-slate-400">
-                                {item.sourceUrl}
-                              </span>
-                            )}
-                          </td>
-                          <td className="py-3.5 px-3 text-xs text-slate-500 whitespace-nowrap">
-                            {new Date(item.checkedAt).toLocaleDateString('en-US', {
-                              year: 'numeric',
-                              month: 'short',
-                              day: 'numeric',
-                            })}
-                          </td>
-                          <td className="py-3.5 px-3 text-right">
-                            <button
-                              type="button"
-                              onClick={() => handleCopyEmail(item.email)}
-                              className="px-2.5 py-1 rounded-md bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 text-xs font-semibold"
-                            >
-                              {copiedEmail === item.email ? 'Copied!' : 'Copy'}
-                            </button>
-                          </td>
-                        </tr>
+                <div className="space-y-4">
+                  {/* Interactive Hunter.io / Apollo.io Worker & Designation Filter Bar */}
+                  <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 space-y-3">
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+                      <div className="relative flex-1">
+                        <input
+                          type="text"
+                          value={workerSearchFilter}
+                          onChange={(e) => setWorkerSearchFilter(e.target.value)}
+                          placeholder="Search workers by name, designation (e.g. CEO, Director, Engineer, HR, Marketing), or email..."
+                          className="w-full px-3.5 py-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-xs sm:text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        />
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <select
+                          value={selectedSeniorityFilter}
+                          onChange={(e) => setSelectedSeniorityFilter(e.target.value)}
+                          aria-label="Filter by seniority level"
+                          className="px-3 py-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-xs font-semibold text-slate-800 dark:text-slate-200"
+                        >
+                          <option value="ALL">All Seniority Levels ({report.emails.length})</option>
+                          {Object.entries(seniorityCounts).map(([sen, c]) => (
+                            <option key={sen} value={sen}>
+                              {sen} ({c})
+                            </option>
+                          ))}
+                        </select>
+                        {(selectedDepartmentFilter !== 'ALL' || selectedSeniorityFilter !== 'ALL' || workerSearchFilter) && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSelectedDepartmentFilter('ALL');
+                              setSelectedSeniorityFilter('ALL');
+                              setWorkerSearchFilter('');
+                            }}
+                            className="px-3 py-2 rounded-lg bg-slate-200 dark:bg-slate-700 text-xs font-bold text-slate-700 dark:text-slate-200 hover:opacity-90"
+                          >
+                            Reset Filters
+                          </button>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Department Filter Pills */}
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => setSelectedDepartmentFilter('ALL')}
+                        className={`px-3 py-1 rounded-full text-xs font-bold transition ${
+                          selectedDepartmentFilter === 'ALL'
+                            ? 'bg-indigo-600 text-white'
+                            : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700 hover:bg-slate-100'
+                        }`}
+                      >
+                        All Departments ({report.emails.length})
+                      </button>
+                      {Object.entries(departmentCounts).map(([dept, count]) => (
+                        <button
+                          key={dept}
+                          type="button"
+                          onClick={() => setSelectedDepartmentFilter(dept)}
+                          className={`px-3 py-1 rounded-full text-xs font-bold transition ${
+                            selectedDepartmentFilter === dept
+                              ? 'bg-indigo-600 text-white'
+                              : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700 hover:bg-slate-100'
+                          }`}
+                        >
+                          {dept} ({count})
+                        </button>
                       ))}
-                    </tbody>
-                  </table>
+                    </div>
+
+                    <div className="text-xs text-slate-500 flex items-center justify-between">
+                      <span>
+                        Showing <strong>{filteredReportEmails.length}</strong> of <strong>{report.emails.length}</strong> verified employee &amp; department emails
+                      </span>
+                      <span className="font-mono text-indigo-600 dark:text-indigo-400">
+                        Pattern: {report.detectedPattern || 'Multiple / Custom'}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left border-collapse text-xs sm:text-sm">
+                      <thead>
+                        <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-500 uppercase text-[11px]">
+                          <th className="py-3 px-3">Worker Name &amp; Designation</th>
+                          <th className="py-3 px-3">Department &amp; Seniority</th>
+                          <th className="py-3 px-3">Work Email</th>
+                          <th className="py-3 px-3">Status Badge</th>
+                          <th className="py-3 px-3">Confidence %</th>
+                          <th className="py-3 px-3">Source / Profile</th>
+                          <th className="py-3 px-3">Verified Date</th>
+                          <th className="py-3 px-3 text-right">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
+                        {filteredReportEmails.map((item) => (
+                          <tr key={item.email} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40">
+                            <td className="py-3.5 px-3">
+                              <div className="font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                                <span>{item.fullName || 'Official Department Inbox'}</span>
+                                {item.linkedinUrl && (
+                                  <a
+                                    href={item.linkedinUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    title="View Public LinkedIn Profile"
+                                    className="px-1.5 py-0.5 rounded bg-blue-50 dark:bg-blue-950/70 text-blue-700 dark:text-blue-300 text-[10px] font-bold hover:underline"
+                                  >
+                                    in ↗
+                                  </a>
+                                )}
+                              </div>
+                              <div className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 mt-0.5">
+                                {item.role || 'Official Contact'}
+                              </div>
+                            </td>
+                            <td className="py-3.5 px-3">
+                              <div className="text-xs font-semibold text-slate-800 dark:text-slate-200">
+                                {item.department || 'General Business'}
+                              </div>
+                              {item.seniority && (
+                                <span className="inline-block mt-0.5 px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-[10px] font-bold">
+                                  {item.seniority}
+                                </span>
+                              )}
+                            </td>
+                            <td className="py-3.5 px-3">
+                              <div className="font-mono font-bold text-slate-900 dark:text-white">
+                                {item.email}
+                              </div>
+                            </td>
+                            <td className="py-3.5 px-3">{renderStatusBadge(item.statusBadge)}</td>
+                            <td className="py-3.5 px-3">
+                              <div className="font-bold text-slate-900 dark:text-white">
+                                {item.confidence}%
+                              </div>
+                              {item.confidence < 70 && (
+                                <div className="text-[11px] font-semibold text-amber-600 dark:text-amber-400">
+                                  {LOW_CONFIDENCE_LABEL}
+                                </div>
+                              )}
+                            </td>
+                            <td className="py-3.5 px-3 max-w-xs truncate">
+                              {item.sourceUrl.startsWith('http') ? (
+                                <a
+                                  href={item.sourceUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-indigo-600 dark:text-indigo-400 hover:underline font-mono text-xs"
+                                >
+                                  {item.sourceUrl} ↗
+                                </a>
+                              ) : (
+                                <span className="text-xs text-slate-600 dark:text-slate-400">
+                                  {item.sourceUrl}
+                                </span>
+                              )}
+                            </td>
+                            <td className="py-3.5 px-3 text-xs text-slate-500 whitespace-nowrap">
+                              {new Date(item.checkedAt).toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'short',
+                                day: 'numeric',
+                              })}
+                            </td>
+                            <td className="py-3.5 px-3 text-right">
+                              <button
+                                type="button"
+                                onClick={() => handleCopyEmail(item.email)}
+                                className="px-2.5 py-1 rounded-md bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 text-xs font-semibold"
+                              >
+                                {copiedEmail === item.email ? 'Copied!' : 'Copy'}
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               )}
             </div>
