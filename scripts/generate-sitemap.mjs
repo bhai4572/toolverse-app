@@ -165,6 +165,7 @@ for (const s of studySlugs) {
 // —— Pages: hubs, legal, jobs, ecosystem (no workspace/admin) ——
 const pagesUrls = [];
 pagesUrls.push(makeUrl('/', 'daily', '1.0'));
+pagesUrls.push(makeUrl('/cv-maker', 'daily', '0.95'));
 pagesUrls.push(makeUrl('/sitemap', 'weekly', '0.55'));
 
 for (const j of [

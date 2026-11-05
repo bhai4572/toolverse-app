@@ -753,6 +753,24 @@ function buildBodyMain(pathname, meta, deps) {
       </article>
     `;
     }
+  } else if (parts[0] === 'cv-maker') {
+    contentHtml = `
+      <article class="space-y-6">
+        <nav aria-label="Breadcrumb" class="text-xs text-slate-500 space-x-2">
+          <a href="/" class="hover:underline">Home</a> &gt;
+          <a href="/tools" class="hover:underline">Tools</a> &gt;
+          <span class="text-slate-800 font-semibold">Free CV Maker &amp; Resume Builder</span>
+        </nav>
+        <header class="space-y-2">
+          <h1 class="text-3xl font-extrabold text-slate-900">Free CV Maker Online – Create Professional Resumes</h1>
+          <p class="text-base text-slate-600">${esc(meta.description)}</p>
+        </header>
+        <section class="space-y-3">
+          <h2 class="text-2xl font-bold text-slate-900">25 Professional CV &amp; Resume Templates — 100% Free</h2>
+          <p class="text-sm text-slate-700">Create job-winning resumes and multi-page Curriculum Vitae documents with 25 distinct professional templates, 20 specialized career sections, unlimited custom sections and fields, and free PDF, PNG, and high-DPI JPG downloads with zero watermarks.</p>
+        </section>
+      </article>
+    `;
   } else if (parts[0] === 'admin') {
     contentHtml = `
       <article class="space-y-6 max-w-xl mx-auto py-8">
@@ -1002,6 +1020,7 @@ async function main() {
     routes.push('/seo');
     routes.push('/seo-tools');
     routes.push('/tools');
+    routes.push('/cv-maker');
     routes.push('/pricing');
     routes.push('/study');
     const studyRouteSlugs = new Set(['usa', 'uk', 'canada', 'australia', 'new-zealand', 'europe']);

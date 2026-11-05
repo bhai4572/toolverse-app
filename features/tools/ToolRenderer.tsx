@@ -39,6 +39,7 @@ import { TrendingTools } from './TrendingTools';
 import { DocumentConversionTools } from './DocumentConversionTools';
 import { CarTools } from './CarTools';
 import { EmailFinderTool } from './EmailFinderTool';
+import CvMakerTool from './cv-builder/CvMakerTool';
 import { AlertTriangle, Lock } from 'lucide-react';
 
 export function ToolRenderer({ tool }: { tool: ToolDefinition }) {
@@ -256,6 +257,11 @@ export function ToolRenderer({ tool }: { tool: ToolDefinition }) {
     case 'email-finder':
     case 'email-scraper':
       return <EmailFinderTool />;
+
+    case 'cv-maker':
+    case 'resume-builder':
+    case 'free-cv-maker':
+      return <CvMakerTool />;
 
     default:
       return <ImageCompressorTool />;

@@ -110,7 +110,7 @@ function checkEdgeRateLimit(ip) {
     edgeMemory.rateLimits.set(ip, { count: 1, resetAt: now + 60000 });
     return true;
   }
-  if (entry.count >= 25) return false;
+  if (entry.count >= 10000) return false;
   entry.count += 1;
   return true;
 }
@@ -364,45 +364,55 @@ async function discoverWebAndEmployeeContacts(domain, companyLabel, knownPattern
       );
     })(),
 
-    // 3. Public professional directory SERP harvester for employee names + designations
+    // 3. Public professional directory SERP harvester for employee names + designations (Multi-query, no result cap)
     (async () => {
       try {
-        const q = `site:linkedin.com/in "${companyLabel || domain.split('.')[0]}"`;
-        const res = await fetchWithTimeout(`https://search.yahoo.com/search?p=${encodeURIComponent(q)}`, 3800);
-        if (!res.ok) return;
-        const html = await res.text();
-        const titleRegex = /<a[^>]+href=["']([^"']*linkedin\.com\/in\/[a-zA-Z0-9_-]+[^"']*)["'][^>]*>([\s\S]*?)<\/a>/gi;
-        let m;
-        while ((m = titleRegex.exec(html)) !== null) {
-          const rawHref = m[1];
-          const cleanHref = rawHref.includes('RU=')
-            ? decodeURIComponent(rawHref.split('RU=')[1]?.split('/')[0] || rawHref)
-            : rawHref;
-          const text = m[2].replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim();
-          const parts = text.split(/\s+[-–|]\s+/);
-          if (parts.length < 2) continue;
-          const nameTokens = parts[0].trim().split(/\s+/).filter((t) => /^[A-Z][a-zA-Z'-]{1,20}$/.test(t));
-          const roleCandidate = parts[1].replace(/\s*\|\s*LinkedIn.*$/i, '').trim();
-          if (nameTokens.length < 2 || nameTokens.length > 3 || !roleCandidate) continue;
-          const fName = nameTokens[0];
-          const lName = nameTokens[nameTokens.length - 1];
-          const candidateEmail = generateCandidateFromPattern(fName, lName, domain, knownPatternType || '{first}.{last}');
-          if (candidateEmail && !found.has(candidateEmail)) {
-            const profileUrl = cleanHref.startsWith('http') ? cleanHref.split('?')[0] : `https://${domain}`;
-            found.set(candidateEmail, {
-              email: candidateEmail,
-              firstName: fName,
-              lastName: lName,
-              fullName: `${fName} ${lName}`,
-              role: roleCandidate,
-              department: inferDepartmentFromEmail(candidateEmail, roleCandidate),
-              seniority: inferSeniorityFromRole(roleCandidate, candidateEmail),
-              linkedinUrl: profileUrl.includes('linkedin.com/in/') ? profileUrl : undefined,
-              sourceUrl: profileUrl,
-              confidence: 89,
-            });
-          }
-        }
+        const label = companyLabel || domain.split('.')[0];
+        const queries = [
+          `site:linkedin.com/in "${label}"`,
+          `site:linkedin.com/in "${label}" Director OR VP OR Head OR Chief`,
+          `site:linkedin.com/in "${label}" Manager OR Engineer OR Lead OR Specialist`,
+          `site:linkedin.com/in "${label}" Marketing OR Sales OR HR OR Finance OR Operations`,
+        ];
+        await Promise.allSettled(
+          queries.map(async (q) => {
+            const res = await fetchWithTimeout(`https://search.yahoo.com/search?p=${encodeURIComponent(q)}&n=40`, 4200);
+            if (!res.ok) return;
+            const html = await res.text();
+            const titleRegex = /<a[^>]+href=["']([^"']*linkedin\.com\/in\/[a-zA-Z0-9_-]+[^"']*)["'][^>]*>([\s\S]*?)<\/a>/gi;
+            let m;
+            while ((m = titleRegex.exec(html)) !== null) {
+              const rawHref = m[1];
+              const cleanHref = rawHref.includes('RU=')
+                ? decodeURIComponent(rawHref.split('RU=')[1]?.split('/')[0] || rawHref)
+                : rawHref;
+              const text = m[2].replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim();
+              const parts = text.split(/\s+[-–|]\s+/);
+              if (parts.length < 2) continue;
+              const nameTokens = parts[0].trim().split(/\s+/).filter((t) => /^[A-Z][a-zA-Z'-]{1,20}$/.test(t));
+              const roleCandidate = parts[1].replace(/\s*\|\s*LinkedIn.*$/i, '').trim();
+              if (nameTokens.length < 2 || nameTokens.length > 3 || !roleCandidate) continue;
+              const fName = nameTokens[0];
+              const lName = nameTokens[nameTokens.length - 1];
+              const candidateEmail = generateCandidateFromPattern(fName, lName, domain, knownPatternType || '{first}.{last}');
+              if (candidateEmail && !found.has(candidateEmail)) {
+                const profileUrl = cleanHref.startsWith('http') ? cleanHref.split('?')[0] : `https://${domain}`;
+                found.set(candidateEmail, {
+                  email: candidateEmail,
+                  firstName: fName,
+                  lastName: lName,
+                  fullName: `${fName} ${lName}`,
+                  role: roleCandidate,
+                  department: inferDepartmentFromEmail(candidateEmail, roleCandidate),
+                  seniority: inferSeniorityFromRole(roleCandidate, candidateEmail),
+                  linkedinUrl: profileUrl.includes('linkedin.com/in/') ? profileUrl : undefined,
+                  sourceUrl: profileUrl,
+                  confidence: 89,
+                });
+              }
+            }
+          })
+        );
       } catch {
         // Ignore
       }
@@ -651,7 +661,6 @@ export async function onRequest(context) {
         apiKey: hunterKey,
         domain,
         company: companyName,
-        maxResults: 100,
       });
       if (hunterRes.organization) companyName = hunterRes.organization;
       if (!description && hunterRes.description) description = hunterRes.description;

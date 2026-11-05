@@ -1,10 +1,9 @@
 /**
  * Hunter.io Domain Search provider (runtime-agnostic: Node + Cloudflare Workers).
  *
- * This is where Hunter.io-sized employee lists come from: Hunter's own index of
- * publicly found emails, with names, positions, departments, seniority, LinkedIn
- * and source URLs. We never generate or guess emails here — every record is
- * returned by Hunter along with its own verification status.
+ * Fetches ALL available emails Hunter has for a domain with UNLIMITED pagination
+ * (no 10-email or 100-email cap), including full names, positions/designations,
+ * departments, seniority, LinkedIn URLs, and source URLs.
  *
  * Docs: https://hunter.io/api-documentation/v2#domain-search
  */
@@ -76,7 +75,7 @@ function mapHunterEmail(item: any, domain: string, acceptAll: boolean, checkedAt
 }
 
 /**
- * Fetches ALL emails Hunter has for a domain (paginated), up to `maxResults`.
+ * Fetches ALL emails Hunter has for a domain across all pages with NO artificial result cap.
  * Pass `company` instead of `domain` when only a company name is known.
  */
 export async function hunterDomainSearch(params: {
@@ -86,7 +85,8 @@ export async function hunterDomainSearch(params: {
   maxResults?: number;
   timeoutMs?: number;
 }): Promise<HunterDomainResult> {
-  const maxResults = Math.max(10, params.maxResults ?? 100);
+  // No cap unless caller explicitly passes a finite maxResults
+  const maxResults = params.maxResults && Number.isFinite(params.maxResults) ? params.maxResults : Number.POSITIVE_INFINITY;
   const checkedAt = new Date().toISOString();
   const result: HunterDomainResult = {
     emails: [],
@@ -100,9 +100,10 @@ export async function hunterDomainSearch(params: {
   let offset = 0;
 
   while (result.emails.length < maxResults) {
+    const remaining = Number.isFinite(maxResults) ? maxResults - result.emails.length : pageSize;
     const qs = new URLSearchParams({
       api_key: params.apiKey,
-      limit: String(Math.min(pageSize, maxResults - result.emails.length)),
+      limit: String(Math.min(pageSize, remaining)),
       offset: String(offset),
     });
     if (params.domain) qs.set('domain', params.domain);
@@ -125,7 +126,7 @@ export async function hunterDomainSearch(params: {
 
     if (!res.ok) {
       const errId = String(json?.errors?.[0]?.id || '');
-      // Free / starter plans cap `limit` at 10 — retry with a smaller page instead of failing.
+      // Free / starter plans cap per-page `limit` at 10 — retry with pageSize = 10 and continue paginating all available pages.
       if (errId === 'pagination_error' && pageSize > 10) {
         pageSize = 10;
         continue;
@@ -159,9 +160,8 @@ export async function hunterDomainSearch(params: {
     }
 
     offset += page.length;
-    if (page.length === 0 || offset >= result.totalAvailable) break;
+    if (page.length === 0 || (result.totalAvailable > 0 && offset >= result.totalAvailable)) break;
   }
 
   return result;
 }
-

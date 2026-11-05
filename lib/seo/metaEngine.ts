@@ -403,6 +403,69 @@ function buildMetadataForPath(pathname: string): PageMetadata {
     };
   }
 
+  // --- Free CV Maker & Resume Builder (/cv-maker, /resume-builder, /free-cv-maker) ---
+  if (
+    parts[0] === 'cv-maker' ||
+    parts[0] === 'resume-builder' ||
+    parts[0] === 'free-cv-maker'
+  ) {
+    const canonicalUrl = `${baseUrl}/cv-maker`;
+    const title = 'Free CV Maker Online – Create Professional Resumes | Toolverse';
+    const description =
+      'Build a professional, ATS-friendly CV or resume online for free. Choose from 25 templates, add custom sections, and download PDF, PNG, or JPG with no watermark.';
+
+    const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
+      { name: 'Home', url: `${baseUrl}/` },
+      { name: 'Free CV Maker & Resume Builder', url: canonicalUrl },
+    ]);
+
+    const pageNode = buildWebPageNode({
+      canonicalUrl,
+      name: title,
+      description,
+      type: 'WebPage',
+      hasBreadcrumbs: true,
+    });
+
+    const appNode = {
+      '@type': 'SoftwareApplication',
+      '@id': `${canonicalUrl}#app`,
+      name: 'Toolverse Free CV Maker & Resume Builder',
+      applicationCategory: 'BusinessApplication',
+      operatingSystem: 'Web, Windows, macOS, Linux, iOS, Android',
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'USD',
+      },
+      featureList: [
+        '25 Genuinely Distinct Professional CV & Resume Templates',
+        '20 Specialized Career Sections & Unlimited Custom Sections',
+        'Live Multi-Page A4 and US Letter Preview',
+        'Free PDF, PNG, and High-DPI JPG Export Without Watermark',
+      ],
+    };
+
+    const graph = [buildOrganizationNode(), buildWebSiteNode(), pageNode, breadcrumbs, appNode];
+
+    return {
+      title,
+      description,
+      keywords: [
+        'free cv maker',
+        'online resume builder',
+        'ats resume builder',
+        'free pdf resume download',
+        'curriculum vitae maker',
+        'toolverse cv builder',
+      ],
+      canonicalUrl,
+      ogType: 'website',
+      ogImage: DEFAULT_OG_IMAGE,
+      jsonLd: wrapInGraph(graph),
+    };
+  }
+
   // --- Business Directory Hub & Business Profiles (/business, /business/[slug], /b/[businessId], /business-qr) ---
   if (parts[0] === 'b' && parts[1]) {
     const canonicalUrl = `${baseUrl}/b/${parts[1]}`;

@@ -7,6 +7,7 @@ import { searchTools, ToolDefinition } from '@/lib/tools/registry';
 
 const PRIMARY_NAV = [
   { href: '/tools', label: 'Tools' },
+  { href: '/cv-maker', label: 'CV Maker' },
   { href: '/products', label: 'Products' },
   { href: '/leaderboard', label: 'Leaderboard' },
   { href: '/workspace', label: 'SEO Dashboard' },

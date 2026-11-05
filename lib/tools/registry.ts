@@ -4161,18 +4161,71 @@ export const TOOLS: ToolDefinition[] = [
       'domain email extractor',
       'corporate email pattern finder',
     ],
-    relatedToolIds: ['seo-audit-analyzer', 'global-job-finder', 'invoice-generator'],
+    relatedToolIds: ['seo-audit-analyzer', 'global-job-finder', 'invoice-generator', 'cv-maker'],
     featured: true,
     popular: true,
     processingMode: 'api',
     status: 'live',
     icon: 'Mail',
+  },
+  {
+    id: 'cv-maker',
+    slug: 'cv-maker',
+    canonicalName: 'Free CV Maker & Resume Builder',
+    aliases: [
+      'resume builder',
+      'free cv builder',
+      'online resume maker',
+      'ats resume builder',
+      'curriculum vitae maker',
+      'europass cv maker',
+    ],
+    category: 'PDF & Document Tools',
+    categorySlug: 'pdf-document-tools',
+    shortDescription:
+      'Create professional, ATS-friendly CVs and resumes online with 25 distinct templates, unlimited custom sections, and free PDF/PNG/JPG downloads.',
+    longDescription:
+      'Build job-winning CVs and resumes with 25 genuinely distinct professional templates, 20 specialized career sections, unlimited custom sections and fields, live multi-page preview, and instant free exports to PDF, PNG, and high-DPI JPG with zero watermarks.',
+    instructions: [
+      'Enter your personal details, professional summary, work experience, education, and categorized skills.',
+      'Add any of the 20 specialized CV sections or create unlimited custom sections with custom typed fields.',
+      'Choose from 25 distinct professional templates and customize colors, fonts, margins, and date formats.',
+      'Download your finished CV for free as a multi-page PDF, PNG, or JPG (150/300/450 DPI) or print directly.',
+    ],
+    useCases: [
+      'Create an ATS-optimized corporate or software engineering resume for global job applications.',
+      'Build a comprehensive multi-page Academic, Medical, or Researcher Curriculum Vitae.',
+      'Switch between US, UK/European (Europass), Canadian, and Australian CV layouts without retyping data.',
+    ],
+    privacyMessage:
+      '100% Free & Private. All CV data is processed locally in your browser with optional local draft auto-save and JSON backup.',
+    limitations: [
+      'Large profile photos over 4 MB should be compressed before uploading for optimal PDF file size.',
+    ],
+    keywords: [
+      'free cv maker',
+      'online resume builder',
+      'ats resume maker',
+      'curriculum vitae builder',
+      'free pdf resume download no watermark',
+      'custom section cv builder',
+      '25 cv templates',
+    ],
+    relatedToolIds: ['b2b-email-finder', 'pdf-merge', 'pdf-compress', 'word-counter'],
+    featured: true,
+    popular: true,
+    processingMode: 'client',
+    status: 'live',
+    icon: 'FileText',
   }
 ];
 
 export function getToolBySlug(slug: string): ToolDefinition | undefined {
   if (slug === 'email-scraper' || slug === 'email-finder') {
     return TOOLS.find((tool) => tool.slug === 'b2b-email-finder');
+  }
+  if (slug === 'resume-builder' || slug === 'free-cv-maker') {
+    return TOOLS.find((tool) => tool.slug === 'cv-maker');
   }
   return TOOLS.find((tool) => tool.slug === slug);
 }

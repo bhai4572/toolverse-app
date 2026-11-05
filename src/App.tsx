@@ -70,6 +70,7 @@ import AuHubPage from '../app/au/page';
 import PassportPhotosHubPage from '../app/passport-photos/page';
 import NewsHubPage from '../app/news/page';
 import HtmlSitemapPage from '../app/sitemap/page';
+import CvMakerPage from '../app/cv-maker/page';
 import NotFoundPage from '../app/not-found';
 
 import { Header } from '../components/Header';
@@ -259,6 +260,14 @@ export default function App() {
       return <HtmlSitemapPage />;
     }
 
+    if (
+      parts[0] === 'cv-maker' ||
+      parts[0] === 'resume-builder' ||
+      parts[0] === 'free-cv-maker'
+    ) {
+      return <CvMakerPage />;
+    }
+
     if (parts[0] === 'dashboard') {
       return <DashboardPage />;
     }
@@ -356,6 +365,13 @@ export default function App() {
   const skipAds = shouldSkipAds(isNotFound ? '/404' : pathNormalized);
   const seoPath = isNotFound ? '/404' : currentPath;
 
+  const isCvStudio =
+    pathNormalized === '/cv-maker' ||
+    pathNormalized === '/resume-builder' ||
+    pathNormalized === '/free-cv-maker' ||
+    pathNormalized === '/tools/cv-maker' ||
+    pathNormalized === '/tools/resume-builder';
+
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100">
       <SEOHead pathname={seoPath} />
@@ -366,6 +382,8 @@ export default function App() {
         className={
           isWorkspace
             ? 'flex-1 w-full'
+            : isCvStudio
+            ? 'flex-1 max-w-[1600px] w-full mx-auto px-3 sm:px-6 py-6'
             : 'flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6'
         }
       >

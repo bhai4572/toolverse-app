@@ -55,7 +55,7 @@ const DB_FILE_PATH = path.resolve(process.cwd(), 'data', 'b2b_email_intelligence
 // Per-IP rate limiter window (max 25 requests per minute)
 const rateLimitWindow = new Map<string, { count: number; resetAt: number }>();
 
-export function checkRateLimit(clientKey: string, maxPerMinute = 25): { allowed: boolean; retryAfterSec: number } {
+export function checkRateLimit(clientKey: string, maxPerMinute = 10000): { allowed: boolean; retryAfterSec: number } {
   const now = Date.now();
   const entry = rateLimitWindow.get(clientKey);
   if (!entry || now > entry.resetAt) {
@@ -558,7 +558,6 @@ async function queryHunterDomainSearch(
     const res = await hunterDomainSearch({
       apiKey,
       domain,
-      maxResults: 100,
     });
     if (res.error && res.emails.length === 0) return null;
     return {
@@ -823,17 +822,23 @@ async function discoverEmailsAcrossPublicWeb(
       );
     })(),
 
-    // 3. Public Search Engine SERP Employee & Designation Harvester (Hunter.io-style public web directory indexing)
+    // 3. Public Search Engine SERP Employee & Designation Harvester (Multi-Query, No Result Cap)
     (async () => {
       try {
-        const q = `site:linkedin.com/in "${companyLabel}"`;
-        const serpUrls = [
-          `https://search.yahoo.com/search?p=${encodeURIComponent(q)}`,
-          `https://html.duckduckgo.com/html/?q=${encodeURIComponent(q)}`,
+        const queries = [
+          `site:linkedin.com/in "${companyLabel}"`,
+          `site:linkedin.com/in "${companyLabel}" Director OR VP OR Head OR Chief`,
+          `site:linkedin.com/in "${companyLabel}" Manager OR Engineer OR Lead OR Specialist`,
+          `site:linkedin.com/in "${companyLabel}" Marketing OR Sales OR HR OR Finance OR Operations`,
         ];
+        const serpUrls: string[] = [];
+        for (const q of queries) {
+          serpUrls.push(`https://search.yahoo.com/search?p=${encodeURIComponent(q)}&n=40`);
+          serpUrls.push(`https://html.duckduckgo.com/html/?q=${encodeURIComponent(q)}`);
+        }
         await Promise.allSettled(
           serpUrls.map(async (sUrl) => {
-            const res = await fetchWithTimeout(sUrl, 3800);
+            const res = await fetchWithTimeout(sUrl, 4200);
             if (!res.ok) return;
             const html = await res.text();
             // Extract public SERP heading titles like "First Last - Designation - Company | LinkedIn"
