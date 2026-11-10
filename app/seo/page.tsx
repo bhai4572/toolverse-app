@@ -12,19 +12,19 @@ export default function SeoSuitePage() {
       <section className="relative overflow-hidden rounded-3xl border border-slate-800 bg-slate-950 text-white px-6 py-10 sm:px-12 sm:py-14">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(37,99,235,0.35),_transparent_55%)] pointer-events-none" />
         <div className="relative max-w-2xl space-y-4">
-          <p className="text-xs font-bold uppercase tracking-widest text-brand-300">SEO Suite &amp; Keyword Workspace</p>
+          <p className="text-xs font-bold uppercase tracking-widest text-brand-300">Technical SEO Suite &amp; Audit Tools</p>
           <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">
-            Tool<span className="text-brand-400">Verse</span> Free SEO Keyword Dashboards
+            Tool<span className="text-brand-400">Verse</span> Technical SEO &amp; On-Page Audit Suite
           </h1>
           <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-            ToolVerse SEO Suite provides free SEO keyword dashboards, Semrush-style audit workspaces, keyword magic explorers, and ranking reports. Track keyword difficulty, search volume trends, on-page health, and SERP visibility with 100% free tools.
+            Audit on-page SEO health, inspect SERP snippets, validate robots.txt and JSON-LD schema, and analyze internal link graphs. Looking for interactive keyword tracking and Search Console intelligence? Open our dedicated <Link href="/workspace" className="text-brand-300 underline font-semibold">Free SEO Dashboard Workspace</Link>.
           </p>
           <div className="flex flex-wrap gap-3 pt-2">
             <Link href="/workspace" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-bold">
-              Open SEO Keyword Dashboards <ArrowRight className="w-4 h-4" />
+              Open Free SEO Dashboard <ArrowRight className="w-4 h-4" />
             </Link>
-            <Link href="/tools/keyword-research-tool" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-slate-600 hover:border-brand-400 text-sm font-bold text-slate-100">
-              Keyword Magic Explorer
+            <Link href="/tools/on-page-seo-checker" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-slate-600 hover:border-brand-400 text-sm font-bold text-slate-100">
+              On-Page SEO Checker
             </Link>
           </div>
         </div>

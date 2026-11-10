@@ -199,8 +199,20 @@ export default function AdminControlPanelPage() {
             </div>
           </div>
           <div className="flex flex-wrap gap-2 text-[11px]">
-            <a href="/seo" className="px-3 py-1.5 rounded-lg bg-brand-600 text-white font-bold">SEO Suite</a>
-            <a href="/pricing" className="px-3 py-1.5 rounded-lg bg-slate-800 text-white font-bold">Pricing</a>
+            <a href="/workspace/search-console" className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold">
+              GSC Search Intelligence &amp; URL Map
+            </a>
+            <a href="/workspace" className="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold">
+              Free SEO Dashboard
+            </a>
+            <a href="/cv-maker" className="px-3 py-1.5 rounded-lg bg-brand-600 text-white font-bold">
+              CV Maker Studio
+            </a>
+            <a href="/tools/b2b-email-finder" className="px-3 py-1.5 rounded-lg bg-slate-800 text-white font-bold">
+              B2B Email Finder
+            </a>
+            <a href="/seo" className="px-3 py-1.5 rounded-lg border font-bold">SEO Suite</a>
+            <a href="/pricing" className="px-3 py-1.5 rounded-lg border font-bold">Pricing</a>
             <a href="/tools" className="px-3 py-1.5 rounded-lg border font-bold">Tools hub</a>
           </div>
         </section>

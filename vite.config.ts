@@ -116,5 +116,28 @@ export default defineConfig({
     emptyOutDir: true,
     sourcemap: false,
     chunkSizeWarningLimit: 1500,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (!id.includes('node_modules')) return undefined;
+          if (id.includes('jspdf') || id.includes('pdf-lib') || id.includes('html2canvas')) {
+            return 'vendor-pdf';
+          }
+          if (id.includes('xlsx') || id.includes('papaparse') || id.includes('jszip')) {
+            return 'vendor-office';
+          }
+          if (id.includes('heic2any') || id.includes('browser-image-compression') || id.includes('qrcode') || id.includes('jsbarcode')) {
+            return 'vendor-media';
+          }
+          if (id.includes('lucide-react')) {
+            return 'vendor-icons';
+          }
+          if (id.includes('react-dom') || id.includes('react/')) {
+            return 'vendor-react';
+          }
+          return undefined;
+        },
+      },
+    },
   },
 });

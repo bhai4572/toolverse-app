@@ -23,39 +23,39 @@ export interface ToolPageContent {
 export const TOOL_PAGE_CONTENT: Record<string, ToolPageContent> = {
   'keyword-research-tool': {
     answerFirst:
-      'ToolVerse Keyword Magic is a free SEO keyword dashboard and search intent explorer. Research keyword difficulty, search volume trends, CPC, and topic clusters with zero sign-up or subscription walls.',
-    seoTitle: 'Free SEO Keyword Dashboards & Search Intent Explorer | ToolVerse',
+      'ToolVerse Keyword Research Tool is a free search volume, keyword difficulty (KD%), CPC, and search intent explorer. Discover long-tail topic clusters and export CSV keyword lists with zero sign-up.',
+    seoTitle: 'Free Keyword Research Tool — Volume, KD% & Intent | ToolVerse',
     seoDescription:
-      'Explore free SEO keyword dashboards, Semrush-style keyword magic, search intent classification, and volume trends. Export CSV keyword roadmaps with zero paywalls.',
+      'Research keyword difficulty (KD%), monthly search volume, CPC, and search intent for free. Generate long-tail keyword ideas and export CSVs in your browser.',
     sections: [
       {
-        heading: 'What are SEO keyword dashboards and why use them?',
-        body: 'SEO keyword dashboards allow website owners, content marketers, and developers to uncover high-volume, low-competition search queries. Rather than guessing what terms your audience searches, keyword dashboards aggregate search volume, keyword difficulty (KD%), and search intent (informational, commercial, transactional, navigational).',
+        heading: 'How to find low-competition keywords with high search intent',
+        body: 'Effective keyword research goes beyond raw search volume. Enter any seed topic to uncover long-tail variations, question queries (People Also Ask), and commercial terms filtered by Keyword Difficulty (KD%) and search intent (Informational, Commercial, Transactional, Navigational).',
       },
       {
-        heading: 'How to use ToolVerse SEO keyword dashboards for content planning',
-        body: 'Enter any seed keyword to explore long-tail variations, question formats (People Also Ask), and commercial opportunities. Filter by search intent to align your blog posts or landing pages with Google ranking criteria, and export complete CSV keyword matrices in one click.',
+        heading: 'Using search intent to prevent keyword cannibalization',
+        body: 'Map one primary keyword cluster to one canonical URL. Use informational queries for guides and how-to articles, and transactional or tool-intent queries for interactive utility pages.',
       },
       {
-        heading: 'Connect with the full ToolVerse SEO Workspace',
-        body: 'Pair this keyword explorer with the free ToolVerse SEO Workspace (/workspace) to track positions, inspect on-page technical health, run site audits, and review search engine performance without paying expensive monthly SaaS fees.',
+        heading: 'Connect with the Free SEO Dashboard Workspace',
+        body: 'Pair this Keyword Research Tool with the full ToolVerse Free SEO Dashboard (/workspace) to import Google Search Console CSVs, spot high-impression zero-click CTR opportunities, and run full technical site audits.',
       },
     ],
     faqs: [
       {
-        question: 'Are ToolVerse SEO keyword dashboards free?',
+        question: 'Is this Keyword Research Tool completely free?',
         answer:
-          'Yes. Our SEO keyword dashboards and search intent explorer are 100% free with instant browser compilation and CSV export.',
+          'Yes. You can research unlimited seed keywords, filter by intent, and export CSV spreadsheets in your browser without creating an account.',
       },
       {
-        question: 'What metrics do the keyword dashboards track?',
+        question: 'What metrics are included in each keyword report?',
         answer:
-          'The dashboard provides estimated monthly search volume, keyword difficulty percentage (KD%), estimated Cost Per Click (CPC), and search intent classification.',
+          'Each row includes estimated monthly search volume, Keyword Difficulty percentage (KD%), estimated Cost Per Click (CPC), and primary search intent classification.',
       },
       {
-        question: 'Can I export keywords from the dashboard to Excel or Google Sheets?',
+        question: 'Can I export keyword lists to Excel or Google Sheets?',
         answer:
-          'Yes, click the "Export CSV" button to download a spreadsheet containing all keyword variations, difficulty scores, and intent tags.',
+          'Yes, click the "Export CSV" button to download your filtered keyword matrix for Excel, Google Sheets, or your content calendar.',
       },
     ],
   },
@@ -3943,6 +3943,237 @@ export const TOOL_PAGE_CONTENT: Record<string, ToolPageContent> = {
       {
         question: 'Are prices uploaded?',
         answer: 'No. Math stays in your browser.',
+      },
+    ],
+  },
+
+  'cv-maker': {
+    answerFirst:
+      'ToolVerse Free CV Maker & Resume Builder lets you create ATS-friendly resumes and multi-page CVs online with 25 distinct professional templates, 20 career sections, unlimited custom fields, and instant PDF, PNG, and high-DPI JPG downloads — 100% free with no watermark.',
+    seoTitle: 'Free CV Maker & ATS Resume Builder (25 Templates) | ToolVerse',
+    seoDescription:
+      'Create a professional, ATS-friendly CV or resume online for free. Choose from 25 templates, reorder sections, and download PDF, PNG, or JPG with no watermark.',
+    sections: [
+      {
+        heading: '25 genuinely distinct templates for US, UK, EU, Canada & Australia',
+        body: 'Switch seamlessly between 1-page US/Canadian resumes (Modern, ATS-Friendly, Executive, Tech/Developer) and multi-page UK/EU/Academic Curriculum Vitae layouts (Academic/Medical, Europass-inspired, Two-Column, Minimalist) without losing a single field of data.',
+      },
+      {
+        heading: 'Built-in ATS readiness score and unlimited custom sections',
+        body: 'Real-time validation checks your contact details, summary length, measurable impact bullets, and skill keywords. Need specialized sections for Publications, Patents, Clinical Rotations, or Security Clearances? Add unlimited custom sections and reorder them anytime.',
+      },
+      {
+        heading: '100% free PDF, PNG, and JPG export — zero watermarks or sign-up traps',
+        body: 'Unlike subscription resume builders that lock your download behind a paywall at the final step, ToolVerse exports crisp A4 and US Letter PDFs, PNGs, and JPGs directly in your browser for free.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is the ToolVerse CV Maker really 100% free with no watermark?',
+        answer:
+          'Yes. Every template, custom section, and export format (PDF, PNG, JPG, JSON backup, and print) is completely free with zero watermarks and no mandatory account registration.',
+      },
+      {
+        question: 'Can I switch between A4 (UK/EU/AU) and US Letter paper sizes?',
+        answer:
+          'Yes. Open the Design & Layout panel to toggle between A4 and US Letter, adjust margins, customize accent colors, and switch font pairings in real time.',
+      },
+      {
+        question: 'Are the resume templates ATS-friendly?',
+        answer:
+          'Yes. All 25 templates use clean heading hierarchies and standard typography, and our dedicated ATS-Friendly category uses strict single-column structures for maximum parser compatibility.',
+      },
+      {
+        question: 'Where is my CV data stored?',
+        answer:
+          'Your CV is saved automatically in your browser localStorage and can be exported as a portable JSON file so your personal career history stays private on your own device.',
+      },
+    ],
+  },
+
+  'grammar-checker': {
+    answerFirst:
+      'Free Online Grammar Checker scans essays, emails, and articles in your browser for common grammar slips, subject-verb agreement issues, punctuation errors, and wordy phrasing — without uploading your draft.',
+    seoTitle: 'Free Grammar Checker Online — Privacy-First | ToolVerse',
+    seoDescription:
+      'Check grammar, punctuation, and common usage mistakes in your browser. Private client-side grammar checker for students, professionals, and writers.',
+    sections: [
+      {
+        heading: 'Catch everyday grammar and agreement slips before you hit send',
+        body: 'Spot confused homophones (their/there/they’re, your/you’re, affect/effect), doubled words, missing apostrophes, and awkward passive constructions in seconds.',
+      },
+      {
+        heading: 'Private in-browser checking for confidential drafts',
+        body: 'Because rule checks execute locally in your browser session, sensitive client emails, legal memos, and unpublished academic papers stay on your device.',
+      },
+      {
+        heading: 'Pair with readability and proofreading checklists',
+        body: 'After fixing grammar errors, run the Readability Score calculator and Sentence Length Checker to make sure your prose flows smoothly for human readers.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Does this grammar checker upload my text to a server?',
+        answer: 'No. Text analysis runs locally in your web browser so your writing stays private.',
+      },
+      {
+        question: 'Is it free for long essays and reports?',
+        answer: 'Yes. There are no word-count paywalls or mandatory sign-ups.',
+      },
+    ],
+  },
+
+  'proofreader': {
+    answerFirst:
+      'Online Proofreader & Draft Polisher highlights punctuation spacing errors, repeated words, inconsistent capitalization, and clunky transitions so you can submit clean copy.',
+    seoTitle: 'Free Online Proofreader & Text Polisher | ToolVerse',
+    seoDescription:
+      'Proofread essays, blog posts, and business emails in your browser. Catch repeated words, punctuation spacing, and style issues privately.',
+    sections: [
+      {
+        heading: 'Why a final proofreading pass matters',
+        body: 'Even strong writers miss doubled words ("the the"), extra spaces before periods, and inconsistent heading capitalization when reading their own drafts.',
+      },
+      {
+        heading: 'Designed for academic, business, and web publishing',
+        body: 'Use the proofreader alongside the Email Proofreading Checklist and Assignment Submission Checklist before sending important documents.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'How is proofreading different from grammar checking?',
+        answer:
+          'Proofreading focuses on surface polish—typos, spacing, repeated words, and formatting consistency—before final publication.',
+      },
+      {
+        question: 'Is my document stored anywhere?',
+        answer: 'No. Everything runs locally in your browser memory.',
+      },
+    ],
+  },
+
+  'paraphrasing-tool': {
+    answerFirst:
+      'Free Paraphrasing Tool helps you reword sentences for clarity, conciseness, or formal/casual tone in your browser while preserving your original meaning.',
+    seoTitle: 'Free Paraphrasing Tool — Reword Sentences Online | ToolVerse',
+    seoDescription:
+      'Rephrase sentences for clarity, brevity, or formal tone in your browser. Free privacy-first paraphrasing assistant with no word limits.',
+    sections: [
+      {
+        heading: 'Rewording for clarity vs. academic integrity',
+        body: 'Use paraphrasing to simplify dense technical explanations or eliminate repetitive phrasing in your own draft. Always cite original authors when summarizing external research.',
+      },
+      {
+        heading: 'Choose the right tone for your audience',
+        body: 'Switch between concise business phrasing, formal academic style, and plain English depending on whether you are writing a report, essay, or blog guide.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Do I still need to cite sources when I paraphrase?',
+        answer:
+          'Yes. Paraphrasing an external source in your own words still requires a proper APA, MLA, or Chicago citation.',
+      },
+      {
+        question: 'Is the paraphrasing tool free?',
+        answer: 'Yes, it runs locally in your browser with no account required.',
+      },
+    ],
+  },
+
+  'natural-writing-rewriter': {
+    answerFirst:
+      'Natural Writing Rewriter transforms stiff, overly formal, or repetitive drafts into clear, conversational prose with balanced sentence cadence.',
+    seoTitle: 'Natural Writing Rewriter — Clear & Conversational Copy | ToolVerse',
+    seoDescription:
+      'Rewrite stiff or repetitive sentences into natural, easy-to-read English. Free browser-based writing assistant.',
+    sections: [
+      {
+        heading: 'Replace corporate jargon with plain English',
+        body: 'Swap bloated phrases like "utilize," "in order to," and "at this point in time" for direct verbs and concise transitions that respect the reader’s time.',
+      },
+      {
+        heading: 'Improve engagement and reading flow',
+        body: 'Mixing short punchy statements with longer explanatory sentences creates a natural human cadence that keeps readers on the page.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Who is the Natural Writing Rewriter built for?',
+        answer: 'Bloggers, product managers, students, and non-native English writers who want their drafts to sound clear and natural.',
+      },
+    ],
+  },
+
+  'sentence-improver': {
+    answerFirst:
+      'Sentence Improver analyzes long, tangled sentences and suggests tighter, active-voice alternatives that communicate your point faster.',
+    seoTitle: 'Free Sentence Improver — Tighten & Clarify Sentences | ToolVerse',
+    seoDescription:
+      'Shorten wordy sentences, fix passive voice, and sharpen weak verbs in your browser. Free online sentence improver.',
+    sections: [
+      {
+        heading: 'Cut filler words that weaken your argument',
+        body: 'Qualifiers like "very," "really," "basically," and "it is important to note that" dilute your message. Removing them immediately sharpens your writing.',
+      },
+      {
+        heading: 'Break up 40-word marathon sentences',
+        body: 'When a single sentence tries to carry three separate ideas, readers lose the thread. Splitting long sentences improves comprehension on both desktop and mobile screens.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Does Sentence Improver work in the browser?',
+        answer: 'Yes, all suggestions and readability checks run locally in your browser.',
+      },
+    ],
+  },
+
+  'writing-pattern-indicator': {
+    answerFirst:
+      'Writing Pattern & Cadence Indicator measures sentence-length variation (burstiness), vocabulary diversity, and overused transition phrases in your text.',
+    seoTitle: 'Writing Pattern & Sentence Cadence Analyzer | ToolVerse',
+    seoDescription:
+      'Analyze sentence length variation, vocabulary diversity, and repetitive transition patterns in your writing. Free browser tool.',
+    sections: [
+      {
+        heading: 'What is sentence burstiness and why does it matter?',
+        body: 'Human writing naturally varies between short, medium, and complex sentences. Uniform sentence lengths make articles feel monotonous and mechanical.',
+      },
+      {
+        heading: 'Spot overused transition words',
+        body: 'Highlight repetitive openers like "Moreover," "Furthermore," and "Additionally" so you can replace them with more specific logical connectors.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is this a guaranteed AI detector?',
+        answer:
+          'No tool can scientifically prove how a text was written. This indicator measures stylistic cadence and repetition so you can improve readability.',
+      },
+    ],
+  },
+
+  'web-similarity-checker': {
+    answerFirst:
+      'Text Overlap & Self-Similarity Checker compares two drafts or checks your text for accidental duplicate paragraphs, repeated n-grams, and unquoted overlap.',
+    seoTitle: 'Text Similarity & Duplicate Phrase Checker | ToolVerse',
+    seoDescription:
+      'Compare drafts for text similarity, repeated phrases, and duplicate paragraphs in your browser. Free privacy-first originality helper.',
+    sections: [
+      {
+        heading: 'Compare source notes against your own draft',
+        body: 'Paste your research notes Alongside your essay or article draft to verify that you have genuinely rewritten ideas in your own words and added quotation marks where needed.',
+      },
+      {
+        heading: 'Prevent internal content duplication across web pages',
+        body: 'SEO teams and editors can compare two landing pages or product descriptions to ensure each URL offers unique value before publishing.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Does this tool save or publish my unpublished draft?',
+        answer: 'Never. All n-gram and similarity comparisons run locally in your browser memory.',
       },
     ],
   },

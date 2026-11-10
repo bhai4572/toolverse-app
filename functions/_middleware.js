@@ -22,7 +22,29 @@ export async function onRequest(context) {
 
   // 2. Strict 301 Permanent Redirect for duplicate aliases
   // Fixes GSC "Page with redirect" & "Alternate page with proper canonical tag"
-  if (rawPath === '/seo-dashboard' || rawPath.startsWith('/seo-dashboard/')) {
+  const REDIRECT_MAP = {
+    '/seo-dashboard': '/workspace',
+    '/site-map': '/sitemap',
+    '/seo-suite': '/seo',
+    '/resume-builder': '/cv-maker',
+    '/free-cv-maker': '/cv-maker',
+    '/tools/resume-builder': '/tools/cv-maker',
+    '/tools/free-cv-maker': '/tools/cv-maker',
+    '/tools/email-finder': '/tools/b2b-email-finder',
+    '/tools/email-scraper': '/tools/b2b-email-finder',
+  };
+
+  if (REDIRECT_MAP[rawPath]) {
+    return new Response(null, {
+      status: 301,
+      headers: {
+        'Location': `${REDIRECT_MAP[rawPath]}${url.search}`,
+        'Cache-Control': 'public, max-age=86400, must-revalidate',
+      },
+    });
+  }
+
+  if (rawPath.startsWith('/seo-dashboard/')) {
     const target = rawPath.replace(/^\/seo-dashboard/, '/workspace');
     return new Response(null, {
       status: 301,
@@ -33,8 +55,19 @@ export async function onRequest(context) {
     });
   }
 
-  if (rawPath === '/site-map' || rawPath.startsWith('/site-map/')) {
+  if (rawPath.startsWith('/site-map/')) {
     const target = rawPath.replace(/^\/site-map/, '/sitemap');
+    return new Response(null, {
+      status: 301,
+      headers: {
+        'Location': `${target}${url.search}`,
+        'Cache-Control': 'public, max-age=86400, must-revalidate',
+      },
+    });
+  }
+
+  if (rawPath.startsWith('/seo-suite/')) {
+    const target = rawPath.replace(/^\/seo-suite/, '/seo');
     return new Response(null, {
       status: 301,
       headers: {
@@ -126,10 +159,37 @@ export async function onRequest(context) {
   });
 }
 
-/** First path segments that belong to the React SPA (see src/App.tsx). */
+/**
+ * Determine whether a path that missed static ASSETS should fall back to SPA /index.html (HTTP 200)
+ * or return HTTP 404 (/404.html).
+ *
+ * Strictly prerendered registries (tools, category, blog, legal, jobs, how-to, alternatives,
+ * compare, collections, questions) have every valid child slug written to dist/<route>/index.html
+ * at build time. If ASSETS missed on a child slug under those prefixes, the slug does not exist
+ * and MUST return HTTP 404 to prevent Google Search Console Soft-404 errors.
+ */
 function isKnownSpaPath(pathname) {
-  const root = pathname.replace(/\/$/, '').split('/').filter(Boolean)[0];
-  if (!root) return true;
+  const parts = pathname.replace(/\/$/, '').split('/').filter(Boolean);
+  if (parts.length === 0) return true;
+  const root = parts[0];
+
+  const strictlyPrerenderedChildPrefixes = new Set([
+    'tools',
+    'category',
+    'blog',
+    'legal',
+    'jobs',
+    'how-to',
+    'alternatives',
+    'compare',
+    'collections',
+    'questions',
+  ]);
+
+  if (strictlyPrerenderedChildPrefixes.has(root) && parts.length >= 2) {
+    return false;
+  }
+
   const known = new Set([
     'tools',
     'category',
@@ -156,10 +216,9 @@ function isKnownSpaPath(pathname) {
     'publishers',
     'become-a-publisher',
     'seo',
-    'seo-suite',
     'seo-tools',
-    'seo-dashboard',
     'workspace',
+    'cv-maker',
     'pricing',
     'study',
     'immigration',
@@ -171,7 +230,6 @@ function isKnownSpaPath(pathname) {
     'passport-photos',
     'news',
     'sitemap',
-    'site-map',
     'dashboard',
     'admin',
     'scratch',

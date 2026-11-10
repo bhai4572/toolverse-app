@@ -320,7 +320,7 @@ function buildMetadataForPath(pathname: string): PageMetadata {
       canonicalUrl: `${baseUrl}/404`,
       ogType: 'website',
       ogImage: DEFAULT_OG_IMAGE,
-      robots: ROBOTS_INDEX,
+      robots: ROBOTS_NOINDEX,
       jsonLd: wrapInGraph([
         buildOrganizationNode(),
         buildWebSiteNode(),
@@ -334,25 +334,25 @@ function buildMetadataForPath(pathname: string): PageMetadata {
     };
   }
 
-  // 1. Homepage (/)
+  // 1. Homepage (/) — Owns Brand + Privacy-First Multi-Tool Hub Intent
   if (parts.length === 0) {
     const canonicalUrl = `${baseUrl}/`;
-    const title = 'ToolVerse (Tooliverse / Tools Verse) — 100+ Free Online Tools | Privacy-First';
+    const title = 'ToolVerse — 130+ Free Privacy-First Online Tools (No Upload)';
     const description =
-      'Free privacy-first online tools for PDFs, image compression, SEO keyword dashboards, calculators, writing, developers, and global job search. Most tools run locally in your browser — zero file uploads.';
+      'Free privacy-first online tools for PDFs, image compression, CV building, B2B email lookup, calculators, and SEO. Run locally in your browser — zero uploads.';
 
     const pageFaqs = [
       {
         question: 'Are ToolVerse tools free?',
-        answer: 'Yes. Core utilities are free to use in your browser without creating an account for basic workflows.',
+        answer: 'Yes. All 130+ core utilities—including PDF tools, image compressors, the 25-template CV Maker, and calculators—are 100% free in your browser without mandatory registration.',
       },
       {
         question: 'Do you upload my PDFs or photos?',
-        answer: 'Client-side tools process files in your browser memory. Your documents are not uploaded to ToolVerse servers for those tools.',
+        answer: 'Client-side tools process files directly in your browser memory. Your documents and photos are never uploaded to external servers for those tools.',
       },
       {
         question: 'Where should I start?',
-        answer: 'Use site search, pick a category, or open popular tools like target-size image compression, PDF merge, or the guides blog.',
+        answer: 'Use site search, browse by category, or jump straight to popular tools like Merge PDF, Image to Exact KB, Free CV Maker, or the SEO Dashboard Workspace.',
       },
     ];
 
@@ -386,15 +386,14 @@ function buildMetadataForPath(pathname: string): PageMetadata {
         'toolverse',
         'tooliverse',
         'tools verse',
-        'toolverse.com',
+        'toolverse.baby',
         'toolsoverflow',
-        'seo keyword dashboards',
         'free online tools',
-        'pdf tools',
-        'image compressor',
-        'word counter',
-        'zakat calculator',
-        'privacy first tools',
+        'privacy first browser tools',
+        'pdf tools no upload',
+        'image compressor to kb',
+        'free cv maker',
+        'b2b email finder',
       ],
       canonicalUrl,
       ogType: 'website',
@@ -1809,23 +1808,24 @@ function buildMetadataForPath(pathname: string): PageMetadata {
   }
 
   // SEO Dashboard workspace (/workspace, /workspace/*, /seo-dashboard)
+  // Canonical target for "seo dashboard", "free seo dashboard", "seo keyword dashboards"
   if (parts[0] === 'workspace' || parts[0] === 'seo-dashboard') {
     const canonicalUrl = `${baseUrl}/workspace`;
-    const title = 'SEO Keyword Dashboards & Audit Workspace — Free Suite | ToolVerse';
+    const title = 'Free SEO Dashboard & Keyword Workspace — ToolVerse';
     const description =
-      'Free SEO keyword dashboards and Semrush-style audit workspace. Explore keyword magic, position tracking, search volume trends, site audits, and ranking reports with zero fees.';
+      'Free SEO dashboard and Search Console intelligence workspace. Track keyword rankings, search volume, CTR opportunities, site audits, and SERP visibility free.';
     return {
       title,
       description,
       keywords: [
+        'free seo dashboard',
+        'seo dashboard',
         'seo keyword dashboards',
         'seo keyword dashboard',
-        'seo dashboard',
+        'google search console dashboard',
         'free semrush alternative',
-        'keyword tools',
-        'keyword magic',
-        'position tracking',
-        'toolverse seo'
+        'keyword position tracking',
+        'toolverse seo workspace',
       ],
       canonicalUrl,
       ogType: 'website',
@@ -1849,26 +1849,37 @@ function buildMetadataForPath(pathname: string): PageMetadata {
     };
   }
 
-  // Product hubs (SEO Suite, Tools, Study, Immigration, Pricing, regions, passport)
+  // Product hubs (SEO Suite, SEO Tools, Tools, Study, Immigration, Pricing, regions, passport)
   const hubMeta: Record<
     string,
     { title: string; description: string; keywords: string[]; crumb: string }
   > = {
     seo: {
-      title: 'ToolVerse SEO Suite — Free SEO Keyword Dashboards & Technical SEO',
+      title: 'Free Technical SEO Suite & On-Page Audit Tools | ToolVerse',
       description:
-        'Free SEO keyword dashboards, site audit analyzers, SERP simulators, and meta generators. Track keywords, analyze search volume, and audit web pages with zero paywalls.',
+        'Explore the ToolVerse Technical SEO Suite: on-page site audits, SERP simulators, Core Web Vitals checks, robots.txt validators, and schema generators.',
       keywords: [
-        'seo keyword dashboards',
-        'seo keyword dashboard',
-        'seo suite',
-        'free seo tools',
-        'keyword research tool',
-        'on page seo',
-        'semrush alternative',
-        'toolverse seo'
+        'technical seo suite',
+        'free seo audit tools',
+        'on page seo analyzer',
+        'serp simulator',
+        'website seo checker',
+        'toolverse seo suite',
       ],
       crumb: 'SEO Suite',
+    },
+    'seo-tools': {
+      title: 'Free SEO Tag, Schema & Outreach Generators | ToolVerse',
+      description:
+        'Generate clean HTML meta tags, JSON-LD FAQ schema, robots.txt rules, XML sitemaps, and outreach pitch templates in seconds with free browser tools.',
+      keywords: [
+        'meta tag generator',
+        'faq schema generator',
+        'robots txt generator',
+        'xml sitemap generator',
+        'free seo generators',
+      ],
+      crumb: 'SEO Generators',
     },
     tools: {
       title: 'All Tools Hub — Browse ToolVerse by Category',

@@ -68,19 +68,19 @@ const FLAGSHIP = [
     why: 'Hit 20KB / 50KB / 100KB caps for job and visa forms.',
   },
   {
+    href: '/cv-maker',
+    name: 'Free CV & Resume Maker',
+    why: '25 ATS-friendly templates, custom sections, and instant PDF/PNG/JPG download — 100% free.',
+  },
+  {
+    href: '/tools/b2b-email-finder',
+    name: 'B2B Email Finder',
+    why: 'Discover real, verified public business emails, MX status, and company profiles.',
+  },
+  {
     href: '/tools/us-paycheck-calculator',
     name: 'US Paycheck Estimator',
     why: 'Rough take-home math from salary, filing status, and state — educational only.',
-  },
-  {
-    href: '/tools/uk-take-home-pay-calculator',
-    name: 'UK Take-Home Pay',
-    why: 'Estimate PAYE-style take-home for planning — not tax advice.',
-  },
-  {
-    href: '/tools/global-job-finder',
-    name: 'Global Job Finder',
-    why: 'Headlines and listings that link out to employer sites — we are not the employer.',
   },
 ] as const;
 
@@ -116,8 +116,8 @@ export default function HomePage() {
             Free tools that stay on your device.
           </h1>
           <p className="text-slate-300 text-sm sm:text-base max-w-xl leading-relaxed">
-            Merge PDFs, hit exact image size caps, explore free SEO keyword dashboards, or estimate paycheck math without creating an
-            account. ToolVerse is a private in-browser alternative to toolsoverflow and cloud converter websites — your files and data stay on your device.
+            Merge PDFs, hit exact image size caps, build an ATS-ready CV, or estimate US/UK/CA/AU take-home pay without creating an
+            account. ToolVerse is a private in-browser alternative to cloud converter websites — your files and data stay on your device.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link

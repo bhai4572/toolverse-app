@@ -1046,7 +1046,10 @@ async function main() {
     for (const route of routes) {
       const html = applyPage(template, route, getMetadataForPath, deps);
       if (route === '/') fs.writeFileSync(templatePath, html);
-      else writeRoute(route, html);
+      else if (route === '/404') {
+        writeRoute(route, html);
+        fs.writeFileSync(path.join(distDir, '404.html'), html);
+      } else writeRoute(route, html);
     }
 
     console.log(`Prerendered ${routes.length} HTML shells into dist/`);
