@@ -93,6 +93,19 @@ export function Footer() {
 
         <FooterAdBar />
 
+        {/* Directory listing badges (some directories verify these exist on the homepage). */}
+        <div className="flex flex-wrap items-center justify-center gap-3 mb-6" aria-label="Featured on">
+          <a href="https://launcholio.com/product/toolverse" target="_blank" rel="noopener">
+            <img
+              alt="Featured on Launcholio"
+              src="https://launcholio.com/api/badge/toolverse.svg?theme=light&score=on&v=7"
+              width={156}
+              height={54}
+              loading="lazy"
+            />
+          </a>
+        </div>
+
         <div className="pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
           <div>
             © {new Date().getFullYear()} ToolVerse. Free tools · local file processing · honest labels.
