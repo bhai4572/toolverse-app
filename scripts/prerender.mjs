@@ -202,7 +202,7 @@ function buildBodyMain(pathname, meta, deps) {
     contentHtml = `
       <div class="space-y-8">
         <header class="text-center space-y-3 max-w-3xl mx-auto">
-          <h1 class="text-4xl font-extrabold text-slate-900">${esc(meta.title.replace(/\s*[—|].*$/, ''))}</h1>
+          <h1 class="text-4xl font-extrabold text-slate-900">Free Privacy-First Online Tools for PDFs, Images &amp; Documents (No Uploads)</h1>
           <p class="text-lg text-slate-600">${esc(meta.description)}</p>
         </header>
 
@@ -919,7 +919,9 @@ async function main() {
       REGION_HUBS,
       LEGAL_PAGES,
     };
-    const template = fs.readFileSync(templatePath, 'utf8');
+    let template = fs.readFileSync(templatePath, 'utf8');
+    // Code-splitting guarantee: Never modulepreload heavy vendor bundles on every page
+    template = template.replace(/<link\s+rel="modulepreload"[^>]*vendor-(?:pdf|media|office)[^>]*>\s*/gi, '');
 
     const routes = ['/'];
     for (const t of TOOLS) {
@@ -1021,6 +1023,43 @@ async function main() {
     routes.push('/seo-tools');
     routes.push('/tools');
     routes.push('/cv-maker');
+
+    // Payment Methods & Gateways Directory Routes (155+ prerendered SEO shells)
+    const {
+      getAllPaymentDirectoryEntries,
+      getAllPaymentCategories,
+      getAllPaymentCountries,
+    } = await vite.ssrLoadModule('/lib/payments/database.ts');
+    routes.push('/payment-methods');
+    routes.push('/payment-methods/compare');
+    for (const pCat of getAllPaymentCategories()) {
+      routes.push(`/payment-methods/${pCat.slug}`);
+    }
+    for (const pCnt of getAllPaymentCountries()) {
+      routes.push(`/payment-methods/countries/${pCnt.slug}`);
+    }
+    for (const pEntry of getAllPaymentDirectoryEntries()) {
+      routes.push(`/payment-methods/${pEntry.primaryCategorySlug}/${pEntry.slug}`);
+    }
+
+    // Mobile Phones & Specs Directory Routes
+    const {
+      getAllPhones,
+      getAllPhoneBrands,
+      getAllPhoneCategories,
+    } = await vite.ssrLoadModule('/lib/phones/database.ts');
+    routes.push('/phones');
+    routes.push('/phones/compare');
+    for (const phBrand of getAllPhoneBrands()) {
+      routes.push(`/phones/brand/${phBrand.slug}`);
+    }
+    for (const phCat of getAllPhoneCategories()) {
+      routes.push(`/phones/category/${phCat.slug}`);
+    }
+    for (const ph of getAllPhones()) {
+      routes.push(`/phones/${ph.slug}`);
+    }
+
     routes.push('/pricing');
     routes.push('/study');
     const studyRouteSlugs = new Set(['usa', 'uk', 'canada', 'australia', 'new-zealand', 'europe']);

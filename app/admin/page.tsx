@@ -9,13 +9,41 @@ import { TOOLS, CATEGORIES } from '@/lib/tools/registry';
 import { FEATURE_FLAGS } from '@/lib/product/featureFlags';
 import { BLOG_POSTS } from '@/lib/blog/posts';
 import {
+  getAllPaymentDirectoryEntries,
+  getAllPaymentCategories,
+  getArchivedPaymentIds,
+  toggleArchivePaymentEntry,
+  updatePaymentSeoMetadata,
+  evaluatePaymentSeoQuality,
+  saveCustomPaymentEntry,
+  getPaymentChangeHistory,
+  getAllProductPaymentRelationships,
+  saveProductPaymentRelationship,
+} from '@/lib/payments/database';
+import { buildPaymentEntry } from '@/lib/payments/catalogHelpers';
+import { PaymentDirectoryEntry, PaymentCategorySlug } from '@/lib/payments/types';
+import { getAllPhones } from '@/lib/phones/database';
+import { AdminPhonesPanel } from '@/components/admin/AdminPhonesPanel';
+import {
   LogOut,
   Lock,
 } from 'lucide-react';
 
 export default function AdminControlPanelPage() {
   const [session, setSession] = useState(getCurrentAdminSession());
-  const [activeTab, setActiveTab] = useState<'overview' | 'verification' | 'businesses' | 'reports' | 'categories' | 'policies' | 'audit'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'payments' | 'phones' | 'verification' | 'businesses' | 'reports' | 'categories' | 'policies' | 'audit'>('overview');
+
+  // Payment Directory Admin State
+  const [paymentSearch, setPaymentSearch] = useState('');
+  const [selectedPaymentEntry, setSelectedPaymentEntry] = useState<PaymentDirectoryEntry | null>(null);
+  const [seoTitleDraft, setSeoTitleDraft] = useState('');
+  const [seoDescDraft, setSeoDescDraft] = useState('');
+  const [seoNoindexDraft, setSeoNoindexDraft] = useState(false);
+  const [newProviderName, setNewProviderName] = useState('');
+  const [newProviderSlug, setNewProviderSlug] = useState('');
+  const [newProviderCategory, setNewProviderCategory] = useState<PaymentCategorySlug>('gateways');
+  const [newProviderWebsite, setNewProviderWebsite] = useState('');
+  const [newProviderFees, setNewProviderFees] = useState('2.9% + $0.30');
 
   // Re-fetch triggers
   const [refreshKey, setRefreshKey] = useState(0);
@@ -150,6 +178,8 @@ export default function AdminControlPanelPage() {
         {(
           [
             { id: 'overview', label: 'Overview' },
+            { id: 'payments', label: `Payment Directory & SEO (${getAllPaymentDirectoryEntries(true).length})` },
+            { id: 'phones', label: `Mobile Phones (${getAllPhones(true).length})` },
             { id: 'verification', label: `Verifications (${verRequests.filter((r) => r.status === 'PENDING').length})` },
             { id: 'businesses', label: `Business Manager (${businesses.length})` },
             { id: 'reports', label: `Spam Reports (${reports.filter((r) => r.status === 'NEW').length})` },
@@ -171,6 +201,440 @@ export default function AdminControlPanelPage() {
           </button>
         ))}
       </div>
+
+      {activeTab === 'payments' && hasPermission(session.role, 'MANAGE_PAYMENTS') && (
+        <section className="space-y-6">
+          {/* 1. Quick Add Payment Provider / Method */}
+          <div className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl space-y-4">
+            <h2 className="text-base font-extrabold text-slate-900 dark:text-white">
+              Add New Payment Gateway or Payment Method
+            </h2>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (!newProviderName.trim() || !newProviderWebsite.trim()) return;
+                const slug =
+                  newProviderSlug.trim() ||
+                  newProviderName
+                    .toLowerCase()
+                    .replace(/[^a-z0-9]+/g, '-')
+                    .replace(/(^-|-$)/g, '');
+                const created = buildPaymentEntry({
+                  id: `prv_custom_${slug}`,
+                  slug,
+                  entryKind: 'provider',
+                  officialName: newProviderName.trim(),
+                  brandName: newProviderName.trim(),
+                  brandColor: '#4F46E5',
+                  primaryCategorySlug: newProviderCategory,
+                  providerType: 'Payment Gateway',
+                  shortDescription: `${newProviderName.trim()} payment gateway and checkout solution integrated on ToolVerse.`,
+                  uniqueIntroduction: `${newProviderName.trim()} provides online payment processing and checkout infrastructure.`,
+                  overview: `Supports online checkout, API webhooks, and merchant settlement.`,
+                  howItWorks: [
+                    `Merchant connects ${newProviderName.trim()} API or checkout plugin.`,
+                    'Customer authorizes payment at checkout.',
+                    'Funds settle to the verified merchant bank account.',
+                  ],
+                  officialWebsite: newProviderWebsite.trim(),
+                  documentationUrl: newProviderWebsite.trim(),
+                  apiAvailable: true,
+                  sdkAvailable: true,
+                  pluginAvailable: true,
+                  supportedPlatforms: ['Web', 'API', 'Shopify', 'WooCommerce'],
+                  supportedIntegrationTypes: ['REST API', 'Hosted Checkout'],
+                  supportedBusinessModels: ['SaaS', 'E-Commerce'],
+                  merchantEligibleCountryCodes: ['US', 'GB', 'CA', 'AU', 'DE'],
+                  merchantEligibilitySummary: 'Available to verified merchants in supported countries.',
+                  customerPaymentCountryCodes: ['US', 'GB', 'CA', 'AU', 'DE', 'PK', 'IN'],
+                  customerCoverageSummary: 'Accepts international customer payments.',
+                  supportedCurrencies: ['USD', 'EUR', 'GBP'],
+                  settlementCurrencies: ['USD', 'EUR', 'GBP'],
+                  transactionFees: newProviderFees.trim() || '2.9% + $0.30',
+                  refundSupport: 'Full & Partial Refunds',
+                  refundDetails: 'Supports full and partial refunds via dashboard or API.',
+                  recurringPaymentSupport: true,
+                  subscriptionSupport: true,
+                  recurringAndSubscriptionDetails: 'Supports recurring billing and webhooks.',
+                  chargebackSupport: true,
+                  chargebackDetails: 'Standard dispute evidence handling.',
+                  paymentLinksSupport: true,
+                  invoicingSupport: true,
+                  payoutSupport: true,
+                  payoutDetails: 'Settles to verified merchant bank accounts.',
+                  kycKybRequirements: 'Standard KYB business verification.',
+                  businessEligibilityDetails: 'Registered business entity or sole proprietor.',
+                  onlinePaymentSupported: true,
+                  inPersonPaymentSupported: false,
+                  oneTimePaymentSupported: true,
+                  freeIntegrationAvailable: true,
+                  integrationComplexity: 'Low',
+                  features: ['REST API & Webhooks', 'Hosted Checkout'],
+                  advantages: ['Fast merchant integration'],
+                  limitations: ['Standard KYB underwriting required'],
+                  alternativeIds: ['prv_stripe', 'prv_paypal'],
+                  linkedEntityIds: ['pm_visa', 'pm_mastercard'],
+                  popularityRank: 90,
+                });
+                saveCustomPaymentEntry(created, session.email, 'Added via Admin Payment Directory');
+                setNewProviderName('');
+                setNewProviderSlug('');
+                setNewProviderWebsite('');
+                setRefreshKey((k) => k + 1);
+              }}
+              className="grid grid-cols-1 sm:grid-cols-5 gap-3"
+            >
+              <input
+                type="text"
+                placeholder="Brand Name (e.g. Tap Payments)"
+                value={newProviderName}
+                onChange={(e) => setNewProviderName(e.target.value)}
+                required
+                className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800"
+              />
+              <input
+                type="text"
+                placeholder="Slug (optional)"
+                value={newProviderSlug}
+                onChange={(e) => setNewProviderSlug(e.target.value)}
+                className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800"
+              />
+              <select
+                value={newProviderCategory}
+                onChange={(e) => setNewProviderCategory(e.target.value as PaymentCategorySlug)}
+                className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 font-semibold"
+              >
+                {getAllPaymentCategories().map((cat) => (
+                  <option key={cat.slug} value={cat.slug}>
+                    {cat.shortName}
+                  </option>
+                ))}
+              </select>
+              <input
+                type="url"
+                placeholder="Official URL (https://...)"
+                value={newProviderWebsite}
+                onChange={(e) => setNewProviderWebsite(e.target.value)}
+                required
+                className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800"
+              />
+              <button
+                type="submit"
+                className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold"
+              >
+                + Add Payment Entry
+              </button>
+            </form>
+          </div>
+
+          {/* 2. SEO Metadata Editor & SERP Preview Modal/Drawer */}
+          {selectedPaymentEntry && (
+            <div className="p-6 bg-indigo-50/70 dark:bg-indigo-950/40 border border-indigo-400/40 rounded-3xl space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-base font-extrabold">
+                  SEO Metadata &amp; Quality Checklist: {selectedPaymentEntry.brandName}
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => setSelectedPaymentEntry(null)}
+                  className="px-3 py-1 rounded-lg bg-slate-200 dark:bg-slate-800 font-bold"
+                >
+                  Close Editor
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-3">
+                  <div>
+                    <div className="flex justify-between mb-1">
+                      <label className="font-bold">SEO Title (Max 60 chars)</label>
+                      <span
+                        className={`font-bold ${
+                          seoTitleDraft.length > 60 ? 'text-rose-600' : 'text-emerald-600'
+                        }`}
+                      >
+                        {seoTitleDraft.length}/60 chars
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      value={seoTitleDraft}
+                      onChange={(e) => setSeoTitleDraft(e.target.value)}
+                      className="w-full p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900"
+                    />
+                  </div>
+
+                  <div>
+                    <div className="flex justify-between mb-1">
+                      <label className="font-bold">Meta Description (Target 150–160 chars)</label>
+                      <span
+                        className={`font-bold ${
+                          seoDescDraft.length > 160 ? 'text-rose-600' : 'text-emerald-600'
+                        }`}
+                      >
+                        {seoDescDraft.length}/160 chars
+                      </span>
+                    </div>
+                    <textarea
+                      rows={3}
+                      value={seoDescDraft}
+                      onChange={(e) => setSeoDescDraft(e.target.value)}
+                      className="w-full p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900"
+                    />
+                  </div>
+
+                  <label className="inline-flex items-center gap-2 font-semibold">
+                    <input
+                      type="checkbox"
+                      checked={seoNoindexDraft}
+                      onChange={(e) => setSeoNoindexDraft(e.target.checked)}
+                    />
+                    <span>Set meta robots to noindex (exclude from search indexing)</span>
+                  </label>
+
+                  <div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        updatePaymentSeoMetadata(
+                          selectedPaymentEntry.id,
+                          {
+                            seoTitle: seoTitleDraft,
+                            metaDescription: seoDescDraft,
+                            noindex: seoNoindexDraft,
+                          },
+                          session.email
+                        );
+                        setSelectedPaymentEntry(null);
+                        setRefreshKey((k) => k + 1);
+                      }}
+                      className="px-5 py-2.5 rounded-xl bg-indigo-600 text-white font-bold"
+                    >
+                      Save SEO Metadata &amp; Log Audit
+                    </button>
+                  </div>
+                </div>
+
+                {/* Live Google SERP Preview + Quality Checklist */}
+                <div className="space-y-3">
+                  <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                    <div className="text-[10px] uppercase font-bold text-slate-400 mb-1">
+                      Google SERP Preview
+                    </div>
+                    <div className="text-xs text-emerald-700 dark:text-emerald-400 truncate">
+                      {selectedPaymentEntry.seo.canonicalUrl}
+                    </div>
+                    <div className="text-base font-bold text-blue-700 dark:text-blue-400 line-clamp-1 mt-0.5">
+                      {seoTitleDraft}
+                    </div>
+                    <div className="text-xs text-slate-600 dark:text-slate-400 line-clamp-2 mt-1">
+                      {seoDescDraft}
+                    </div>
+                  </div>
+
+                  <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-1.5">
+                    {(() => {
+                      const report = evaluatePaymentSeoQuality(selectedPaymentEntry);
+                      return (
+                        <>
+                          <div className="font-bold">
+                            SEO Quality Score: {report.score}% (
+                            {report.isIndexable ? 'Indexable' : 'Blocked'})
+                          </div>
+                          {report.checks.map((chk, ci) => (
+                            <div key={ci} className="flex items-center justify-between text-[11px]">
+                              <span>
+                                {chk.passed ? '✅' : '⚠️'} {chk.label}
+                              </span>
+                              <span className="text-slate-400">{chk.detail.slice(0, 32)}</span>
+                            </div>
+                          ))}
+                        </>
+                      );
+                    })()}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* 3. Payment Directory Inventory Table */}
+          <div className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h2 className="text-lg font-extrabold text-slate-900 dark:text-white">
+                  Payment Methods &amp; Gateways Inventory ({getAllPaymentDirectoryEntries(true).length})
+                </h2>
+                <p className="text-slate-500">
+                  Manage providers, methods, countries, SEO metadata, verification dates, and archive states.
+                </p>
+              </div>
+              <input
+                type="text"
+                placeholder="Search payment entries..."
+                value={paymentSearch}
+                onChange={(e) => setPaymentSearch(e.target.value)}
+                className="px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 w-64"
+              />
+            </div>
+
+            <div className="overflow-x-auto max-h-[420px]">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="border-b bg-slate-50 dark:bg-slate-800 font-bold">
+                    <th className="p-3">Provider / Method</th>
+                    <th className="p-3">Category</th>
+                    <th className="p-3">Countries (M / C)</th>
+                    <th className="p-3">SEO Score</th>
+                    <th className="p-3">Verified</th>
+                    <th className="p-3">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                  {getAllPaymentDirectoryEntries(true)
+                    .filter(
+                      (e) =>
+                        !paymentSearch.trim() ||
+                        e.brandName.toLowerCase().includes(paymentSearch.toLowerCase()) ||
+                        e.slug.includes(paymentSearch.toLowerCase())
+                    )
+                    .map((item) => {
+                      const archivedSet = new Set(getArchivedPaymentIds());
+                      const isArchived = item.isArchived || archivedSet.has(item.id);
+                      const seoRep = evaluatePaymentSeoQuality(item);
+                      return (
+                        <tr key={item.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/40">
+                          <td className="p-3">
+                            <div className="flex items-center gap-2">
+                              <img src={item.logoUrl} alt={item.brandName} className="w-6 h-6 rounded" />
+                              <div>
+                                <div className="font-bold text-slate-900 dark:text-white">
+                                  {item.brandName}
+                                </div>
+                                <div className="text-[10px] text-slate-400 font-mono">
+                                  /payment-methods/{item.primaryCategorySlug}/{item.slug}
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="p-3">{item.providerType}</td>
+                          <td className="p-3">
+                            {item.merchantEligibleCountryCodes.length}M /{' '}
+                            {item.customerPaymentCountryCodes.length}C
+                          </td>
+                          <td className="p-3">
+                            <span className="px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-bold">
+                              {seoRep.score}%
+                            </span>
+                          </td>
+                          <td className="p-3">{item.lastVerifiedDate}</td>
+                          <td className="p-3 flex items-center gap-2">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setSelectedPaymentEntry(item);
+                                setSeoTitleDraft(item.seo.seoTitle);
+                                setSeoDescDraft(item.seo.metaDescription);
+                                setSeoNoindexDraft(item.seo.noindex);
+                              }}
+                              className="px-2.5 py-1 rounded bg-indigo-600 text-white font-bold"
+                            >
+                              Edit SEO
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                toggleArchivePaymentEntry(item.id, !isArchived, session.email);
+                                setRefreshKey((k) => k + 1);
+                              }}
+                              className={`px-2.5 py-1 rounded font-bold ${
+                                isArchived
+                                  ? 'bg-emerald-600 text-white'
+                                  : 'bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
+                              }`}
+                            >
+                              {isArchived ? 'Restore' : 'Archive'}
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* 4. User-Submitted Product Payment Claims & Payment Change History */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl space-y-3">
+              <h3 className="text-base font-extrabold">
+                Product Payment Claims ({Object.keys(getAllProductPaymentRelationships()).length})
+              </h3>
+              <div className="space-y-2 max-h-60 overflow-y-auto">
+                {Object.values(getAllProductPaymentRelationships()).map((rel) => (
+                  <div
+                    key={rel.productSlug}
+                    className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 flex items-center justify-between gap-2"
+                  >
+                    <div>
+                      <div className="font-bold capitalize">{rel.productSlug}</div>
+                      <div className="text-[10px] text-slate-500">
+                        {rel.acceptedGatewayIds.length} gateways • {rel.acceptedMethodIds.length} methods •{' '}
+                        {rel.verificationStatus}
+                      </div>
+                    </div>
+                    {rel.verificationStatus !== 'Confirmed by Official Documentation' && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          saveProductPaymentRelationship({
+                            ...rel,
+                            verificationStatus: 'Confirmed by Official Documentation',
+                            lastVerifiedDate: new Date().toISOString().split('T')[0],
+                          });
+                          setRefreshKey((k) => k + 1);
+                        }}
+                        className="px-2.5 py-1 rounded bg-emerald-600 text-white font-bold text-[10px]"
+                      >
+                        Approve Claim
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl space-y-3">
+              <h3 className="text-base font-extrabold">
+                Payment Directory Change History ({getPaymentChangeHistory().length})
+              </h3>
+              <div className="space-y-2 max-h-60 overflow-y-auto">
+                {getPaymentChangeHistory().length === 0 ? (
+                  <p className="text-slate-400">No manual edits recorded in this session yet.</p>
+                ) : (
+                  getPaymentChangeHistory().map((chg) => (
+                    <div
+                      key={chg.id}
+                      className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 text-[11px]"
+                    >
+                      <div className="font-bold">
+                        {chg.entityName} — {chg.fieldChanged}
+                      </div>
+                      <div className="text-slate-500">
+                        {chg.previousValue} &rarr; {chg.newValue} ({chg.changedBy})
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {activeTab === 'phones' && (
+        <AdminPhonesPanel onMutated={() => setRefreshKey((k) => k + 1)} />
+      )}
 
       {activeTab === 'overview' && (
         <section className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl space-y-6">

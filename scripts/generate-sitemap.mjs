@@ -1,12 +1,16 @@
 /**
- * Generate sitemaps under public/ (safe for CF prebuild).
+ * Generate clean, high-authority sitemaps under public/ (safe for CF prebuild).
  * - sitemap.xml          → single combined urlset (GSC submit target)
- * - sitemap-tools.xml    → /tools/* + /category/* (optional split)
- * - sitemap-content.xml  → blog, how-to, news, study (optional split)
- * - sitemap-pages.xml    → hubs, legal, jobs, product/travel/etc. (optional split)
+ * - sitemap-tools.xml    → /tools/* + /category/* (core products)
+ * - sitemap-content.xml  → pillar guides, verified study destinations
+ * - sitemap-pages.xml    → hubs, legal, directories
  *
- * Parses slug fields from registry + blog pillar source; adds per-tool how-to guides.
- * Excludes workspace / admin / dashboard / private URLs.
+ * Strict Quality Guardrails (GSC & AdSense Compliance):
+ * - Excludes private/admin, /dashboard, /workspace, /pricing, thin /products/* shells.
+ * - Excludes 188 auto-generated country doorway shells (keeps only verified Tier-1 study guides).
+ * - Excludes 126 auto-generated template how-to posts (keeps only genuine hand-written pillar guides).
+ * - Replaces /cv-maker with canonical /tools/cv-maker.
+ * - Gives highest priority (0.95/0.9) to core tools and categories.
  */
 import fs from 'fs';
 import path from 'path';
@@ -21,30 +25,48 @@ const base = 'https://toolverse.baby';
  * Mirror of lib/seo/indexability.ts (this script cannot import TS). Keep in sync.
  * Anything noindex there must NOT be in the sitemap.
  */
-const NOINDEX_EXACT = new Set(['/404']);
-const NOINDEX_PREFIXES = ['/admin', '/admin/'];
+const NOINDEX_EXACT = new Set([
+  '/404',
+  '/dashboard',
+  '/workspace',
+  '/pricing',
+  '/news',
+  '/tools/cv-maker', // canonical is /cv-maker
+]);
+
+const NOINDEX_PREFIXES = [
+  '/admin',
+  '/admin/',
+  '/products',
+  '/products/',
+  '/badges',
+  '/claim',
+];
+
+const INDEXABLE_STUDY_SLUGS = new Set([
+  'usa',
+  'uk',
+  'canada',
+  'australia',
+  'new-zealand',
+  'europe',
+  'germany',
+]);
+
 function isNoindex(p) {
   const x = (p.replace(/\/$/, '') || '/').toLowerCase();
   if (NOINDEX_EXACT.has(x)) return true;
-  return NOINDEX_PREFIXES.some((pre) => x === pre.replace(/\/$/, '') || x.startsWith(pre));
+  if (NOINDEX_PREFIXES.some((pre) => x === pre.replace(/\/$/, '') || x.startsWith(pre))) {
+    return true;
+  }
+  if (x.startsWith('/study/')) {
+    const slug = x.replace(/^\/study\//, '').split('/')[0];
+    if (slug && !INDEXABLE_STUDY_SLUGS.has(slug)) return true;
+  }
+  return false;
 }
 
-
-/** Tools that already have a hand-written pillar guide (keep in sync with lib/blog/toolGuides.ts). */
-const PILLAR_GUIDE_BY_TOOL = {
-  'compress-image-target-size': 'how-to-compress-image-to-target-size-under-50kb',
-  'pdf-merge': 'how-to-merge-pdf-files-privately-without-uploading',
-  'heic-to-jpg': 'convert-heic-to-jpg-windows-iphone',
-  'barcode-generator': 'how-to-generate-barcodes-free-code-128-ean-upc',
-  'pakistan-salary-tax-estimator': 'pakistan-salary-tax-calculator-slabs-guide',
-  'utm-builder': 'how-to-build-utm-campaign-urls',
-  'global-job-finder': 'top-high-paying-remote-jobs-worldwide',
-  'seo-audit-analyzer': 'best-free-semrush-ahrefs-alternatives-2026',
-  'freelancer-hourly-rate-calculator': 'freelance-rate-calculator-guide-paypal-stripe-fees',
-};
-
 function makeUrl(pathname, changefreq = 'weekly', priority = '0.8') {
-  // No <lastmod>: a build-date on every URL is not a real modification date and gets ignored by Google.
   return { loc: `${base}${pathname}`, changefreq, priority };
 }
 
@@ -55,7 +77,6 @@ function section(src, startMarker, endMarker) {
   return src.slice(start, end < 0 ? undefined : end);
 }
 
-/** Match object key `slug:` only (not categorySlug). */
 function slugs(text) {
   return [...text.matchAll(/(?:^|[^\w])slug:\s*'([^']+)'/gm)].map((m) => m[1]);
 }
@@ -93,81 +114,46 @@ const trendPosts = fs.readFileSync(path.join(root, 'lib/blog/usTrendPosts.ts'), 
 
 const categories = slugs(section(registry, 'export const CATEGORIES', 'export const TOOLS'));
 const tools = liveToolSlugs(section(registry, 'export const TOOLS'));
+
+// Keep ONLY verified hand-written pillar and trend posts (Do NOT add 126 template how-to clones)
 const pillarBlog = [
   ...slugs(section(posts, 'const PILLAR_POSTS', 'export const BLOG_POSTS')),
   ...slugs(section(trendPosts, 'export const US_TREND_POSTS')),
 ];
+const blog = [...new Set(pillarBlog)];
 
-// All blog guides: pillars, US trend posts, and all per-tool how-to guides.
-const blogSet = new Set(pillarBlog);
-for (const toolSlug of tools) {
-  if (PILLAR_GUIDE_BY_TOOL[toolSlug]) {
-    blogSet.add(PILLAR_GUIDE_BY_TOOL[toolSlug]);
-  } else {
-    blogSet.add(`how-to-${toolSlug}`);
-  }
-}
-const blog = [...blogSet];
-
-/** All /how-to/* guides included */
-const NOINDEX_HOW_TO = new Set([]);
-
-// —— Tools: /tools/* + /category/* ——
+// —— 1. Tools: /tools/* + /category/* (Core product: high priority 0.9–0.95) ——
 const toolsUrls = [];
 toolsUrls.push(makeUrl('/tools', 'daily', '0.95'));
-for (const c of categories) toolsUrls.push(makeUrl(`/category/${c}`, 'weekly', '0.8'));
-for (const t of tools) toolsUrls.push(makeUrl(`/tools/${t}`, 'weekly', '0.7'));
+for (const c of categories) toolsUrls.push(makeUrl(`/category/${c}`, 'weekly', '0.85'));
+for (const t of tools) toolsUrls.push(makeUrl(`/tools/${t}`, 'weekly', '0.90'));
 
-// —— Content: blog, how-to, news, study ——
+// —— 2. Content: blog pillar guides & verified Tier-1 study destinations ——
 const contentUrls = [];
-contentUrls.push(makeUrl('/blog', 'daily', '0.8'));
-contentUrls.push(makeUrl('/blog/topics', 'weekly', '0.78'));
-for (const p of blog) contentUrls.push(makeUrl(`/blog/${p}`, 'weekly', '0.75'));
+contentUrls.push(makeUrl('/blog', 'daily', '0.80'));
+contentUrls.push(makeUrl('/blog/topics', 'weekly', '0.75'));
+for (const p of blog) contentUrls.push(makeUrl(`/blog/${p}`, 'weekly', '0.80'));
 
-contentUrls.push(makeUrl('/how-to', 'weekly', '0.85'));
-for (const ht of [
-  'how-to-create-a-business-profile',
-  'how-to-generate-and-print-business-qr',
-  'how-business-rankings-work',
-  'how-to-verify-business-ownership',
-  'how-to-verify-your-business',
-  'how-to-get-a-toolverse-business-id',
-  'how-to-generate-a-business-qr-code',
-  'how-to-print-your-toolverse-qr',
-  'how-to-collect-honest-customer-reviews',
-  'how-sponsored-ranking-works',
-  'how-to-claim-a-business',
-  'how-to-report-a-fake-business',
-]) {
-  if (NOINDEX_HOW_TO.has(ht)) continue;
-  contentUrls.push(makeUrl(`/how-to/${ht}`, 'weekly', '0.8'));
+// Keep verified Tier-1 Study destinations (USA, UK, Canada, Australia, New Zealand, Europe, Germany)
+contentUrls.push(makeUrl('/study', 'weekly', '0.75'));
+for (const s of INDEXABLE_STUDY_SLUGS) {
+  contentUrls.push(makeUrl(`/study/${s}`, 'weekly', '0.75'));
 }
 
-contentUrls.push(makeUrl('/news', 'hourly', '0.9'));
-contentUrls.push(makeUrl('/study', 'daily', '0.9'));
-const unRowsSrc = fs.readFileSync(path.join(root, 'lib/travel/unMemberRows.ts'), 'utf8');
-const studySlugs = new Set(['usa', 'uk', 'canada', 'australia', 'new-zealand', 'europe']);
-for (const m of unRowsSrc.matchAll(/\[\s*"([A-Z]{2})",\s*"[A-Z]{3}",\s*"([^"]+)"/g)) {
-  const iso2 = m[1];
-  const commonName = m[2];
-  const slug =
-    iso2 === 'US'
-      ? 'usa'
-      : iso2 === 'GB'
-      ? 'uk'
-      : commonName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-  studySlugs.add(slug);
-}
-for (const s of studySlugs) {
-  contentUrls.push(makeUrl(`/study/${s}`, 'weekly', '0.88'));
-}
-
-// —— Pages: hubs, legal, jobs, ecosystem (no workspace/admin) ——
+// —— 3. Pages: hubs, legal, regional hubs, directories ——
 const pagesUrls = [];
 pagesUrls.push(makeUrl('/', 'daily', '1.0'));
 pagesUrls.push(makeUrl('/cv-maker', 'daily', '0.95'));
-pagesUrls.push(makeUrl('/sitemap', 'weekly', '0.55'));
+pagesUrls.push(makeUrl('/sitemap', 'weekly', '0.50'));
 
+// Regional Tools Hubs (deep content)
+for (const reg of ['us', 'uk', 'ca', 'au']) {
+  pagesUrls.push(makeUrl(`/${reg}`, 'weekly', '0.80'));
+}
+pagesUrls.push(makeUrl('/passport-photos', 'weekly', '0.80'));
+pagesUrls.push(makeUrl('/immigration', 'weekly', '0.75'));
+
+// Curated Job clusters
 for (const j of [
   'remote-jobs',
   'usa-jobs',
@@ -178,9 +164,10 @@ for (const j of [
   'jobs-near-me',
   'nhs-jobs-uk',
 ]) {
-  pagesUrls.push(makeUrl(`/jobs/${j}`, 'daily', '0.8'));
+  pagesUrls.push(makeUrl(`/jobs/${j}`, 'weekly', '0.75'));
 }
 
+// Legal compliance pages
 for (const l of [
   'privacy-policy',
   'terms-of-use',
@@ -193,111 +180,73 @@ for (const l of [
   'editorial-policy',
   'security',
 ]) {
-  pagesUrls.push(makeUrl(`/legal/${l}`, 'monthly', '0.5'));
+  pagesUrls.push(makeUrl(`/legal/${l}`, 'monthly', '0.50'));
 }
 
-pagesUrls.push(makeUrl('/products', 'daily', '0.9'));
-pagesUrls.push(makeUrl('/leaderboard', 'daily', '0.92'));
+// Payment Methods & Gateways Directory
+pagesUrls.push(makeUrl('/payment-methods', 'daily', '0.90'));
+pagesUrls.push(makeUrl('/payment-methods/compare', 'weekly', '0.80'));
 
-const productDataDir = path.join(root, 'lib/products/data');
-let productSlugs = [];
-if (fs.existsSync(productDataDir)) {
-  const pFiles = fs.readdirSync(productDataDir).filter((f) => f.endsWith('.ts'));
-  for (const pFile of pFiles) {
-    const pContent = fs.readFileSync(path.join(productDataDir, pFile), 'utf8');
-    productSlugs.push(...slugs(pContent));
+const paymentCountriesSrc = fs.readFileSync(path.join(root, 'lib/payments/countriesAndCurrencies.ts'), 'utf8');
+const paymentCats = slugs(section(paymentCountriesSrc, 'export const PAYMENT_CATEGORIES', 'export const PAYMENT_CURRENCIES'));
+const paymentCountrySlugs = slugs(section(paymentCountriesSrc, 'export const PAYMENT_COUNTRIES'));
+for (const cSlug of paymentCats) {
+  pagesUrls.push(makeUrl(`/payment-methods/${cSlug}`, 'weekly', '0.80'));
+}
+for (const cntSlug of paymentCountrySlugs) {
+  pagesUrls.push(makeUrl(`/payment-methods/countries/${cntSlug}`, 'weekly', '0.80'));
+}
+
+for (const catFile of [
+  'lib/payments/providersCatalog.ts',
+  'lib/payments/methodsCatalogPart1.ts',
+  'lib/payments/methodsCatalogPart2.ts',
+]) {
+  const src = fs.readFileSync(path.join(root, catFile), 'utf8');
+  for (const m of src.matchAll(/slug:\s*'([^']+)'[\s\S]*?cat:\s*'([^']+)'/g)) {
+    pagesUrls.push(makeUrl(`/payment-methods/${m[2]}/${m[1]}`, 'weekly', '0.75'));
   }
 }
-productSlugs = [...new Set(productSlugs)];
-if (productSlugs.length === 0) {
-  productSlugs = ['canva', 'chatgpt', 'notion', 'figma', 'supabase', 'claude-ai'];
-}
-for (const p of productSlugs) {
-  pagesUrls.push(makeUrl(`/products/${p}`, 'daily', '0.8'));
-}
 
+// Mobile Phones & Specs Directory (/phones/*)
+pagesUrls.push(makeUrl('/phones', 'daily', '0.90'));
+pagesUrls.push(makeUrl('/phones/compare', 'weekly', '0.80'));
 
-pagesUrls.push(makeUrl('/alternatives', 'daily', '0.9'));
-for (const alt of ['canva', 'chatgpt', 'notion']) {
-  pagesUrls.push(makeUrl(`/alternatives/${alt}`, 'weekly', '0.8'));
-}
+const phonesMetaSrc = fs.readFileSync(path.join(root, 'lib/phones/brandsAndCategories.ts'), 'utf8');
+const phoneCats = slugs(section(phonesMetaSrc, 'export const PHONE_CATEGORIES', 'export const PHONE_BRANDS'));
+const phoneBrands = slugs(section(phonesMetaSrc, 'export const PHONE_BRANDS'));
+for (const cSlug of phoneCats) pagesUrls.push(makeUrl(`/phones/category/${cSlug}`, 'weekly', '0.80'));
+for (const bSlug of phoneBrands) pagesUrls.push(makeUrl(`/phones/brand/${bSlug}`, 'weekly', '0.80'));
 
-for (const comp of ['canva-vs-figma', 'chatgpt-vs-claude']) {
-  pagesUrls.push(makeUrl(`/compare/${comp}`, 'weekly', '0.8'));
-}
+const phoneSlugSet = new Set();
+const addPhoneToSitemap = (rawBrand, rawModel) => {
+  const b = rawBrand.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  const mod = rawModel.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  const fullSlug = mod.startsWith(`${b}-`) ? mod : `${b}-${mod}`;
+  if (!phoneSlugSet.has(fullSlug)) {
+    phoneSlugSet.add(fullSlug);
+    pagesUrls.push(makeUrl(`/phones/${fullSlug}`, 'weekly', '0.75'));
+  }
+};
 
-pagesUrls.push(makeUrl('/questions', 'daily', '0.8'));
-for (const q of [
-  'best-free-alternative-to-photoshop-online',
-  'which-ai-tool-is-best-for-writing-code',
-  'how-to-compress-pdf-files-without-losing-quality',
+for (const phFile of [
+  'lib/phones/catalogPart1.ts',
+  'lib/phones/catalogPart2.ts',
+  'lib/phones/catalogPart3_2025_2026_Flagships.ts',
+  'lib/phones/catalogPart4_2025_2026_Brands.ts',
+  'lib/phones/catalogPart5_2025_2026_PK_Value.ts',
+  'lib/phones/catalogPart6_2023_2024_Classics.ts',
 ]) {
-  pagesUrls.push(makeUrl(`/questions/${q}`, 'weekly', '0.75'));
+  const src = fs.readFileSync(path.join(root, phFile), 'utf8');
+  for (const m of src.matchAll(/brandSlug:\s*'([^']+)',\s*modelName:\s*'([^']+)'/g)) {
+    addPhoneToSitemap(m[1], m[2]);
+  }
+  for (const m of src.matchAll(/\bb:\s*'([^']+)',\s*m:\s*'([^']+)'/g)) {
+    addPhoneToSitemap(m[1], m[2]);
+  }
 }
 
-pagesUrls.push(makeUrl('/collections', 'daily', '0.85'));
-for (const col of [
-  'best-free-ai-tools-2026',
-  'essential-web-developer-suite',
-  'best-privacy-first-image-tools',
-]) {
-  pagesUrls.push(makeUrl(`/collections/${col}`, 'weekly', '0.8'));
-}
-
-// Utility & landing surfaces included in sitemap
-pagesUrls.push(makeUrl('/submit', 'weekly', '0.85'));
-pagesUrls.push(makeUrl('/badges', 'weekly', '0.8'));
-pagesUrls.push(makeUrl('/claim', 'weekly', '0.8'));
-pagesUrls.push(makeUrl('/submit-startup', 'weekly', '0.8'));
-pagesUrls.push(makeUrl('/workspace', 'daily', '0.9'));
-pagesUrls.push(makeUrl('/dashboard', 'weekly', '0.8'));
-
-
-pagesUrls.push(makeUrl('/business', 'daily', '0.9'));
-for (const biz of ['ali-barber-studio', 'apex-digital-marketing', 'artisan-coffee-roasters']) {
-  pagesUrls.push(makeUrl(`/business/${biz}`, 'daily', '0.8'));
-}
-for (const bId of ['TV-BIZ-8F4K2P', 'TV-BIZ-3M9Q7L', 'TV-BIZ-9X2V4W']) {
-  pagesUrls.push(makeUrl(`/b/${bId}`, 'weekly', '0.7'));
-}
-pagesUrls.push(makeUrl('/business/register', 'weekly', '0.8'));
-pagesUrls.push(makeUrl('/business-qr', 'weekly', '0.8'));
-pagesUrls.push(makeUrl('/business/bidding', 'weekly', '0.8'));
-
-pagesUrls.push(makeUrl('/travel', 'daily', '1.0'));
-pagesUrls.push(makeUrl('/travel/passport', 'daily', '0.9'));
-pagesUrls.push(makeUrl('/travel/embassies', 'daily', '0.9'));
-pagesUrls.push(makeUrl('/travel/destinations', 'daily', '0.9'));
-pagesUrls.push(makeUrl('/travel/jobs', 'daily', '0.9'));
-pagesUrls.push(makeUrl('/travel/planner', 'daily', '0.9'));
-pagesUrls.push(makeUrl('/travel/route', 'daily', '0.9'));
-for (const corridor of ['AE', 'SA', 'GB', 'CA', 'DE', 'QA', 'OM', 'US', 'TR']) {
-  pagesUrls.push(makeUrl(`/travel/PK/${corridor}`, 'daily', '0.85'));
-}
-
-pagesUrls.push(makeUrl('/startups', 'daily', '1.0'));
-for (const s of ['nexus-ai-writer', 'devflow-database-studio', 'taskpulse-workspace', 'rankpulse-backlink-monitor']) {
-  pagesUrls.push(makeUrl(`/startups/${s}`, 'daily', '0.9'));
-}
-
-pagesUrls.push(makeUrl('/guest-posts', 'daily', '1.0'));
-pagesUrls.push(makeUrl('/become-a-publisher', 'monthly', '0.8'));
-for (const p of ['tech-vision-journal', 'startup-builder-daily', 'seo-growth-digest']) {
-  pagesUrls.push(makeUrl(`/publishers/${p}`, 'daily', '0.9'));
-}
-
-pagesUrls.push(makeUrl('/seo', 'daily', '0.95'));
-pagesUrls.push(makeUrl('/seo-tools', 'daily', '0.9'));
-pagesUrls.push(makeUrl('/pricing', 'weekly', '0.9'));
-pagesUrls.push(makeUrl('/immigration', 'daily', '0.9'));
-pagesUrls.push(makeUrl('/cars', 'weekly', '0.9'));
-pagesUrls.push(makeUrl('/us', 'weekly', '0.85'));
-pagesUrls.push(makeUrl('/uk', 'weekly', '0.85'));
-pagesUrls.push(makeUrl('/ca', 'weekly', '0.85'));
-pagesUrls.push(makeUrl('/au', 'weekly', '0.85'));
-pagesUrls.push(makeUrl('/passport-photos', 'weekly', '0.85'));
-
-// Primary GSC target: one combined urlset at /sitemap.xml
+// Clean filtering: remove any item matching isNoindex
 const keep = (list) => list.filter((u) => !isNoindex(u.loc.slice(base.length) || '/'));
 toolsUrls.splice(0, toolsUrls.length, ...keep(toolsUrls));
 contentUrls.splice(0, contentUrls.length, ...keep(contentUrls));
@@ -305,11 +254,11 @@ pagesUrls.splice(0, pagesUrls.length, ...keep(pagesUrls));
 const allUrls = [...toolsUrls, ...contentUrls, ...pagesUrls];
 writeUrlset('sitemap.xml', allUrls);
 
-// Optional split files (organization / debugging; not required for GSC)
+// Optional split files
 writeUrlset('sitemap-tools.xml', toolsUrls);
 writeUrlset('sitemap-content.xml', contentUrls);
 writeUrlset('sitemap-pages.xml', pagesUrls);
 
 console.log(
-  `Wrote combined sitemap.xml (${allUrls.length} URLs) + 3 optional children: tools=${toolsUrls.length}, content=${contentUrls.length}, pages=${pagesUrls.length} (${tools.length} live tools, ${blog.length} blog posts)`
+  `Cleaned sitemap.xml generated: ${allUrls.length} high-quality URLs (tools=${toolsUrls.length}, content=${contentUrls.length}, pages=${pagesUrls.length}). Excluded thin shells and template duplicates.`
 );

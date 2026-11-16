@@ -114,14 +114,9 @@ function buildTitle(tool: ToolDefinition): string {
 }
 
 function buildDescription(tool: ToolDefinition): string {
-  const privacyHint =
-    tool.processingMode === 'client'
-      ? ' Works in your browser for privacy-sensitive workflows.'
-      : '';
-  return `Learn when to use ${tool.canonicalName}, follow clear steps, avoid common mistakes, and open the free ToolVerse utility when you are ready.${privacyHint}`.slice(
-    0,
-    160
-  );
+  const base = `Learn how to use ${tool.canonicalName} effectively with step-by-step instructions, best practices, and free browser tools on ToolVerse.`;
+  if (base.length <= 155) return base;
+  return `Step-by-step guide to ${tool.canonicalName} with instructions, best practices, and free private browser tools on ToolVerse.`;
 }
 
 function whenNotToUse(tool: ToolDefinition): string {

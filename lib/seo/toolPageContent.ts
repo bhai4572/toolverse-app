@@ -2326,6 +2326,7 @@ export const TOOL_PAGE_CONTENT: Record<string, ToolPageContent> = {
         heading: 'When compression helps',
         body: 'Email caps (often ~10MB), job portals, and GOV.UK / IRCC-style uploads reject large packs. Re-packing can trim bloat from exports and merges. We built this because upload-first compressors want your CV and bank statements on their servers — this one keeps bytes in browser memory for the session.',
       },
+
       {
         heading: 'Scanned photo PDFs',
         body: 'If your PDF is mostly photos, compress images first or rebuild with Images to PDF after shrinking photos — stream re-pack alone has limits. For form photo caps (20KB / 50KB), use Compress Image to Target Size, then rebuild the PDF.',
@@ -2348,6 +2349,156 @@ export const TOOL_PAGE_CONTENT: Record<string, ToolPageContent> = {
         question: 'Will this open a password-protected PDF?',
         answer: 'Encrypted PDFs usually need to be unlocked first in a PDF reader, then compressed.',
       },
+    ],
+  },
+
+  'compress-pdf-to-200kb': {
+    answerFirst:
+      'Compress PDF to 200KB optimizes documents for strict visa, immigration, and job portals (including UKVI, Canada IRCC, US CEAC, and VFS Global) directly in your browser without uploading files to any server.',
+    seoTitle: 'Compress PDF to 200KB Online Free (Visa & Portal Uploads) | ToolVerse',
+    seoDescription:
+      'Compress PDF to 200KB free online without uploading files. Perfect for visa applications, government portals, and university forms. Safe, private, and instant.',
+    sections: [
+      {
+        heading: 'Why Visa and Government Portals Require 200 KB',
+        body: 'Online visa systems like UKVI, Canada Express Entry (IRCC), US Department of State CEAC, and VFS Global process millions of applicant files each week. To prevent server bottlenecks, their upload pipelines strictly cap individual documents at 200 KB to 500 KB. Submitting an oversized file causes immediate form rejection. ToolVerse re-packs your PDF client-side so you pass portal size gates without third parties seeing your confidential documents.',
+      },
+      {
+        heading: 'Protecting Signatures, Stamps, and Passport MRZ Readability',
+        body: 'Crushing a PDF aggressively with low-quality cloud converters can blur official stamps, bank signatures, and passport machine-readable zones (MRZ lines), resulting in visa delays or visa officer rejections. Our browser engine re-packs internal object streams, strips bloated font subsets, and eliminates non-standard metadata while keeping text crisp and vector strokes sharp.',
+      },
+      {
+        heading: 'Honest Guide for Scanned Document Bundles',
+        body: 'If your PDF consists of heavy 300+ DPI color smartphone photos, stream optimization alone cannot compress 10 MB down to 200 KB without resolution adjustments. For heavy scanned bundles: 1) Convert smartphone photos to greyscale or crop borders first; 2) Split multi-page packs using PDF Split into single pages; or 3) Use our Compress Image to Target Size tool before merging.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'How do I compress a PDF to under 200 KB for a visa application?',
+        answer:
+          'Click Choose PDF, select your document, and ToolVerse will automatically re-pack object streams and strip extraneous metadata in your browser memory. Compare the resulting size and click Download. No files are transmitted to our servers.',
+      },
+      {
+        question: 'Will my bank statement or certificate stay clear and readable?',
+        answer:
+          'Yes. Unlike lossy converters that degrade text into blurry images, ToolVerse maintains original vector fonts, digital stamps, and text streams intact.',
+      },
+      {
+        question: 'What if my file is still larger than 200 KB after compression?',
+        answer:
+          'If the document is a scanned multi-page color image, split pages into individual files using PDF Split, or convert scans to black-and-white before combining.',
+      },
+    ],
+    relatedLinks: [
+      { href: '/tools/pdf-compress', label: 'General PDF Compressor' },
+      { href: '/tools/compress-pdf-to-100kb', label: 'Compress PDF to 100KB' },
+      { href: '/tools/pdf-split', label: 'Split PDF Pages' },
+      { href: '/tools/pdf-merge', label: 'Merge Application PDFs' },
+    ],
+    breadcrumbs: [
+      { name: 'Home', url: 'https://toolverse.baby/' },
+      { name: 'PDF Tools', url: 'https://toolverse.baby/category/pdf-document-tools' },
+      { name: 'Compress PDF to 200KB', url: 'https://toolverse.baby/tools/compress-pdf-to-200kb' },
+    ],
+  },
+
+  'compress-pdf-to-100kb': {
+    answerFirst:
+      'Compress PDF to 100KB reduces file weight to meet strict recruitment and government examination portal limits (UPSC, PPSC, FPSC, SSC) locally in your browser memory.',
+    seoTitle: 'Compress PDF to 100KB Online Free (Govt & Exam Portals) | ToolVerse',
+    seoDescription:
+      'Compress PDF to 100KB online for free without uploading. Meet strict government exam, job application, and marksheet upload limits privately in your browser.',
+    sections: [
+      {
+        heading: 'Meeting Strict 100 KB Portal Limits',
+        body: 'Public service commission portals, state recruitment boards, and government examination forms frequently mandate that certificates, domicile documents, and marksheets stay under 100 KB. Our 100KB tool is tuned specifically to meet these demanding boundaries.',
+      },
+      {
+        heading: 'Zero File Upload Privacy',
+        body: 'Educational certificates, national identity cards, and personal marksheets contain sensitive private data. ToolVerse processes your PDF 100% inside your browser using WebAssembly and client-side JavaScript — zero bytes are ever uploaded to cloud disks.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can I compress a multi-page PDF to 100 KB?',
+        answer:
+          'Single-page certificates and documents can easily reach 100 KB. For multi-page documents containing dense images, separate pages using PDF Split so each page uploads under the 100 KB limit.',
+      },
+      {
+        question: 'Are my educational certificates safe from being uploaded?',
+        answer:
+          'Completely safe. ToolVerse runs entirely in your local browser sandbox. Check your browser network tab — no document bytes leave your computer.',
+      },
+    ],
+    relatedLinks: [
+      { href: '/tools/compress-pdf-to-200kb', label: 'Compress PDF to 200KB' },
+      { href: '/tools/pdf-split', label: 'Split PDF Pages' },
+      { href: '/tools/compress-image-target-size', label: 'Compress Photo to 50KB' },
+    ],
+    breadcrumbs: [
+      { name: 'Home', url: 'https://toolverse.baby/' },
+      { name: 'PDF Tools', url: 'https://toolverse.baby/category/pdf-document-tools' },
+      { name: 'Compress PDF to 100KB', url: 'https://toolverse.baby/tools/compress-pdf-to-100kb' },
+    ],
+  },
+
+  'compress-pdf-to-300kb': {
+    answerFirst:
+      'Compress PDF to 300KB optimizes academic transcripts, portfolio summaries, and admission records for university and college portal uploads.',
+    seoTitle: 'Compress PDF to 300KB Online Free (College & Admissions) | ToolVerse',
+    seoDescription:
+      'Compress PDF to 300KB free online. Shrink college transcripts, admission packets, and scholarship applications without uploading files to external servers.',
+    sections: [
+      {
+        heading: 'Optimized for College and Scholarship Portals',
+        body: 'Many university portals set a 300 KB ceiling on academic transcripts, letters of recommendation, and statement of purpose documents. ToolVerse strips hidden application bloat while preserving legible typography.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'How do I compress my university transcript to 300 KB?',
+        answer:
+          'Select your transcript PDF. ToolVerse automatically compresses the file and validates the size under 300 KB for quick download.',
+      },
+    ],
+    relatedLinks: [
+      { href: '/tools/compress-pdf-to-200kb', label: 'Compress PDF to 200KB' },
+      { href: '/tools/pdf-merge', label: 'Merge Application PDFs' },
+    ],
+    breadcrumbs: [
+      { name: 'Home', url: 'https://toolverse.baby/' },
+      { name: 'PDF Tools', url: 'https://toolverse.baby/category/pdf-document-tools' },
+      { name: 'Compress PDF to 300KB', url: 'https://toolverse.baby/tools/compress-pdf-to-300kb' },
+    ],
+  },
+
+  'compress-pdf-to-500kb': {
+    answerFirst:
+      'Compress PDF to 500KB balances high-resolution document quality with compact file sizes for legal briefs, financial reports, and embassy submissions.',
+    seoTitle: 'Compress PDF to 500KB Online Free (Embassy & Legal Docs) | ToolVerse',
+    seoDescription:
+      'Compress PDF to 500KB online for free without uploading. Shrink contracts, tax records, and embassy documents with crisp text and vector quality.',
+    sections: [
+      {
+        heading: 'Ideal for Embassy Proof of Funds & Legal Contracts',
+        body: '500 KB is the sweet spot for multi-page financial statements, employment verification contracts, and legal affidavits. It provides enough headroom for multi-page documents while satisfying strict embassy upload limits.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Why choose 500 KB compression?',
+        answer:
+          '500 KB accommodates multi-page documents like tax returns and bank statements while staying well under common email and corporate portal attachment limits.',
+      },
+    ],
+    relatedLinks: [
+      { href: '/tools/compress-pdf-to-200kb', label: 'Compress PDF to 200KB' },
+      { href: '/tools/pdf-compress', label: 'Compress PDF (General)' },
+    ],
+    breadcrumbs: [
+      { name: 'Home', url: 'https://toolverse.baby/' },
+      { name: 'PDF Tools', url: 'https://toolverse.baby/category/pdf-document-tools' },
+      { name: 'Compress PDF to 500KB', url: 'https://toolverse.baby/tools/compress-pdf-to-500kb' },
     ],
   },
 

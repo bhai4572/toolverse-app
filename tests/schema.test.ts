@@ -229,11 +229,16 @@ describe('ToolVerse Advanced Schema.org & Structured Data Architecture', () => {
     expect(privacyPage).toBeDefined();
   });
 
-  it('keeps all guides, tools, and pages indexable for full SERP coverage', () => {
-    const guide = BLOG_POSTS.find((p) => p.isToolGuide);
-    expect(guide).toBeDefined();
-    const guideMeta = getMetadataForPath(`/blog/${guide!.slug}`);
-    expect(guideMeta.robots).toMatch(/index,\s*follow/i);
+  it('keeps high-value pillar guides, tools, and pages indexable while noindexing thin template how-tos', () => {
+    const pillar = BLOG_POSTS.find((p) => !p.isToolGuide);
+    expect(pillar).toBeDefined();
+    const pillarMeta = getMetadataForPath(`/blog/${pillar!.slug}`);
+    expect(pillarMeta.robots).toMatch(/index,\s*follow/i);
+
+    const toolGuide = BLOG_POSTS.find((p) => p.isToolGuide);
+    expect(toolGuide).toBeDefined();
+    const toolGuideMeta = getMetadataForPath(`/blog/${toolGuide!.slug}`);
+    expect(toolGuideMeta.robots).toMatch(/noindex/i);
 
     const toolMeta = getMetadataForPath('/tools/pdf-merge');
     expect(toolMeta.robots).toMatch(/index,\s*follow/i);

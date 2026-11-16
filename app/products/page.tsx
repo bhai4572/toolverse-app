@@ -3,6 +3,11 @@ import { getAllProducts, getAllCategories } from '@/lib/products/registry';
 import { Product, ProductCategory, PricingModel } from '@/lib/products/types';
 import { isUpvoted, toggleUpvote, saveCustomCategory } from '@/lib/products/storageEngine';
 import {
+  getProductPaymentRelationship,
+  getAllPaymentCountries,
+  getAllPaymentCurrencies,
+} from '@/lib/payments/database';
+import {
   Sparkles,
   ExternalLink,
   ThumbsUp,
@@ -23,6 +28,23 @@ export default function ProductDiscoveryHubPage() {
   const [selectedPricing, setSelectedPricing] = useState<string>('all');
   const [activeTab, setActiveTab] = useState<'all' | 'popular' | 'trending' | 'new' | 'featured'>('all');
 
+  // Phase 8: Combinable Payment & Billing Filters
+  const [selectedCountry, setSelectedCountry] = useState<string>('all');
+  const [selectedCurrency, setSelectedCurrency] = useState<string>('all');
+  const [paymentFilters, setPaymentFilters] = useState({
+    subscription: false,
+    stripe: false,
+    paypal: false,
+    applePay: false,
+    googlePay: false,
+    crypto: false,
+    bankTransfer: false,
+    localMethods: false,
+  });
+
+  const paymentCountries = getAllPaymentCountries();
+  const paymentCurrencies = getAllPaymentCurrencies();
+
   // Quick Add Category Modal / Inline Input
   const [showAddCategory, setShowAddCategory] = useState(false);
   const [newCatName, setNewCatName] = useState('');
@@ -35,9 +57,11 @@ export default function ProductDiscoveryHubPage() {
   useEffect(() => {
     loadData();
     window.addEventListener('toolverse_products_changed', loadData);
+    window.addEventListener('toolverse_payments_changed', loadData);
     window.addEventListener('storage', loadData);
     return () => {
       window.removeEventListener('toolverse_products_changed', loadData);
+      window.removeEventListener('toolverse_payments_changed', loadData);
       window.removeEventListener('storage', loadData);
     };
   }, []);
@@ -56,6 +80,24 @@ export default function ProductDiscoveryHubPage() {
     if (p.status !== 'approved') return false;
     if (selectedCategory !== 'all' && p.categorySlug !== selectedCategory) return false;
     if (selectedPricing !== 'all' && p.pricingModel !== selectedPricing) return false;
+
+    const payRel = getProductPaymentRelationship(p.slug);
+    const gateways = payRel?.acceptedGatewayIds || ['prv_stripe', 'prv_paypal'];
+    const methods = payRel?.acceptedMethodIds || ['pm_visa', 'pm_mastercard', 'pm_apple_pay', 'pm_google_pay'];
+    const currencies = payRel?.acceptedCurrencies || ['USD', 'EUR', 'GBP'];
+    const countries = payRel?.supportedBillingCountries || ['US', 'GB', 'CA', 'AU', 'DE', 'NL', 'FR', 'IN', 'PK'];
+
+    if (selectedCountry !== 'all' && !countries.includes(selectedCountry)) return false;
+    if (selectedCurrency !== 'all' && !currencies.includes(selectedCurrency)) return false;
+    if (paymentFilters.subscription && payRel && !payRel.subscriptionBillingSupported) return false;
+    if (paymentFilters.stripe && !gateways.includes('prv_stripe') && !gateways.includes('prv_stripe_billing')) return false;
+    if (paymentFilters.paypal && !gateways.includes('prv_paypal') && !methods.includes('pm_paypal_wallet')) return false;
+    if (paymentFilters.applePay && !methods.includes('pm_apple_pay')) return false;
+    if (paymentFilters.googlePay && !methods.includes('pm_google_pay')) return false;
+    if (paymentFilters.crypto && !payRel?.cryptoAccepted) return false;
+    if (paymentFilters.bankTransfer && !methods.some((m) => ['pm_ach', 'pm_sepa_debit', 'pm_sepa_credit', 'pm_wire_swift', 'pm_faster_payments'].includes(m))) return false;
+    if (paymentFilters.localMethods && !methods.some((m) => ['pm_ideal', 'pm_bancontact', 'pm_pix', 'pm_upi', 'pm_gcash', 'pm_jazzcash', 'pm_easypaisa', 'pm_blik'].includes(m))) return false;
+
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
       const match =
@@ -161,7 +203,70 @@ export default function ProductDiscoveryHubPage() {
               <option value="Free Trial">Free Trial</option>
               <option value="Open Source">Open Source</option>
             </select>
+
+            <select
+              aria-label="Filter Products by Billing Country"
+              value={selectedCountry}
+              onChange={(e) => setSelectedCountry(e.target.value)}
+              className="px-3 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-xs font-semibold focus:outline-none"
+            >
+              <option value="all">All Countries</option>
+              {paymentCountries.map((cnt) => (
+                <option key={cnt.code} value={cnt.code}>
+                  {cnt.flagEmoji} {cnt.name} ({cnt.code})
+                </option>
+              ))}
+            </select>
+
+            <select
+              aria-label="Filter Products by Currency"
+              value={selectedCurrency}
+              onChange={(e) => setSelectedCurrency(e.target.value)}
+              className="px-3 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-xs font-semibold focus:outline-none"
+            >
+              <option value="all">All Currencies</option>
+              {paymentCurrencies.map((cur) => (
+                <option key={cur.code} value={cur.code}>
+                  {cur.code} ({cur.symbol})
+                </option>
+              ))}
+            </select>
           </div>
+        </div>
+
+        {/* Phase 8: Combinable Payment Gateway & Checkout Method Filters */}
+        <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center gap-1.5 text-xs">
+          <span className="font-bold text-slate-500 mr-1">Payment Filter:</span>
+          {(
+            [
+              ['stripe', 'Accepts Stripe'],
+              ['paypal', 'Accepts PayPal'],
+              ['applePay', 'Apple Pay'],
+              ['googlePay', 'Google Pay'],
+              ['crypto', 'Accepts Crypto'],
+              ['bankTransfer', 'Bank Transfer / ACH / SEPA'],
+              ['localMethods', 'Local Payment Methods'],
+              ['subscription', 'Subscription Billing'],
+            ] as const
+          ).map(([key, label]) => {
+            const active = paymentFilters[key];
+            return (
+              <button
+                key={key}
+                type="button"
+                onClick={() =>
+                  setPaymentFilters((prev) => ({ ...prev, [key]: !prev[key] }))
+                }
+                className={`px-2.5 py-1 rounded-lg font-semibold border transition ${
+                  active
+                    ? 'bg-indigo-600 text-white border-indigo-600'
+                    : 'bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300'
+                }`}
+              >
+                {label}
+              </button>
+            );
+          })}
         </div>
 
         {/* Expand Category Modal / Drawer */}

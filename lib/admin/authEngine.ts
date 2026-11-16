@@ -97,7 +97,7 @@ export function logoutAdmin() {
 }
 
 /** RBAC Permission Guard */
-export function hasPermission(role: AdminRole, action: 'MANAGE_USERS' | 'MANAGE_VERIFICATION' | 'MANAGE_MODERATION' | 'MANAGE_CATEGORIES' | 'MANAGE_BIDDING' | 'VIEW_AUDIT'): boolean {
+export function hasPermission(role: AdminRole, action: 'MANAGE_USERS' | 'MANAGE_VERIFICATION' | 'MANAGE_MODERATION' | 'MANAGE_CATEGORIES' | 'MANAGE_BIDDING' | 'MANAGE_PAYMENTS' | 'VIEW_AUDIT'): boolean {
   if (role === 'SUPER_ADMIN') return true;
 
   switch (action) {
@@ -109,6 +109,8 @@ export function hasPermission(role: AdminRole, action: 'MANAGE_USERS' | 'MANAGE_
       return role === 'ADMIN';
     case 'MANAGE_BIDDING':
       return role === 'ADMIN';
+    case 'MANAGE_PAYMENTS':
+      return role === 'ADMIN' || role === 'VERIFICATION_REVIEWER';
     case 'VIEW_AUDIT':
       return role === 'ADMIN';
     default:

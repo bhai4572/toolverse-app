@@ -7,6 +7,29 @@ export async function onRequest(context) {
   const url = new URL(context.request.url);
   const rawPath = url.pathname;
 
+  // 0. Canonicalize www to apex domain and enforce HTTPS
+  if (url.hostname.startsWith('www.')) {
+    const apexHost = url.hostname.replace(/^www\./, '');
+    return new Response(null, {
+      status: 301,
+      headers: {
+        'Location': `https://${apexHost}${url.pathname}${url.search}`,
+        'Cache-Control': 'public, max-age=31536000, immutable',
+      },
+    });
+  }
+
+  const proto = context.request.headers.get('x-forwarded-proto') || url.protocol.replace(':', '');
+  if (proto === 'http') {
+    return new Response(null, {
+      status: 301,
+      headers: {
+        'Location': `https://${url.hostname}${url.pathname}${url.search}`,
+        'Cache-Control': 'public, max-age=31536000, immutable',
+      },
+    });
+  }
+
   // 1. Strict 301 Permanent Redirect for trailing slashes (except root)
   // Fixes Google Search Console "Alternate page with proper canonical tag"
   if (rawPath.length > 1 && rawPath.endsWith('/')) {
@@ -28,6 +51,7 @@ export async function onRequest(context) {
     '/seo-suite': '/seo',
     '/resume-builder': '/cv-maker',
     '/free-cv-maker': '/cv-maker',
+    '/tools/cv-maker': '/cv-maker',
     '/tools/resume-builder': '/tools/cv-maker',
     '/tools/free-cv-maker': '/tools/cv-maker',
     '/tools/email-finder': '/tools/b2b-email-finder',
@@ -98,6 +122,12 @@ export async function onRequest(context) {
 
   // Real static assets (js/css/img/xml) — do not HTML-fallback
   if (/\.[a-zA-Z0-9]{1,8}$/.test(pathname) && !pathname.endsWith('.html')) {
+    if (pathname.startsWith('/assets/')) {
+      const res = await context.next();
+      const headers = new Headers(res.headers);
+      headers.set('Cache-Control', 'public, max-age=31536000, immutable');
+      return new Response(res.body, { status: res.status, headers });
+    }
     return context.next();
   }
 
@@ -219,6 +249,8 @@ function isKnownSpaPath(pathname) {
     'seo-tools',
     'workspace',
     'cv-maker',
+    'phones',
+    'payment-methods',
     'pricing',
     'study',
     'immigration',

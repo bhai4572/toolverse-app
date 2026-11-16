@@ -9,7 +9,7 @@ export const LEGAL_PAGES: Record<string, { title: string; content: string }> = {
       <p class="text-xs text-slate-500 font-medium mb-4">Last Updated: October 20, 2026 | Effective Date: October 6, 2026</p>
 
       <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-6 mb-2">1. Privacy-First Client Architecture</h2>
-      <p class="leading-relaxed">At ToolVerse (accessible via https://toolverse.baby and https://toolverse-app.pages.dev), privacy is built directly into our application architecture. Over 90% of our online utilities (including PDF mergers, image compressors, format converters, text tools, and calculators) process your files 100% locally within your client browser memory using HTML5 Canvas, WebAssembly (WASM), and Web Crypto APIs. Your private files, documents, photos, and media are never transmitted, uploaded, or stored on external cloud servers for those client-side tools.</p>
+      <p class="leading-relaxed">At ToolVerse (accessible via https://toolverse.baby), privacy is built directly into our application architecture. Over 90% of our online utilities (including PDF mergers, image compressors, format converters, text tools, and calculators) process your files 100% locally within your client browser memory using HTML5 Canvas, WebAssembly (WASM), and Web Crypto APIs. Your private files, documents, photos, and media are never transmitted, uploaded, or stored on external cloud servers for those client-side tools.</p>
 
       <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-6 mb-2">2. Information We Collect</h2>
       <p class="leading-relaxed">We do not require user account registration, passwords, or personal profile creation for basic tool usage. We do not collect names, phone numbers, or credit card information for free tools. Technical server logs (such as IP addresses, browser user-agents, request timestamps, and rate-limiting counters) are processed automatically by our CDN provider (Cloudflare) for network stability, DDoS defense, and abuse prevention.</p>
@@ -100,7 +100,7 @@ export const LEGAL_PAGES: Record<string, { title: string; content: string }> = {
       <p class="leading-relaxed mt-3">We started ToolVerse because everyday converters and estimators were either (1) upload-first cloud products that treat documents as inventory, or (2) thin directory sites with broken buttons and identical AI blurbs. Our bet is simpler: ship tools that run, label limits honestly, and keep file processing in the browser whenever we can.</p>
 
       <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-6 mb-2">What we offer</h2>
-      <p class="leading-relaxed">88+ free utilities across PDFs, images, writing helpers, developer/SEO utilities, and regional finance estimates — plus curated hubs for study abroad, immigration checklists, cars cost planning, and a job finder that links out to employers. Most file tools process data in your browser with Canvas, WebAssembly, and Web Crypto.</p>
+      <p class="leading-relaxed">130+ free utilities across PDFs, images, writing helpers, developer/SEO utilities, and regional finance estimates — plus curated hubs for study abroad, immigration checklists, cars cost planning, and a job finder that links out to employers. Most file tools process data in your browser with Canvas, WebAssembly, and Web Crypto.</p>
 
       <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-6 mb-2">What we are not</h2>
       <ul class="list-disc pl-5 space-y-1 my-2">

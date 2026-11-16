@@ -9,6 +9,8 @@ const PRIMARY_NAV = [
   { href: '/tools', label: 'Tools' },
   { href: '/cv-maker', label: 'CV Maker' },
   { href: '/products', label: 'Products' },
+  { href: '/phones', label: 'Mobile Specs' },
+  { href: '/payment-methods', label: 'Payment Methods' },
   { href: '/leaderboard', label: 'Leaderboard' },
   { href: '/workspace', label: 'SEO Dashboard' },
   { href: '/study', label: 'Study Abroad' },

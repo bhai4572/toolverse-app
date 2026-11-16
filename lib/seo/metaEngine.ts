@@ -18,6 +18,18 @@ import {
   howToSlugShouldNoindex,
   pathShouldNoindex,
 } from '@/lib/seo/indexability';
+import {
+  getPaymentEntryByCategoryAndSlug,
+  getPaymentCategoryBySlug,
+  getPaymentCountryBySlugOrCode,
+} from '@/lib/payments/database';
+import { fitPaymentSeoTitle, fitPaymentMetaDescription } from '@/lib/payments/catalogHelpers';
+import {
+  getPhoneBySlug,
+  getPhoneBrandBySlug,
+  getPhoneCategoryBySlug,
+} from '@/lib/phones/database';
+import { fitPhoneSeoTitle, fitPhoneMetaDescription } from '@/lib/phones/catalogHelpers';
 
 export interface PageMetadata {
   title: string;
@@ -402,11 +414,12 @@ function buildMetadataForPath(pathname: string): PageMetadata {
     };
   }
 
-  // --- Free CV Maker & Resume Builder (/cv-maker, /resume-builder, /free-cv-maker) ---
+  // --- Free CV Maker & Resume Builder (/cv-maker, /resume-builder, /free-cv-maker, /tools/cv-maker) ---
   if (
     parts[0] === 'cv-maker' ||
     parts[0] === 'resume-builder' ||
-    parts[0] === 'free-cv-maker'
+    parts[0] === 'free-cv-maker' ||
+    (parts[0] === 'tools' && (parts[1] === 'cv-maker' || parts[1] === 'resume-builder' || parts[1] === 'free-cv-maker'))
   ) {
     const canonicalUrl = `${baseUrl}/cv-maker`;
     const title = 'Free CV Maker Online – Create Professional Resumes | Toolverse';
@@ -1763,7 +1776,21 @@ function buildMetadataForPath(pathname: string): PageMetadata {
       .join(' ');
     const pageTitle = `${formattedSlug} — ToolVerse`;
     const canonicalUrl = `${baseUrl}/legal/${slug}`;
-    const pageDesc = `Official ToolVerse ${slug.replace(/-/g, ' ')}. Learn more about our privacy-first policies, security, and editorial standards.`;
+    const LEGAL_DESCRIPTIONS: Record<string, string> = {
+      'privacy-policy': 'Learn how ToolVerse protects your privacy with client-side browser processing, zero document uploads, local storage controls, and cookie transparency.',
+      'terms-of-use': 'Review the terms, acceptable use guidelines, and conditions for using ToolVerse free online tools, calculators, and developer utilities.',
+      'about': 'Discover ToolVerse: 130+ free, privacy-first online tools for PDFs, image compression, CV building, calculators, and SEO running directly in your browser.',
+      'about-our-tools': 'Explore how ToolVerse builds in-browser utilities using HTML5 Canvas, WebAssembly, and Web Crypto APIs to process data locally without server uploads.',
+      'contact': 'Get in touch with the ToolVerse support team for feature requests, bug reports, partnership inquiries, and technical support.',
+      'cookie-policy': 'Understand how ToolVerse uses essential local storage and standard analytics cookies, with options to manage your tracking preferences.',
+      'disclaimer': 'Read our informational disclaimer regarding financial calculators, salary estimators, tax approximations, and academic planning tools.',
+      'dmca': 'Review ToolVerse DMCA copyright compliance, takedown notification procedures, and intellectual property dispute policies.',
+      'editorial-policy': 'Learn about our content standards, research methodology, data verification processes, and editorial independence guidelines.',
+      'security': 'Review ToolVerse browser-first security architecture, sandboxed execution model, HTTPS encryption, and zero file upload guarantees.',
+    };
+    const pageDesc =
+      LEGAL_DESCRIPTIONS[slug] ||
+      `Official ToolVerse ${slug.replace(/-/g, ' ')}. Learn more about our privacy-first policies, security, and editorial standards.`;
 
     let pageType = 'WebPage';
     let mainEntityId: string | undefined = undefined;
@@ -1805,6 +1832,192 @@ function buildMetadataForPath(pathname: string): PageMetadata {
       ogImage: DEFAULT_OG_IMAGE,
       jsonLd: wrapInGraph(graph),
     };
+  }
+
+  // Mobile Phones & Technical Specifications Directory (/phones/*)
+  if (parts[0] === 'phones') {
+    if (!parts[1]) {
+      const canonicalUrl = `${baseUrl}/phones`;
+      const title = 'Mobile Phone Specs & Prices in Pakistan | ToolVerse';
+      const description =
+        'Compare latest mobile phone prices in Pakistan (PKR & USD), full 13-category technical specs, 5G & PTA status, camera sensors, and battery specs.';
+      return {
+        title,
+        description,
+        keywords: [
+          'mobile phone prices in pakistan',
+          'mobile specifications directory',
+          'compare smartphones',
+          'pta approved phones pakistan',
+          '5g phones pkr price',
+        ],
+        canonicalUrl,
+        ogType: 'website',
+        ogImage: DEFAULT_OG_IMAGE,
+        robots: ROBOTS_INDEX,
+      };
+    }
+
+    if (parts[1] === 'compare') {
+      const canonicalUrl = `${baseUrl}/phones/compare`;
+      return {
+        title: 'Compare Mobile Phones Side by Side | ToolVerse',
+        description:
+          'Compare smartphone displays, processors, cameras, battery capacity, 5G bands, and PKR/USD retail prices side by side.',
+        canonicalUrl,
+        ogType: 'website',
+        ogImage: DEFAULT_OG_IMAGE,
+        robots: ROBOTS_INDEX,
+      };
+    }
+
+    if (parts[1] === 'brand' && parts[2]) {
+      const brand = getPhoneBrandBySlug(parts[2]);
+      if (brand) {
+        const canonicalUrl = `${baseUrl}/phones/brand/${brand.slug}`;
+        return {
+          title: fitPhoneSeoTitle(`${brand.name} Mobile Phones & Prices | ToolVerse`),
+          description: fitPhoneMetaDescription(
+            `Explore ${brand.name} smartphones, Pakistan PKR & USD prices, full technical specs, and PTA approval status.`
+          ),
+          canonicalUrl,
+          ogType: 'website',
+          ogImage: DEFAULT_OG_IMAGE,
+          robots: ROBOTS_INDEX,
+        };
+      }
+    }
+
+    if (parts[1] === 'category' && parts[2]) {
+      const cat = getPhoneCategoryBySlug(parts[2]);
+      if (cat) {
+        const canonicalUrl = `${baseUrl}/phones/category/${cat.slug}`;
+        return {
+          title: fitPhoneSeoTitle(`${cat.name} — Prices & Specs | ToolVerse`),
+          description: fitPhoneMetaDescription(cat.description),
+          canonicalUrl,
+          ogType: 'website',
+          ogImage: DEFAULT_OG_IMAGE,
+          robots: ROBOTS_INDEX,
+        };
+      }
+    }
+
+    const phone = getPhoneBySlug(parts[1]);
+    if (phone) {
+      return {
+        title: phone.seo.title,
+        description: phone.seo.description,
+        canonicalUrl: phone.seo.canonicalUrl,
+        ogType: 'product',
+        ogImage: DEFAULT_OG_IMAGE,
+        robots: phone.isArchived ? ROBOTS_NOINDEX : ROBOTS_INDEX,
+      };
+    }
+  }
+
+  // 100+ Payment Methods & Payment Gateways Directory (/payment-methods/*)
+  if (parts[0] === 'payment-methods') {
+    if (!parts[1]) {
+      const canonicalUrl = `${baseUrl}/payment-methods`;
+      const title = '115+ Payment Methods & Gateways Directory | ToolVerse';
+      const description =
+        'Compare 115+ payment gateways, digital wallets, bank transfer rails, card networks, BNPL, and crypto processors by country, currency, and fees.';
+      return {
+        title,
+        description,
+        keywords: [
+          'payment gateways directory',
+          'payment methods by country',
+          'stripe vs paypal vs adyen',
+          'international payment processors',
+          'crypto payment gateways',
+          'local payment methods',
+        ],
+        canonicalUrl,
+        ogType: 'website',
+        ogImage: DEFAULT_OG_IMAGE,
+        robots: ROBOTS_INDEX,
+        jsonLd: wrapInGraph([
+          buildOrganizationNode(),
+          buildWebSiteNode(),
+          buildWebPageNode({
+            canonicalUrl,
+            name: title,
+            description,
+            type: 'CollectionPage',
+            hasBreadcrumbs: true,
+          }),
+          buildBreadcrumbNode(canonicalUrl, [
+            { name: 'Home', url: `${baseUrl}/` },
+            { name: 'Payment Methods', url: canonicalUrl },
+          ]),
+        ]),
+      };
+    }
+
+    if (parts[1] === 'compare') {
+      const canonicalUrl = `${baseUrl}/payment-methods/compare`;
+      const title = 'Compare Payment Gateways & Processors | ToolVerse';
+      const description =
+        'Side-by-side comparison of global payment gateways, transaction fees, merchant countries, supported currencies, recurring billing, and payout speed.';
+      return {
+        title,
+        description,
+        canonicalUrl,
+        ogType: 'website',
+        ogImage: DEFAULT_OG_IMAGE,
+        robots: ROBOTS_INDEX,
+      };
+    }
+
+    if (parts[1] === 'countries' && parts[2]) {
+      const country = getPaymentCountryBySlugOrCode(parts[2]);
+      if (country) {
+        const canonicalUrl = `${baseUrl}/payment-methods/countries/${country.slug}`;
+        const title = fitPaymentSeoTitle(
+          `Payment Gateways & Methods in ${country.name} | ToolVerse`
+        );
+        const description = fitPaymentMetaDescription(
+          `Best payment gateways, local payment methods, digital wallets, bank rails, and supported currencies (${country.defaultCurrency}) in ${country.name}.`
+        );
+        return {
+          title,
+          description,
+          canonicalUrl,
+          ogType: 'website',
+          ogImage: DEFAULT_OG_IMAGE,
+          robots: ROBOTS_INDEX,
+        };
+      }
+    }
+
+    if (parts[1] && parts[2]) {
+      const entry = getPaymentEntryByCategoryAndSlug(parts[1], parts[2]);
+      if (entry) {
+        return {
+          title: fitPaymentSeoTitle(entry.seo.seoTitle),
+          description: fitPaymentMetaDescription(entry.seo.metaDescription),
+          canonicalUrl: entry.seo.canonicalUrl,
+          ogType: 'article',
+          ogImage: DEFAULT_OG_IMAGE,
+          robots: entry.seo.noindex ? ROBOTS_NOINDEX : ROBOTS_INDEX,
+        };
+      }
+    }
+
+    const cat = getPaymentCategoryBySlug(parts[1]);
+    if (cat) {
+      const canonicalUrl = `${baseUrl}/payment-methods/${cat.slug}`;
+      return {
+        title: fitPaymentSeoTitle(cat.seoTitle),
+        description: fitPaymentMetaDescription(cat.metaDescription),
+        canonicalUrl,
+        ogType: 'website',
+        ogImage: DEFAULT_OG_IMAGE,
+        robots: ROBOTS_INDEX,
+      };
+    }
   }
 
   // SEO Dashboard workspace (/workspace, /workspace/*, /seo-dashboard)

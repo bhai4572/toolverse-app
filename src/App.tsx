@@ -71,6 +71,11 @@ import PassportPhotosHubPage from '../app/passport-photos/page';
 import NewsHubPage from '../app/news/page';
 import HtmlSitemapPage from '../app/sitemap/page';
 import CvMakerPage from '../app/cv-maker/page';
+import PaymentDirectoryPage from '../app/payment-methods/page';
+import CountryPaymentPage from '../app/payment-methods/countries/[slug]/page';
+import PaymentDetailPage from '../app/payment-methods/[category]/[slug]/page';
+import MobilePhonesDirectoryPage from '../app/phones/page';
+import PhoneDetailPage from '../app/phones/[slug]/page';
 import NotFoundPage from '../app/not-found';
 
 import { Header } from '../components/Header';
@@ -266,6 +271,40 @@ export default function App() {
       parts[0] === 'free-cv-maker'
     ) {
       return <CvMakerPage />;
+    }
+
+    // 100+ Payment Methods & Payment Gateways Directory
+    if (parts[0] === 'payment-methods') {
+      if (!parts[1]) {
+        return <PaymentDirectoryPage />;
+      }
+      if (parts[1] === 'compare') {
+        return <PaymentDirectoryPage initialCompareMode={true} />;
+      }
+      if (parts[1] === 'countries' && parts[2]) {
+        return <CountryPaymentPage countrySlug={parts[2]} />;
+      }
+      if (parts[1] && parts[2]) {
+        return <PaymentDetailPage categorySlug={parts[1]} slug={parts[2]} />;
+      }
+      return <PaymentDirectoryPage initialCategorySlug={parts[1]} />;
+    }
+
+    // Mobile Phones & Technical Specifications Directory (/phones/*)
+    if (parts[0] === 'phones') {
+      if (!parts[1]) {
+        return <MobilePhonesDirectoryPage />;
+      }
+      if (parts[1] === 'compare') {
+        return <MobilePhonesDirectoryPage initialCompareMode={true} />;
+      }
+      if (parts[1] === 'brand' && parts[2]) {
+        return <MobilePhonesDirectoryPage initialBrandSlug={parts[2]} />;
+      }
+      if (parts[1] === 'category' && parts[2]) {
+        return <MobilePhonesDirectoryPage initialCategorySlug={parts[2]} />;
+      }
+      return <PhoneDetailPage slug={parts[1]} />;
     }
 
     if (parts[0] === 'dashboard') {

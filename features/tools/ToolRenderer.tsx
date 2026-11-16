@@ -1,28 +1,21 @@
 'use client';
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import { ToolDefinition } from '@/lib/tools/registry';
-import { ImageCompressorTool } from './ImageCompressorTool';
+import { Lock, Loader2 } from 'lucide-react';
+
+// Light / pure JS tools imported normally
 import { ImageResizerTool } from './ImageResizerTool';
-import { ImageConverterTool } from './ImageConverterTool';
 import { PassportPhotoMakerTool } from './PassportPhotoMakerTool';
-import { PdfMergeTool } from './PdfMergeTool';
-import { PdfSplitTool } from './PdfSplitTool';
-import { PdfCompressTool } from './PdfCompressTool';
-import { JpgToPdfTool } from './JpgToPdfTool';
-import { PdfRotateTool } from './PdfRotateTool';
 import { WordCounterTool } from './WordCounterTool';
 import { TextCaseConverterTool } from './TextCaseConverterTool';
 import { RemoveDuplicateLinesTool } from './RemoveDuplicateLinesTool';
 import { JsonFormatterTool } from './JsonFormatterTool';
-import { QrCodeGeneratorTool } from './QrCodeGeneratorTool';
-import { BarcodeGeneratorTool } from './BarcodeGeneratorTool';
 import { PasswordGeneratorTool } from './PasswordGeneratorTool';
 import { CalculatorTools } from './CalculatorTools';
 import { WesternFinanceTools } from './WesternFinanceTools';
 import { ZakatCalculatorTool } from './ZakatCalculatorTool';
 import { PakistanTaxTool } from './PakistanTaxTool';
-import { InvoiceGeneratorTool } from './InvoiceGeneratorTool';
 import { UrlShortenerTool } from './UrlShortenerTool';
 import { UtmBuilderTool } from './UtmBuilderTool';
 import { MetaTagGeneratorTool } from './MetaTagGeneratorTool';
@@ -36,11 +29,31 @@ import { AdvancedTools } from './AdvancedTools';
 import { JobFinderTool } from './JobTools';
 import { SeoTools } from './SeoTools';
 import { TrendingTools } from './TrendingTools';
-import { DocumentConversionTools } from './DocumentConversionTools';
 import { CarTools } from './CarTools';
 import { EmailFinderTool } from './EmailFinderTool';
-import CvMakerTool from './cv-builder/CvMakerTool';
-import { AlertTriangle, Lock } from 'lucide-react';
+
+// Heavy vendor bundles lazy-loaded on demand (Code-splitting: saves ~1.65 MB gzipped on all non-tool pages)
+const PdfMergeTool = React.lazy(() => import('./PdfMergeTool').then((m) => ({ default: m.PdfMergeTool })));
+const PdfSplitTool = React.lazy(() => import('./PdfSplitTool').then((m) => ({ default: m.PdfSplitTool })));
+const PdfCompressTool = React.lazy(() => import('./PdfCompressTool').then((m) => ({ default: m.PdfCompressTool })));
+const JpgToPdfTool = React.lazy(() => import('./JpgToPdfTool').then((m) => ({ default: m.JpgToPdfTool })));
+const PdfRotateTool = React.lazy(() => import('./PdfRotateTool').then((m) => ({ default: m.PdfRotateTool })));
+const InvoiceGeneratorTool = React.lazy(() => import('./InvoiceGeneratorTool').then((m) => ({ default: m.InvoiceGeneratorTool })));
+const DocumentConversionTools = React.lazy(() => import('./DocumentConversionTools').then((m) => ({ default: m.DocumentConversionTools })));
+const ImageConverterTool = React.lazy(() => import('./ImageConverterTool').then((m) => ({ default: m.ImageConverterTool })));
+const ImageCompressorTool = React.lazy(() => import('./ImageCompressorTool').then((m) => ({ default: m.ImageCompressorTool })));
+const CvMakerTool = React.lazy(() => import('./cv-builder/CvMakerTool'));
+const BarcodeGeneratorTool = React.lazy(() => import('./BarcodeGeneratorTool').then((m) => ({ default: m.BarcodeGeneratorTool })));
+const QrCodeGeneratorTool = React.lazy(() => import('./QrCodeGeneratorTool').then((m) => ({ default: m.QrCodeGeneratorTool })));
+
+function ToolLoadingFallback() {
+  return (
+    <div className="flex items-center justify-center p-12 text-slate-500 text-sm">
+      <Loader2 className="w-5 h-5 animate-spin mr-2 text-brand-600" />
+      <span>Loading tool engine…</span>
+    </div>
+  );
+}
 
 export function ToolRenderer({ tool }: { tool: ToolDefinition }) {
   if (tool.status === 'admin_configuration_required') {
@@ -67,6 +80,14 @@ export function ToolRenderer({ tool }: { tool: ToolDefinition }) {
     );
   }
 
+  return (
+    <Suspense fallback={<ToolLoadingFallback />}>
+      {renderToolContent(tool)}
+    </Suspense>
+  );
+}
+
+function renderToolContent(tool: ToolDefinition) {
   switch (tool.slug) {
     case 'image-compressor':
       return <ImageCompressorTool isTargetKbMode={false} />;
@@ -94,7 +115,15 @@ export function ToolRenderer({ tool }: { tool: ToolDefinition }) {
     case 'pdf-split':
       return <PdfSplitTool />;
     case 'pdf-compress':
-      return <PdfCompressTool />;
+      return <PdfCompressTool initialTargetKb={0} />;
+    case 'compress-pdf-to-200kb':
+      return <PdfCompressTool initialTargetKb={200} />;
+    case 'compress-pdf-to-100kb':
+      return <PdfCompressTool initialTargetKb={100} />;
+    case 'compress-pdf-to-300kb':
+      return <PdfCompressTool initialTargetKb={300} />;
+    case 'compress-pdf-to-500kb':
+      return <PdfCompressTool initialTargetKb={500} />;
     case 'jpg-to-pdf':
     case 'images-to-pdf':
       return <JpgToPdfTool />;
@@ -119,9 +148,8 @@ export function ToolRenderer({ tool }: { tool: ToolDefinition }) {
     case 'json-to-csv':
       return <JsonFormatterTool />;
     case 'qr-code-generator':
-      return <QrCodeGeneratorTool defaultMode="text" />;
     case 'wifi-qr-code-generator':
-      return <QrCodeGeneratorTool defaultMode="wifi" />;
+      return <QrCodeGeneratorTool />;
     case 'barcode-generator':
       return <BarcodeGeneratorTool />;
     case 'password-generator':
@@ -129,23 +157,23 @@ export function ToolRenderer({ tool }: { tool: ToolDefinition }) {
       return <PasswordGeneratorTool />;
     case 'percentage-calculator':
     case 'discount-calculator':
-    case 'profit-margin-calculator':
     case 'compound-interest-calculator':
     case 'emi-calculator':
-    case 'vat-gst-calculator':
     case 'age-calculator':
-    case 'gpa-calculator':
-      return <CalculatorTools tool={tool} />;
+    case 'loan-payoff-calculator':
+    case 'vat-gst-calculator':
     case 'tip-calculator':
+    case 'profit-margin-calculator':
+    case 'equation-solver':
+      return <CalculatorTools tool={tool} />;
     case 'us-sales-tax-calculator':
     case 'us-paycheck-calculator':
     case 'uk-take-home-pay-calculator':
     case 'canada-paycheque-calculator':
     case 'australia-pay-calculator':
-      return <WesternFinanceTools tool={tool} />;
     case 'car-loan-calculator':
     case 'fuel-trip-cost-calculator':
-      return <CarTools tool={tool} />;
+      return <WesternFinanceTools tool={tool} />;
     case 'zakat-calculator':
       return <ZakatCalculatorTool />;
     case 'pakistan-salary-tax-estimator':
@@ -159,33 +187,6 @@ export function ToolRenderer({ tool }: { tool: ToolDefinition }) {
       return <UtmBuilderTool />;
     case 'meta-tag-generator':
       return <MetaTagGeneratorTool />;
-    case 'seo-audit-analyzer':
-    case 'keyword-research-tool':
-    case 'backlink-checker-analyzer':
-    case 'serp-simulator':
-    case 'keyword-density-checker':
-    case 'robots-txt-generator':
-    case 'xml-sitemap-validator':
-    case 'schema-markup-generator':
-    case 'redirect-chain-checker':
-    case 'canonical-hreflang-generator':
-      return <SeoTools tool={tool} />;
-    case 'youtube-thumbnail-downloader':
-    case 'paypal-stripe-fee-calculator':
-    case 'freelancer-hourly-rate-calculator':
-    case 'crypto-profit-calculator':
-    case 'loan-payoff-calculator':
-    case 'chatgpt-prompt-generator':
-    case 'ai-sentence-humanizer':
-    case 'midjourney-prompt-builder':
-    case 'glassmorphism-css-generator':
-    case 'instagram-hashtag-generator':
-    case 'twitter-thread-splitter':
-    case 'srt-subtitle-cleaner':
-    case 'markdown-html-converter':
-    case 'curl-to-code-converter':
-    case 'svg-to-png-converter':
-      return <TrendingTools tool={tool} />;
     case 'adsense-revenue-calculator':
       return <AdsenseCalculatorTool />;
     case 'youtube-earnings-estimator':
@@ -196,8 +197,7 @@ export function ToolRenderer({ tool }: { tool: ToolDefinition }) {
       return <HashGeneratorTool />;
     case 'lorem-ipsum-generator':
       return <LoremIpsumTool />;
-
-    // Writing, Grammar & Academic Integrity Tools
+    case 'ai-sentence-humanizer':
     case 'readability-score':
     case 'repeated-word-finder':
     case 'duplicate-phrase-finder':
@@ -215,18 +215,10 @@ export function ToolRenderer({ tool }: { tool: ToolDefinition }) {
     case 'email-proofreading-checklist':
     case 'assignment-submission-checklist':
     case 'originality-checklist':
-    case 'grammar-checker':
-    case 'proofreader':
-    case 'paraphrasing-tool':
-    case 'natural-writing-rewriter':
-    case 'sentence-improver':
-    case 'writing-pattern-indicator':
-    case 'web-similarity-checker':
-    case 'academic-plagiarism-checker':
       return <WritingTools tool={tool} />;
-
-    // Advanced Math, Science, Dev, E-Commerce & Regional Utilities
-    case 'equation-solver':
+    case 'paypal-stripe-fee-calculator':
+    case 'freelancer-hourly-rate-calculator':
+    case 'crypto-profit-calculator':
     case 'matrix-vector-calculator':
     case 'unit-converter-suite':
     case 'target-cgpa-calculator':
@@ -249,20 +241,16 @@ export function ToolRenderer({ tool }: { tool: ToolDefinition }) {
     case 'pakistan-electricity-bill-estimator':
     case 'solar-panel-calculator':
       return <AdvancedTools tool={tool} />;
-
     case 'global-job-finder':
       return <JobFinderTool />;
-
     case 'b2b-email-finder':
     case 'email-finder':
     case 'email-scraper':
       return <EmailFinderTool />;
-
     case 'cv-maker':
     case 'resume-builder':
     case 'free-cv-maker':
       return <CvMakerTool />;
-
     default:
       return <ImageCompressorTool />;
   }

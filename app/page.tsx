@@ -113,7 +113,7 @@ export default function HomePage() {
             </span>
           </div>
           <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-[1.1]">
-            Free tools that stay on your device.
+            Free Privacy-First Online Tools for PDFs, Images &amp; Documents
           </h1>
           <p className="text-slate-300 text-sm sm:text-base max-w-xl leading-relaxed">
             Merge PDFs, hit exact image size caps, build an ATS-ready CV, or estimate US/UK/CA/AU take-home pay without creating an

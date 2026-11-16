@@ -8,25 +8,15 @@
 
 /**
  * When true: content-first layout for AdSense review.
- * - Monetag push + vignette disabled (overlays look like ad farms to reviewers)
- * - Callsites should keep ~2–3 display units per page (header + one in-content + footer)
- * Flip to false only after AdSense is approved and you re-introduce density carefully.
+ * - All intrusive push, vignette, and overlay networks permanently disabled.
+ * - AdSense compliance: clean, unobtrusive layout.
  */
 export const ADSENSE_REVIEW_MODE = true;
 
-/** Monetag In-Page Push — public pages via AdGlobals (skipped when ADSENSE_REVIEW_MODE) */
-export const MONETAG_PUSH_ZONE = '11986841';
-
-/** Monetag Vignette zone ID (12140232) */
-export const MONETAG_VIGNETTE_ZONE = '12140232';
-
-/**
- * Enable Monetag Vignette specifically when users open the Jobs section or a shared job link.
- * Fires once per session.
- */
-export const MONETAG_JOB_VIGNETTE_ENABLED = true;
-
-/** Monetag display/banner zone ID — leave empty until pasted from Monetag dashboard */
+/** Monetag zones completely disabled for AdSense compliance */
+export const MONETAG_PUSH_ZONE = '';
+export const MONETAG_VIGNETTE_ZONE = '';
+export const MONETAG_JOB_VIGNETTE_ENABLED = false;
 export const MONETAG_BANNER_ZONE = '';
 
 export const ADSTERRA_SMART_LINK =

@@ -6,6 +6,14 @@ import { getAllCategories, getAllProducts } from '@/lib/products/registry';
 import { PricingModel, TargetPlatform, Product, ProductCategory } from '@/lib/products/types';
 import { saveCustomProduct, saveCustomCategory } from '@/lib/products/storageEngine';
 import {
+  getAllPaymentProviders,
+  getAllPaymentMethods,
+  getAllPaymentCurrencies,
+  getAllPaymentCountries,
+  saveProductPaymentRelationship,
+} from '@/lib/payments/database';
+import { CryptoNetworkName } from '@/lib/payments/types';
+import {
   Sparkles,
   ShieldCheck,
   CheckCircle2,
@@ -52,6 +60,33 @@ export default function ProductSubmissionPage() {
     founderName: '',
     contactEmail: '',
   });
+
+  // Phase 7: 15-Field Payment & Pricing Information State (Relational IDs from lib/payments/database.ts)
+  const paymentProviders = useMemo(() => getAllPaymentProviders(), []);
+  const paymentMethods = useMemo(() => getAllPaymentMethods(), []);
+  const paymentCurrencies = useMemo(() => getAllPaymentCurrencies(), []);
+  const paymentCountries = useMemo(() => getAllPaymentCountries(), []);
+
+  const [paymentData, setPaymentData] = useState({
+    pricingModel: 'Freemium' as 'Free' | 'Freemium' | 'Paid' | 'Subscription' | 'One-Time Purchase' | 'Custom / Contact Sales' | 'Open Source',
+    freePlanAvailable: true,
+    freeTrialAvailable: true,
+    startingPrice: '0',
+    billingCurrency: 'USD',
+    billingFrequency: ['Monthly', 'Annual'] as ('Monthly' | 'Annual' | 'One-Time' | 'Usage-Based' | 'Custom')[],
+    acceptedGatewayIds: ['prv_stripe', 'prv_paypal'] as string[],
+    acceptedMethodIds: ['pm_visa', 'pm_mastercard', 'pm_apple_pay', 'pm_google_pay'] as string[],
+    acceptedCurrencies: ['USD', 'EUR', 'GBP'] as string[],
+    cryptoAccepted: false,
+    acceptedCryptoNetworks: [] as CryptoNetworkName[],
+    subscriptionBillingSupported: true,
+    oneTimePurchaseSupported: true,
+    refundPolicyUrl: '',
+    supportedBillingCountries: ['US', 'GB', 'CA', 'AU', 'DE', 'NL', 'FR', 'PK', 'IN'] as string[],
+  });
+
+  const toggleArrayItem = <T extends string>(arr: T[], value: T): T[] =>
+    arr.includes(value) ? arr.filter((v) => v !== value) : [...arr, value];
 
   // Custom Category State
   const [isCustomCategory, setIsCustomCategory] = useState(false);
@@ -113,6 +148,29 @@ export default function ProductSubmissionPage() {
       companyName: formData.companyName.trim(),
       founderName: formData.founderName.trim(),
       contactEmail: formData.contactEmail.trim(),
+    });
+
+    // Save structured relational payment & pricing metadata (Entity J)
+    saveProductPaymentRelationship({
+      productId: newProd.id,
+      productSlug: newProd.slug,
+      pricingModel: paymentData.pricingModel,
+      freePlanAvailable: paymentData.freePlanAvailable,
+      freeTrialAvailable: paymentData.freeTrialAvailable,
+      startingPrice: paymentData.startingPrice.trim() || '0',
+      billingCurrency: paymentData.billingCurrency,
+      billingFrequency: paymentData.billingFrequency,
+      acceptedGatewayIds: paymentData.acceptedGatewayIds,
+      acceptedMethodIds: paymentData.acceptedMethodIds,
+      acceptedCurrencies: paymentData.acceptedCurrencies,
+      cryptoAccepted: paymentData.cryptoAccepted,
+      acceptedCryptoNetworks: paymentData.acceptedCryptoNetworks,
+      subscriptionBillingSupported: paymentData.subscriptionBillingSupported,
+      oneTimePurchaseSupported: paymentData.oneTimePurchaseSupported,
+      refundPolicyUrl: paymentData.refundPolicyUrl.trim() || undefined,
+      supportedBillingCountries: paymentData.supportedBillingCountries,
+      verificationStatus: 'User Submitted — Pending Review',
+      lastVerifiedDate: new Date().toISOString().split('T')[0],
     });
 
     setCreatedProduct(newProd);
@@ -416,6 +474,352 @@ export default function ProductSubmissionPage() {
                   onChange={(e) => setFormData({ ...formData, contactEmail: e.target.value })}
                   className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-slate-900 dark:text-white"
                 />
+              </div>
+            </div>
+
+            {/* ========================================================================= */}
+            {/* PHASE 7: 15-FIELD PAYMENT & PRICING INFORMATION (RELATIONAL SELECTION) */}
+            {/* ========================================================================= */}
+            <div className="pt-5 border-t border-slate-200 dark:border-slate-800 space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-sm font-extrabold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+                    Payment &amp; Pricing Information (Connected to Payment Directory)
+                  </h3>
+                  <p className="text-[11px] text-slate-500">
+                    Select the payment gateways, checkout methods, currencies, and billing countries your product supports.
+                  </p>
+                </div>
+                <a
+                  href="/payment-methods"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[11px] font-bold text-indigo-600 hover:underline"
+                >
+                  Browse 115+ Payment Methods ↗
+                </a>
+              </div>
+
+              {/* Fields 1–6: Pricing Model, Free Plan, Free Trial, Starting Price, Billing Currency, Billing Frequency */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">
+                    1. Detailed Pricing Model
+                  </label>
+                  <select
+                    value={paymentData.pricingModel}
+                    onChange={(e) =>
+                      setPaymentData({ ...paymentData, pricingModel: e.target.value as any })
+                    }
+                    className="w-full p-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-semibold"
+                  >
+                    <option value="Free">Free</option>
+                    <option value="Freemium">Freemium</option>
+                    <option value="Paid">Paid</option>
+                    <option value="Subscription">Subscription</option>
+                    <option value="One-Time Purchase">One-Time Purchase</option>
+                    <option value="Custom / Contact Sales">Custom / Contact Sales</option>
+                    <option value="Open Source">Open Source</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">
+                    4. Starting Price
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. 0, 9.99, 29"
+                    value={paymentData.startingPrice}
+                    onChange={(e) =>
+                      setPaymentData({ ...paymentData, startingPrice: e.target.value })
+                    }
+                    className="w-full p-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">
+                    5. Primary Billing Currency
+                  </label>
+                  <select
+                    value={paymentData.billingCurrency}
+                    onChange={(e) =>
+                      setPaymentData({ ...paymentData, billingCurrency: e.target.value })
+                    }
+                    className="w-full p-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-semibold"
+                  >
+                    {paymentCurrencies.map((c) => (
+                      <option key={c.code} value={c.code}>
+                        {c.code} ({c.symbol}) — {c.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {/* Toggles: 2. Free Plan, 3. Free Trial, 12. Subscription Billing, 13. One-Time Purchase, 10. Crypto Accepted */}
+              <div className="flex flex-wrap gap-3 pt-1">
+                {(
+                  [
+                    ['freePlanAvailable', '2. Free Plan Available'],
+                    ['freeTrialAvailable', '3. Free Trial Available'],
+                    ['subscriptionBillingSupported', '12. Subscription Billing'],
+                    ['oneTimePurchaseSupported', '13. One-Time Purchase'],
+                    ['cryptoAccepted', '10. Cryptocurrency Accepted'],
+                  ] as const
+                ).map(([field, label]) => (
+                  <label
+                    key={field}
+                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 cursor-pointer"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={Boolean(paymentData[field])}
+                      onChange={(e) =>
+                        setPaymentData({ ...paymentData, [field]: e.target.checked })
+                      }
+                      className="rounded text-indigo-600"
+                    />
+                    <span className="font-semibold text-slate-700 dark:text-slate-200">
+                      {label}
+                    </span>
+                  </label>
+                ))}
+              </div>
+
+              {/* 6. Billing Frequency */}
+              <div>
+                <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+                  6. Supported Billing Frequencies
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {(['Monthly', 'Annual', 'One-Time', 'Usage-Based', 'Custom'] as const).map((freq) => {
+                    const active = paymentData.billingFrequency.includes(freq);
+                    return (
+                      <button
+                        key={freq}
+                        type="button"
+                        onClick={() =>
+                          setPaymentData({
+                            ...paymentData,
+                            billingFrequency: toggleArrayItem(paymentData.billingFrequency, freq),
+                          })
+                        }
+                        className={`px-3 py-1 rounded-lg font-semibold border transition ${
+                          active
+                            ? 'bg-indigo-600 text-white border-indigo-600'
+                            : 'bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700'
+                        }`}
+                      >
+                        {freq}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* 7. Accepted Payment Gateways / Processors */}
+              <div>
+                <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+                  7. Accepted Payment Gateways / Processors ({paymentData.acceptedGatewayIds.length} selected)
+                </label>
+                <div className="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+                  {paymentProviders.map((prov) => {
+                    const active = paymentData.acceptedGatewayIds.includes(prov.id);
+                    return (
+                      <button
+                        key={prov.id}
+                        type="button"
+                        onClick={() =>
+                          setPaymentData({
+                            ...paymentData,
+                            acceptedGatewayIds: toggleArrayItem(
+                              paymentData.acceptedGatewayIds,
+                              prov.id
+                            ),
+                          })
+                        }
+                        className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold border transition ${
+                          active
+                            ? 'bg-indigo-600 text-white border-indigo-600'
+                            : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700'
+                        }`}
+                      >
+                        {prov.brandName}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* 8. Accepted Payment Methods */}
+              <div>
+                <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+                  8. Accepted Customer Payment Methods ({paymentData.acceptedMethodIds.length} selected)
+                </label>
+                <div className="flex flex-wrap gap-1.5 max-h-36 overflow-y-auto p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+                  {paymentMethods
+                    .filter((m) => m.operationalStatus !== 'Discontinued')
+                    .map((method) => {
+                      const active = paymentData.acceptedMethodIds.includes(method.id);
+                      return (
+                        <button
+                          key={method.id}
+                          type="button"
+                          onClick={() =>
+                            setPaymentData({
+                              ...paymentData,
+                              acceptedMethodIds: toggleArrayItem(
+                                paymentData.acceptedMethodIds,
+                                method.id
+                              ),
+                            })
+                          }
+                          className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold border transition ${
+                            active
+                              ? 'bg-emerald-600 text-white border-emerald-600'
+                              : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700'
+                          }`}
+                        >
+                          {method.brandName}
+                        </button>
+                      );
+                    })}
+                </div>
+              </div>
+
+              {/* 9. Accepted Currencies & 15. Supported Billing Countries */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">
+                    9. Accepted Currencies ({paymentData.acceptedCurrencies.length})
+                  </label>
+                  <div className="flex flex-wrap gap-1 max-h-28 overflow-y-auto p-2 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+                    {paymentCurrencies.map((cur) => {
+                      const active = paymentData.acceptedCurrencies.includes(cur.code);
+                      return (
+                        <button
+                          key={cur.code}
+                          type="button"
+                          onClick={() =>
+                            setPaymentData({
+                              ...paymentData,
+                              acceptedCurrencies: toggleArrayItem(
+                                paymentData.acceptedCurrencies,
+                                cur.code
+                              ),
+                            })
+                          }
+                          className={`px-2 py-0.5 rounded text-[11px] font-bold border ${
+                            active
+                              ? 'bg-indigo-600 text-white border-indigo-600'
+                              : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700'
+                          }`}
+                        >
+                          {cur.code}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">
+                    15. Supported Billing Countries ({paymentData.supportedBillingCountries.length})
+                  </label>
+                  <div className="flex flex-wrap gap-1 max-h-28 overflow-y-auto p-2 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+                    {paymentCountries.map((cnt) => {
+                      const active = paymentData.supportedBillingCountries.includes(cnt.code);
+                      return (
+                        <button
+                          key={cnt.code}
+                          type="button"
+                          onClick={() =>
+                            setPaymentData({
+                              ...paymentData,
+                              supportedBillingCountries: toggleArrayItem(
+                                paymentData.supportedBillingCountries,
+                                cnt.code
+                              ),
+                            })
+                          }
+                          className={`px-2 py-0.5 rounded text-[11px] font-semibold border ${
+                            active
+                              ? 'bg-indigo-600 text-white border-indigo-600'
+                              : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700'
+                          }`}
+                        >
+                          {cnt.flagEmoji} {cnt.code}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+
+              {/* 11. Accepted Crypto Networks (Conditional) & 14. Refund Policy URL */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {paymentData.cryptoAccepted && (
+                  <div>
+                    <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">
+                      11. Accepted Crypto Blockchain Networks
+                    </label>
+                    <div className="flex flex-wrap gap-1 p-2 rounded-xl bg-amber-500/10 border border-amber-500/30">
+                      {(
+                        [
+                          'Bitcoin Mainnet',
+                          'Bitcoin Lightning Network',
+                          'Ethereum (ERC-20)',
+                          'Solana (SPL)',
+                          'Base',
+                          'Polygon',
+                          'TRON (TRC-20)',
+                          'Arbitrum One',
+                        ] as CryptoNetworkName[]
+                      ).map((net) => {
+                        const active = paymentData.acceptedCryptoNetworks.includes(net);
+                        return (
+                          <button
+                            key={net}
+                            type="button"
+                            onClick={() =>
+                              setPaymentData({
+                                ...paymentData,
+                                acceptedCryptoNetworks: toggleArrayItem(
+                                  paymentData.acceptedCryptoNetworks,
+                                  net
+                                ),
+                              })
+                            }
+                            className={`px-2 py-0.5 rounded text-[10px] font-bold border ${
+                              active
+                                ? 'bg-amber-500 text-slate-950 border-amber-500'
+                                : 'bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700'
+                            }`}
+                          >
+                            {net}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                <div className={paymentData.cryptoAccepted ? '' : 'sm:col-span-2'}>
+                  <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">
+                    14. Refund Policy URL (Optional)
+                  </label>
+                  <input
+                    type="url"
+                    placeholder="https://example.com/refund-policy"
+                    value={paymentData.refundPolicyUrl}
+                    onChange={(e) =>
+                      setPaymentData({ ...paymentData, refundPolicyUrl: e.target.value })
+                    }
+                    className="w-full p-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl"
+                  />
+                </div>
               </div>
             </div>
 

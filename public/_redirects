@@ -2,3 +2,10 @@
 # Do NOT use "/* /index.html 200" here — it can overwrite sitemap.xml,
 # robots.txt, and prerendered dist/*/index.html shells.
 # SPA fallback lives in functions/_middleware.js (ASSETS first, then index.html).
+
+# 301 CV Maker aliases to canonical /cv-maker
+/tools/cv-maker /cv-maker 301
+/resume-builder /cv-maker 301
+/free-cv-maker /cv-maker 301
+/tools/resume-builder /cv-maker 301
+/tools/free-cv-maker /cv-maker 301

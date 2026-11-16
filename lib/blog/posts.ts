@@ -13,6 +13,125 @@ export { CARS_BLOG_POSTS } from './carsPosts';
 /** Hand-written pillar / cluster posts (unique research angles). */
 const PILLAR_POSTS: BlogPost[] = [
   {
+    slug: 'compress-pdf-for-visa-immigration-portal-guide',
+    title: 'How to Compress a PDF to 200 KB for Visa & Immigration Portals',
+    description: 'Step-by-step guide to compressing PDF visa documents to under 200 KB for UKVI, IRCC, CEAC, and VFS Global portals while preserving crisp signatures and stamps.',
+    category: 'Image & PDF Tools',
+    author: 'Immigration & Document Specialist',
+    publishDate: '2026-11-16',
+    readTimeMinutes: 7,
+    featuredImage: 'https://images.unsplash.com/photo-1544396821-4dd40101eef6?auto=format&fit=crop&w=1200&q=80',
+    keywords: [
+      'compress pdf to 200kb for visa application',
+      'compress pdf for government portal',
+      'ukvi pdf size limit',
+      'ircc 4mb limit pdf compression'
+    ],
+    relatedToolSlug: 'compress-pdf-to-200kb',
+    faqs: [
+      {
+        question: 'Why do visa portals enforce 200 KB or 500 KB limits?',
+        answer: 'Consular databases process millions of applications monthly. Enforcing file limits prevents server timeouts and ensures automated document review pipelines run smoothly.'
+      },
+      {
+        question: 'How do I keep my passport MRZ line and stamps readable?',
+        answer: 'Use stream re-packing rather than lossy downscaling. ToolVerse optimizes internal font and vector streams in your browser memory so text remains razor-sharp.'
+      }
+    ],
+    contentMarkdown: `
+# How to Compress a PDF to 200 KB for Visa & Immigration Portals
+
+When applying for a visa through **UKVI (UK Visas & Immigration)**, **Canada IRCC (Express Entry)**, **US CEAC**, or **VFS Global**, you will inevitably hit strict file size caps. While some portals allow up to 2 MB or 4 MB, many specific sub-categories and visa application forms mandate individual document sizes **under 200 KB to 500 KB**.
+
+Uploading an oversized file triggers immediate submission errors, while crushing the file with low-quality cloud converters can render official stamps, bank seals, and signatures illegible.
+
+---
+
+## 1. Official File Size Limits Across Major Visa Portals
+
+- **UKVI (GOV.UK):** 5 MB maximum overall, but official guidelines strongly advise 200 KB to 500 KB per payslip or certificate for fast validation.
+- **Canada IRCC:** 4 MB maximum per upload field. Passports and multi-page bank statements must fit within this single slot.
+- **US CEAC (DS-260 / Immigrant Visas):** Strict 2 MB limit per document, with black-and-white 300 DPI recommended.
+- **VFS Global & TLScontact:** 2 MB to 5 MB per supporting document.
+
+---
+
+## 2. Why Text and Signatures Get Blurry (And How to Prevent It)
+
+Most online compressors turn your PDF pages into low-resolution JPEG images. While this reduces file weight, it destroys machine-readable zones (MRZ) on passports and turns bank statement tables into unreadable fuzz.
+
+**The Solution:** Use ToolVerse's [Compress PDF to 200KB](/tools/compress-pdf-to-200kb). It strips redundant metadata, deduplicates font subsets, and compresses object streams client-side using WebAssembly. Vector text remains 100% crisp, even at extreme zoom levels.
+
+---
+
+## 3. Step-by-Step Workflow for Visa Document Bundles
+
+1. **Scan at Greyscale 200–300 DPI:** Avoid 600 DPI full-color scans for simple black-and-white letters or bank statements.
+2. **Combine Related Files:** Merge employment contracts and payslips into a single PDF with [PDF Merge](/tools/pdf-merge).
+3. **Re-pack to 200 KB:** Pass the file through [Compress PDF to 200KB](/tools/compress-pdf-to-200kb).
+4. **Inspect the Result:** Confirm that all names, dates, and account numbers are easily legible before submitting to your visa portal.
+`
+  },
+  {
+    slug: 'us-uk-schengen-passport-photo-dimensions-guide',
+    title: 'US 2x2 vs UK/Schengen 35x45 mm Passport Photo Guide (Pixels, DPI & KB Caps)',
+    description: 'Detailed biometric specifications, exact pixel dimensions at 300 DPI, background rules, and KB limits for US, UK, Schengen, and Canada passport photos.',
+    category: 'Image & PDF Tools',
+    author: 'Biometric Standards Researcher',
+    publishDate: '2026-11-16',
+    readTimeMinutes: 6,
+    featuredImage: 'https://images.unsplash.com/photo-1542744094-3a31b272c490?auto=format&fit=crop&w=1200&q=80',
+    keywords: [
+      '35x45 mm passport photo in pixels',
+      '2x2 inch passport photo maker',
+      'schengen visa photo size',
+      'passport photo under 50kb'
+    ],
+    relatedToolSlug: 'passport-photo-maker',
+    faqs: [
+      {
+        question: 'What is 35x45 mm in pixels?',
+        answer: 'At standard 300 DPI printing resolution, 35x45 mm translates to exactly 413 pixels wide by 531 pixels high.'
+      },
+      {
+        question: 'Can I wear glasses in a US passport photo?',
+        answer: 'No. Eyeglasses are strictly prohibited in US passport photos under Department of State regulations.'
+      }
+    ],
+    contentMarkdown: `
+# US 2x2 vs UK/Schengen 35x45 mm Passport Photo Guide (Pixels, DPI & KB Caps)
+
+Taking your passport or visa photo at home can save time and money, but passport agencies reject thousands of applications each week due to minor sizing errors, incorrect head ratios, or invalid background colors.
+
+---
+
+## 1. Quick Dimension Reference
+
+| Standard | Physical Size | Pixels @ 300 DPI | Background | Online Size Limit |
+| --- | --- | --- | --- | --- |
+| **United States** | 2 × 2 inches (51 × 51 mm) | 600 × 600 px | Plain White | ≤ 240 KB |
+| **UK / Schengen** | 35 × 45 mm | 413 × 531 px | Light Grey / Cream | 50 KB – 10 MB |
+| **Canada** | 50 × 70 mm | 590 × 826 px | White / Light | ≤ 4 MB |
+| **Exam Portals** | 3.5 × 4.5 cm | 413 × 531 px | White / Light Blue | 20 KB – 50 KB |
+
+---
+
+## 2. Key Facial Composition Rules
+
+- **US 2×2 Inch:** Your head (from bottom of chin to top of hair) must be between 1 inch and 1 3/8 inches (25 mm to 35 mm). Eyes must be between 1 1/8 and 1 3/8 inches from the bottom of the photo.
+- **UK / Schengen 35×45 mm:** The head must measure between 32 mm and 36 mm (occupying 70% to 80% of the total frame).
+- **Facial Expression:** Neutral expression, mouth closed, both ears visible or unobstructed by hair, and shoulders squared to the camera.
+
+---
+
+## 3. How to Size and Compress in Your Browser
+
+1. Use ToolVerse's [Passport Photo Maker](/tools/passport-photo-maker) to crop your photo to the exact aspect ratio.
+2. If uploading to a government portal with strict 50 KB or 20 KB limits, use [Compress Image to Target Size](/tools/compress-image-target-size) to lock in the exact KB weight.
+3. Your photo is processed entirely within your browser memory — biometric facial data is never transmitted to our servers.
+`
+  },
+  {
     slug: 'best-free-privacy-first-online-tools-2026',
     title: 'Best Free Privacy-First Online Tools in 2026 (No Signup, No File Uploads)',
     description:
@@ -593,8 +712,8 @@ Rather than calculating manual percentages, use the [Pakistan Salary Tax Estimat
   },
   {
     slug: 'how-to-merge-pdf-files-privately-without-uploading',
-    title: 'How to Merge PDF Files Privately Online (Zero File Server Uploads)',
-    description: 'Combine multiple PDF documents into a single file quickly and securely. Learn how browser-side WebAssembly technology ensures your sensitive documents never touch external cloud servers.',
+    title: 'Merge PDF Files Privately Online (No Uploads)',
+    description: 'Combine multiple PDF files securely in your browser. Learn how client-side WebAssembly ensures your sensitive documents never touch external cloud servers.',
     category: 'Image & PDF Tools',
     author: 'Security & Privacy Analyst',
     publishDate: '2026-10-06',
