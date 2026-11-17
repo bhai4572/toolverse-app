@@ -1,76 +1,76 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import HomePage from '../app/page';
 import ToolPage from '../app/tools/[slug]/page';
 import CategoryPage from '../app/category/[slug]/page';
 import LegalPage from '../app/legal/[slug]/page';
-import BlogHubPage from '../app/blog/page';
-import BlogPostPage from '../app/blog/[slug]/page';
-import BlogTopicsPage from '../app/blog/topics/page';
-import JobCategoryPage from '../app/jobs/[slug]/page';
-import ProductDiscoveryHubPage from '../app/products/page';
-import ProductProfilePage from '../app/products/[slug]/page';
-import AlternativesHubPage from '../app/alternatives/page';
-import AlternativeDetailPage from '../app/alternatives/[slug]/page';
-import SideBySideComparisonPage from '../app/compare/[slug]/page';
-import QuestionsHubPage from '../app/questions/page';
-import QuestionDetailPage from '../app/questions/[slug]/page';
-import CollectionsHubPage from '../app/collections/page';
-import CollectionDetailPage from '../app/collections/[slug]/page';
-import ProductSubmissionPage from '../app/submit/page';
-import LeaderboardPage from '../app/leaderboard/page';
-import BadgesGeneratorPage from '../app/badges/page';
-import ProductClaimPage from '../app/claim/page';
+const BlogHubPage = lazy(() => import('../app/blog/page'));
+const BlogPostPage = lazy(() => import('../app/blog/[slug]/page'));
+const BlogTopicsPage = lazy(() => import('../app/blog/topics/page'));
+const JobCategoryPage = lazy(() => import('../app/jobs/[slug]/page'));
+const ProductDiscoveryHubPage = lazy(() => import('../app/products/page'));
+const ProductProfilePage = lazy(() => import('../app/products/[slug]/page'));
+const AlternativesHubPage = lazy(() => import('../app/alternatives/page'));
+const AlternativeDetailPage = lazy(() => import('../app/alternatives/[slug]/page'));
+const SideBySideComparisonPage = lazy(() => import('../app/compare/[slug]/page'));
+const QuestionsHubPage = lazy(() => import('../app/questions/page'));
+const QuestionDetailPage = lazy(() => import('../app/questions/[slug]/page'));
+const CollectionsHubPage = lazy(() => import('../app/collections/page'));
+const CollectionDetailPage = lazy(() => import('../app/collections/[slug]/page'));
+const ProductSubmissionPage = lazy(() => import('../app/submit/page'));
+const LeaderboardPage = lazy(() => import('../app/leaderboard/page'));
+const BadgesGeneratorPage = lazy(() => import('../app/badges/page'));
+const ProductClaimPage = lazy(() => import('../app/claim/page'));
 
 
 // New Global Business Identity & QR System Imports
-import BusinessDirectoryPage from '../app/business/page';
-import BusinessProfilePage from '../app/business/[slug]/page';
-import QrResolverPage from '../app/b/[businessId]/page';
-import BusinessRegisterPage from '../app/business/register/page';
-import BusinessQrPage from '../app/business-qr/page';
-import BusinessBiddingPage from '../app/business/bidding/page';
-import BusinessDashboardPage from '../app/business/dashboard/page';
-import AdminLoginPage from '../app/admin/login/page';
-import AdminPage from '../app/admin/page';
-import HowToHubPage from '../app/how-to/page';
-import HowToArticlePage from '../app/how-to/[slug]/page';
+const BusinessDirectoryPage = lazy(() => import('../app/business/page'));
+const BusinessProfilePage = lazy(() => import('../app/business/[slug]/page'));
+const QrResolverPage = lazy(() => import('../app/b/[businessId]/page'));
+const BusinessRegisterPage = lazy(() => import('../app/business/register/page'));
+const BusinessQrPage = lazy(() => import('../app/business-qr/page'));
+const BusinessBiddingPage = lazy(() => import('../app/business/bidding/page'));
+const BusinessDashboardPage = lazy(() => import('../app/business/dashboard/page'));
+const AdminLoginPage = lazy(() => import('../app/admin/login/page'));
+const AdminPage = lazy(() => import('../app/admin/page'));
+const HowToHubPage = lazy(() => import('../app/how-to/page'));
+const HowToArticlePage = lazy(() => import('../app/how-to/[slug]/page'));
 
 // Global Travel Intelligence Platform Imports
-import TravelHubPage from '../app/travel/page';
-import TravelRoutePage from '../app/travel/route/page';
-import PassportDashboardPage from '../app/travel/passport/page';
-import EmbassyDirectoryPage from '../app/travel/embassies/page';
-import DestinationsPage from '../app/travel/destinations/page';
-import JobsTravelPage from '../app/travel/jobs/page';
-import TravelPlannerPage from '../app/travel/planner/page';
-import AdminTravelPage from '../app/admin/travel/page';
+const TravelHubPage = lazy(() => import('../app/travel/page'));
+const TravelRoutePage = lazy(() => import('../app/travel/route/page'));
+const PassportDashboardPage = lazy(() => import('../app/travel/passport/page'));
+const EmbassyDirectoryPage = lazy(() => import('../app/travel/embassies/page'));
+const DestinationsPage = lazy(() => import('../app/travel/destinations/page'));
+const JobsTravelPage = lazy(() => import('../app/travel/jobs/page'));
+const TravelPlannerPage = lazy(() => import('../app/travel/planner/page'));
+const AdminTravelPage = lazy(() => import('../app/admin/travel/page'));
 
 // Startup Launch, Guest Posting, SEO Tools & Dashboard Imports
-import StartupsDirectoryPage from '../app/startups/page';
-import StartupProfilePage from '../app/startups/[slug]/page';
-import SubmitStartupPage from '../app/submit-startup/page';
-import GuestPostsMarketplacePage from '../app/guest-posts/page';
-import PublisherProfilePage from '../app/publishers/[slug]/page';
-import CreatePitchPage from '../app/guest-posts/create-pitch/page';
-import BecomeAPublisherPage from '../app/become-a-publisher/page';
-import SeoToolsPage from '../app/seo-tools/page';
-import SeoSuitePage from '../app/seo/page';
-import SeoWorkspacePage from '../app/workspace/page';
-import ToolsHubPage from '../app/tools/page';
-import PricingPage from '../app/pricing/page';
-import StudyAbroadPage from '../app/study/page';
-import StudyCountryPage from '../app/study/[slug]/page';
-import ImmigrationPage from '../app/immigration/page';
-import CarsHubPage from '../app/cars/page';
-import DashboardPage from '../app/dashboard/page';
-import UsHubPage from '../app/us/page';
-import UkHubPage from '../app/uk/page';
-import CaHubPage from '../app/ca/page';
-import AuHubPage from '../app/au/page';
-import PassportPhotosHubPage from '../app/passport-photos/page';
-import NewsHubPage from '../app/news/page';
-import HtmlSitemapPage from '../app/sitemap/page';
-import CvMakerPage from '../app/cv-maker/page';
+const StartupsDirectoryPage = lazy(() => import('../app/startups/page'));
+const StartupProfilePage = lazy(() => import('../app/startups/[slug]/page'));
+const SubmitStartupPage = lazy(() => import('../app/submit-startup/page'));
+const GuestPostsMarketplacePage = lazy(() => import('../app/guest-posts/page'));
+const PublisherProfilePage = lazy(() => import('../app/publishers/[slug]/page'));
+const CreatePitchPage = lazy(() => import('../app/guest-posts/create-pitch/page'));
+const BecomeAPublisherPage = lazy(() => import('../app/become-a-publisher/page'));
+const SeoToolsPage = lazy(() => import('../app/seo-tools/page'));
+const SeoSuitePage = lazy(() => import('../app/seo/page'));
+const SeoWorkspacePage = lazy(() => import('../app/workspace/page'));
+const ToolsHubPage = lazy(() => import('../app/tools/page'));
+const PricingPage = lazy(() => import('../app/pricing/page'));
+const StudyAbroadPage = lazy(() => import('../app/study/page'));
+const StudyCountryPage = lazy(() => import('../app/study/[slug]/page'));
+const ImmigrationPage = lazy(() => import('../app/immigration/page'));
+const CarsHubPage = lazy(() => import('../app/cars/page'));
+const DashboardPage = lazy(() => import('../app/dashboard/page'));
+const UsHubPage = lazy(() => import('../app/us/page'));
+const UkHubPage = lazy(() => import('../app/uk/page'));
+const CaHubPage = lazy(() => import('../app/ca/page'));
+const AuHubPage = lazy(() => import('../app/au/page'));
+const PassportPhotosHubPage = lazy(() => import('../app/passport-photos/page'));
+const NewsHubPage = lazy(() => import('../app/news/page'));
+const HtmlSitemapPage = lazy(() => import('../app/sitemap/page'));
+const CvMakerPage = lazy(() => import('../app/cv-maker/page'));
 import NotFoundPage from '../app/not-found';
 
 import { Header } from '../components/Header';
@@ -79,6 +79,28 @@ import { SEOHead } from './components/SEOHead';
 import { AdGlobals } from '../components/ads/AdGlobals';
 import { HeaderAdBar } from '../components/ads/HeaderAdBar';
 import { shouldSkipAds } from '../components/ads/adConfig';
+
+/**
+ * Route-level code splitting: rarely visited sections load on demand. While a lazy route's
+ * chunk downloads on first paint, we keep showing the crawler-visible prerendered HTML that
+ * scripts/prerender.mjs wrote into <main>, so there is no blank flash or layout shift.
+ */
+const INITIAL_PATH = typeof window !== 'undefined' ? window.location.pathname : '/';
+const PRERENDERED_MAIN_HTML =
+  typeof document !== 'undefined'
+    ? document.querySelector('#root main')?.innerHTML ?? ''
+    : '';
+
+function RouteFallback({ path }: { path: string }) {
+  if (path === INITIAL_PATH && PRERENDERED_MAIN_HTML) {
+    return <div dangerouslySetInnerHTML={{ __html: PRERENDERED_MAIN_HTML }} />;
+  }
+  return (
+    <div role="status" className="min-h-[50vh] flex items-center justify-center text-sm text-slate-500">
+      Loading…
+    </div>
+  );
+}
 
 export default function App() {
   const [currentPath, setCurrentPath] = useState(
@@ -387,7 +409,7 @@ export default function App() {
             : 'flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6'
         }
       >
-        {pageContent}
+        <Suspense fallback={<RouteFallback path={currentPath} />}>{pageContent}</Suspense>
       </main>
       {!isWorkspace && <Footer />}
       {/* Global ad hooks (Social Bar removed; Monetag push/vignette via AdGlobals) */}

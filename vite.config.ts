@@ -119,6 +119,12 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
+          // Tiny runtime helpers (Vite preload + CommonJS interop) must live in an always-loaded
+          // chunk. Otherwise Rollup parks them inside vendor-pdf / vendor-media, which forces the
+          // homepage to download ~1.3 MB of PDF/image libraries it never uses.
+          if (id.includes('vite/preload-helper') || id.includes('commonjsHelpers')) {
+            return 'vendor-react';
+          }
           if (!id.includes('node_modules')) return undefined;
           if (id.includes('jspdf') || id.includes('pdf-lib') || id.includes('html2canvas')) {
             return 'vendor-pdf';

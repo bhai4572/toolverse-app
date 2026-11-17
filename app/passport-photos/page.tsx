@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { ArrowRight, Camera } from 'lucide-react';
 import { Breadcrumb } from '@/components/Breadcrumb';
-import { PASSPORT_PRESETS } from '@/lib/image/engine';
+import { PASSPORT_PRESETS } from '@/lib/image/presets';
 
 const HUB_LINKS = [
   { href: '/us', label: 'United States', preset: 'us-2x2' },

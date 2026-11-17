@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import Link from 'next/link';
 import { Breadcrumb } from '@/components/Breadcrumb';
-import CvMakerTool from '../../features/tools/cv-builder/CvMakerTool';
+const CvMakerTool = lazy(() => import('../../features/tools/cv-builder/CvMakerTool'));
 import { CV_TEMPLATES } from '../../lib/cv/templatesCatalog';
 
 export default function CvMakerPage() {
@@ -43,7 +43,15 @@ export default function CvMakerPage() {
 
       {/* Main Interactive Studio */}
       <section aria-label="Interactive CV and Resume Builder Studio">
-        <CvMakerTool />
+        <Suspense
+          fallback={
+            <div role="status" className="min-h-[480px] flex items-center justify-center rounded-2xl border border-slate-200 bg-white text-sm text-slate-500">
+              Loading CV builder…
+            </div>
+          }
+        >
+          <CvMakerTool />
+        </Suspense>
       </section>
 
       {/* SEO & User Guide Content */}
@@ -193,7 +201,7 @@ export default function CvMakerPage() {
           </h2>
           <div className="flex flex-wrap gap-2">
             <Link
-              href="/tools/email-finder"
+              href="/tools/b2b-email-finder"
               className="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-indigo-50 text-xs font-semibold text-slate-800 hover:text-indigo-700 border border-slate-200 transition"
             >
               🔍 B2B Email Finder & Company Intelligence
@@ -205,13 +213,13 @@ export default function CvMakerPage() {
               📝 Word & Character Counter
             </Link>
             <Link
-              href="/tools/merge-pdf"
+              href="/tools/pdf-merge"
               className="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-indigo-50 text-xs font-semibold text-slate-800 hover:text-indigo-700 border border-slate-200 transition"
             >
               📄 Merge PDF Documents
             </Link>
             <Link
-              href="/tools/compress-pdf"
+              href="/tools/pdf-compress"
               className="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-indigo-50 text-xs font-semibold text-slate-800 hover:text-indigo-700 border border-slate-200 transition"
             >
               🗜️ Compress PDF Size

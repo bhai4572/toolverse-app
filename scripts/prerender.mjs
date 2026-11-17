@@ -157,7 +157,7 @@ const HUB_LINKS = [
 /** Site-wide internal-link block appended to any prerendered page that would otherwise be thin. */
 function exploreHtml(deps) {
   const { TOOLS, CATEGORIES, BLOG_POSTS } = deps;
-  const popular = TOOLS.filter((t) => t.isPopular && t.status === 'live').slice(0, 12);
+  const popular = TOOLS.filter((t) => (t.popular || t.isPopular) && t.status === 'live').slice(0, 12);
   const posts = (BLOG_POSTS || []).slice(0, 8);
   return `<section class="space-y-4 mt-10 pt-6 border-t" aria-label="Explore ToolVerse">
     <h2 class="text-2xl font-bold text-slate-900">Explore ToolVerse</h2>
@@ -198,11 +198,21 @@ function buildBodyMain(pathname, meta, deps) {
 
   if (parts.length === 0) {
     // Home Page
-    const popular = TOOLS.filter((t) => t.isPopular && t.status === 'live').slice(0, 9);
+    const popular = TOOLS.filter((t) => (t.popular || t.isPopular) && t.status === 'live').slice(0, 9);
+    const liveTools = TOOLS.filter((t) => t.status === 'live');
+    const homeH1 = `ToolVerse: ${liveTools.length}+ Free Online Tools That Run in Your Browser`;
+    // Every live tool as a plain crawlable <a href>, grouped by category (homepage → tool link equity).
+    const allToolsHtml = CATEGORIES.map((c) => {
+      const list = liveTools.filter((t) => t.categorySlug === c.slug);
+      if (!list.length) return '';
+      return `<div class="space-y-2"><h3 class="font-bold text-base"><a href="/category/${esc(c.slug)}" class="text-indigo-600 hover:underline">${esc(c.name)}</a> <span class="text-xs text-slate-500">(${list.length})</span></h3><ul class="text-sm space-y-1">${list
+        .map((t) => `<li><a href="/tools/${esc(t.slug)}" class="text-slate-700 hover:text-indigo-600 hover:underline">${esc(t.canonicalName)}</a></li>`)
+        .join('')}</ul></div>`;
+    }).join('');
     contentHtml = `
       <div class="space-y-8">
         <header class="text-center space-y-3 max-w-3xl mx-auto">
-          <h1 class="text-4xl font-extrabold text-slate-900">${esc(meta.title.replace(/\s*[—|].*$/, ''))}</h1>
+          <h1 class="text-4xl font-extrabold text-slate-900">${esc(homeH1)}</h1>
           <p class="text-lg text-slate-600">${esc(meta.description)}</p>
         </header>
 
@@ -237,6 +247,12 @@ function buildBodyMain(pathname, meta, deps) {
               </div>`
             ).join('')}
           </div>
+        </section>
+
+        <section class="space-y-4" aria-label="All free tools">
+          <h2 class="text-2xl font-bold">All ${liveTools.length} Free Tools</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">${allToolsHtml}</div>
+          <p class="text-sm"><a href="/tools" class="text-indigo-600 font-semibold hover:underline">Browse the full tools hub &rarr;</a></p>
         </section>
       </div>
     `;
@@ -821,6 +837,9 @@ function buildBodyMain(pathname, meta, deps) {
           <a href="/legal/terms-of-use" class="hover:text-white">Terms</a>
           <a href="/legal/editorial-policy" class="hover:text-white">Editorial</a>
           <a href="/legal/contact" class="hover:text-white">Contact</a>
+        </p>
+        <p class="flex flex-wrap items-center justify-center gap-3 pt-2" aria-label="Featured on">
+          <a href="https://launcholio.com/product/toolverse" target="_blank" rel="noopener"><img alt="Featured on Launcholio" src="https://launcholio.com/api/badge/toolverse.svg?theme=light&amp;score=on&v=7" width="156" height="54" /></a>
         </p>
       </footer>`;
 }
