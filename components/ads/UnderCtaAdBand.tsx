@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { AdSlot } from './AdSlot';
+import { ADS_ENABLED } from './adConfig';
 
 type UnderCtaVariant = 'leaderboard' | 'rectangle' | 'both';
 
@@ -21,6 +22,7 @@ export function UnderCtaAdBand({
   region = 'under-cta',
   className = '',
 }: UnderCtaAdBandProps) {
+  if (!ADS_ENABLED) return null;
   return (
     <div
       className={`flex flex-col items-center justify-center gap-3 py-4 w-full ${className}`}

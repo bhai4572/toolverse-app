@@ -412,7 +412,7 @@ export default function App() {
         <Suspense fallback={<RouteFallback path={currentPath} />}>{pageContent}</Suspense>
       </main>
       {!isWorkspace && <Footer />}
-      {/* Global ad hooks (Social Bar removed; Monetag push/vignette via AdGlobals) */}
+      {/* Ad hooks: third-party networks removed; AdSense to be added after approval */}
       {!skipAds && <AdGlobals />}
     </div>
   );

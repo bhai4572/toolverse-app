@@ -9,7 +9,13 @@ import {
   getToolBySlug,
   type ToolDefinition,
 } from '@/lib/tools/registry';
-import { getToolPageContent } from '@/lib/seo/toolPageContent';
+import { TOOL_PAGE_CONTENT } from '@/lib/seo/toolPageContent';
+
+/**
+ * Guides intentionally use only the base tool copy (not TOOL_PAGE_CONTENT_EXTRA), so the
+ * expanded hand-written sections stay unique to the tool page and are not duplicated here.
+ */
+const getToolPageContent = (slug: string) => TOOL_PAGE_CONTENT[slug];
 
 /** Hand-written pillar posts that already cover these tools — do not generate a second near-duplicate. */
 export const PILLAR_GUIDE_BY_TOOL: Record<string, string> = {

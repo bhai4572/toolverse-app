@@ -32,6 +32,18 @@ export async function onRequest(context) {
     '/tools/free-cv-maker': '/tools/cv-maker',
     '/tools/email-finder': '/tools/b2b-email-finder',
     '/tools/email-scraper': '/tools/b2b-email-finder',
+    // Short trust-page aliases (users and reviewers type these)
+    '/about': '/legal/about',
+    '/about-us': '/legal/about',
+    '/privacy': '/legal/privacy-policy',
+    '/privacy-policy': '/legal/privacy-policy',
+    '/contact': '/legal/contact',
+    '/contact-us': '/legal/contact',
+    '/terms': '/legal/terms-of-use',
+    '/terms-of-use': '/legal/terms-of-use',
+    '/terms-of-service': '/legal/terms-of-use',
+    '/disclaimer': '/legal/disclaimer',
+    '/cookie-policy': '/legal/cookie-policy',
   };
 
   if (REDIRECT_MAP[rawPath]) {

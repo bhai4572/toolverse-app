@@ -523,72 +523,108 @@ In this guide, we break down the most popular barcode symbologies and show you h
   },
   {
     slug: 'pakistan-salary-tax-calculator-slabs-guide',
-    title: 'Pakistan Salary Tax Guide FY 2024-25 & 2025-26 (FBR Income Tax Slabs)',
-    description: 'Calculate your exact monthly take-home salary and annual income tax deduction under FBR tax slabs for salaried individuals in Pakistan. Complete breakdown with examples.',
+    title: 'Pakistan Salary Tax Slabs 2026-27 (Tax Year 2027): FBR Rates & Examples',
+    description: 'FBR income tax slabs for salaried individuals for 1 July 2026 – 30 June 2027 (Finance Act 2026), with monthly worked examples and a free take-home salary calculator.',
     category: 'Finance & Calculators',
     author: 'Finance & Tax Consultant',
     publishDate: '2026-10-06',
-    readTimeMinutes: 7,
+    updatedDate: '2026-11-17',
+    readTimeMinutes: 8,
     featuredImage: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=1200&q=80',
     keywords: [
-      'pakistan salary tax estimator',
-      'fbr income tax slabs 2024 25',
-      'calculate monthly net salary pakistan',
-      'salaried tax rates pakistan',
-      'zakat calculator toolverse'
+      'pakistan salary tax slabs 2026-27',
+      'fbr income tax slabs tax year 2027',
+      'salary tax calculator pakistan',
+      'monthly tax on salary pakistan',
+      'take home salary pakistan'
     ],
     relatedToolSlug: 'pakistan-salary-tax-estimator',
     faqs: [
       {
-        question: 'What is the tax-free annual income limit in Pakistan for salaried class?',
-        answer: 'Annual salaried income up to PKR 600,000 (PKR 50,000 per month) is subject to 0% income tax.'
+        question: 'What is the tax-free salary limit in Pakistan for 2026-27?',
+        answer: 'Annual taxable salary up to PKR 600,000 (PKR 50,000 a month) is taxed at 0% for Tax Year 2027 (1 July 2026 – 30 June 2027).'
+      },
+      {
+        question: 'How much tax is deducted on a PKR 150,000 monthly salary?',
+        answer: 'PKR 150,000 a month is PKR 1,800,000 a year. Tax = PKR 6,000 + 11% of (1,800,000 − 1,200,000) = PKR 72,000 a year, or about PKR 6,000 a month.'
+      },
+      {
+        question: 'What changed from 2025-26 to 2026-27?',
+        answer: 'The Finance Act 2026 kept the first three bands (0%, 1%, 11%) but cut the middle rates: 20% instead of 23% for PKR 2.2–3.2 million and 25% instead of 30% for PKR 3.2–4.1 million. Two new bands (29% and 32%) were added, so the 35% top rate now starts above PKR 7 million instead of PKR 4.1 million.'
       },
       {
         question: 'Is tax calculated on gross salary or basic salary?',
-        answer: 'Income tax in Pakistan is calculated on total taxable gross income, including basic pay, allowances, and bonuses (excluding specific tax-exempt medical allowances under FBR rules).'
+        answer: 'On taxable salary: basic pay plus taxable allowances and bonuses. Some items (for example certain medical allowances within limits) can be exempt, so your payroll taxable figure may be slightly lower than gross.'
+      },
+      {
+        question: 'Does this replace filing my income tax return?',
+        answer: 'No. Employers withhold tax monthly under section 149, but you still file an annual return on IRIS. Use the estimate to check your payslip and plan; confirm with FBR or a tax practitioner.'
       }
     ],
     contentMarkdown: `
-# Pakistan Salary Tax Guide FY 2024-25 & 2025-26 (FBR Income Tax Slabs)
+# Pakistan Salary Tax Slabs 2026-27 (Tax Year 2027): FBR Rates & Examples
 
-Understanding your monthly income tax deduction is crucial for accurate financial planning, budgeting, and tax filing with the **Federal Board of Revenue (FBR)**.
+Salaried income tax in Pakistan is deducted by your employer every month under **section 149** of the Income Tax Ordinance, 2001. The rates below apply to **Tax Year 2027: 1 July 2026 to 30 June 2027**, as amended by the **Finance Act 2026** and listed in the FBR Withholding Tax Rates Card 2027.
 
-Whether you work in government (BPS scale), private IT firms, banking, or corporate sectors, FBR applies progressive tax slabs on salaried individuals.
-
----
-
-## FBR Tax Slabs Summary for Salaried Individuals
-
-1. **Up to PKR 600,000 / year (PKR 50,000 / month):**  
-   - **Tax Rate:** 0% (Tax Free)
-
-2. **PKR 600,001 to PKR 1,200,000 / year (PKR 50,000 to PKR 100,000 / month):**  
-   - **Tax Rate:** 5% of the amount exceeding PKR 600,000.
-
-3. **PKR 1,200,001 to PKR 2,200,000 / year (PKR 100,000 to PKR 183,333 / month):**  
-   - **Tax Rate:** PKR 30,000 + 15% of the amount exceeding PKR 1,200,000.
-
-4. **PKR 2,200,001 to PKR 3,200,000 / year (PKR 183,333 to PKR 266,666 / month):**  
-   - **Tax Rate:** PKR 180,000 + 25% of the amount exceeding PKR 2,200,000.
-
-5. **Above PKR 3,200,000 / year:**  
-   - **Tax Rate:** Progressive higher rate + Super tax applicable on high-income brackets.
+Want the answer for your own salary? Open the free [Pakistan Salary Tax Calculator](/tools/pakistan-salary-tax-estimator). It runs in your browser and never uploads your salary.
 
 ---
 
-## How to Calculate Your Take-Home Pay Instantly
+## FBR salary tax slabs for 2026-27
 
-Rather than calculating manual percentages, use the [Pakistan Salary Tax Estimator](/tools/pakistan-salary-tax-estimator):
-1. Enter your **Gross Monthly Salary** (e.g. PKR 150,000).
-2. View your exact **Monthly Tax Deduction** and **Net Salary Received in Bank**.
-3. View your total annual tax liability for FBR tax return filing.
+| Annual taxable salary (PKR) | Tax |
+| --- | --- |
+| Up to 600,000 | 0% |
+| 600,001 – 1,200,000 | 1% of the amount above 600,000 |
+| 1,200,001 – 2,200,000 | 6,000 + 11% of the amount above 1,200,000 |
+| 2,200,001 – 3,200,000 | 116,000 + 20% of the amount above 2,200,000 |
+| 3,200,001 – 4,100,000 | 316,000 + 25% of the amount above 3,200,000 |
+| 4,100,001 – 5,600,000 | 541,000 + 29% of the amount above 4,100,000 |
+| 5,600,001 – 7,000,000 | 976,000 + 32% of the amount above 5,600,000 |
+| Above 7,000,000 | 1,424,000 + 35% of the amount above 7,000,000 |
+
+Each percentage only applies to the part of your income **inside** that band. That is why moving into a higher band never reduces your take-home pay.
 
 ---
 
-## Essential Finance Tools on ToolVerse
-- [Pakistan Salary Tax Estimator](/tools/pakistan-salary-tax-estimator)
+## Worked examples (monthly salary → tax)
+
+1. **PKR 50,000 / month (600,000 / year):** tax = **0**.
+2. **PKR 100,000 / month (1,200,000 / year):** 1% × 600,000 = **PKR 6,000 a year** (PKR 500 a month).
+3. **PKR 150,000 / month (1,800,000 / year):** 6,000 + 11% × 600,000 = **PKR 72,000 a year** (PKR 6,000 a month). Take-home ≈ PKR 144,000.
+4. **PKR 250,000 / month (3,000,000 / year):** 116,000 + 20% × 800,000 = **PKR 276,000 a year** (PKR 23,000 a month). Take-home ≈ PKR 227,000.
+5. **PKR 500,000 / month (6,000,000 / year):** 976,000 + 32% × 400,000 = **PKR 1,104,000 a year** (PKR 92,000 a month). Take-home ≈ PKR 408,000.
+
+---
+
+## How to calculate your own tax in 4 steps
+
+1. Multiply your monthly taxable salary by 12 (add expected bonuses).
+2. Find the band your annual figure falls in from the table above.
+3. Tax = the fixed amount for that band + the band rate × (your income − the band's lower limit).
+4. Divide by 12 to get the monthly deduction you should see on your payslip.
+
+Or skip the arithmetic and use the [salary tax calculator](/tools/pakistan-salary-tax-estimator).
+
+---
+
+## Why your payslip may differ
+
+- **Bonuses and arrears** paid in one month raise that month's withholding; employers usually spread the annual tax across remaining months.
+- **Exempt allowances** (within FBR limits) reduce taxable salary.
+- **Tax credits** (for example approved pension fund or charitable donations) reduce tax when you file your return.
+- **Joining mid-year:** employers project your annual income, so early-month deductions can look different.
+
+---
+
+## Related free tools
+
+- [Pakistan Salary Tax Calculator](/tools/pakistan-salary-tax-estimator)
 - [Zakat Calculator](/tools/zakat-calculator)
-- [Percentage & Loan Calculator](/tools/percentage-calculator)
+- [Pakistan Electricity Bill Estimator](/tools/pakistan-electricity-bill-estimator)
+- [Percentage Calculator](/tools/percentage-calculator)
+
+*This guide is for planning and payslip checks. It is not tax advice. The Income Tax Ordinance, 2001 as amended prevails; confirm with FBR or a registered tax practitioner before filing.*
     `
   },
   {

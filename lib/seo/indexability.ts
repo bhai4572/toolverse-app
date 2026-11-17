@@ -24,6 +24,53 @@ const NOINDEX_PREFIXES: string[] = [
 ];
 
 /**
+ * Thin / programmatic sections kept live (URLs work, users can still use them) but
+ * de-indexed on 2026-11-17 to protect AdSense approval and site quality signals.
+ * Reversible: delete a prefix here AND in scripts/generate-sitemap.mjs (THIN_PREFIXES).
+ * Uses "noindex, follow" so link equity still flows to tools/guides.
+ */
+export const ROBOTS_NOINDEX_FOLLOW = 'noindex, follow';
+
+export const THIN_NOINDEX_EXACT = new Set<string>([
+  '/products',
+  '/leaderboard',
+  '/submit',
+  '/claim',
+  '/badges',
+  '/study',
+  '/travel',
+  '/jobs',
+  '/tools/global-job-finder',
+  '/tools/b2b-email-finder',
+  '/business',
+  '/business-qr',
+  '/startups',
+  '/submit-startup',
+  '/guest-posts',
+  '/become-a-publisher',
+  '/dashboard',
+]);
+
+export const THIN_NOINDEX_PREFIXES: string[] = [
+  '/products/',
+  '/study/',
+  '/travel/',
+  '/jobs/',
+  '/business/',
+  '/b/',
+  '/startups/',
+  '/guest-posts/',
+  '/publishers/',
+];
+
+export function pathIsThinNoindex(pathname: string): boolean {
+  if (!pathname) return false;
+  const p = (pathname.replace(/\/$/, '') || '/').toLowerCase();
+  if (THIN_NOINDEX_EXACT.has(p)) return true;
+  return THIN_NOINDEX_PREFIXES.some((prefix) => p.startsWith(prefix));
+}
+
+/**
  * Path-level indexability check.
  * Returns true ONLY for /admin and /404. All public site pages return false (indexable).
  */

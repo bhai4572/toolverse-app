@@ -1,13 +1,7 @@
 /**
- * Backward-compatible re-export — Adsterra AdSlot system lives in components/ads/
+ * Backward-compatible re-exports. Third-party ad networks were removed (see components/ads/adConfig.ts).
  */
 export { AdSlot } from './ads/AdSlot';
-export {
-  AdsterraBanner,
-  AdsterraNative,
-  AdsterraSmartLink,
-  MonetagAdSlot,
-} from './ads/AdSlot';
 export { ToolPageAdChrome } from './ads/ToolPageAdChrome';
 export { HeaderAdBar } from './ads/HeaderAdBar';
 export { FooterAdBar } from './ads/FooterAdBar';

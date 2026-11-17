@@ -1,4 +1,5 @@
 /** Optional long-form SEO copy for high-intent tool pages. Keep natural — no keyword stuffing. */
+import { TOOL_PAGE_CONTENT_EXTRA } from './toolPageContentExtra';
 
 export interface ToolFaq {
   question: string;
@@ -4180,5 +4181,14 @@ export const TOOL_PAGE_CONTENT: Record<string, ToolPageContent> = {
 };
 
 export function getToolPageContent(slug: string): ToolPageContent | undefined {
-  return TOOL_PAGE_CONTENT[slug];
+  const base = TOOL_PAGE_CONTENT[slug];
+  const extra = TOOL_PAGE_CONTENT_EXTRA[slug];
+  if (!extra) return base;
+  const baseFaqs = base?.faqs ?? [];
+  const seen = new Set(baseFaqs.map((f) => f.question.trim().toLowerCase()));
+  return {
+    ...(base ?? {}),
+    sections: [...(base?.sections ?? []), ...extra.sections],
+    faqs: [...baseFaqs, ...extra.faqs.filter((f) => !seen.has(f.question.trim().toLowerCase()))],
+  };
 }
