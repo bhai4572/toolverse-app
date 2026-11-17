@@ -95,35 +95,75 @@ export const ALTERNATIVE_PAGES: AlternativePage[] = [
   },
   {
     slug: 'toolsoverflow',
-    targetProductName: 'Tools Overflow (Toolsoverflow)',
+    targetProductName: 'Toolsoverflow (Tools Overflow)',
     targetProductCategory: 'Online Utilities & Developer Tools',
-    targetProductDescription: 'Tools Overflow (Toolsoverflow) is an online portal providing developers and digital workers with formatters, converters, and quick web tools.',
-    targetProductPricing: 'Free ad-supported online utility site.',
+    targetProductDescription: 'Toolsoverflow (toolsoverflow.com) is a separate website, not part of ToolVerse, that offers free online formatters, converters and quick web utilities. If you were looking for Toolsoverflow itself, use the official link on this page.',
+    targetProductPricing: 'Free, ad-supported online utility site.',
     targetProductWebsite: 'https://toolsoverflow.com',
     targetProductLogo: 'https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=128&h=128&fit=crop',
-    metaTitle: 'Best Tools Overflow (Toolsoverflow) Alternatives in 2026 | ToolVerse',
-    metaDescription: 'Looking for Tools Overflow (Toolsoverflow) alternatives? Compare ToolVerse for 100% private, browser-based PDF merging, image compression, calculators, and SEO dashboards without server uploads.',
-    summary: 'Searching for the best alternative to Tools Overflow (Toolsoverflow)? Discover why ToolVerse is the top-rated privacy-first online tools suite for browser-based PDF manipulation, image optimization, developer helpers, and financial calculators.',
-    bestFor: 'Users looking for client-side privacy where sensitive PDFs, contracts, and photographs never leave their local device memory.',
+    metaTitle: 'Toolsoverflow Alternative: 130+ Free Tools, No Uploads',
+    metaDescription: 'Looking for Toolsoverflow? Official link here, plus a free alternative: 130+ PDF, image, SEO, text and developer tools that run in your browser. No signup.',
+    summary: 'Toolsoverflow is a separate free utilities website. If you want a similar toolbox with files processed in your own browser, ToolVerse has 130+ free tools: PDF merge, split and compress, image compression to an exact KB size, JSON and SQL formatters, QR codes, calculators and SEO checks, with no account required.',
+    bestFor: 'People who want free, quick utilities and prefer that PDFs, photos and documents are processed on their own device instead of being uploaded.',
     keySelectionCriteria: [
-      'Client-side browser processing with zero server uploads',
-      'Target-size image compression (20KB, 50KB, 100KB limits)',
-      'WebAssembly PDF merge, split, and rotate',
-      'Integrated SEO keyword dashboards and SERP simulators'
+      'File tools that run in the browser (no upload for PDF merge, image compression and similar tasks)',
+      'Exact-size image compression for forms (20 KB, 50 KB, 100 KB limits)',
+      'Developer helpers: JSON, SQL, regex, JWT, Base64, hashes',
+      'No signup or watermark for core tools',
     ],
-    topAlternativeSlugs: ['chatgpt', 'canva'],
-    relatedToolverseToolSlugs: ['pdf-merge', 'compress-image-target-size', 'json-formatter', 'qr-code-generator', 'keyword-research-tool'],
+    topAlternativeSlugs: [],
+    relatedToolverseToolSlugs: ['pdf-merge', 'compress-image-target-size', 'json-formatter', 'qr-code-generator', 'word-counter', 'regex-tester', 'base64-encoder-decoder', 'keyword-research-tool'],
     faqs: [
       {
-        question: 'What is the best free alternative to Tools Overflow (Toolsoverflow)?',
-        answer: 'ToolVerse (also searched as Tools Verse or Tooliverse) is a leading alternative to Tools Overflow. Unlike conventional converters that upload files to cloud servers, ToolVerse processes PDFs and photos locally in your web browser memory using HTML5 Canvas and WebAssembly.'
+        question: 'Is ToolVerse the same as Toolsoverflow?',
+        answer: 'No. Toolsoverflow (toolsoverflow.com) and ToolVerse (toolverse.baby) are separate, unrelated websites. This page is a comparison for people looking for an alternative.'
       },
       {
-        question: 'Does ToolVerse offer more tools than Toolsoverflow?',
-        answer: 'Yes! ToolVerse offers 95+ utilities including PDF tools, exact-KB image compressors, regional tax calculators, SEO keyword dashboards, and a global verified job search engine.'
+        question: 'What is a free alternative to Toolsoverflow?',
+        answer: 'ToolVerse offers 130+ free tools. Its file tools (PDF, images) run locally in your browser, so documents are not uploaded to a server for those tasks.'
+      },
+      {
+        question: 'Do I need an account to use ToolVerse tools?',
+        answer: 'No. Core tools work without signup and without watermarks.'
       }
     ],
-    lastUpdated: '2026-11-01'
+    lastUpdated: '2026-11-17'
+  },
+  {
+    slug: 'tooliverse',
+    targetProductName: 'Tooliverse',
+    targetProductCategory: 'Online Tools & AI Tool Directories',
+    targetProductDescription: 'Tooliverse is a separate brand, not part of ToolVerse. The name is used by tooliverse.ai, a directory that ranks AI tools using aggregated reviews, and by tooliverse.vercel.app, a site of free calculators. If you were looking for one of those, use the official links on this page.',
+    targetProductPricing: 'Free to browse.',
+    targetProductWebsite: 'https://tooliverse.ai',
+    targetProductLogo: 'https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=128&h=128&fit=crop',
+    metaTitle: 'Tooliverse Alternatives: 130+ Free Browser Tools (2026)',
+    metaDescription: 'Tooliverse alternatives compared. ToolVerse (a different site) has 130+ free PDF, image, calculator and SEO tools that run in your browser, no signup needed.',
+    summary: 'Tooliverse (tooliverse.ai) helps you choose AI software; tooliverse.vercel.app offers calculators. ToolVerse is different: instead of reviewing tools, it gives you 130+ free tools you can use right away, from PDF merge and image compression to salary, loan and zakat calculators, with file tools running in your browser.',
+    bestFor: 'People who want to get a task done now (merge a PDF, compress a photo, calculate EMI or tax) rather than research which paid software to buy.',
+    keySelectionCriteria: [
+      'Do you need to choose AI software (a directory helps) or finish a task now (a tool suite helps)?',
+      'Are your files private? Browser-based tools avoid uploading them.',
+      'Do you need country-specific calculators (Pakistan, UK, US, Canada, Australia)?',
+      'Is there a signup wall or watermark?',
+    ],
+    topAlternativeSlugs: ['chatgpt', 'claude-ai'],
+    relatedToolverseToolSlugs: ['pdf-merge', 'image-compressor', 'emi-calculator', 'pakistan-salary-tax-estimator', 'chatgpt-prompt-generator', 'cv-maker', 'percentage-calculator', 'unit-converter-suite'],
+    faqs: [
+      {
+        question: 'Is ToolVerse the same as Tooliverse?',
+        answer: 'No. Tooliverse (tooliverse.ai and tooliverse.vercel.app) and ToolVerse (toolverse.baby) are separate websites with similar names.'
+      },
+      {
+        question: 'What is the difference between Tooliverse and ToolVerse?',
+        answer: 'Tooliverse.ai is a directory that ranks AI tools using aggregated reviews. ToolVerse is a suite of free tools you use directly in your browser: PDF, image, text, calculator, developer and SEO tools.'
+      },
+      {
+        question: 'Are ToolVerse tools free?',
+        answer: 'Yes. Core tools are free with no signup and no watermark, and file tools process PDFs and images in your browser.'
+      }
+    ],
+    lastUpdated: '2026-11-17'
   }
 ];
 

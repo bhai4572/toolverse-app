@@ -174,7 +174,7 @@ export function getVisaRule(
     destinationIso2,
     purpose: normPurpose,
     status: 'EMBASSY / CONSULAR VISA',
-    statusLabel: `Advance Consular Visa Required for ${destCountry?.commonName || destinationIso2}`,
+    statusLabel: `Check official visa rules for ${destCountry?.commonName || destinationIso2}`,
     allowedStayDays: 30,
     validityDays: 90,
     entriesAllowed: 'SINGLE',
@@ -196,10 +196,13 @@ export function getVisaRule(
     vaccinationRequired: undefined,
     maxStayDays: 30,
     notes: 'Requirements should be verified directly with the official immigration authority or consulate prior to booking travel.',
-    sourceLevel: 'LEVEL_1_OFFICIAL_GOVT',
-    sourceName: 'Toolverse Global Travel Intelligence Engine',
+    // Placeholder values: no verified rule exists for this route. The UI hides fee/stay/processing
+    // when isEstimate is true and sends users to the official portal instead.
+    isEstimate: true,
+    sourceLevel: 'UNVERIFIED_ESTIMATE',
+    sourceName: 'Not verified by ToolVerse; confirm on the official government portal',
     sourceUrl: `https://toolverse.baby/travel`,
-    lastVerifiedDate: new Date().toISOString().split('T')[0],
+    lastVerifiedDate: 'not verified',
     nextReviewDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
     confidenceScore: 90,
   };

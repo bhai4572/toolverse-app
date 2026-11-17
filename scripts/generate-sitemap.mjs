@@ -23,13 +23,14 @@ const base = 'https://toolverse.baby';
  */
 const NOINDEX_EXACT = new Set(['/404']);
 const NOINDEX_PREFIXES = ['/admin', '/admin/'];
-/** Thin sections (noindex, follow) — mirror of THIN_NOINDEX_* in lib/seo/indexability.ts. */
+/** Thin sections: owner wants them indexed (2026-11-17), so disabled. Mirror of THIN_NOINDEX_* in lib/seo/indexability.ts. */
+const THIN_NOINDEX_ENABLED = false;
 const THIN_EXACT = new Set(['/products', '/leaderboard', '/submit', '/claim', '/badges', '/study', '/travel', '/jobs', '/tools/global-job-finder', '/tools/b2b-email-finder', '/business', '/business-qr', '/startups', '/submit-startup', '/guest-posts', '/become-a-publisher', '/dashboard']);
 const THIN_PREFIXES = ['/products/', '/study/', '/travel/', '/jobs/', '/business/', '/b/', '/startups/', '/guest-posts/', '/publishers/'];
 function isNoindex(p) {
   const x = (p.replace(/\/$/, '') || '/').toLowerCase();
   if (NOINDEX_EXACT.has(x)) return true;
-  if (THIN_EXACT.has(x) || THIN_PREFIXES.some((pre) => x.startsWith(pre))) return true;
+  if (THIN_NOINDEX_ENABLED && (THIN_EXACT.has(x) || THIN_PREFIXES.some((pre) => x.startsWith(pre)))) return true;
   return NOINDEX_PREFIXES.some((pre) => x === pre.replace(/\/$/, '') || x.startsWith(pre));
 }
 
@@ -222,11 +223,15 @@ for (const p of productSlugs) {
 
 
 pagesUrls.push(makeUrl('/alternatives', 'daily', '0.9'));
-for (const alt of ['canva', 'chatgpt', 'notion']) {
+const altSrc = fs.readFileSync(path.join(root, 'lib/products/alternativesRegistry.ts'), 'utf8');
+const altSlugs = [...altSrc.matchAll(/^\s{4}slug:\s*'([^']+)'/gm)].map((m) => m[1]);
+for (const alt of altSlugs) {
   pagesUrls.push(makeUrl(`/alternatives/${alt}`, 'weekly', '0.8'));
 }
 
-for (const comp of ['canva-vs-figma', 'chatgpt-vs-claude']) {
+const compSrc = fs.readFileSync(path.join(root, 'lib/products/comparisonsRegistry.ts'), 'utf8');
+const compSlugs = [...compSrc.matchAll(/^\s{4}slug:\s*'([^']+)'/gm)].map((m) => m[1]);
+for (const comp of compSlugs) {
   pagesUrls.push(makeUrl(`/compare/${comp}`, 'weekly', '0.8'));
 }
 

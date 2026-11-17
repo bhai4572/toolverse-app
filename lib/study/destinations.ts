@@ -664,14 +664,43 @@ export const STUDY_DESTINATIONS: Record<StudySlug, StudyDestination> = {
 
 export const STUDY_SLUGS = Object.keys(STUDY_DESTINATIONS) as StudySlug[];
 
+/** Country summaries whose portal is only a search link were generated from templates, not curated. */
+function isTemplateCountry(cs: CountryStudySummary): boolean {
+  return /google\.[a-z.]+\/search/i.test(cs.nationalPortalUrl || '');
+}
+
+function studyTitle(name: string): string {
+  const long = `Study in ${name} 2026: Universities, Fees & Student Visa`;
+  if (long.length <= 60) return long;
+  const mid = `Study in ${name}: Universities, Fees & Visa`;
+  return mid.length <= 60 ? mid : `Study in ${name}: Universities & Fees`;
+}
+
+function studyDescription(cs: CountryStudySummary): string {
+  const n = cs.universities.length;
+  const first = cs.universities[0]?.name;
+  const unis = n > 1 ? `${n} universities incl. ${first}` : first ? `${first}` : 'local universities';
+  const fee = cs.tuitionBandLabel.replace(' USD / yr', '/yr');
+  const candidates = [
+    `Study in ${cs.name} (${cs.capital}): ${unis}, tuition around ${fee}, ${cs.mainIntakes.join(' & ')} intakes, documents and student visa steps.`,
+    `Study in ${cs.name}: ${unis}, tuition around ${fee}, intakes, documents and student visa steps.`,
+    `Study in ${cs.name}: universities, tuition around ${fee}, intakes, documents and student visa steps.`,
+  ];
+  return candidates.find((d) => d.length <= 160) || candidates[candidates.length - 1];
+}
+
 function buildDestinationFromCountrySummary(cs: CountryStudySummary): StudyDestination {
   const uniNames = cs.universities.map((u) => u.name).join(', ');
+  const templated = isTemplateCountry(cs);
+  const languageSentence = templated
+    ? `Check the language of instruction for each program on the university's own website before you apply; many programs in ${cs.name} are not taught in English.`
+    : `Instruction is available in ${cs.instructionLanguages.join(', ')}.`;
   return {
     slug: cs.slug,
     name: cs.name,
     flag: cs.flag,
-    title: `Study in ${cs.name} — Universities, Programs, Fees, Documents & DIY Admission | ToolVerse`,
-    description: `Complete DIY guide to studying in ${cs.name}: universities (${uniNames}), programs across 9 faculties, tuition fees (${cs.tuitionBandLabel}), required documents, scholarships, and ${cs.visaCategoryName}.`,
+    title: studyTitle(cs.name),
+    description: studyDescription(cs),
     keywords: [
       `study in ${cs.name.toLowerCase()}`,
       `${cs.name.toLowerCase()} universities for international students`,
@@ -680,7 +709,7 @@ function buildDestinationFromCountrySummary(cs: CountryStudySummary): StudyDesti
       `how to apply to ${cs.name.toLowerCase()} universities without agent`,
     ],
     answerFirst: `Planning to study in ${cs.name} (${cs.capital})? International tuition typically ranges around ${cs.tuitionBandLabel}, with living costs near ${cs.livingCostYearUsd}. Applications run via ${cs.nationalPortalName} or directly on university portals (${uniNames}) for ${cs.mainIntakes.join(' and ')} intakes, followed by the ${cs.visaCategoryName}.`,
-    overview: `${cs.name} (${cs.region}, ${cs.continent}) offers recognized degree pathways across Computer Science, Engineering, Medicine & Health, Business, Sciences, Law, and Arts. Instruction is available in ${cs.instructionLanguages.join(', ')}. ${cs.moiFriendly ? 'Many universities accept an official Medium of Instruction (MOI / English Proficiency Certificate) alongside IELTS/TOEFL/PTE.' : 'Standardized English proficiency (IELTS/TOEFL/PTE) is generally required for English-taught programs.'} Below you will find every university profile, offered programs by category, tuition and living budgets, required document checklists, and a 6-step DIY self-application procedure so you can file your admission yourself without paying an agent.`,
+    overview: `${cs.name} (${cs.region}, ${cs.continent}) offers recognized degree pathways across Computer Science, Engineering, Medicine & Health, Business, Sciences, Law, and Arts. ${languageSentence} ${cs.moiFriendly ? 'Many universities accept an official Medium of Instruction (MOI / English Proficiency Certificate) alongside IELTS/TOEFL/PTE.' : 'Standardized English proficiency (IELTS/TOEFL/PTE) is generally required for English-taught programs.'} Below you will find every university profile, offered programs by category, tuition and living budgets, required document checklists, and a 6-step DIY self-application procedure so you can file your admission yourself without paying an agent.`,
     pathways: [
       {
         title: 'Undergraduate (Bachelor’s / MBBS / MD — 3 to 6 years)',
@@ -728,12 +757,17 @@ function buildDestinationFromCountrySummary(cs: CountryStudySummary): StudyDesti
     ],
     visaSummary: `After receiving your unconditional admission offer from a recognized institution in ${cs.name}, you apply for the ${cs.visaCategoryName}. Typical processing time is ${cs.visaProcessingWeeks}. Students are permitted ${cs.workHoursAllowed}, with post-study stay/career options including: ${cs.postStudyStay}.`,
     officialLinks: [
-      {
-        label: cs.nationalPortalName,
-        href: cs.nationalPortalUrl,
-        external: true,
-        note: `Official higher education / admission portal for ${cs.name}`,
-      },
+      // Template countries only have a search link, not an official portal, so leave it out.
+      ...(templated
+        ? []
+        : [
+            {
+              label: cs.nationalPortalName,
+              href: cs.nationalPortalUrl,
+              external: true,
+              note: `Official higher education / admission portal for ${cs.name}`,
+            },
+          ]),
       ...cs.universities.map((u) => ({
         label: `${u.name} (${u.city})`,
         href: u.website,
