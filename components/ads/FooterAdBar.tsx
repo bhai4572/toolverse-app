@@ -3,6 +3,7 @@
 import React from 'react';
 import { AdSlot } from './AdSlot';
 import { useSkipAds } from './useSkipAds';
+import { ADS_ENABLED } from './adConfig';
 
 /**
  * Single clean footer leaderboard row below the 4-column grid.
@@ -10,7 +11,7 @@ import { useSkipAds } from './useSkipAds';
  */
 export function FooterAdBar() {
   const skip = useSkipAds();
-  if (skip) return null;
+  if (skip || !ADS_ENABLED) return null;
 
   return (
     <div

@@ -1,42 +1,15 @@
 /**
- * Adsterra unit registry — human labels match publisher dashboard names.
- * Tools stay free; these units are display-only (never gate UI).
+ * Ad configuration.
  *
- * Monetag: push/vignette gated by ADSENSE_REVIEW_MODE (off while seeking AdSense approval).
- * Banner zone was never stored in git — set MONETAG_BANNER_ZONE when you create one.
+ * 2026-11-17: All third-party ad networks (Adsterra banners/native/Smart Link, Monetag
+ * push/vignette) were removed from the codebase for AdSense review. No ad network code
+ * loads anywhere. When AdSense is approved, implement AdSense units inside AdSlot and
+ * flip ADS_ENABLED to true. Until then every ad wrapper renders nothing (no empty gaps).
  */
+export const ADS_ENABLED = false;
 
-/**
- * When true: content-first layout for AdSense review.
- * - Monetag push + vignette disabled (overlays look like ad farms to reviewers)
- * - Callsites should keep ~2–3 display units per page (header + one in-content + footer)
- * Flip to false only after AdSense is approved and you re-introduce density carefully.
- */
+/** Kept for callers that check review mode. */
 export const ADSENSE_REVIEW_MODE = true;
-
-/** Monetag In-Page Push — public pages via AdGlobals (skipped when ADSENSE_REVIEW_MODE) */
-export const MONETAG_PUSH_ZONE = '11986841';
-
-/** Monetag Vignette zone ID (12140232) */
-export const MONETAG_VIGNETTE_ZONE = '12140232';
-
-/**
- * Enable Monetag Vignette specifically when users open the Jobs section or a shared job link.
- * Fires once per session.
- */
-export const MONETAG_JOB_VIGNETTE_ENABLED = true;
-
-/** Monetag display/banner zone ID — leave empty until pasted from Monetag dashboard */
-export const MONETAG_BANNER_ZONE = '';
-
-export const ADSTERRA_SMART_LINK =
-  'https://araplhn.org/4/24aa254faf80eeda68f896182a2eeb8c';
-
-/** Native banner */
-export const ADSTERRA_NATIVE = {
-  scriptSrc: 'https://bauval.org/21/6be7d1c14bcef8d4c03340fddce77229',
-  containerId: 'container-6be7d1c14bcef8d4c03340fddce77229',
-} as const;
 
 export type BannerSize =
   | '468x60'
@@ -45,42 +18,6 @@ export type BannerSize =
   | '728x90'
   | '160x600'
   | '300x250';
-
-export interface BannerUnit {
-  /** Human label for code comments / debugging */
-  label: string;
-  key: string;
-  width: number;
-  height: number;
-  /** Official Adsterra Banner invoke host (bauval.org/22/{key}/invoke.js 404s) */
-  invokeSrc: string;
-}
-
-function banner(label: string, key: string, width: number, height: number): BannerUnit {
-  return {
-    label,
-    key,
-    width,
-    height,
-    // Classic atOptions banners use highperformanceformat.com — not bauval.org /22/
-    invokeSrc: `https://www.highperformanceformat.com/${key}/invoke.js`,
-  };
-}
-
-export const ADSTERRA_BANNERS: Record<BannerSize, BannerUnit> = {
-  // Banner 468x60
-  '468x60': banner('Banner 468x60', '2db4d3571c1acfe734e32c93812badd8', 468, 60),
-  // Banner 160x300
-  '160x300': banner('Banner 160x300', '4d94a3faa8574eca56593d84b413342e', 160, 300),
-  // Banner 320x50
-  '320x50': banner('Banner 320x50', '3790727e50dd38c6b9b6c18c9aa7ba5f', 320, 50),
-  // Banner 728x90
-  '728x90': banner('Banner 728x90', '58b421f12fd34338fc030df8a87fc620', 728, 90),
-  // Banner 160x600
-  '160x600': banner('Banner 160x600', 'a1e5416d8b97a0f092d1487a1b3cb184', 160, 600),
-  // Banner 300x250
-  '300x250': banner('Banner 300x250', 'a3cfffec40c430dc3afe55490e310592', 300, 250),
-};
 
 /** Named slots used by AdSlot */
 export type AdSlotName =

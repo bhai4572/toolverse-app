@@ -8,19 +8,15 @@ import { searchTools, ToolDefinition } from '@/lib/tools/registry';
 const PRIMARY_NAV = [
   { href: '/tools', label: 'Tools' },
   { href: '/cv-maker', label: 'CV Maker' },
-  { href: '/products', label: 'Products' },
-  { href: '/leaderboard', label: 'Leaderboard' },
+  { href: '/category/pdf-document-tools', label: 'PDF Tools' },
+  { href: '/category/image-design-tools', label: 'Image Tools' },
   { href: '/workspace', label: 'SEO Dashboard' },
-  { href: '/study', label: 'Study Abroad' },
-  { href: '/blog', label: 'Blog' },
+  { href: '/blog', label: 'Guides' },
   { href: '/news', label: 'News' },
 ] as const;
 
 
 const MORE_NAV = [
-  { href: '/startups', label: 'Startups & SaaS' },
-  { href: '/business', label: 'Business Directory' },
-  { href: '/submit', label: 'Submit Product' },
   { href: '/alternatives', label: 'SaaS Alternatives' },
   { href: '/immigration', label: 'Immigration' },
   { href: '/pricing', label: 'Pricing' },
@@ -31,14 +27,18 @@ const MORE_NAV = [
   { href: '/ca', label: 'Canada tools' },
   { href: '/au', label: 'Australia tools' },
   { href: '/passport-photos', label: 'Passport photos' },
-  { href: '/travel', label: 'Travel' },
-  { href: '/tools/global-job-finder', label: 'Jobs Finder' },
   { href: '/legal/about', label: 'About' },
   { href: '/legal/contact', label: 'Contact' },
   { href: '/legal/privacy-policy', label: 'Privacy Policy' },
   { href: '/legal/about-our-tools', label: 'About our tools' },
   { href: '/legal/editorial-policy', label: 'Editorial Policy' },
   { href: '/how-to', label: 'How-To' },
+  { href: '/study', label: 'Study Abroad' },
+  { href: '/tools/global-job-finder', label: 'Jobs Finder' },
+  { href: '/travel', label: 'Travel' },
+  { href: '/products', label: 'Products' },
+  { href: '/startups', label: 'Startups & SaaS' },
+  { href: '/business', label: 'Business Directory' },
 ] as const;
 
 export function Header() {
@@ -167,11 +167,10 @@ export function Header() {
 
         <div className="hidden md:flex items-center gap-2">
           <Link
-            href="/submit"
+            href="/tools"
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition shadow-sm"
           >
-            <span>🚀</span>
-            <span>Submit Product</span>
+            <span>All Tools</span>
           </Link>
           <button
             onClick={toggleDarkMode}
@@ -195,12 +194,11 @@ export function Header() {
         <div className="lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-4 space-y-2">
           <div className="pb-2">
             <Link
-              href="/submit"
+              href="/tools"
               onClick={() => setMobileMenuOpen(false)}
               className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold shadow-md transition"
             >
-              <span>🚀</span>
-              <span>Launch / List Your Product</span>
+              <span>Browse All Free Tools</span>
             </Link>
           </div>
           {PRIMARY_NAV.map((item) => (

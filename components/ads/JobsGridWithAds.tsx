@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { AdSlot } from './AdSlot';
+import { ADS_ENABLED } from './adConfig';
 
 interface JobsGridWithAdsProps {
   /** Job card elements (already rendered) */
@@ -26,7 +27,7 @@ export function JobsGridWithAds({ cards, every = 8, className = '' }: JobsGridWi
       {chunks.map((chunk, chunkIdx) => (
         <React.Fragment key={`jobs-chunk-${chunkIdx}`}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">{chunk}</div>
-          {chunkIdx === 0 && chunkIdx < chunks.length - 1 && (
+          {ADS_ENABLED && chunkIdx === 0 && chunkIdx < chunks.length - 1 && (
             <div
               className="flex justify-center py-2 min-h-[250px] items-center w-full"
               data-ad-region="incontent"

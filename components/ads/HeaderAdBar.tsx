@@ -3,6 +3,7 @@
 import React from 'react';
 import { AdSlot } from './AdSlot';
 import { useSkipAds } from './useSkipAds';
+import { ADS_ENABLED } from './adConfig';
 
 /**
  * Persistent top ad bar — 728x90 desktop / 320x50 mobile (in-flow under site header).
@@ -10,7 +11,7 @@ import { useSkipAds } from './useSkipAds';
  */
 export function HeaderAdBar() {
   const skip = useSkipAds();
-  if (skip) return null;
+  if (skip || !ADS_ENABLED) return null;
 
   return (
     <div

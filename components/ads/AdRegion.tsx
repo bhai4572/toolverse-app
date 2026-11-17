@@ -1,4 +1,5 @@
 import React from 'react';
+import { ADS_ENABLED } from './adConfig';
 
 export type AdRegionName = 'header' | 'sidebar' | 'incontent' | 'footer';
 
@@ -13,6 +14,7 @@ interface AdRegionProps {
  * Never overlays tool controls — spacing only.
  */
 export function AdRegion({ name, className = '', children }: AdRegionProps) {
+  if (!ADS_ENABLED) return null;
   return (
     <aside
       data-ad-region={name}

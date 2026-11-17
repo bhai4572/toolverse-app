@@ -115,8 +115,12 @@ describe('Tax Engine Tests', () => {
     const resUnder600k = calculatePakistanSalaryTax(40000);
     expect(resUnder600k.annualTax).toBe(0);
 
-    const resOver1M = calculatePakistanSalaryTax(100000);
-    expect(resOver1M.annualTax).toBe(30000);
+    // Tax Year 2027 (Finance Act 2026) slabs
+    expect(calculatePakistanSalaryTax(100000).annualTax).toBe(6000); // 1.2M
+    expect(calculatePakistanSalaryTax(150000).annualTax).toBe(72000); // 1.8M
+    expect(calculatePakistanSalaryTax(250000).annualTax).toBe(276000); // 3.0M
+    expect(calculatePakistanSalaryTax(500000).annualTax).toBe(1104000); // 6.0M
+    expect(calculatePakistanSalaryTax(1000000).annualTax).toBe(3174000); // 12M
   });
 
   it('calculates Zakat correctly', () => {

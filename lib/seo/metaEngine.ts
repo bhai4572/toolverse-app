@@ -17,6 +17,8 @@ import {
   ROBOTS_NOINDEX,
   howToSlugShouldNoindex,
   pathShouldNoindex,
+  pathIsThinNoindex,
+  ROBOTS_NOINDEX_FOLLOW,
 } from '@/lib/seo/indexability';
 
 export interface PageMetadata {
@@ -302,6 +304,7 @@ export function getMetadataForPath(pathname: string): PageMetadata {
     twitterImage: built.twitterImage || ogImage,
   };
   if (pathShouldNoindex(pathname)) return { ...meta, robots: ROBOTS_NOINDEX };
+  if (pathIsThinNoindex(pathname)) return { ...meta, robots: ROBOTS_NOINDEX_FOLLOW };
   if (meta.robots) return meta;
   return { ...meta, robots: ROBOTS_INDEX };
 }

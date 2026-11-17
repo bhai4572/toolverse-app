@@ -78,6 +78,19 @@ function replaceJsonLd(html, schemas) {
   return out.replace('</head>', `${injected}\n  </head>`);
 }
 
+/** Inline markdown → HTML (escape first; then links, bold, italics, code). */
+function mdInline(text) {
+  let out = esc(text);
+  out = out.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_, label, href) => {
+    const external = /^https?:\/\//.test(href) && !href.startsWith('https://toolverse.baby');
+    return `<a href="${href}" class="text-indigo-600 hover:underline"${external ? ' target="_blank" rel="noopener"' : ''}>${label}</a>`;
+  });
+  out = out.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  out = out.replace(/(^|[\s(])\*([^*\s][^*]*)\*(?=[\s).,;:!?]|$)/g, '$1<em>$2</em>');
+  out = out.replace(/`([^`]+)`/g, '<code>$1</code>');
+  return out;
+}
+
 function mdToHtml(md) {
   if (!md) return '';
   const blocks = md.split('\n\n');
@@ -87,10 +100,10 @@ function mdToHtml(md) {
       if (!trimmed) return '';
       if (trimmed.startsWith('# ')) return '';
       if (trimmed.startsWith('## ')) {
-        return `<h2 class="text-2xl font-bold mt-6 mb-3">${esc(trimmed.replace(/^##\s+/, ''))}</h2>`;
+        return `<h2 class="text-2xl font-bold mt-6 mb-3">${mdInline(trimmed.replace(/^##\s+/, ''))}</h2>`;
       }
       if (trimmed.startsWith('### ')) {
-        return `<h3 class="text-xl font-semibold mt-4 mb-2">${esc(trimmed.replace(/^###\s+/, ''))}</h3>`;
+        return `<h3 class="text-xl font-semibold mt-4 mb-2">${mdInline(trimmed.replace(/^###\s+/, ''))}</h3>`;
       }
       if (trimmed.startsWith('- ') || /^\d+\.\s/.test(trimmed)) {
         const isNum = /^\d+\.\s/.test(trimmed);
@@ -98,26 +111,26 @@ function mdToHtml(md) {
         const listCls = isNum ? 'list-decimal' : 'list-disc';
         const items = trimmed
           .split('\n')
-          .map((item) => `<li class="my-1">${esc(item.replace(/^(- |\d+\.\s)/, ''))}</li>`)
+          .map((item) => `<li class="my-1">${mdInline(item.replace(/^(- |\d+\.\s)/, ''))}</li>`)
           .join('');
         return `<${tag} class="${listCls} list-inside space-y-1 pl-4 my-3">${items}</${tag}>`;
       }
       if (trimmed.startsWith('|') && trimmed.includes('|')) {
-        const rows = trimmed.split('\n').filter((r) => r.trim() && !r.includes('---'));
+        const rows = trimmed.split('\n').filter((r) => r.trim() && !/^\|[\s:|-]+\|$/.test(r.trim()));
         if (rows.length > 0) {
           const tableHtml = rows
             .map((r, i) => {
               const cols = r.split('|').filter((_, ci, arr) => ci > 0 && ci < arr.length - 1);
               const tag = i === 0 ? 'th' : 'td';
               const cellCls = i === 0 ? 'border p-2 bg-slate-100 font-bold' : 'border p-2';
-              return `<tr>${cols.map((c) => `<${tag} class="${cellCls}">${esc(c.trim())}</${tag}>`).join('')}</tr>`;
+              return `<tr>${cols.map((c) => `<${tag} class="${cellCls}">${mdInline(c.trim())}</${tag}>`).join('')}</tr>`;
             })
             .join('');
           return `<div class="overflow-x-auto my-4"><table class="border-collapse border border-slate-300 w-full text-sm">${tableHtml}</table></div>`;
         }
       }
       if (trimmed === '---') return '<hr class="my-6 border-slate-200" />';
-      return `<p class="leading-relaxed my-3">${esc(trimmed)}</p>`;
+      return `<p class="leading-relaxed my-3">${mdInline(trimmed)}</p>`;
     })
     .join('\n');
 }
@@ -134,13 +147,10 @@ const page = (title, intro, inner) =>
 
 const HUB_LINKS = [
   ['/tools', 'All free tools'],
-  ['/products', 'Software & SaaS directory'],
   ['/alternatives', 'Software alternatives'],
   ['/blog', 'Guides & blog'],
-  ['/study', 'Study abroad guides'],
   ['/immigration', 'Immigration & visas'],
-  ['/travel', 'Travel & visa planner'],
-  ['/jobs/remote-jobs', 'Remote jobs'],
+  ['/cv-maker', 'Free CV maker'],
   ['/us', 'US tools'],
   ['/uk', 'UK tools'],
   ['/ca', 'Canada tools'],

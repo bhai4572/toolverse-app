@@ -32,19 +32,13 @@ export function Footer() {
           <div>
             <h4 className="text-white font-semibold text-sm mb-4">Product</h4>
             <ul className="space-y-2 text-xs">
-              <li><Link href="/products" className="hover:text-white transition-colors font-semibold text-indigo-400">Products &amp; SaaS</Link></li>
-              <li><Link href="/leaderboard" className="hover:text-white transition-colors font-semibold text-amber-400">Community Leaderboard 🏆</Link></li>
-              <li><Link href="/submit" className="hover:text-white transition-colors">Submit Your Product</Link></li>
-              <li><Link href="/startups" className="hover:text-white transition-colors">Startups Launchpad</Link></li>
-
-              <li><Link href="/business" className="hover:text-white transition-colors">Business Directory</Link></li>
               <li><Link href="/tools" className="hover:text-white transition-colors">Tools hub</Link></li>
+              <li><Link href="/cv-maker" className="hover:text-white transition-colors">CV Maker</Link></li>
+              <li><Link href="/blog" className="hover:text-white transition-colors">Guides &amp; Blog</Link></li>
               <li><Link href="/workspace" className="hover:text-white transition-colors">SEO Dashboard</Link></li>
-              <li><Link href="/study" className="hover:text-white transition-colors">Study Abroad</Link></li>
               <li><Link href="/immigration" className="hover:text-white transition-colors">Immigration</Link></li>
               <li><Link href="/cars" className="hover:text-white transition-colors">Cars</Link></li>
               <li><Link href="/pricing" className="hover:text-white transition-colors">Pricing</Link></li>
-              <li><Link href="/travel" className="hover:text-white transition-colors">Travel</Link></li>
             </ul>
           </div>
 
@@ -69,7 +63,7 @@ export function Footer() {
               <li><Link href="/tools/compress-image-target-size" className="hover:text-white transition-colors">Compress Image to Size</Link></li>
               <li><Link href="/tools/us-paycheck-calculator" className="hover:text-white transition-colors">US Paycheck Estimator</Link></li>
               <li><Link href="/tools/uk-take-home-pay-calculator" className="hover:text-white transition-colors">UK Take-Home Pay</Link></li>
-              <li><Link href="/tools/global-job-finder" className="hover:text-white transition-colors">Job Finder</Link></li>
+              <li><Link href="/tools/pakistan-salary-tax-estimator" className="hover:text-white transition-colors">Pakistan Salary Tax</Link></li>
               <li><Link href="/blog" className="hover:text-white transition-colors">Guides & Blog</Link></li>
               <li><Link href="/news" className="hover:text-white transition-colors">News headlines</Link></li>
             </ul>
