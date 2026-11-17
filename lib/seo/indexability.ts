@@ -25,10 +25,13 @@ const NOINDEX_PREFIXES: string[] = [
 
 /**
  * Thin / programmatic sections kept live (URLs work, users can still use them) but
- * de-indexed on 2026-11-17 to protect AdSense approval and site quality signals.
- * Reversible: delete a prefix here AND in scripts/generate-sitemap.mjs (THIN_PREFIXES).
+ * briefly de-indexed on 2026-11-17. Owner decision (same day): keep them INDEXED for traffic,
+ * so THIN_NOINDEX_ENABLED = false. Flip to true (here AND in scripts/generate-sitemap.mjs)
+ * to noindex + drop them from the sitemap again.
  * Uses "noindex, follow" so link equity still flows to tools/guides.
  */
+export const THIN_NOINDEX_ENABLED = false;
+
 export const ROBOTS_NOINDEX_FOLLOW = 'noindex, follow';
 
 export const THIN_NOINDEX_EXACT = new Set<string>([
@@ -64,7 +67,7 @@ export const THIN_NOINDEX_PREFIXES: string[] = [
 ];
 
 export function pathIsThinNoindex(pathname: string): boolean {
-  if (!pathname) return false;
+  if (!THIN_NOINDEX_ENABLED || !pathname) return false;
   const p = (pathname.replace(/\/$/, '') || '/').toLowerCase();
   if (THIN_NOINDEX_EXACT.has(p)) return true;
   return THIN_NOINDEX_PREFIXES.some((prefix) => p.startsWith(prefix));

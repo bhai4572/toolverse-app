@@ -48,26 +48,26 @@ function esc(str) {
 function setMetaByName(html, name, content) {
   const re = new RegExp(`<meta\\s+name="${name}"\\s+content="[^"]*"\\s*/?>`, 'i');
   const tag = `<meta name="${name}" content="${esc(content)}" />`;
-  if (re.test(html)) return html.replace(re, tag);
-  return html.replace('</head>', `    ${tag}\n  </head>`);
+  if (re.test(html)) return html.replace(re, () => tag);
+  return html.replace('</head>', () => `    ${tag}\n  </head>`);
 }
 
 function setMetaByProperty(html, property, content) {
   const re = new RegExp(`<meta\\s+property="${property}"\\s+content="[^"]*"\\s*/?>`, 'i');
   const tag = `<meta property="${property}" content="${esc(content)}" />`;
-  if (re.test(html)) return html.replace(re, tag);
-  return html.replace('</head>', `    ${tag}\n  </head>`);
+  if (re.test(html)) return html.replace(re, () => tag);
+  return html.replace('</head>', () => `    ${tag}\n  </head>`);
 }
 
 function setCanonical(html, href) {
   const re = /<link\s+rel="canonical"\s+href="[^"]*"\s*\/?>/i;
   const tag = `<link rel="canonical" href="${esc(href)}" />`;
-  if (re.test(html)) return html.replace(re, tag);
-  return html.replace('</head>', `    ${tag}\n  </head>`);
+  if (re.test(html)) return html.replace(re, () => tag);
+  return html.replace('</head>', () => `    ${tag}\n  </head>`);
 }
 
 function setTitle(html, title) {
-  return html.replace(/<title>[^<]*<\/title>/i, `<title>${esc(title)}</title>`);
+  return html.replace(/<title>[^<]*<\/title>/i, () => `<title>${esc(title)}</title>`);
 }
 
 function replaceJsonLd(html, schemas) {
@@ -75,7 +75,7 @@ function replaceJsonLd(html, schemas) {
   const injected = (schemas || [])
     .map((schema) => `    <script type="application/ld+json">${JSON.stringify(schema)}</script>`)
     .join('\n');
-  return out.replace('</head>', `${injected}\n  </head>`);
+  return out.replace('</head>', () => `${injected}\n  </head>`);
 }
 
 /** Inline markdown → HTML (escape first; then links, bold, italics, code). */
@@ -194,11 +194,17 @@ function buildBodyMain(pathname, meta, deps) {
     getJobPageContent,
     BLOG_POSTS = [],
     PRODUCTS = [],
+    buildProductInsights,
     ALTERNATIVE_PAGES = [],
     COMPARISON_PAGES = [],
     QUESTIONS = [],
     COLLECTIONS = [],
     STUDY_DESTINATIONS = {},
+    getStudyDestination,
+    getCorridorGuide,
+    PK_CORRIDOR_CODES = [],
+    CORRIDOR_TOOLS = [],
+    ALL_COUNTRY_STUDY_SUMMARIES = [],
     REGION_HUBS = {},
     LEGAL_PAGES = {},
   } = deps;
@@ -269,28 +275,131 @@ function buildBodyMain(pathname, meta, deps) {
   } else if (parts[0] === 'legal' && parts[1] && LEGAL_PAGES[parts[1]]) {
     const lp = LEGAL_PAGES[parts[1]];
     contentHtml = `<article class="space-y-4 max-w-3xl"><h1 class="text-3xl font-extrabold text-slate-900">${esc(lp.title)}</h1><div class="text-sm leading-relaxed space-y-4">${lp.content}</div></article>`;
-  } else if (parts[0] === 'study' && parts[1] && STUDY_DESTINATIONS[parts[1]]) {
-    const s = STUDY_DESTINATIONS[parts[1]];
+  } else if (parts[0] === 'study' && parts[1] && (STUDY_DESTINATIONS[parts[1]] || (getStudyDestination && getStudyDestination(parts[1])))) {
+    const s = (getStudyDestination && getStudyDestination(parts[1])) || STUDY_DESTINATIONS[parts[1]];
+    const cs = s.countryStudy;
+    const extLi = (href, label, desc) =>
+      `<li class="my-1"><a href="${esc(href)}" class="text-indigo-600 hover:underline font-medium" target="_blank" rel="noopener">${esc(label)}</a>${desc ? ` <span class="text-sm text-slate-500">— ${esc(desc)}</span>` : ''}</li>`;
+    const glance = cs
+      ? sec(
+          `${cs.name} at a glance for international students`,
+          ul([
+            li('', 'Capital and region', `${cs.capital}, ${cs.region} (${cs.continent})`),
+            li('', 'Local currency', `${cs.currencyCode} (${cs.currencySymbol})`),
+            li('', 'Typical international tuition', cs.tuitionBandLabel),
+            li('', 'Living costs (planning band)', cs.livingCostYearUsd),
+            li('', 'Main intakes', cs.mainIntakes.join(', ')),
+            li('', 'Student visa', `${cs.visaCategoryName}; typical processing ${cs.visaProcessingWeeks}`),
+            li('', 'Work while studying', cs.workHoursAllowed),
+            li('', 'After graduation', cs.postStudyStay),
+          ]) + para('These are planning estimates, not official quotes. Confirm fees, funds and visa rules on the university and government websites before paying anything.')
+        )
+      : '';
+    const unis =
+      cs && cs.universities && cs.universities.length
+        ? sec(
+            `Universities in ${cs.name}`,
+            ul(cs.universities.map((u) => extLi(u.website, u.name, `${u.city} • ${u.type} • tuition ${u.tuitionLabel} • intakes: ${(u.intakes || []).join(', ')}`)))
+          )
+        : '';
+    const steps0 = cs && cs.universities && cs.universities[0] && cs.universities[0].admissionSteps;
+    const steps =
+      steps0 && steps0.length
+        ? sec(
+            `How to apply in ${cs.name} yourself (step by step)`,
+            `<ol class="list-decimal list-inside space-y-2 pl-4 my-3">${steps0
+              .map(
+                (st) =>
+                  `<li><strong>${esc(st.title)}</strong> <span class="text-sm text-slate-500">(${esc(st.timeline)})</span>${st.toolHref ? ` — free tool: <a href="${esc(st.toolHref)}" class="text-indigo-600 hover:underline">${esc(st.toolLabel || st.toolHref)}</a>` : ''}</li>`
+              )
+              .join('')}</ol>`
+          )
+        : '';
+    const sameRegion =
+      cs && ALL_COUNTRY_STUDY_SUMMARIES.length
+        ? ALL_COUNTRY_STUDY_SUMMARIES.filter((c) => c.region === cs.region && c.slug !== cs.slug).slice(0, 10)
+        : [];
+    const related = sameRegion.length
+      ? sec(`Other study destinations in ${cs.region}`, ul(sameRegion.map((c) => li(`/study/${c.slug}`, `Study in ${c.name}`, c.tuitionBandLabel))) + `<p class="text-sm"><a href="/study" class="text-indigo-600 hover:underline">All study-abroad countries &rarr;</a></p>`)
+      : '';
+    const travel = s.travelHref ? `<p class="text-sm mt-4">Travelling from Pakistan? See the <a href="${esc(s.travelHref)}" class="text-indigo-600 hover:underline">Pakistan to ${esc(s.name)} travel and visa guide</a>.</p>` : '';
     contentHtml = page(
       s.title,
       s.answerFirst,
       [
         sec(`Study in ${s.name}: overview`, para(s.overview)),
+        glance,
         sec('Study pathways', (s.pathways || []).map((p) => `<h3 class="font-semibold mt-3">${esc(p.title)}</h3>${para(p.body)}`).join('')),
         sec('Documents you will usually need', ul((s.documents || []).map((d) => li('', d)))),
         sec('Typical costs', para(s.feeYearNote) + ul((s.feeRanges || []).map((f) => li('', `${f.label}: ${f.range}`, f.note)))),
         sec('Student visa summary', para(s.visaSummary)),
         sec('Popular fields of study', ul((s.fields || []).map((f) => li('', f.name, f.why)))),
-        sec('Official links', ul([...(s.officialLinks || []), ...(s.portals || [])].map((l) => li(l.href, l.label, l.note)))),
+        STUDY_DESTINATIONS[parts[1]]
+          ? sec('Official links', ul([...(s.officialLinks || []), ...(s.portals || [])].map((l) => li(l.href, l.label, l.note)))) + unis
+          : unis + (() => {
+              const uniSites = new Set(((cs && cs.universities) || []).map((u) => u.website));
+              const portals = (s.officialLinks || []).filter((l) => !uniSites.has(l.href));
+              return portals.length ? sec('Official portal', ul(portals.map((l) => extLi(l.href, l.label, l.note)))) : '';
+            })(),
+        steps,
         sec('Free ToolVerse tools for applicants', ul((s.tools || []).map((l) => li(l.href, l.label)))),
         sec('Frequently asked questions', (s.faqs || []).map((f) => `<h3 class="font-semibold mt-3">${esc(f.question)}</h3>${para(f.answer)}`).join('')),
+        related,
+        travel,
       ].join('')
     );
   } else if (parts[0] === 'study' && !parts[1]) {
     contentHtml = page(
       'Study Abroad Guides',
-      'Admissions steps, documents, costs and student-visa basics for the USA, UK, Canada, Australia, New Zealand and Europe.',
-      sec('Destinations', ul(Object.values(STUDY_DESTINATIONS).map((s) => li(`/study/${s.slug}`, s.name, s.answerFirst))))
+      `Admissions steps, documents, costs and student-visa basics for ${ALL_COUNTRY_STUDY_SUMMARIES.length || 'many'} countries, from the USA, UK and Canada to lower-cost options in Europe and Asia. Each guide lists universities, typical tuition and living-cost bands, intakes, and links to free tools for your application (GPA calculator, CV maker, PDF merge and compress, passport photos).`,
+      sec('Most popular destinations', ul(Object.values(STUDY_DESTINATIONS).map((s) => li(`/study/${s.slug}`, s.name, s.answerFirst)))) +
+        [...new Set(ALL_COUNTRY_STUDY_SUMMARIES.map((c) => c.continent))]
+          .sort()
+          .map((cont) => sec(`Study in ${cont}`, ul(ALL_COUNTRY_STUDY_SUMMARIES.filter((c) => c.continent === cont).sort((a, b) => a.name.localeCompare(b.name)).map((c) => li(`/study/${c.slug}`, c.name, c.tuitionBandLabel)))))
+          .join('') +
+        sec('Free tools for your application', ul([
+          li('/tools/gpa-calculator', 'GPA Calculator', 'convert percentages and grades for application forms'),
+          li('/cv-maker', 'CV Maker', 'build an academic CV / Europass-style resume'),
+          li('/tools/pdf-merge', 'Merge PDF', 'combine transcripts into one upload'),
+          li('/tools/pdf-compress', 'Compress PDF', 'fit portal upload limits'),
+          li('/tools/passport-photo-maker', 'Passport Photo Maker', 'visa and application photos'),
+          li('/tools/word-counter', 'Word Counter', 'keep your SOP within the word limit'),
+        ]))
+    );
+  } else if (parts[0] === 'travel' && parts.length === 3 && getCorridorGuide && getCorridorGuide(parts[1], parts[2])) {
+    const g = getCorridorGuide(parts[1], parts[2]);
+    const extUl = (arr) => `<ul class="list-disc list-inside space-y-1 pl-4 my-3">${arr.map((l) => `<li class="my-1"><a href="${esc(l.href)}" class="text-indigo-600 hover:underline font-medium" target="_blank" rel="noopener">${esc(l.label)}</a>${l.note ? ` <span class="text-sm text-slate-500">— ${esc(l.note)}</span>` : ''}</li>`).join('')}</ul>`;
+    contentHtml = page(
+      g.title.replace(/\s*\(2026\).*$/, ''),
+      g.intro,
+      [
+        sec('Main visa routes', ul(g.visaRoutes.map((r) => li('', r.name, r.detail)))),
+        sec('How to apply safely', `<ol class="list-decimal list-inside space-y-1 pl-4 my-3">${g.steps.map((x) => `<li>${esc(x)}</li>`).join('')}</ol>`),
+        sec('Pakistan-side checks', ul(g.pakistanSide.map((x) => li('', x)))),
+        sec('Official links', extUl(g.officialLinks)),
+        sec('Free tools for your visa file', ul([...CORRIDOR_TOOLS.map((l) => li(l.href, l.label, l.note)), g.studySlug ? li(`/study/${g.studySlug}`, `Study in ${g.name}`, 'universities, costs and student visa') : ''])),
+        sec('Frequently asked questions', g.faqs.map((f) => `<h3 class="font-semibold mt-3">${esc(f.question)}</h3>${para(f.answer)}`).join('')),
+        sec('Other Pakistan travel guides', ul(PK_CORRIDOR_CODES.filter((c) => c !== g.iso2).map((c) => li(`/travel/PK/${c}`, `Pakistan to ${getCorridorGuide('PK', c).name}`)))),
+        para('Visa rules, fees and processing times change often. ToolVerse does not issue visas; always confirm on the official portal before you pay or book.'),
+      ].join('')
+    );
+  } else if (parts[0] === 'travel' && PK_CORRIDOR_CODES && PK_CORRIDOR_CODES.length) {
+    const hubIntro = {
+      passport: 'See which destinations need a visa in advance, an eVisa or a visa on arrival for your passport, then open the full guide for each route.',
+      embassies: 'Find embassy and consulate contacts for common routes. Always book appointments only through official mission websites.',
+      destinations: 'Compare popular destinations for travel, work and study, with links to visa guides and free document tools.',
+      jobs: 'Working abroad? Check the visa route for your destination, register with the Bureau of Emigration before you fly, and prepare your CV.',
+      planner: 'Plan a trip budget and document checklist: visa route, passport photo, compressed scans and bookings, all in one place.',
+      route: 'Pick a passport and destination to see the visa route overview, document checklist and official links.',
+    }[parts[1]] || 'Visa and travel guides for Pakistani passport holders: visit, work and study routes, documents, official portals and free tools for preparing your visa file.';
+    contentHtml = page(
+      meta.title.replace(/\s*[|—–-]\s*ToolVerse.*$/, ''),
+      hubIntro,
+      [
+        sec('Visa guides from Pakistan', ul(PK_CORRIDOR_CODES.map((c) => { const g = getCorridorGuide('PK', c); return li(`/travel/PK/${c}`, `Pakistan to ${g.name}`, g.description); }))),
+        sec('Free tools for your visa file', ul(CORRIDOR_TOOLS.map((l) => li(l.href, l.label, l.note)))),
+        sec('Related', ul([li('/study', 'Study abroad guides'), li('/immigration', 'Immigration hub'), li('/passport-photos', 'Passport photo sizes by country')])),
+      ].join('')
     );
   } else if (parts.length === 1 && REGION_HUBS[parts[0]]) {
     const r = REGION_HUBS[parts[0]];
@@ -311,27 +420,35 @@ function buildBodyMain(pathname, meta, deps) {
   } else if (parts[0] === 'products' && parts[1] && PRODUCTS.find((x) => x.slug === parts[1])) {
     const p = PRODUCTS.find((x) => x.slug === parts[1]);
     const alt = ALTERNATIVE_PAGES.find((a) => a.slug === p.slug);
+    const ins = buildProductInsights(p, PRODUCTS, COMPARISON_PAGES, TOOLS, ALTERNATIVE_PAGES.map((a) => a.slug));
+    const linkList = (arr) => ul(arr.map((x) => li(x.href, x.label, x.note)));
     contentHtml = page(
       `${p.name} — ${p.tagline}`,
       p.description,
       [
+        sec('Product overview', para(ins.intro) + ul(ins.glance.map((g) => li('', g.label, g.value)))),
         sec(`About ${p.name}`, para(p.longDescription)),
         sec('Key features', ul((p.features || []).map((f) => li('', f.title, f.description)))),
         sec('Pricing', para(`Pricing model: ${p.pricingModel}.`) + ul((p.pricingPlans || []).map((pl) => li('', `${pl.name} — ${pl.price}${pl.period && pl.period !== 'free' ? ` / ${pl.period}` : ''}`, (pl.features || []).join(', '))))),
         sec('Pros', ul((p.pros || []).map((x) => li('', x)))),
         sec('Cons', ul((p.cons || []).map((x) => li('', x)))),
         sec('Platforms', para((p.platforms || []).join(', '))),
-        alt ? sec('Alternatives', ul([li(`/alternatives/${alt.slug}`, `Best alternatives to ${p.name}`)])) : '',
-        (p.relatedToolverseToolSlugs || []).length
-          ? sec('Related free ToolVerse tools', ul(p.relatedToolverseToolSlugs.map((s) => { const t = TOOLS.find((x) => x.slug === s); return t ? li(`/tools/${t.slug}`, t.canonicalName, t.shortDescription) : ''; })))
-          : '',
+        sec(ins.audienceHeading, para(ins.audience) + '<h3 class="font-semibold mt-3">How to choose</h3>' + ul(ins.chooseTips.map((t) => li('', t)))),
+        ins.comparisons.length ? sec('Comparisons and alternatives', linkList(ins.comparisons)) : '',
+        ins.similar.length ? sec('Similar products', linkList(ins.similar)) : '',
+        ins.tools.length ? sec('Free ToolVerse tools for this kind of work', linkList(ins.tools)) : '',
+        sec(`${p.name} FAQ`, ins.faqs.map((f) => `<h3 class="font-semibold mt-3">${esc(f.question)}</h3>${para(f.answer)}`).join('')),
       ].join('')
     );
   } else if (parts[0] === 'products' && !parts[1]) {
     contentHtml = page(
       'Discover Software, AI Tools & SaaS Products',
-      'Browse software products with features, pricing, pros and cons, and alternatives.',
-      sec('Products', ul(PRODUCTS.filter((p) => p.status === 'approved').map((p) => li(`/products/${p.slug}`, p.name, p.tagline))))
+      'Browse popular software products with features, pricing plans, platforms, pros and cons, and alternatives. Each profile also links to free ToolVerse tools for the same kind of work, so you can try a task in your browser before paying for software.',
+      [...new Map(PRODUCTS.filter((p) => p.status === 'approved').map((p) => [p.categorySlug, p.categoryName])).entries()]
+        .map(([slug, name]) => sec(name, ul(PRODUCTS.filter((p) => p.status === 'approved' && p.categorySlug === slug).map((p) => li(`/products/${p.slug}`, p.name, p.tagline)))))
+        .join('') +
+        sec('Comparisons', ul(COMPARISON_PAGES.map((c) => li(`/compare/${c.slug}`, c.title || c.slug)))) +
+        sec('Alternatives guides', ul(ALTERNATIVE_PAGES.map((a) => li(`/alternatives/${a.slug}`, a.metaTitle || `Best ${a.targetProductName} alternatives`))))
     );
   } else if (parts[0] === 'leaderboard') {
     const topProducts = PRODUCTS.filter((p) => p.status === 'approved').slice(0, 15);
@@ -352,7 +469,9 @@ function buildBodyMain(pathname, meta, deps) {
       [
         sec(`About ${a.targetProductName}`, para(a.targetProductDescription) + para(`Pricing: ${a.targetProductPricing}. Best for: ${a.bestFor}`)),
         sec('How to choose an alternative', ul((a.keySelectionCriteria || []).map((c) => li('', c)))),
-        sec('Top alternatives', ul((a.topAlternativeSlugs || []).map((s) => { const p = PRODUCTS.find((x) => x.slug === s); return p ? li(`/products/${p.slug}`, p.name, p.tagline) : ''; }))),
+        a.targetProductWebsite ? `<p class="text-sm">Official site: <a href="${esc(a.targetProductWebsite)}" class="text-indigo-600 hover:underline" target="_blank" rel="noopener nofollow">${esc(a.targetProductWebsite.replace(/^https?:\/\//, ''))}</a></p>` : '',
+        (a.topAlternativeSlugs || []).length ? sec('Top alternatives', ul((a.topAlternativeSlugs || []).map((s) => { const p = PRODUCTS.find((x) => x.slug === s); return p ? li(`/products/${p.slug}`, p.name, p.tagline) : ''; }))) : '',
+        (a.relatedToolverseToolSlugs || []).length ? sec('Free ToolVerse tools to try', ul(a.relatedToolverseToolSlugs.map((s) => { const t = TOOLS.find((x) => x.slug === s); return t ? li(`/tools/${t.slug}`, t.canonicalName, t.shortDescription) : ''; }))) : '',
         sec('Frequently asked questions', (a.faqs || []).map((f) => `<h3 class="font-semibold mt-3">${esc(f.question)}</h3>${para(f.answer)}`).join('')),
       ].join('')
     );
@@ -879,7 +998,8 @@ function applyPage(html, pathname, getMetadataForPath, deps) {
   // Vite moves module scripts to <head>, so close on </div></body> (not script-after-root)
   const replaced = out.replace(
     /(<div id="root"[^>]*>)[\s\S]*?(<\/div>\s*<\/body>)/i,
-    `$1${bodyInner}\n    $2`
+    // Function replacer: page text contains "$20" etc., which a string replacement treats as $2 + "0".
+    (_m, open, close) => `${open}${bodyInner}\n    ${close}`
   );
   if (replaced === out) {
     throw new Error(`Failed to inject body for ${pathname}`);
@@ -916,13 +1036,15 @@ async function main() {
     const { getJobPageContent } = await vite.ssrLoadModule('/lib/seo/jobPageContent.ts');
 
     const { PRODUCTS } = await vite.ssrLoadModule('/lib/products/registry.ts');
+    const { buildProductInsights } = await vite.ssrLoadModule('/lib/products/productInsights.ts');
     const { ALTERNATIVE_PAGES } = await vite.ssrLoadModule('/lib/products/alternativesRegistry.ts');
     const { COMPARISON_PAGES } = await vite.ssrLoadModule('/lib/products/comparisonsRegistry.ts');
     const { QUESTIONS } = await vite.ssrLoadModule('/lib/products/questionsRegistry.ts');
     const { COLLECTIONS } = await vite.ssrLoadModule('/lib/products/collectionsRegistry.ts');
-    const { STUDY_DESTINATIONS } = await vite.ssrLoadModule('/lib/study/destinations.ts');
+    const { STUDY_DESTINATIONS, getStudyDestination } = await vite.ssrLoadModule('/lib/study/destinations.ts');
     const { ALL_COUNTRY_STUDY_SUMMARIES } = await vite.ssrLoadModule('/lib/study/globalUniversityEngine.ts');
     const { REGION_HUBS } = await vite.ssrLoadModule('/lib/regions/hubs.ts');
+    const { getCorridorGuide, PK_CORRIDOR_CODES, CORRIDOR_TOOLS } = await vite.ssrLoadModule('/lib/travel/corridorGuides.ts');
     let LEGAL_PAGES = {};
     try {
       ({ LEGAL_PAGES } = await vite.ssrLoadModule('/app/legal/[slug]/page.tsx'));
@@ -940,11 +1062,17 @@ async function main() {
       getJobPageContent,
       BLOG_POSTS,
       PRODUCTS,
+      buildProductInsights,
       ALTERNATIVE_PAGES,
       COMPARISON_PAGES,
       QUESTIONS,
       COLLECTIONS,
       STUDY_DESTINATIONS,
+      getStudyDestination,
+      ALL_COUNTRY_STUDY_SUMMARIES,
+      getCorridorGuide,
+      PK_CORRIDOR_CODES,
+      CORRIDOR_TOOLS,
       REGION_HUBS,
       LEGAL_PAGES,
     };
@@ -1026,7 +1154,7 @@ async function main() {
     routes.push('/travel/jobs');
     routes.push('/travel/planner');
     routes.push('/travel/route');
-    for (const corridor of ['AE', 'SA', 'GB', 'CA', 'DE', 'QA', 'OM', 'US', 'TR']) {
+    for (const corridor of PK_CORRIDOR_CODES) {
       routes.push(`/travel/PK/${corridor}`);
     }
 

@@ -53,6 +53,14 @@ export default function AlternativeDetailPage({ params }: AlternativePageProps) 
         <div className="text-xs font-semibold text-slate-500 pt-1">
           Standard Pricing: <span className="text-slate-800 dark:text-slate-200">{alt.targetProductPricing}</span>
         </div>
+        {alt.targetProductWebsite && (
+          <div className="text-xs pt-1">
+            Official site:{' '}
+            <a href={alt.targetProductWebsite} target="_blank" rel="noopener noreferrer nofollow" className="text-indigo-600 hover:underline font-semibold">
+              {alt.targetProductWebsite.replace(/^https?:\/\//, '')}
+            </a>
+          </div>
+        )}
       </section>
 
       {/* Key Selection Criteria */}
@@ -69,6 +77,7 @@ export default function AlternativeDetailPage({ params }: AlternativePageProps) 
       </section>
 
       {/* Top Alternatives Grid */}
+      {alternatives.length > 0 && (
       <section className="space-y-6">
         <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white">Top Recommended Alternatives</h2>
 
@@ -119,6 +128,7 @@ export default function AlternativeDetailPage({ params }: AlternativePageProps) 
           ))}
         </div>
       </section>
+      )}
 
       {/* Free Toolverse Utilities Cross-Linking */}
       {relatedTools.length > 0 && (
