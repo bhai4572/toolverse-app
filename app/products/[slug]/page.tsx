@@ -3,6 +3,9 @@ import { getProductBySlug, getAllProducts } from '@/lib/products/registry';
 import { Product, ProductReview } from '@/lib/products/types';
 import { getStoredReviews, saveReview, isUpvoted, toggleUpvote } from '@/lib/products/storageEngine';
 import { getToolsByCategory, TOOLS } from '@/lib/tools/registry';
+import { buildProductInsights } from '@/lib/products/productInsights';
+import { COMPARISON_PAGES } from '@/lib/products/comparisonsRegistry';
+import { ALTERNATIVE_PAGES } from '@/lib/products/alternativesRegistry';
 import {
   getProductPaymentRelationship,
   getPaymentEntryById,
@@ -84,6 +87,13 @@ export default function ProductProfilePage({ params }: ProductPageProps) {
 
   // Related Products
   const allProds = getAllProducts();
+  const insights = buildProductInsights(
+    product,
+    allProds,
+    COMPARISON_PAGES,
+    TOOLS,
+    ALTERNATIVE_PAGES.map((a) => a.slug)
+  );
   const relatedProducts = allProds
     .filter((p) => p.slug !== product.slug && (p.categorySlug === product.categorySlug || (product.relatedProductSlugs || []).includes(p.slug)))
     .slice(0, 4);
@@ -151,8 +161,7 @@ export default function ProductProfilePage({ params }: ProductPageProps) {
                 <span>Category: <strong className="text-slate-800 dark:text-slate-200">{product.categoryName}</strong></span>
                 <span>&bull;</span>
                 <span>Country: <strong className="text-slate-800 dark:text-slate-200">{product.country}</strong></span>
-                <span>&bull;</span>
-                <span>Rating: <strong className="text-amber-500 font-bold">{product.ratingAverage} / 5.0</strong> ({product.ratingCount} reviews)</span>
+
               </div>
             </div>
           </div>
@@ -188,7 +197,16 @@ export default function ProductProfilePage({ params }: ProductPageProps) {
           {/* Overview */}
           <section className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl space-y-4">
             <h2 className="text-xl font-extrabold text-slate-900 dark:text-white">Product Overview</h2>
+            <p className="text-slate-700 dark:text-slate-300 leading-relaxed text-sm">{insights.intro}</p>
             <p className="text-slate-700 dark:text-slate-300 leading-relaxed text-sm">{product.longDescription}</p>
+            <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-sm pt-2">
+              {insights.glance.map((g) => (
+                <div key={g.label} className="flex gap-2">
+                  <dt className="font-semibold text-slate-500 min-w-[7.5rem]">{g.label}</dt>
+                  <dd className="text-slate-800 dark:text-slate-200">{g.value}</dd>
+                </div>
+              ))}
+            </dl>
 
             {/* Screenshots */}
             {product.screenshots && product.screenshots.length > 0 && (
@@ -395,12 +413,64 @@ export default function ProductProfilePage({ params }: ProductPageProps) {
             </div>
           </section>
 
+          {/* Who it is for + how to choose (shared with prerender via lib/products/productInsights) */}
+          <section className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl space-y-4">
+            <h2 className="text-xl font-extrabold text-slate-900 dark:text-white">{insights.audienceHeading}</h2>
+            <p className="text-slate-700 dark:text-slate-300 leading-relaxed text-sm">{insights.audience}</p>
+            <h3 className="font-bold text-slate-900 dark:text-white">How to choose</h3>
+            <ul className="list-disc list-inside text-sm text-slate-700 dark:text-slate-300 space-y-1">
+              {insights.chooseTips.map((t) => (
+                <li key={t}>{t}</li>
+              ))}
+            </ul>
+            {insights.comparisons.length > 0 && (
+              <>
+                <h3 className="font-bold text-slate-900 dark:text-white">Comparisons</h3>
+                <ul className="list-disc list-inside text-sm space-y-1">
+                  {insights.comparisons.map((c) => (
+                    <li key={c.href}><a href={c.href} className="text-indigo-600 hover:underline font-medium">{c.label}</a></li>
+                  ))}
+                </ul>
+              </>
+            )}
+            {insights.similar.length > 0 && (
+              <>
+                <h3 className="font-bold text-slate-900 dark:text-white">Similar products</h3>
+                <ul className="list-disc list-inside text-sm space-y-1">
+                  {insights.similar.map((c) => (
+                    <li key={c.href}><a href={c.href} className="text-indigo-600 hover:underline font-medium">{c.label}</a>{c.note ? <span className="text-slate-500"> — {c.note}</span> : null}</li>
+                  ))}
+                </ul>
+              </>
+            )}
+            {insights.tools.length > 0 && (
+              <>
+                <h3 className="font-bold text-slate-900 dark:text-white">Free ToolVerse tools for this kind of work</h3>
+                <ul className="list-disc list-inside text-sm space-y-1">
+                  {insights.tools.map((c) => (
+                    <li key={c.href}><a href={c.href} className="text-indigo-600 hover:underline font-medium">{c.label}</a>{c.note ? <span className="text-slate-500"> — {c.note}</span> : null}</li>
+                  ))}
+                </ul>
+              </>
+            )}
+          </section>
+
+          <section className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl space-y-3">
+            <h2 className="text-xl font-extrabold text-slate-900 dark:text-white">{product.name} FAQ</h2>
+            {insights.faqs.map((f) => (
+              <div key={f.question}>
+                <h3 className="font-bold text-sm text-slate-900 dark:text-white">{f.question}</h3>
+                <p className="text-sm text-slate-700 dark:text-slate-300">{f.answer}</p>
+              </div>
+            ))}
+          </section>
+
           {/* User Reviews */}
           <section className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl space-y-6">
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-xl font-extrabold text-slate-900 dark:text-white">User Reviews ({reviews.length})</h2>
-                <p className="text-xs text-slate-500">Genuine reviews submitted by verified community members</p>
+                <p className="text-xs text-slate-500">Notes you add here are saved only in this browser and are not published.</p>
               </div>
               <button
                 onClick={() => setShowReviewModal(true)}

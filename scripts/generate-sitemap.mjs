@@ -1,16 +1,12 @@
 /**
- * Generate clean, high-authority sitemaps under public/ (safe for CF prebuild).
+ * Generate sitemaps under public/ (safe for CF prebuild).
  * - sitemap.xml          → single combined urlset (GSC submit target)
- * - sitemap-tools.xml    → /tools/* + /category/* (core products)
- * - sitemap-content.xml  → pillar guides, verified study destinations
- * - sitemap-pages.xml    → hubs, legal, directories
+ * - sitemap-tools.xml    → /tools/* + /category/* (optional split)
+ * - sitemap-content.xml  → blog, how-to, news, study (optional split)
+ * - sitemap-pages.xml    → hubs, legal, jobs, product/travel/etc. (optional split)
  *
- * Strict Quality Guardrails (GSC & AdSense Compliance):
- * - Excludes private/admin, /dashboard, /workspace, /pricing, thin /products/* shells.
- * - Excludes 188 auto-generated country doorway shells (keeps only verified Tier-1 study guides).
- * - Excludes 126 auto-generated template how-to posts (keeps only genuine hand-written pillar guides).
- * - Replaces /cv-maker with canonical /tools/cv-maker.
- * - Gives highest priority (0.95/0.9) to core tools and categories.
+ * Parses slug fields from registry + blog pillar source; adds per-tool how-to guides.
+ * Excludes workspace / admin / dashboard / private URLs.
  */
 import fs from 'fs';
 import path from 'path';
@@ -25,48 +21,34 @@ const base = 'https://toolverse.baby';
  * Mirror of lib/seo/indexability.ts (this script cannot import TS). Keep in sync.
  * Anything noindex there must NOT be in the sitemap.
  */
-const NOINDEX_EXACT = new Set([
-  '/404',
-  '/dashboard',
-  '/workspace',
-  '/pricing',
-  '/news',
-  '/tools/cv-maker', // canonical is /cv-maker
-]);
-
-const NOINDEX_PREFIXES = [
-  '/admin',
-  '/admin/',
-  '/products',
-  '/products/',
-  '/badges',
-  '/claim',
-];
-
-const INDEXABLE_STUDY_SLUGS = new Set([
-  'usa',
-  'uk',
-  'canada',
-  'australia',
-  'new-zealand',
-  'europe',
-  'germany',
-]);
-
+const NOINDEX_EXACT = new Set(['/404']);
+const NOINDEX_PREFIXES = ['/admin', '/admin/'];
+/** Thin sections: owner wants them indexed (2026-11-17), so disabled. Mirror of THIN_NOINDEX_* in lib/seo/indexability.ts. */
+const THIN_NOINDEX_ENABLED = false;
+const THIN_EXACT = new Set(['/products', '/leaderboard', '/submit', '/claim', '/badges', '/study', '/travel', '/jobs', '/tools/global-job-finder', '/tools/b2b-email-finder', '/business', '/business-qr', '/startups', '/submit-startup', '/guest-posts', '/become-a-publisher', '/dashboard']);
+const THIN_PREFIXES = ['/products/', '/study/', '/travel/', '/jobs/', '/business/', '/b/', '/startups/', '/guest-posts/', '/publishers/'];
 function isNoindex(p) {
   const x = (p.replace(/\/$/, '') || '/').toLowerCase();
   if (NOINDEX_EXACT.has(x)) return true;
-  if (NOINDEX_PREFIXES.some((pre) => x === pre.replace(/\/$/, '') || x.startsWith(pre))) {
-    return true;
-  }
-  if (x.startsWith('/study/')) {
-    const slug = x.replace(/^\/study\//, '').split('/')[0];
-    if (slug && !INDEXABLE_STUDY_SLUGS.has(slug)) return true;
-  }
-  return false;
+  if (THIN_NOINDEX_ENABLED && (THIN_EXACT.has(x) || THIN_PREFIXES.some((pre) => x.startsWith(pre)))) return true;
+  return NOINDEX_PREFIXES.some((pre) => x === pre.replace(/\/$/, '') || x.startsWith(pre));
 }
 
+/** Tools that already have a hand-written pillar guide (keep in sync with lib/blog/toolGuides.ts). */
+const PILLAR_GUIDE_BY_TOOL = {
+  'compress-image-target-size': 'how-to-compress-image-to-target-size-under-50kb',
+  'pdf-merge': 'how-to-merge-pdf-files-privately-without-uploading',
+  'heic-to-jpg': 'convert-heic-to-jpg-windows-iphone',
+  'barcode-generator': 'how-to-generate-barcodes-free-code-128-ean-upc',
+  'pakistan-salary-tax-estimator': 'pakistan-salary-tax-calculator-slabs-guide',
+  'utm-builder': 'how-to-build-utm-campaign-urls',
+  'global-job-finder': 'top-high-paying-remote-jobs-worldwide',
+  'seo-audit-analyzer': 'best-free-semrush-ahrefs-alternatives-2026',
+  'freelancer-hourly-rate-calculator': 'freelance-rate-calculator-guide-paypal-stripe-fees',
+};
+
 function makeUrl(pathname, changefreq = 'weekly', priority = '0.8') {
+  // No <lastmod>: a build-date on every URL is not a real modification date and gets ignored by Google.
   return { loc: `${base}${pathname}`, changefreq, priority };
 }
 
@@ -77,6 +59,7 @@ function section(src, startMarker, endMarker) {
   return src.slice(start, end < 0 ? undefined : end);
 }
 
+/** Match object key `slug:` only (not categorySlug). */
 function slugs(text) {
   return [...text.matchAll(/(?:^|[^\w])slug:\s*'([^']+)'/gm)].map((m) => m[1]);
 }
@@ -114,46 +97,56 @@ const trendPosts = fs.readFileSync(path.join(root, 'lib/blog/usTrendPosts.ts'), 
 
 const categories = slugs(section(registry, 'export const CATEGORIES', 'export const TOOLS'));
 const tools = liveToolSlugs(section(registry, 'export const TOOLS'));
-
-// Keep ONLY verified hand-written pillar and trend posts (Do NOT add 126 template how-to clones)
 const pillarBlog = [
   ...slugs(section(posts, 'const PILLAR_POSTS', 'export const BLOG_POSTS')),
   ...slugs(section(trendPosts, 'export const US_TREND_POSTS')),
 ];
 const blog = [...new Set(pillarBlog)];
 
-// —— 1. Tools: /tools/* + /category/* (Core product: high priority 0.9–0.95) ——
+// —— 1. Tools: /tools/* + /category/* ——
 const toolsUrls = [];
-toolsUrls.push(makeUrl('/tools', 'daily', '0.95'));
-for (const c of categories) toolsUrls.push(makeUrl(`/category/${c}`, 'weekly', '0.85'));
-for (const t of tools) toolsUrls.push(makeUrl(`/tools/${t}`, 'weekly', '0.90'));
+toolsUrls.push(makeUrl('/tools', 'daily', '0.9'));
+for (const c of categories) toolsUrls.push(makeUrl(`/category/${c}`, 'weekly', '0.8'));
+for (const t of tools) toolsUrls.push(makeUrl(`/tools/${t}`, 'weekly', '0.8'));
 
-// —— 2. Content: blog pillar guides & verified Tier-1 study destinations ——
+// —— 2. Content: blog, how-to, news, study ——
 const contentUrls = [];
-contentUrls.push(makeUrl('/blog', 'daily', '0.80'));
-contentUrls.push(makeUrl('/blog/topics', 'weekly', '0.75'));
-for (const p of blog) contentUrls.push(makeUrl(`/blog/${p}`, 'weekly', '0.80'));
+contentUrls.push(makeUrl('/blog', 'daily', '0.8'));
+contentUrls.push(makeUrl('/blog/topics', 'weekly', '0.7'));
+for (const p of blog) contentUrls.push(makeUrl(`/blog/${p}`, 'weekly', '0.7'));
 
-// Keep verified Tier-1 Study destinations (USA, UK, Canada, Australia, New Zealand, Europe, Germany)
-contentUrls.push(makeUrl('/study', 'weekly', '0.75'));
-for (const s of INDEXABLE_STUDY_SLUGS) {
-  contentUrls.push(makeUrl(`/study/${s}`, 'weekly', '0.75'));
+contentUrls.push(makeUrl('/how-to', 'daily', '0.8'));
+for (const t of tools) {
+  const pillar = PILLAR_GUIDE_BY_TOOL[t];
+  if (pillar) {
+    contentUrls.push(makeUrl(`/blog/${pillar}`, 'weekly', '0.75'));
+  } else {
+    contentUrls.push(makeUrl(`/how-to/${t}`, 'weekly', '0.6'));
+  }
 }
 
-// —— 3. Pages: hubs, legal, regional hubs, directories ——
+contentUrls.push(makeUrl('/news', 'daily', '0.8'));
+for (const n of [
+  'tax-year-2025-salary-slabs-announced',
+  'heic-image-support-added-to-toolverse',
+  'top-remote-work-tools-productivity-report',
+]) {
+  contentUrls.push(makeUrl(`/news/${n}`, 'weekly', '0.6'));
+}
+
+contentUrls.push(makeUrl('/study', 'daily', '0.8'));
+const studySrc = fs.readFileSync(path.join(root, 'lib/study/destinations.ts'), 'utf8');
+const studyDestSlugs = slugs(studySrc);
+for (const s of studyDestSlugs) {
+  contentUrls.push(makeUrl(`/study/${s}`, 'weekly', '0.7'));
+}
+
+// —— 3. Pages: hubs, legal, jobs, product/travel/etc. ——
 const pagesUrls = [];
 pagesUrls.push(makeUrl('/', 'daily', '1.0'));
-pagesUrls.push(makeUrl('/cv-maker', 'daily', '0.95'));
-pagesUrls.push(makeUrl('/sitemap', 'weekly', '0.50'));
+pagesUrls.push(makeUrl('/cv-maker', 'daily', '0.9'));
+pagesUrls.push(makeUrl('/sitemap', 'weekly', '0.5'));
 
-// Regional Tools Hubs (deep content)
-for (const reg of ['us', 'uk', 'ca', 'au']) {
-  pagesUrls.push(makeUrl(`/${reg}`, 'weekly', '0.80'));
-}
-pagesUrls.push(makeUrl('/passport-photos', 'weekly', '0.80'));
-pagesUrls.push(makeUrl('/immigration', 'weekly', '0.75'));
-
-// Curated Job clusters
 for (const j of [
   'remote-jobs',
   'usa-jobs',
@@ -164,10 +157,9 @@ for (const j of [
   'jobs-near-me',
   'nhs-jobs-uk',
 ]) {
-  pagesUrls.push(makeUrl(`/jobs/${j}`, 'weekly', '0.75'));
+  pagesUrls.push(makeUrl(`/jobs/${j}`, 'weekly', '0.7'));
 }
 
-// Legal compliance pages
 for (const l of [
   'privacy-policy',
   'terms-of-use',
@@ -180,8 +172,111 @@ for (const l of [
   'editorial-policy',
   'security',
 ]) {
-  pagesUrls.push(makeUrl(`/legal/${l}`, 'monthly', '0.50'));
+  pagesUrls.push(makeUrl(`/legal/${l}`, 'monthly', '0.5'));
 }
+
+pagesUrls.push(makeUrl('/products', 'daily', '0.9'));
+pagesUrls.push(makeUrl('/leaderboard', 'daily', '0.92'));
+
+const productDataDir = path.join(root, 'lib/products/data');
+let productSlugs = [];
+if (fs.existsSync(productDataDir)) {
+  const pFiles = fs.readdirSync(productDataDir).filter((f) => f.endsWith('.ts'));
+  for (const pFile of pFiles) {
+    const pContent = fs.readFileSync(path.join(productDataDir, pFile), 'utf8');
+    productSlugs.push(...slugs(pContent));
+  }
+}
+productSlugs = [...new Set(productSlugs)];
+if (productSlugs.length === 0) {
+  productSlugs = ['canva', 'chatgpt', 'notion', 'figma', 'supabase', 'claude-ai'];
+}
+for (const p of productSlugs) {
+  pagesUrls.push(makeUrl(`/products/${p}`, 'daily', '0.8'));
+}
+
+pagesUrls.push(makeUrl('/alternatives', 'daily', '0.9'));
+const altSrc = fs.readFileSync(path.join(root, 'lib/products/alternativesRegistry.ts'), 'utf8');
+const altSlugs = [...altSrc.matchAll(/^\s{4}slug:\s*'([^']+)'/gm)].map((m) => m[1]);
+for (const alt of altSlugs) {
+  pagesUrls.push(makeUrl(`/alternatives/${alt}`, 'weekly', '0.8'));
+}
+
+const compSrc = fs.readFileSync(path.join(root, 'lib/products/comparisonsRegistry.ts'), 'utf8');
+const compSlugs = [...compSrc.matchAll(/^\s{4}slug:\s*'([^']+)'/gm)].map((m) => m[1]);
+for (const comp of compSlugs) {
+  pagesUrls.push(makeUrl(`/compare/${comp}`, 'weekly', '0.8'));
+}
+
+pagesUrls.push(makeUrl('/questions', 'daily', '0.8'));
+for (const q of [
+  'best-free-alternative-to-photoshop-online',
+  'which-ai-tool-is-best-for-writing-code',
+  'how-to-compress-pdf-files-without-losing-quality',
+]) {
+  pagesUrls.push(makeUrl(`/questions/${q}`, 'weekly', '0.75'));
+}
+
+pagesUrls.push(makeUrl('/collections', 'daily', '0.85'));
+for (const col of [
+  'best-free-ai-tools-2026',
+  'essential-web-developer-suite',
+  'best-privacy-first-image-tools',
+]) {
+  pagesUrls.push(makeUrl(`/collections/${col}`, 'weekly', '0.8'));
+}
+
+// Utility & landing surfaces included in sitemap
+pagesUrls.push(makeUrl('/submit', 'weekly', '0.85'));
+pagesUrls.push(makeUrl('/badges', 'weekly', '0.8'));
+pagesUrls.push(makeUrl('/claim', 'weekly', '0.8'));
+pagesUrls.push(makeUrl('/submit-startup', 'weekly', '0.8'));
+pagesUrls.push(makeUrl('/workspace', 'daily', '0.9'));
+pagesUrls.push(makeUrl('/dashboard', 'weekly', '0.8'));
+
+pagesUrls.push(makeUrl('/business', 'daily', '0.9'));
+for (const biz of ['ali-barber-studio', 'apex-digital-marketing', 'artisan-coffee-roasters']) {
+  pagesUrls.push(makeUrl(`/business/${biz}`, 'daily', '0.8'));
+}
+for (const bId of ['TV-BIZ-8F4K2P', 'TV-BIZ-3M9Q7L', 'TV-BIZ-9X2V4W']) {
+  pagesUrls.push(makeUrl(`/b/${bId}`, 'weekly', '0.7'));
+}
+pagesUrls.push(makeUrl('/business/register', 'weekly', '0.8'));
+pagesUrls.push(makeUrl('/business-qr', 'weekly', '0.8'));
+pagesUrls.push(makeUrl('/business/bidding', 'weekly', '0.8'));
+
+pagesUrls.push(makeUrl('/travel', 'daily', '1.0'));
+pagesUrls.push(makeUrl('/travel/passport', 'daily', '0.9'));
+pagesUrls.push(makeUrl('/travel/embassies', 'daily', '0.9'));
+pagesUrls.push(makeUrl('/travel/destinations', 'daily', '0.9'));
+pagesUrls.push(makeUrl('/travel/jobs', 'daily', '0.9'));
+pagesUrls.push(makeUrl('/travel/planner', 'daily', '0.9'));
+pagesUrls.push(makeUrl('/travel/route', 'daily', '0.9'));
+for (const corridor of ['AE', 'SA', 'GB', 'CA', 'DE', 'QA', 'OM', 'US', 'TR']) {
+  pagesUrls.push(makeUrl(`/travel/PK/${corridor}`, 'daily', '0.85'));
+}
+
+pagesUrls.push(makeUrl('/startups', 'daily', '1.0'));
+for (const s of ['nexus-ai-writer', 'devflow-database-studio', 'taskpulse-workspace', 'rankpulse-backlink-monitor']) {
+  pagesUrls.push(makeUrl(`/startups/${s}`, 'daily', '0.9'));
+}
+
+pagesUrls.push(makeUrl('/guest-posts', 'daily', '1.0'));
+pagesUrls.push(makeUrl('/become-a-publisher', 'monthly', '0.8'));
+for (const p of ['tech-vision-journal', 'startup-builder-daily', 'seo-growth-digest']) {
+  pagesUrls.push(makeUrl(`/publishers/${p}`, 'daily', '0.9'));
+}
+
+pagesUrls.push(makeUrl('/seo', 'daily', '0.95'));
+pagesUrls.push(makeUrl('/seo-tools', 'daily', '0.9'));
+pagesUrls.push(makeUrl('/pricing', 'weekly', '0.9'));
+pagesUrls.push(makeUrl('/immigration', 'daily', '0.9'));
+pagesUrls.push(makeUrl('/cars', 'weekly', '0.9'));
+pagesUrls.push(makeUrl('/us', 'weekly', '0.85'));
+pagesUrls.push(makeUrl('/uk', 'weekly', '0.85'));
+pagesUrls.push(makeUrl('/ca', 'weekly', '0.85'));
+pagesUrls.push(makeUrl('/au', 'weekly', '0.85'));
+pagesUrls.push(makeUrl('/passport-photos', 'weekly', '0.85'));
 
 // Payment Methods & Gateways Directory
 pagesUrls.push(makeUrl('/payment-methods', 'daily', '0.90'));
@@ -246,7 +341,7 @@ for (const phFile of [
   }
 }
 
-// Clean filtering: remove any item matching isNoindex
+// Primary GSC target: one combined urlset at /sitemap.xml
 const keep = (list) => list.filter((u) => !isNoindex(u.loc.slice(base.length) || '/'));
 toolsUrls.splice(0, toolsUrls.length, ...keep(toolsUrls));
 contentUrls.splice(0, contentUrls.length, ...keep(contentUrls));
@@ -254,11 +349,11 @@ pagesUrls.splice(0, pagesUrls.length, ...keep(pagesUrls));
 const allUrls = [...toolsUrls, ...contentUrls, ...pagesUrls];
 writeUrlset('sitemap.xml', allUrls);
 
-// Optional split files
+// Optional split files (organization / debugging; not required for GSC)
 writeUrlset('sitemap-tools.xml', toolsUrls);
 writeUrlset('sitemap-content.xml', contentUrls);
 writeUrlset('sitemap-pages.xml', pagesUrls);
 
 console.log(
-  `Cleaned sitemap.xml generated: ${allUrls.length} high-quality URLs (tools=${toolsUrls.length}, content=${contentUrls.length}, pages=${pagesUrls.length}). Excluded thin shells and template duplicates.`
+  `Wrote combined sitemap.xml (${allUrls.length} URLs) + 3 optional children: tools=${toolsUrls.length}, content=${contentUrls.length}, pages=${pagesUrls.length} (${tools.length} live tools, ${blog.length} blog posts)`
 );

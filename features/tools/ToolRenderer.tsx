@@ -1,61 +1,49 @@
 'use client';
 
-import React, { Suspense } from 'react';
+import React, { lazy, Suspense } from 'react';
 import { ToolDefinition } from '@/lib/tools/registry';
-import { Lock, Loader2 } from 'lucide-react';
+import { AlertTriangle, Lock } from 'lucide-react';
 
-// Light / pure JS tools imported normally
-import { ImageResizerTool } from './ImageResizerTool';
-import { PassportPhotoMakerTool } from './PassportPhotoMakerTool';
-import { WordCounterTool } from './WordCounterTool';
-import { TextCaseConverterTool } from './TextCaseConverterTool';
-import { RemoveDuplicateLinesTool } from './RemoveDuplicateLinesTool';
-import { JsonFormatterTool } from './JsonFormatterTool';
-import { PasswordGeneratorTool } from './PasswordGeneratorTool';
-import { CalculatorTools } from './CalculatorTools';
-import { WesternFinanceTools } from './WesternFinanceTools';
-import { ZakatCalculatorTool } from './ZakatCalculatorTool';
-import { PakistanTaxTool } from './PakistanTaxTool';
-import { UrlShortenerTool } from './UrlShortenerTool';
-import { UtmBuilderTool } from './UtmBuilderTool';
-import { MetaTagGeneratorTool } from './MetaTagGeneratorTool';
-import { AdsenseCalculatorTool } from './AdsenseCalculatorTool';
-import { YoutubeEarningsTool } from './YoutubeEarningsTool';
-import { Base64Tool } from './Base64Tool';
-import { HashGeneratorTool } from './HashGeneratorTool';
-import { LoremIpsumTool } from './LoremIpsumTool';
-import { WritingTools } from './WritingTools';
-import { AdvancedTools } from './AdvancedTools';
-import { JobFinderTool } from './JobTools';
-import { SeoTools } from './SeoTools';
-import { TrendingTools } from './TrendingTools';
-import { CarTools } from './CarTools';
-import { EmailFinderTool } from './EmailFinderTool';
+const ImageCompressorTool = lazy(() => import('./ImageCompressorTool').then((m) => ({ default: m.ImageCompressorTool })));
+const ImageResizerTool = lazy(() => import('./ImageResizerTool').then((m) => ({ default: m.ImageResizerTool })));
+const ImageConverterTool = lazy(() => import('./ImageConverterTool').then((m) => ({ default: m.ImageConverterTool })));
+const PassportPhotoMakerTool = lazy(() => import('./PassportPhotoMakerTool').then((m) => ({ default: m.PassportPhotoMakerTool })));
+const PdfMergeTool = lazy(() => import('./PdfMergeTool').then((m) => ({ default: m.PdfMergeTool })));
+const PdfSplitTool = lazy(() => import('./PdfSplitTool').then((m) => ({ default: m.PdfSplitTool })));
+const PdfCompressTool = lazy(() => import('./PdfCompressTool').then((m) => ({ default: m.PdfCompressTool })));
+const JpgToPdfTool = lazy(() => import('./JpgToPdfTool').then((m) => ({ default: m.JpgToPdfTool })));
+const PdfRotateTool = lazy(() => import('./PdfRotateTool').then((m) => ({ default: m.PdfRotateTool })));
+const WordCounterTool = lazy(() => import('./WordCounterTool').then((m) => ({ default: m.WordCounterTool })));
+const TextCaseConverterTool = lazy(() => import('./TextCaseConverterTool').then((m) => ({ default: m.TextCaseConverterTool })));
+const RemoveDuplicateLinesTool = lazy(() => import('./RemoveDuplicateLinesTool').then((m) => ({ default: m.RemoveDuplicateLinesTool })));
+const JsonFormatterTool = lazy(() => import('./JsonFormatterTool').then((m) => ({ default: m.JsonFormatterTool })));
+const QrCodeGeneratorTool = lazy(() => import('./QrCodeGeneratorTool').then((m) => ({ default: m.QrCodeGeneratorTool })));
+const BarcodeGeneratorTool = lazy(() => import('./BarcodeGeneratorTool').then((m) => ({ default: m.BarcodeGeneratorTool })));
+const PasswordGeneratorTool = lazy(() => import('./PasswordGeneratorTool').then((m) => ({ default: m.PasswordGeneratorTool })));
+const CalculatorTools = lazy(() => import('./CalculatorTools').then((m) => ({ default: m.CalculatorTools })));
+const WesternFinanceTools = lazy(() => import('./WesternFinanceTools').then((m) => ({ default: m.WesternFinanceTools })));
+const ZakatCalculatorTool = lazy(() => import('./ZakatCalculatorTool').then((m) => ({ default: m.ZakatCalculatorTool })));
+const PakistanTaxTool = lazy(() => import('./PakistanTaxTool').then((m) => ({ default: m.PakistanTaxTool })));
+const InvoiceGeneratorTool = lazy(() => import('./InvoiceGeneratorTool').then((m) => ({ default: m.InvoiceGeneratorTool })));
+const UrlShortenerTool = lazy(() => import('./UrlShortenerTool').then((m) => ({ default: m.UrlShortenerTool })));
+const UtmBuilderTool = lazy(() => import('./UtmBuilderTool').then((m) => ({ default: m.UtmBuilderTool })));
+const MetaTagGeneratorTool = lazy(() => import('./MetaTagGeneratorTool').then((m) => ({ default: m.MetaTagGeneratorTool })));
+const AdsenseCalculatorTool = lazy(() => import('./AdsenseCalculatorTool').then((m) => ({ default: m.AdsenseCalculatorTool })));
+const YoutubeEarningsTool = lazy(() => import('./YoutubeEarningsTool').then((m) => ({ default: m.YoutubeEarningsTool })));
+const Base64Tool = lazy(() => import('./Base64Tool').then((m) => ({ default: m.Base64Tool })));
+const HashGeneratorTool = lazy(() => import('./HashGeneratorTool').then((m) => ({ default: m.HashGeneratorTool })));
+const LoremIpsumTool = lazy(() => import('./LoremIpsumTool').then((m) => ({ default: m.LoremIpsumTool })));
+const WritingTools = lazy(() => import('./WritingTools').then((m) => ({ default: m.WritingTools })));
+const AdvancedTools = lazy(() => import('./AdvancedTools').then((m) => ({ default: m.AdvancedTools })));
+const JobFinderTool = lazy(() => import('./JobTools').then((m) => ({ default: m.JobFinderTool })));
+const SeoTools = lazy(() => import('./SeoTools').then((m) => ({ default: m.SeoTools })));
+const TrendingTools = lazy(() => import('./TrendingTools').then((m) => ({ default: m.TrendingTools })));
+const DocumentConversionTools = lazy(() => import('./DocumentConversionTools').then((m) => ({ default: m.DocumentConversionTools })));
+const CarTools = lazy(() => import('./CarTools').then((m) => ({ default: m.CarTools })));
+const EmailFinderTool = lazy(() => import('./EmailFinderTool').then((m) => ({ default: m.EmailFinderTool })));
+const CvMakerTool = lazy(() => import('./cv-builder/CvMakerTool'));
 
-// Heavy vendor bundles lazy-loaded on demand (Code-splitting: saves ~1.65 MB gzipped on all non-tool pages)
-const PdfMergeTool = React.lazy(() => import('./PdfMergeTool').then((m) => ({ default: m.PdfMergeTool })));
-const PdfSplitTool = React.lazy(() => import('./PdfSplitTool').then((m) => ({ default: m.PdfSplitTool })));
-const PdfCompressTool = React.lazy(() => import('./PdfCompressTool').then((m) => ({ default: m.PdfCompressTool })));
-const JpgToPdfTool = React.lazy(() => import('./JpgToPdfTool').then((m) => ({ default: m.JpgToPdfTool })));
-const PdfRotateTool = React.lazy(() => import('./PdfRotateTool').then((m) => ({ default: m.PdfRotateTool })));
-const InvoiceGeneratorTool = React.lazy(() => import('./InvoiceGeneratorTool').then((m) => ({ default: m.InvoiceGeneratorTool })));
-const DocumentConversionTools = React.lazy(() => import('./DocumentConversionTools').then((m) => ({ default: m.DocumentConversionTools })));
-const ImageConverterTool = React.lazy(() => import('./ImageConverterTool').then((m) => ({ default: m.ImageConverterTool })));
-const ImageCompressorTool = React.lazy(() => import('./ImageCompressorTool').then((m) => ({ default: m.ImageCompressorTool })));
-const CvMakerTool = React.lazy(() => import('./cv-builder/CvMakerTool'));
-const BarcodeGeneratorTool = React.lazy(() => import('./BarcodeGeneratorTool').then((m) => ({ default: m.BarcodeGeneratorTool })));
-const QrCodeGeneratorTool = React.lazy(() => import('./QrCodeGeneratorTool').then((m) => ({ default: m.QrCodeGeneratorTool })));
-
-function ToolLoadingFallback() {
-  return (
-    <div className="flex items-center justify-center p-12 text-slate-500 text-sm">
-      <Loader2 className="w-5 h-5 animate-spin mr-2 text-brand-600" />
-      <span>Loading tool engine…</span>
-    </div>
-  );
-}
-
-export function ToolRenderer({ tool }: { tool: ToolDefinition }) {
+function ToolRendererInner({ tool }: { tool: ToolDefinition }) {
   if (tool.status === 'admin_configuration_required') {
     return (
       <div className="p-8 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 rounded-xl text-center space-y-4">
@@ -254,4 +242,28 @@ function renderToolContent(tool: ToolDefinition) {
     default:
       return <ImageCompressorTool />;
   }
+}
+
+function ToolLoading() {
+  return (
+    <div
+      role="status"
+      aria-live="polite"
+      className="min-h-[320px] flex items-center justify-center rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-sm text-slate-500"
+    >
+      Loading tool…
+    </div>
+  );
+}
+
+/**
+ * Each tool is code-split (React.lazy) so heavy libraries (pdf-lib, jsPDF, xlsx,
+ * heic2any, image compression, QR/barcode) only download on the page that needs them.
+ */
+export function ToolRenderer({ tool }: { tool: ToolDefinition }) {
+  return (
+    <Suspense fallback={<ToolLoading />}>
+      <ToolRendererInner tool={tool} />
+    </Suspense>
+  );
 }

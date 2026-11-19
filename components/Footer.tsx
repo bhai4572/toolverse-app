@@ -38,15 +38,14 @@ export function Footer() {
               <li><Link href="/leaderboard" className="hover:text-white transition-colors font-semibold text-amber-400">Community Leaderboard 🏆</Link></li>
               <li><Link href="/submit" className="hover:text-white transition-colors">Submit Your Product</Link></li>
               <li><Link href="/startups" className="hover:text-white transition-colors">Startups Launchpad</Link></li>
-
               <li><Link href="/business" className="hover:text-white transition-colors">Business Directory</Link></li>
               <li><Link href="/tools" className="hover:text-white transition-colors">Tools hub</Link></li>
+              <li><Link href="/cv-maker" className="hover:text-white transition-colors">CV Maker</Link></li>
+              <li><Link href="/blog" className="hover:text-white transition-colors">Guides &amp; Blog</Link></li>
               <li><Link href="/workspace" className="hover:text-white transition-colors">SEO Dashboard</Link></li>
-              <li><Link href="/study" className="hover:text-white transition-colors">Study Abroad</Link></li>
               <li><Link href="/immigration" className="hover:text-white transition-colors">Immigration</Link></li>
               <li><Link href="/cars" className="hover:text-white transition-colors">Cars</Link></li>
               <li><Link href="/pricing" className="hover:text-white transition-colors">Pricing</Link></li>
-              <li><Link href="/travel" className="hover:text-white transition-colors">Travel</Link></li>
             </ul>
           </div>
 
@@ -71,7 +70,7 @@ export function Footer() {
               <li><Link href="/tools/compress-image-target-size" className="hover:text-white transition-colors">Compress Image to Size</Link></li>
               <li><Link href="/tools/us-paycheck-calculator" className="hover:text-white transition-colors">US Paycheck Estimator</Link></li>
               <li><Link href="/tools/uk-take-home-pay-calculator" className="hover:text-white transition-colors">UK Take-Home Pay</Link></li>
-              <li><Link href="/tools/global-job-finder" className="hover:text-white transition-colors">Job Finder</Link></li>
+              <li><Link href="/tools/pakistan-salary-tax-estimator" className="hover:text-white transition-colors">Pakistan Salary Tax</Link></li>
               <li><Link href="/blog" className="hover:text-white transition-colors">Guides & Blog</Link></li>
               <li><Link href="/news" className="hover:text-white transition-colors">News headlines</Link></li>
             </ul>
@@ -94,6 +93,19 @@ export function Footer() {
         </div>
 
         <FooterAdBar />
+
+        {/* Directory listing badges (some directories verify these exist on the homepage). */}
+        <div className="flex flex-wrap items-center justify-center gap-3 mb-6" aria-label="Featured on">
+          <a href="https://launcholio.com/product/toolverse" target="_blank" rel="noopener">
+            <img
+              alt="Featured on Launcholio"
+              src="https://launcholio.com/api/badge/toolverse.svg?theme=light&score=on&v=7"
+              width={156}
+              height={54}
+              loading="lazy"
+            />
+          </a>
+        </div>
 
         <div className="pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
           <div>

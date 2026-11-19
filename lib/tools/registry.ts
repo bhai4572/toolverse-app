@@ -2426,7 +2426,7 @@ export const TOOLS: ToolDefinition[] = [
   {
     id: 'pakistan-salary-tax-estimator',
     slug: 'pakistan-salary-tax-estimator',
-    canonicalName: 'Pakistan Salary Income Tax Calculator (FY 2024-25 / 2025-26)',
+    canonicalName: 'Pakistan Salary Income Tax Calculator (Tax Year 2026-27)',
     aliases: ['pakistan tax calculator', 'salary tax pakistan', 'fbr tax calculator', 'monthly tax calculator pk'],
     category: 'Pakistan, India & Regional Tools',
     categorySlug: 'country-regional-tools',
@@ -2441,7 +2441,7 @@ export const TOOLS: ToolDefinition[] = [
       'HR managers calculating payroll tax deductions.'
     ],
     privacyMessage: 'Salary details remain private on your computer.',
-    limitations: ['Estimate only based on standard salaried slabs. Surcharges or custom tax credits may apply.'],
+    limitations: ['Estimate only, based on FBR salaried slabs for Tax Year 2027 (1 July 2026 – 30 June 2027). Tax credits, exemptions and allowances are not modelled.'],
     keywords: ['pakistan salary tax', 'fbr income tax calculator', 'pakistan tax slabs'],
     relatedToolIds: ['zakat-calculator', 'vat-gst-calculator', 'percentage-calculator'],
     featured: true,

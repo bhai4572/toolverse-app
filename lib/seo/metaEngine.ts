@@ -17,6 +17,8 @@ import {
   ROBOTS_NOINDEX,
   howToSlugShouldNoindex,
   pathShouldNoindex,
+  pathIsThinNoindex,
+  ROBOTS_NOINDEX_FOLLOW,
 } from '@/lib/seo/indexability';
 import {
   getPaymentEntryByCategoryAndSlug,
@@ -30,6 +32,7 @@ import {
   getPhoneCategoryBySlug,
 } from '@/lib/phones/database';
 import { fitPhoneSeoTitle, fitPhoneMetaDescription } from '@/lib/phones/catalogHelpers';
+import { getCorridorGuide } from '@/lib/travel/corridorGuides';
 
 export interface PageMetadata {
   title: string;
@@ -138,7 +141,7 @@ export function buildOrganizationNode(): Record<string, unknown> {
     '@type': 'Organization',
     '@id': ORGANIZATION_ID,
     name: 'ToolVerse',
-    alternateName: ['Tooliverse', 'Tools Verse', 'Toolsoverflow', 'ToolVerse.com', 'Toolverse App'],
+    alternateName: ['Tools Verse', 'Toolverse App'],
     url: `${SITE_URL}/`,
     logo: {
       '@type': 'ImageObject',
@@ -172,7 +175,7 @@ export function buildWebSiteNode(): Record<string, unknown> {
     '@id': WEBSITE_ID,
     url: `${SITE_URL}/`,
     name: 'ToolVerse',
-    alternateName: ['Tooliverse', 'Tools Verse', 'Toolsoverflow', 'ToolVerse.com'],
+    alternateName: ['Tools Verse'],
     description:
       'Free privacy-first online tools for PDFs, images, calculators, writing, developers, and job search.',
     publisher: { '@id': ORGANIZATION_ID },
@@ -314,6 +317,7 @@ export function getMetadataForPath(pathname: string): PageMetadata {
     twitterImage: built.twitterImage || ogImage,
   };
   if (pathShouldNoindex(pathname)) return { ...meta, robots: ROBOTS_NOINDEX };
+  if (pathIsThinNoindex(pathname)) return { ...meta, robots: ROBOTS_NOINDEX_FOLLOW };
   if (meta.robots) return meta;
   return { ...meta, robots: ROBOTS_INDEX };
 }
@@ -769,8 +773,26 @@ function buildMetadataForPath(pathname: string): PageMetadata {
       const product = getProductBySlug(parts[1]);
       if (product) {
         const canonicalUrl = `${baseUrl}/products/${product.slug}`;
-        const pageTitle = `${product.name} — Features, Pricing, Reviews & Alternatives | ToolVerse`;
-        const pageDesc = `${product.tagline}. Read genuine user reviews, pricing plans, features, and software alternatives on ToolVerse.`;
+        const pageTitle =
+          `${product.name}: Features, Pricing, Pros & Cons (2026)`.length <= 60
+            ? `${product.name}: Features, Pricing, Pros & Cons (2026)`
+            : `${product.name}: Features, Pricing, Pros & Cons`;
+        const paidPrices = (product.pricingPlans || [])
+          .map((pl) => ({ n: parseFloat(String(pl.price).replace(/[^0-9.]/g, '')), raw: pl.price, period: pl.period }))
+          .filter((x) => x.n > 0)
+          .sort((a, b) => a.n - b.n);
+        const hasFree = (product.pricingPlans || []).some((pl) => /^\$?0(\.0+)?$/.test(String(pl.price).trim()) || pl.period === 'free');
+        const priceBit = paidPrices.length
+          ? `${hasFree ? 'Free plan; paid' : 'Paid plans'} from ${paidPrices[0].raw}${paidPrices[0].period && paidPrices[0].period !== 'free' ? `/${paidPrices[0].period}` : ''}`
+          : `${product.pricingModel} pricing`;
+        const tag = product.tagline.replace(/\.$/, '');
+        const plats = (product.platforms || []).slice(0, 4).join(', ');
+        const descCandidates = [
+          `${product.name} by ${product.companyName}: ${tag}. ${priceBit}; ${plats}. Features, pros, cons & alternatives.`,
+          `${product.name}: ${tag}. ${priceBit}. Features, pros, cons & alternatives.`,
+          `${product.name}: ${tag}. ${priceBit}.`,
+        ];
+        const pageDesc = descCandidates.find((d) => d.length <= 160) || descCandidates[descCandidates.length - 1];
 
         const productId = `${canonicalUrl}#product`;
         const quality = evaluateProductPageQuality(product);
@@ -833,7 +855,7 @@ function buildMetadataForPath(pathname: string): PageMetadata {
     // Products Index (/products)
     const canonicalUrl = `${baseUrl}/products`;
     const title = 'Discover Software, AI Tools & SaaS Products — ToolVerse';
-    const description = 'Explore verified software products, AI assistants, SaaS platforms, developer tools, user reviews, and alternatives.';
+    const description = 'Directory of popular software products and AI tools with features, pricing plans, pros and cons, platforms and alternatives, grouped by category.';
 
     const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
       { name: 'Home', url: `${baseUrl}/` },
@@ -2366,12 +2388,15 @@ function buildMetadataForPath(pathname: string): PageMetadata {
       const origin = parts[1].toUpperCase();
       const dest = parts[2].toUpperCase();
       const canonicalUrl = `${baseUrl}/travel/${parts[1]}/${parts[2]}`;
-      const title = `Travel & Visa Guide: ${origin} to ${dest} — ToolVerse Travel Intelligence`;
-      const description = `Complete visa rules, embassy guidelines, travel corridor requirements, flight routes, and overseas jobs from ${origin} to ${dest}.`;
+      const corridor = getCorridorGuide(origin, dest);
+      const title = corridor ? corridor.title : `Travel & Visa Guide: ${origin} to ${dest} — ToolVerse Travel Intelligence`;
+      const description = corridor
+        ? corridor.description
+        : `Complete visa rules, embassy guidelines, travel corridor requirements, flight routes, and overseas jobs from ${origin} to ${dest}.`;
       const breadcrumbs = buildBreadcrumbNode(canonicalUrl, [
         { name: 'Home', url: `${baseUrl}/` },
         { name: 'Travel', url: `${baseUrl}/travel` },
-        { name: `${origin} → ${dest}`, url: canonicalUrl },
+        { name: corridor ? `Pakistan → ${corridor.name}` : `${origin} → ${dest}`, url: canonicalUrl },
       ]);
       return {
         title,
@@ -2384,6 +2409,19 @@ function buildMetadataForPath(pathname: string): PageMetadata {
           buildWebSiteNode(),
           buildWebPageNode({ canonicalUrl, name: title, description, type: 'ItemPage', hasBreadcrumbs: true }),
           breadcrumbs,
+          ...(corridor
+            ? [
+                {
+                  '@type': 'FAQPage',
+                  '@id': `${canonicalUrl}#faq`,
+                  mainEntity: corridor.faqs.map((f) => ({
+                    '@type': 'Question',
+                    name: f.question,
+                    acceptedAnswer: { '@type': 'Answer', text: f.answer },
+                  })),
+                },
+              ]
+            : []),
         ]),
       };
     }

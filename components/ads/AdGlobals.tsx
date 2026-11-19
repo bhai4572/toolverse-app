@@ -1,11 +1,19 @@
-'use client';
-
 /**
- * AdGlobals: AdSense Compliance Mode
- * Push, vignette, and popup scripts (e.g. Monetag, Adsterra Social Bar) are completely disabled.
- * Only non-intrusive AdSense display ad slots are allowed.
+ * Global ad loaders. Monetag (push + vignette) and Adsterra were removed on 2026-11-17
+ * for AdSense review. Nothing is injected. Kept as no-ops so imports stay stable.
  */
-export function isJobTarget(_pathname: string, _search?: string): boolean {
+export function isJobTarget(pathname: string, search?: string): boolean {
+  const p = pathname.replace(/\/$/, '') || '/';
+  if (p === '/jobs' || p.startsWith('/jobs/') || p === '/tools/global-job-finder') return true;
+  const s = search ?? (typeof window !== 'undefined' ? window.location.search : '');
+  if (s) {
+    try {
+      const params = new URLSearchParams(s);
+      if (params.has('job') || params.has('jobId') || params.has('job_id') || params.has('id')) return true;
+    } catch {
+      /* ignore */
+    }
+  }
   return false;
 }
 
@@ -13,6 +21,7 @@ export function injectMonetagVignette(_zone?: string): boolean {
   return false;
 }
 
+/** No-op: third-party vignette removed. */
 export function triggerJobVignetteOnce(): boolean {
   return false;
 }

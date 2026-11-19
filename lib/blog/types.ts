@@ -11,6 +11,8 @@ export interface BlogPost {
     | 'Creator & Social';
   author: string;
   publishDate: string;
+  /** Last substantive content update (YYYY-MM-DD). */
+  updatedDate?: string;
   readTimeMinutes: number;
   featuredImage: string;
   keywords: string[];

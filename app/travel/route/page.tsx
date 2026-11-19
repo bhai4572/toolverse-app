@@ -12,6 +12,7 @@ import { getEmbassiesForRoute } from '@/lib/travel/embassyRegistry';
 import { generateTravelRouteSchema } from '@/lib/travel/travelSeoEngine';
 import { TravelPurpose } from '@/lib/travel/types';
 import { UnderCtaAdBand } from '@/components/ads/UnderCtaAdBand';
+import { getCorridorGuide, CORRIDOR_TOOLS } from '@/lib/travel/corridorGuides';
 
 interface TravelRoutePageProps {
   nationalityCode?: string;
@@ -42,6 +43,9 @@ export default function TravelRoutePage({ nationalityCode = 'PK', destinationCod
   const progressPercent = Math.round((completedCount / (documentChecklist.length || 1)) * 100);
 
   const seoSchema = generateTravelRouteSchema(visaRule, natCountry, destCountry);
+  const corridorGuide = getCorridorGuide(natCountry.iso2, destCountry.iso2);
+  const isEstimate = Boolean(visaRule.isEstimate);
+  const officialPortal = corridorGuide?.officialLinks[0]?.href || (isEstimate ? undefined : visaRule.officialPortalUrl);
 
   const getStatusBadgeColor = (status: string) => {
     switch (status) {
@@ -133,10 +137,10 @@ export default function TravelRoutePage({ nationalityCode = 'PK', destinationCod
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
               <span className="text-xs font-semibold px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 uppercase tracking-widest">
-                Official Travel Intelligence
+                {isEstimate ? 'Visa route overview' : 'Official Travel Intelligence'}
               </span>
               <h1 className="text-3xl sm:text-4xl font-extrabold text-white mt-2">
-                {destCountry.name} Visa for {natCountry.demonym} Citizens
+                {destCountry.name} Visa for {natCountry.name} Passport Holders
               </h1>
               <p className="text-slate-400 text-sm mt-1">
                 Travel Purpose: <span className="text-slate-200 capitalize font-medium">{purpose.replace('_', ' ')}</span> | Destination Capital: <span className="text-slate-200">{destCountry.capital}</span>
@@ -145,7 +149,7 @@ export default function TravelRoutePage({ nationalityCode = 'PK', destinationCod
 
             <div className={`px-5 py-3 rounded-2xl border text-center ${getStatusBadgeColor(visaRule.status)} backdrop-blur-md`}>
               <div className="text-xs uppercase tracking-widest font-semibold opacity-75">Entry Requirement</div>
-              <div className="text-xl font-black mt-0.5">{visaRule.status}</div>
+              <div className="text-xl font-black mt-0.5">{isEstimate ? 'Check official rules' : visaRule.status}</div>
             </div>
           </div>
 
@@ -154,25 +158,25 @@ export default function TravelRoutePage({ nationalityCode = 'PK', destinationCod
             <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700/50">
               <div className="text-xs text-slate-400 font-medium">Official Fee</div>
               <div className="text-lg font-bold text-white mt-1">
-                ${visaRule.feeUsd} USD
+                {isEstimate ? 'See official site' : `$${visaRule.feeUsd} USD`}
               </div>
-              <div className="text-xs text-emerald-400 font-mono">≈ {feeInfo.convertedFormatted}</div>
+              <div className="text-xs text-emerald-400 font-mono">{isEstimate ? 'Fees change; check before paying' : `≈ ${feeInfo.convertedFormatted}`}</div>
             </div>
 
             <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700/50">
               <div className="text-xs text-slate-400 font-medium">Processing Time</div>
               <div className="text-lg font-bold text-white mt-1">
-                {visaRule.processingTimeDays.standard} Business Days
+                {isEstimate ? 'Varies' : `${visaRule.processingTimeDays.standard} Business Days`}
               </div>
-              <div className="text-xs text-slate-400">{visaRule.processingTimeDays.expedited ? `Expedited: ${visaRule.processingTimeDays.expedited} days` : 'Standard Queue'}</div>
+              <div className="text-xs text-slate-400">{isEstimate ? 'Check current times officially' : visaRule.processingTimeDays.expedited ? `Expedited: ${visaRule.processingTimeDays.expedited} days` : 'Standard Queue'}</div>
             </div>
 
             <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700/50">
               <div className="text-xs text-slate-400 font-medium">Allowed Stay</div>
               <div className="text-lg font-bold text-white mt-1">
-                {visaRule.maxStayDays ? `${visaRule.maxStayDays} Days` : 'Varies'}
+                {!isEstimate && visaRule.maxStayDays ? `${visaRule.maxStayDays} Days` : 'Varies'}
               </div>
-              <div className="text-xs text-slate-400">{visaRule.entriesAllowed} Entry</div>
+              <div className="text-xs text-slate-400">{isEstimate ? 'Set by your visa' : `${visaRule.entriesAllowed} Entry`}</div>
             </div>
 
             <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700/50">
@@ -192,9 +196,9 @@ export default function TravelRoutePage({ nationalityCode = 'PK', destinationCod
               <span className="text-slate-500">•</span>
               <span className="text-slate-400">Verified: {visaRule.lastVerifiedDate}</span>
             </div>
-            {visaRule.officialPortalUrl && (
+            {officialPortal && (
               <a 
-                href={visaRule.officialPortalUrl} 
+                href={officialPortal} 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-blue-400 hover:text-blue-300 font-semibold flex items-center gap-1 hover:underline"
@@ -205,6 +209,54 @@ export default function TravelRoutePage({ nationalityCode = 'PK', destinationCod
           </div>
         </div>
       </div>
+
+      {/* Hand-written corridor guide (shared with prerender + meta via lib/travel/corridorGuides) */}
+      {corridorGuide && (
+        <section className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-4 text-slate-300 text-sm leading-relaxed">
+          <h2 className="text-xl font-bold text-white">Pakistan to {corridorGuide.name}: what you need to know</h2>
+          <p>{corridorGuide.intro}</p>
+          <h3 className="font-bold text-white">Main visa routes</h3>
+          <ul className="list-disc list-inside space-y-1">
+            {corridorGuide.visaRoutes.map((r) => (
+              <li key={r.name}><strong className="text-slate-100">{r.name}:</strong> {r.detail}</li>
+            ))}
+          </ul>
+          <h3 className="font-bold text-white">How to apply safely</h3>
+          <ol className="list-decimal list-inside space-y-1">
+            {corridorGuide.steps.map((st) => (
+              <li key={st}>{st}</li>
+            ))}
+          </ol>
+          <h3 className="font-bold text-white">Pakistan-side checks</h3>
+          <ul className="list-disc list-inside space-y-1">
+            {corridorGuide.pakistanSide.map((st) => (
+              <li key={st}>{st}</li>
+            ))}
+          </ul>
+          <h3 className="font-bold text-white">Official links</h3>
+          <ul className="list-disc list-inside space-y-1">
+            {corridorGuide.officialLinks.map((l) => (
+              <li key={l.href}><a href={l.href} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">{l.label}</a>{l.note ? ` — ${l.note}` : ''}</li>
+            ))}
+          </ul>
+          <h3 className="font-bold text-white">Free tools for your visa file</h3>
+          <ul className="list-disc list-inside space-y-1">
+            {CORRIDOR_TOOLS.map((l) => (
+              <li key={l.href}><a href={l.href} className="text-blue-400 hover:underline">{l.label}</a>{l.note ? ` — ${l.note}` : ''}</li>
+            ))}
+            {corridorGuide.studySlug && (
+              <li><a href={`/study/${corridorGuide.studySlug}`} className="text-blue-400 hover:underline">Study in {corridorGuide.name}</a> — universities, costs and student visa</li>
+            )}
+          </ul>
+          <h3 className="font-bold text-white">FAQ</h3>
+          {corridorGuide.faqs.map((f) => (
+            <div key={f.question}>
+              <h4 className="font-semibold text-slate-100">{f.question}</h4>
+              <p>{f.answer}</p>
+            </div>
+          ))}
+        </section>
+      )}
 
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -412,9 +464,9 @@ export default function TravelRoutePage({ nationalityCode = 'PK', destinationCod
             ) : (
               <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-400 text-center space-y-2">
                 <p>No direct embassy located in {natCountry.name}. Applications are processed online or through regional diplomatic jurisdiction.</p>
-                {visaRule.officialPortalUrl && (
+                {officialPortal && (
                   <a
-                    href={visaRule.officialPortalUrl}
+                    href={officialPortal}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-block text-blue-400 hover:underline font-bold"

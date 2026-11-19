@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { ArrowRight, Camera, CheckCircle2, ShieldCheck, AlertCircle, FileCheck, HelpCircle } from 'lucide-react';
 import { Breadcrumb } from '@/components/Breadcrumb';
-import { PASSPORT_PRESETS } from '@/lib/image/engine';
+import { PASSPORT_PRESETS } from '@/lib/image/presets';
 
 export default function PassportPhotosHubPage() {
   return (

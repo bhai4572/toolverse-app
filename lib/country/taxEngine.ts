@@ -33,31 +33,21 @@ export function calculatePakistanSalaryTax(grossMonthlySalary: number): Pakistan
   let annualTax = 0;
   let slabApplied = '';
 
-  // FBR Salaried Slabs (FY 2024-25)
-  if (annualSalary <= 600000) {
-    annualTax = 0;
-    slabApplied = 'Up to PKR 600,000 (0% Tax)';
-  } else if (annualSalary <= 1200000) {
-    // 5% of amount exceeding 600,000
-    annualTax = (annualSalary - 600000) * 0.05;
-    slabApplied = 'PKR 600,000 to 1,200,000 (5% on excess above 600k)';
-  } else if (annualSalary <= 2200000) {
-    // 30,000 + 15% of amount exceeding 1,200,000
-    annualTax = 30000 + (annualSalary - 1200000) * 0.15;
-    slabApplied = 'PKR 1,200,000 to 2,200,000 (PKR 30k + 15% on excess above 1.2M)';
-  } else if (annualSalary <= 3200000) {
-    // 180,000 + 25% of amount exceeding 2,200,000
-    annualTax = 180000 + (annualSalary - 2200000) * 0.25;
-    slabApplied = 'PKR 2,200,000 to 3,200,000 (PKR 180k + 25% on excess above 2.2M)';
-  } else if (annualSalary <= 4100000) {
-    // 430,000 + 30% of amount exceeding 3,200,000
-    annualTax = 430000 + (annualSalary - 3200000) * 0.30;
-    slabApplied = 'PKR 3,200,000 to 4,100,000 (PKR 430k + 30% on excess above 3.2M)';
-  } else {
-    // 700,000 + 35% of amount exceeding 4,100,000
-    annualTax = 700000 + (annualSalary - 4100000) * 0.35;
-    slabApplied = 'Exceeding PKR 4,100,000 (PKR 700k + 35% on excess above 4.1M)';
-  }
+  // FBR salaried slabs, Tax Year 2027 (1 Jul 2026 – 30 Jun 2027), Finance Act 2026.
+  // Source: FBR Withholding Tax Rates Card 2027, s.149 / Division I, Part I, First Schedule.
+  const SLABS: { upTo: number; base: number; fixed: number; rate: number; label: string }[] = [
+    { upTo: 600000, base: 0, fixed: 0, rate: 0, label: 'Up to PKR 600,000 (0% Tax)' },
+    { upTo: 1200000, base: 600000, fixed: 0, rate: 0.01, label: 'PKR 600,001 to 1,200,000 (1% on excess above 600k)' },
+    { upTo: 2200000, base: 1200000, fixed: 6000, rate: 0.11, label: 'PKR 1,200,001 to 2,200,000 (PKR 6,000 + 11% on excess above 1.2M)' },
+    { upTo: 3200000, base: 2200000, fixed: 116000, rate: 0.2, label: 'PKR 2,200,001 to 3,200,000 (PKR 116,000 + 20% on excess above 2.2M)' },
+    { upTo: 4100000, base: 3200000, fixed: 316000, rate: 0.25, label: 'PKR 3,200,001 to 4,100,000 (PKR 316,000 + 25% on excess above 3.2M)' },
+    { upTo: 5600000, base: 4100000, fixed: 541000, rate: 0.29, label: 'PKR 4,100,001 to 5,600,000 (PKR 541,000 + 29% on excess above 4.1M)' },
+    { upTo: 7000000, base: 5600000, fixed: 976000, rate: 0.32, label: 'PKR 5,600,001 to 7,000,000 (PKR 976,000 + 32% on excess above 5.6M)' },
+    { upTo: Infinity, base: 7000000, fixed: 1424000, rate: 0.35, label: 'Exceeding PKR 7,000,000 (PKR 1,424,000 + 35% on excess above 7M)' },
+  ];
+  const slab = SLABS.find((sl) => annualSalary <= sl.upTo) ?? SLABS[SLABS.length - 1];
+  annualTax = annualSalary <= 600000 ? 0 : slab.fixed + (annualSalary - slab.base) * slab.rate;
+  slabApplied = slab.label;
 
   const monthlyTax = annualTax / 12;
   const monthlyTakeHome = grossMonthlySalary - monthlyTax;

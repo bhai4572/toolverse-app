@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { AdSlot } from './AdSlot';
+import { ADS_ENABLED } from './adConfig';
 import { renderInlineMarkdown } from '@/lib/blog/renderInlineMarkdown';
 
 interface InArticleAdsProps {
@@ -54,6 +55,42 @@ function renderBlock(trimmed: string, key: number): React.ReactNode {
       </Tag>
     );
   }
+  if (trimmed.startsWith('|')) {
+    const rows = trimmed
+      .split('\n')
+      .map((r) => r.trim())
+      .filter((r) => r.startsWith('|') && !/^\|[\s:|-]+\|$/.test(r))
+      .map((r) => r.split('|').slice(1, -1).map((c) => c.trim()));
+    if (rows.length) {
+      const [head, ...body] = rows;
+      return (
+        <div key={key} className="overflow-x-auto my-4">
+          <table className="border-collapse border border-slate-300 dark:border-slate-700 w-full text-sm">
+            <thead>
+              <tr>
+                {head.map((c, ci) => (
+                  <th key={ci} className="border border-slate-300 dark:border-slate-700 p-2 text-left bg-slate-50 dark:bg-slate-800">
+                    {renderInlineMarkdown(c)}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {body.map((r, ri) => (
+                <tr key={ri}>
+                  {r.map((c, ci) => (
+                    <td key={ci} className="border border-slate-300 dark:border-slate-700 p-2">
+                      {renderInlineMarkdown(c)}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
+    }
+  }
   if (trimmed === '---') {
     return <hr key={key} className="border-slate-200 dark:border-slate-800" />;
   }
@@ -83,7 +120,7 @@ export function InArticleAds({ markdown, every = 4, className = '' }: InArticleA
 
     if (isProseParagraph(trimmed)) {
       proseCount += 1;
-      if (proseCount % every === 0 && adIdx < MAX_IN_ARTICLE_ADS) {
+      if (ADS_ENABLED && proseCount % every === 0 && adIdx < MAX_IN_ARTICLE_ADS) {
         adIdx += 1;
         nodes.push(
           <div
