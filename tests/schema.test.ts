@@ -189,23 +189,22 @@ describe('ToolVerse Advanced Schema.org & Structured Data Architecture', () => {
         expect(posting['hiringOrganization']).toBeDefined();
         expect(posting['directApply']).toBe(true);
 
-        if (posting['jobLocation']) {
-          const loc = posting['jobLocation'] as Record<string, unknown>;
-          expect(loc['@type']).toBe('Place');
-          const address = loc['address'] as Record<string, unknown>;
-          expect(address).toBeDefined();
-          expect(address['@type']).toBe('PostalAddress');
-          expect(typeof address['streetAddress']).toBe('string');
-          expect((address['streetAddress'] as string).length).toBeGreaterThan(0);
-          expect(typeof address['addressLocality']).toBe('string');
-          expect((address['addressLocality'] as string).length).toBeGreaterThan(0);
-          expect(typeof address['addressRegion']).toBe('string');
-          expect((address['addressRegion'] as string).length).toBeGreaterThan(0);
-          expect(typeof address['postalCode']).toBe('string');
-          expect((address['postalCode'] as string).length).toBeGreaterThan(0);
-          expect(typeof address['addressCountry']).toBe('string');
-          expect((address['addressCountry'] as string).length).toBeGreaterThan(0);
-        }
+        expect(posting['jobLocation']).toBeDefined();
+        const loc = posting['jobLocation'] as Record<string, unknown>;
+        expect(loc['@type']).toBe('Place');
+        const address = loc['address'] as Record<string, unknown>;
+        expect(address).toBeDefined();
+        expect(address['@type']).toBe('PostalAddress');
+        expect(typeof address['streetAddress']).toBe('string');
+        expect((address['streetAddress'] as string).length).toBeGreaterThan(0);
+        expect(typeof address['addressLocality']).toBe('string');
+        expect((address['addressLocality'] as string).length).toBeGreaterThan(0);
+        expect(typeof address['addressRegion']).toBe('string');
+        expect((address['addressRegion'] as string).length).toBeGreaterThan(0);
+        expect(typeof address['postalCode']).toBe('string');
+        expect((address['postalCode'] as string).length).toBeGreaterThan(0);
+        expect(typeof address['addressCountry']).toBe('string');
+        expect((address['addressCountry'] as string).length).toBeGreaterThan(0);
       }
     }
   });

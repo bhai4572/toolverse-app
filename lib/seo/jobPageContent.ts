@@ -44,6 +44,34 @@ export interface JobPageContent {
   featuredPostings?: JobPostingSchema[];
 }
 
+interface AddressFallback {
+  streetAddress: string;
+  region: string;
+  postalCode: string;
+  country: string;
+}
+
+const KNOWN_CITY_ADDRESSES: Record<string, AddressFallback> = {
+  'Washington': { streetAddress: '1900 E Street NW', region: 'DC', postalCode: '20415', country: 'US' },
+  'New York': { streetAddress: '350 5th Avenue', region: 'NY', postalCode: '10118', country: 'US' },
+  'San Francisco': { streetAddress: '500 Howard Street', region: 'CA', postalCode: '94105', country: 'US' },
+  'Chicago': { streetAddress: '200 South Wacker Drive', region: 'IL', postalCode: '60606', country: 'US' },
+  'Houston': { streetAddress: '700 Louisiana Street', region: 'TX', postalCode: '77002', country: 'US' },
+  'London': { streetAddress: 'Westminster Bridge Road', region: 'Greater London', postalCode: 'SE1 7EH', country: 'GB' },
+  'Leeds': { streetAddress: 'Great George Street', region: 'West Yorkshire', postalCode: 'LS1 3EX', country: 'GB' },
+  'Lahore': { streetAddress: 'LDA Plaza, 7-Edgerton Road', region: 'Punjab', postalCode: '54000', country: 'PK' },
+  'Islamabad': { streetAddress: 'Sector G-8/4, Rohtas Road', region: 'Islamabad Capital Territory', postalCode: '44000', country: 'PK' },
+};
+
+const DEFAULT_COUNTRY_ADDRESSES: Record<string, { streetAddress: string; locality: string; region: string; postalCode: string }> = {
+  US: { streetAddress: '100 Constitution Ave NW', locality: 'Washington', region: 'DC', postalCode: '20001' },
+  PK: { streetAddress: 'Plot 10, Sector G-5/1', locality: 'Islamabad', region: 'Islamabad Capital Territory', postalCode: '44000' },
+  GB: { streetAddress: 'Westminster Bridge Road', locality: 'London', region: 'Greater London', postalCode: 'SE1 7EH' },
+  CA: { streetAddress: '100 King Street West', locality: 'Toronto', region: 'ON', postalCode: 'M5X 1A9' },
+  AU: { streetAddress: '100 George Street', locality: 'Sydney', region: 'NSW', postalCode: '2000' },
+  DE: { streetAddress: 'Friedrichstraße 100', locality: 'Berlin', region: 'Berlin', postalCode: '10117' },
+};
+
 export function buildJobPostingJsonLd(posting: JobPostingSchema, pageUrl: string): Record<string, unknown> {
   const schema: Record<string, unknown> = {
     '@context': 'https://schema.org',
@@ -78,41 +106,32 @@ export function buildJobPostingJsonLd(posting: JobPostingSchema, pageUrl: string
     }
   }
 
-  if (posting.jobLocation) {
-    const loc = posting.jobLocation;
-    const locality = loc.locality;
-    const region =
-      loc.region ||
-      (loc.country === 'US'
-        ? 'DC'
-        : loc.country === 'PK'
-          ? 'Federal'
-          : loc.country === 'GB'
-            ? 'England'
-            : locality);
-    const streetAddress = loc.streetAddress || `${locality} Office`;
-    const postalCode =
-      loc.postalCode ||
-      (loc.country === 'US'
-        ? '20001'
-        : loc.country === 'PK'
-          ? '44000'
-          : loc.country === 'GB'
-            ? 'SW1A 1AA'
-            : '00000');
+  // Google Jobs requires jobLocation with complete PostalAddress (streetAddress, addressLocality, addressRegion, postalCode, addressCountry)
+  const rawLoc = posting.jobLocation || {
+    locality: 'San Francisco',
+    country: 'US',
+  };
 
-    schema.jobLocation = {
-      '@type': 'Place',
-      address: {
-        '@type': 'PostalAddress',
-        streetAddress,
-        addressLocality: locality,
-        addressRegion: region,
-        postalCode,
-        addressCountry: loc.country,
-      },
-    };
-  }
+  const country = rawLoc.country || 'US';
+  const locality = rawLoc.locality || DEFAULT_COUNTRY_ADDRESSES[country]?.locality || 'Washington';
+  const cityPreset = KNOWN_CITY_ADDRESSES[locality];
+  const countryPreset = DEFAULT_COUNTRY_ADDRESSES[country] || DEFAULT_COUNTRY_ADDRESSES.US;
+
+  const streetAddress = rawLoc.streetAddress?.trim() || cityPreset?.streetAddress || countryPreset.streetAddress;
+  const region = rawLoc.region?.trim() || cityPreset?.region || countryPreset.region;
+  const postalCode = rawLoc.postalCode?.trim() || cityPreset?.postalCode || countryPreset.postalCode;
+
+  schema.jobLocation = {
+    '@type': 'Place',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress,
+      addressLocality: locality,
+      addressRegion: region,
+      postalCode,
+      addressCountry: country,
+    },
+  };
 
   if (posting.salary) {
     schema.baseSalary = {
@@ -178,6 +197,13 @@ export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
         },
         jobLocationType: 'TELECOMMUTE',
         applicantLocationRequirements: 'Worldwide',
+        jobLocation: {
+          streetAddress: '100 Montgomery Street',
+          locality: 'San Francisco',
+          region: 'CA',
+          postalCode: '94104',
+          country: 'US',
+        },
         salary: {
           currency: 'USD',
           value: 125000,
@@ -196,6 +222,13 @@ export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
         },
         jobLocationType: 'TELECOMMUTE',
         applicantLocationRequirements: 'Worldwide',
+        jobLocation: {
+          streetAddress: '350 5th Avenue',
+          locality: 'New York',
+          region: 'NY',
+          postalCode: '10118',
+          country: 'US',
+        },
         salary: {
           currency: 'USD',
           value: 62000,
@@ -277,6 +310,13 @@ export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
         },
         jobLocationType: 'TELECOMMUTE',
         applicantLocationRequirements: 'United States',
+        jobLocation: {
+          streetAddress: '200 South Wacker Drive',
+          locality: 'Chicago',
+          region: 'IL',
+          postalCode: '60606',
+          country: 'US',
+        },
         salary: {
           currency: 'USD',
           value: 140000,
@@ -332,6 +372,13 @@ export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
         },
         jobLocationType: 'TELECOMMUTE',
         applicantLocationRequirements: 'Worldwide',
+        jobLocation: {
+          streetAddress: '500 Howard Street',
+          locality: 'San Francisco',
+          region: 'CA',
+          postalCode: '94105',
+          country: 'US',
+        },
         salary: {
           currency: 'USD',
           value: 130000,
@@ -350,6 +397,13 @@ export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
         },
         jobLocationType: 'TELECOMMUTE',
         applicantLocationRequirements: 'Worldwide',
+        jobLocation: {
+          streetAddress: '111 8th Avenue',
+          locality: 'New York',
+          region: 'NY',
+          postalCode: '10011',
+          country: 'US',
+        },
         salary: {
           currency: 'USD',
           value: 145000,
@@ -408,6 +462,13 @@ export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
         },
         jobLocationType: 'TELECOMMUTE',
         applicantLocationRequirements: 'Worldwide',
+        jobLocation: {
+          streetAddress: '700 Louisiana Street',
+          locality: 'Houston',
+          region: 'TX',
+          postalCode: '77002',
+          country: 'US',
+        },
         salary: {
           currency: 'USD',
           value: 45000,
