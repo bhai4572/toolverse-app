@@ -1,10 +1,12 @@
 import { describe, it, expect } from 'vitest';
 import fs from 'fs';
 import path from 'path';
-import { getLiveTools } from '../lib/tools/registry';
+import { getLiveTools, getToolBySlug } from '../lib/tools/registry';
 import { getToolRendererKey, TOOL_RENDERER_MAP } from '../features/tools/ToolRenderer';
 import { getMetadataForPath } from '../lib/seo/metaEngine';
 import { pathShouldNoindex } from '../lib/seo/indexability';
+import { getPillarPosts } from '../lib/blog/posts';
+import { TOOL_PAGE_CONTENT } from '../lib/seo/toolPageContent';
 
 const root = process.cwd();
 
@@ -99,6 +101,42 @@ describe('AdSense Blocker Regression Suite — ToolRenderer (134 Live Tools) & S
     expect(legalSrc).toContain('Google Tag Manager');
     expect(legalSrc).toContain('Microsoft Clarity');
     expect(legalSrc).not.toContain('<<<<<<<');
+  });
+
+  it('verifies all 25 published pillar articles have real content, honest authors, and valid indexable tool CTAs', () => {
+    const pillars = getPillarPosts();
+    expect(pillars.length).toBeGreaterThanOrEqual(25);
+
+    for (const post of pillars) {
+      expect(post.title.length).toBeGreaterThan(10);
+      expect(post.description.length).toBeGreaterThan(30);
+      expect(post.contentMarkdown.trim().length).toBeGreaterThan(200);
+      expect(post.author).toBe('ToolVerse Editorial Team');
+      expect(post.isToolGuide).not.toBe(true);
+
+      if (post.relatedToolSlug) {
+        const tool = getToolBySlug(post.relatedToolSlug);
+        expect(tool, `Invalid relatedToolSlug "${post.relatedToolSlug}" on ${post.slug}`).toBeDefined();
+        expect(tool?.status).toBe('live');
+        expect(pathShouldNoindex(`/tools/${post.relatedToolSlug}`)).toBe(false);
+      }
+    }
+
+    const printGuide = pillars.find((p) => p.slug === 'how-to-check-current-print-jobs-in-queue-windows');
+    expect(printGuide).toBeDefined();
+    expect(printGuide?.relatedToolSlug).toBeUndefined();
+    expect(printGuide?.contentMarkdown).not.toContain('Over 70% of printer queue crashes');
+  });
+
+  it('verifies /blog archive source renders only published pillar posts and seo-audit-analyzer makes honest claims', () => {
+    const blogPageSrc = fs.readFileSync(path.join(root, 'app/blog/page.tsx'), 'utf8');
+    expect(blogPageSrc).toContain('getPillarPosts()');
+    expect(blogPageSrc).toContain('No published articles in this category yet.');
+
+    const seoAuditCopy = TOOL_PAGE_CONTENT['seo-audit-analyzer'];
+    expect(seoAuditCopy).toBeDefined();
+    expect(seoAuditCopy.seoDescription.toLowerCase()).not.toContain('semrush');
+    expect(seoAuditCopy.answerFirst.toLowerCase()).toContain('html');
   });
 });
 

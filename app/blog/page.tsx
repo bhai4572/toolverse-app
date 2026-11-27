@@ -16,13 +16,10 @@ export default function BlogHubPage() {
   const filteredPosts = useMemo(() => {
     const list =
       selectedCategory === 'All'
-        ? BLOG_POSTS
-        : BLOG_POSTS.filter((post) => post.category === selectedCategory);
-    return [...list].sort((a, b) => {
-      if (!!a.isToolGuide !== !!b.isToolGuide) return a.isToolGuide ? 1 : -1;
-      return a.title.localeCompare(b.title);
-    });
-  }, [selectedCategory]);
+        ? pillars
+        : pillars.filter((post) => post.category === selectedCategory);
+    return [...list].sort((a, b) => b.publishDate.localeCompare(a.publishDate));
+  }, [pillars, selectedCategory]);
 
   const totalPages = Math.max(1, Math.ceil(filteredPosts.length / PAGE_SIZE));
   const safePage = Math.min(page, totalPages);
@@ -119,15 +116,14 @@ export default function BlogHubPage() {
           Guides for Tools, Careers & Privacy
         </h1>
         <p className="text-slate-600 dark:text-slate-400 text-lg leading-relaxed">
-          Pillar guides plus a how-to for every live ToolVerse utility — with clear CTAs back to the free tools.
-          Filter by topic or browse page by page.
+          Original, practical guides covering PDFs, image optimization, calculators, privacy, and everyday workflows.
+          Filter by category or browse page by page.
         </p>
         <p className="text-sm text-slate-500">
-          {BLOG_POSTS.length} articles · {pillars.length} pillar guides · {BLOG_POSTS.length - pillars.length} tool
-          how-tos
+          {pillars.length} published guides
           {' · '}
           <a href="/blog/topics" className="text-indigo-600 dark:text-indigo-400 font-medium hover:underline">
-            US topic clusters
+            Topic clusters
           </a>
         </p>
       </header>
@@ -151,9 +147,27 @@ export default function BlogHubPage() {
             ))}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-            {listWithBreaks}
-          </div>
+          {pagePosts.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+              {listWithBreaks}
+            </div>
+          ) : (
+            <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-10 text-center space-y-3">
+              <p className="text-base font-semibold text-slate-900 dark:text-white">
+                No published articles in this category yet.
+              </p>
+              <p className="text-sm text-slate-500 dark:text-slate-400">
+                Try selecting &ldquo;All&rdquo; to browse all {pillars.length} published ToolVerse guides.
+              </p>
+              <button
+                type="button"
+                onClick={() => onCategory('All')}
+                className="inline-flex px-4 py-2 rounded-xl bg-indigo-600 text-white text-xs font-semibold hover:bg-indigo-500"
+              >
+                Show all guides
+              </button>
+            </div>
+          )}
 
           {totalPages > 1 && (
             <nav className="flex flex-wrap items-center justify-center gap-3" aria-label="Blog pagination">

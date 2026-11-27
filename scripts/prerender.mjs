@@ -732,7 +732,14 @@ function buildBodyMain(pathname, meta, deps) {
     contentHtml = page(
       'ToolVerse Guides & Blog',
       'Practical guides, workflows, and tutorials for privacy-first tools, SEO optimization, and calculators.',
-      sec(`All ${BLOG_POSTS.length} guides`, ul(BLOG_POSTS.map((p) => li(`/blog/${p.slug}`, p.title, p.description))))
+      sec(
+        `All ${BLOG_POSTS.filter((p) => !p.isToolGuide).length} published guides`,
+        ul(
+          BLOG_POSTS.filter((p) => !p.isToolGuide).map((p) =>
+            li(`/blog/${p.slug}`, p.title, `${p.category} · By ${p.author} · ${p.publishDate} — ${p.description}`)
+          )
+        )
+      )
     );
   } else if (parts[0] === 'jobs' && parts[1]) {
     // Job landing

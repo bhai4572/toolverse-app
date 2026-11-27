@@ -1,6 +1,6 @@
 import React from 'react';
-import { getBlogPostBySlug, BLOG_POSTS, getGuidePostForTool } from '@/lib/blog/posts';
-import { getToolBySlug, getToolsByCategory } from '@/lib/tools/registry';
+import { getBlogPostBySlug, getPillarPosts } from '@/lib/blog/posts';
+import { getToolBySlug } from '@/lib/tools/registry';
 import { AdSlot } from '@/components/AdSlot';
 import { InArticleAds } from '@/components/ads/InArticleAds';
 import { PageSidebarAds } from '@/components/ads/PageSidebarAds';
@@ -28,21 +28,14 @@ export default function BlogPostPage({ params }: Props) {
   }
 
   const relatedTool = post.relatedToolSlug ? getToolBySlug(post.relatedToolSlug) : null;
-  const categoryGuides = relatedTool
-    ? getToolsByCategory(relatedTool.categorySlug)
-        .map((t) => getGuidePostForTool(t.slug))
-        .filter((p): p is NonNullable<typeof p> => Boolean(p) && p.slug !== post.slug)
-        .slice(0, 3)
-    : [];
+  const pillars = getPillarPosts().filter((p) => p.slug !== post.slug);
+  const sameCategory = pillars.filter((p) => p.category === post.category).slice(0, 3);
   const recentPosts =
-    categoryGuides.length >= 3
-      ? categoryGuides
+    sameCategory.length >= 3
+      ? sameCategory
       : [
-          ...categoryGuides,
-          ...BLOG_POSTS.filter((p) => p.slug !== post.slug && !categoryGuides.some((c) => c.slug === p.slug)).slice(
-            0,
-            3 - categoryGuides.length
-          ),
+          ...sameCategory,
+          ...pillars.filter((p) => !sameCategory.some((c) => c.slug === p.slug)).slice(0, 3 - sameCategory.length),
         ];
 
   return (
@@ -95,7 +88,7 @@ export default function BlogPostPage({ params }: Props) {
               </div>
               <div>
                 <div className="text-sm font-semibold text-slate-900 dark:text-white">{post.author}</div>
-                <div className="text-xs text-slate-500 dark:text-slate-400">ToolVerse Senior Editorial</div>
+                <div className="text-xs text-slate-500 dark:text-slate-400">ToolVerse Editorial</div>
               </div>
             </div>
           </header>

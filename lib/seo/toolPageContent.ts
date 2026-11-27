@@ -748,22 +748,22 @@ export const TOOL_PAGE_CONTENT: Record<string, ToolPageContent> = {
 
   'seo-audit-analyzer': {
     answerFirst:
-      'On-Page SEO Site Audit & Health Checker inspects your title tags, meta descriptions, H1-H6 structure, canonical tags, open graph metadata, and content depth — generating a 0-100 SEO health score with 1-click fixes.',
-    seoTitle: 'Free On-Page SEO Site Audit & Health Checker | ToolVerse',
+      'On-Page SEO HTML & Metadata Checker inspects pasted HTML markup or manually entered title tags, meta descriptions, H1-H6 structure, canonical tags, open graph metadata, and content length directly in your browser.',
+    seoTitle: 'Free On-Page SEO HTML & Metadata Checker | ToolVerse',
     seoDescription:
-      'Free SEO site audit tool and Semrush alternative. Audit on-page ranking factors, identify missing tags, check heading structure, and fix SEO issues instantly.',
+      'Audit pasted HTML or on-page title tags, meta descriptions, heading hierarchy, and canonical tags directly in your browser. Free client-side SEO checklist.',
     sections: [
       {
         heading: 'Why on-page auditing matters for search rankings',
-        body: 'Even the best content can fail to rank if basic on-page signals are misconfigured. Truncated titles, missing meta descriptions, duplicate H1 tags, and missing image alt tags waste crawl budget and weaken your topical authority.',
+        body: 'Even strong content can underperform if basic on-page HTML signals are misconfigured. Truncated titles, missing meta descriptions, duplicate H1 tags, and missing image alt attributes hurt search snippets and accessibility.',
       },
       {
-        heading: 'Free Semrush Site Audit Alternative without paywalls',
-        body: 'Most enterprise SEO suites charge $130+/month for simple on-page checklists. ToolVerse performs instant client-side audits directly inside your browser with complete privacy and zero subscription fees.',
+        heading: 'How this client-side analyzer works (and its limits)',
+        body: 'ToolVerse runs directly inside your browser: enter your title, meta description, H1, and body copy—or paste raw HTML markup—to run an instant on-page checklist. It does not perform live remote site-wide crawling or maintain a third-party backlink index; pair it with Google Search Console for live crawl data.',
       },
       {
         heading: 'Prioritize fixes: Errors vs Warnings vs Passes',
-        body: 'Focus first on Critical Errors (missing titles, missing H1, thin content under 100 words), followed by Warnings (title pixel overflow over 580px, missing alt text, missing Open Graph tags).',
+        body: 'Focus first on Critical Errors (missing titles, missing H1, thin content under 100 words), followed by Warnings (title length overflow, missing alt text, missing Open Graph tags).',
       },
     ],
     faqs: [

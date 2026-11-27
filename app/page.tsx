@@ -2,8 +2,9 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Search, ArrowRight, Wrench, Globe2, GraduationCap, Landmark, ShieldCheck, Zap, Briefcase, Car } from 'lucide-react';
+import { Search, ArrowRight, Wrench, Globe2, GraduationCap, Landmark, ShieldCheck, Zap, Briefcase, Car, BookOpen } from 'lucide-react';
 import { TOOLS, CATEGORIES, getPopularTools, searchTools } from '@/lib/tools/registry';
+import { getPillarPosts } from '@/lib/blog/posts';
 
 const PATHS = [
   {
@@ -19,9 +20,9 @@ const PATHS = [
     icon: Wrench,
   },
   {
-    href: '/workspace',
-    title: 'SEO Dashboard',
-    blurb: 'Audits, keywords, reports — free workspace, honest labels.',
+    href: '/passport-photos',
+    title: 'Passport Photos',
+    blurb: 'US 2×2, UK & Schengen 35×45 mm size specs and browser photo maker.',
     icon: Globe2,
   },
   {
@@ -83,6 +84,7 @@ export default function HomePage() {
     return new URLSearchParams(window.location.search).get('q') || '';
   });
   const popularTools = getPopularTools().slice(0, 6);
+  const featuredGuides = getPillarPosts().slice(0, 3);
   const searchResults = searchQuery.trim() ? searchTools(searchQuery) : [];
 
   return (
@@ -235,7 +237,7 @@ export default function HomePage() {
         <div className="flex items-end justify-between gap-4">
           <div>
             <h2 className="text-xl font-bold text-slate-900 dark:text-white">Popular tools</h2>
-            <p className="text-xs text-slate-500">{TOOLS.length}+ live · {CATEGORIES.length} categories</p>
+            <p className="text-xs text-slate-500">{TOOLS.filter((t) => t.status === 'live').length}+ live · {CATEGORIES.length} categories</p>
           </div>
           <Link href="/tools" className="text-xs font-semibold text-brand-600 hover:underline">All categories</Link>
         </div>
@@ -251,6 +253,37 @@ export default function HomePage() {
                 <h3 className="font-semibold text-sm text-slate-900 dark:text-white">{tool.canonicalName}</h3>
               </div>
               <p className="text-xs text-slate-500 line-clamp-2">{tool.shortDescription}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="space-y-4" aria-labelledby="guides-heading">
+        <div className="flex items-end justify-between gap-4">
+          <div>
+            <h2 id="guides-heading" className="text-xl font-bold text-slate-900 dark:text-white">
+              Practical Guides &amp; Tutorials
+            </h2>
+            <p className="text-xs text-slate-500">Original step-by-step guides written for real file, document, and calculator tasks</p>
+          </div>
+          <Link href="/blog" className="text-xs font-semibold text-brand-600 hover:underline">All guides →</Link>
+        </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {featuredGuides.map((guide) => (
+            <Link
+              key={guide.slug}
+              href={`/blog/${guide.slug}`}
+              className="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-brand-500/50 transition-colors flex flex-col justify-between space-y-3"
+            >
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 text-[11px] font-semibold text-brand-600">
+                  <BookOpen className="w-3.5 h-3.5" />
+                  <span>{guide.category}</span>
+                </div>
+                <h3 className="font-bold text-sm text-slate-900 dark:text-white line-clamp-2">{guide.title}</h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">{guide.description}</p>
+              </div>
+              <span className="text-xs font-semibold text-brand-600">Read guide →</span>
             </Link>
           ))}
         </div>
