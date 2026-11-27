@@ -55,6 +55,46 @@ export function validateDestinationUrl(url: string): { isValid: boolean; error?:
   }
 }
 
+export interface UtmParams {
+  source?: string;
+  medium?: string;
+  campaign?: string;
+  term?: string;
+  content?: string;
+}
+
+export function buildTrackedUrl(
+  destinationUrl: string,
+  utm: UtmParams = {}
+): { isValid: boolean; url?: string; error?: string } {
+  const validation = validateDestinationUrl(destinationUrl);
+  if (!validation.isValid) {
+    return { isValid: false, error: validation.error };
+  }
+
+  try {
+    const parsed = new URL(destinationUrl.trim());
+    const entries: Array<[string, string | undefined]> = [
+      ['utm_source', utm.source],
+      ['utm_medium', utm.medium],
+      ['utm_campaign', utm.campaign],
+      ['utm_term', utm.term],
+      ['utm_content', utm.content],
+    ];
+
+    for (const [key, value] of entries) {
+      const cleaned = value?.trim();
+      if (cleaned) {
+        parsed.searchParams.set(key, cleaned);
+      }
+    }
+
+    return { isValid: true, url: parsed.toString() };
+  } catch {
+    return { isValid: false, error: 'Invalid URL format. Please include http:// or https://' };
+  }
+}
+
 export function isAliasReserved(alias: string): boolean {
   return RESERVED_ALIASES.has(alias.trim().toLowerCase());
 }

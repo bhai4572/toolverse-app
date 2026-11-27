@@ -295,7 +295,9 @@ function fitTitle(t: string): string {
   if (candidate.length <= 60) return candidate;
   const cut = candidate.slice(0, 59);
   const lastSpace = cut.lastIndexOf(' ');
-  const trimmed = (lastSpace > 24 ? cut.slice(0, lastSpace) : candidate.slice(0, 58)).replace(/[\s|—–\-,;:]+$/, '');
+  const trimmed = (lastSpace > 24 ? cut.slice(0, lastSpace) : candidate.slice(0, 58))
+    .replace(/[\s&|—–\-,;:]+$/, '')
+    .trim();
   return trimmed.slice(0, 60);
 }
 

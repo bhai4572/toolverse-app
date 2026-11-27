@@ -6,6 +6,8 @@ import { getToolPageContent } from '@/lib/seo/toolPageContent';
 import { pathShouldNoindex } from '@/lib/seo/indexability';
 import { getMetadataForPath } from '@/lib/seo/metaEngine';
 import { onRequest } from '@/functions/_middleware.js';
+import { buildTrackedUrl } from '@/lib/url-shortener/client';
+import { generateQrCodeDataUrl } from '@/lib/developer/engine';
 
 describe('ToolVerse SEO & AdSense Audit Fixes (10 Priorities Verification)', () => {
   const root = path.resolve(__dirname, '..');
@@ -173,6 +175,56 @@ describe('ToolVerse SEO & AdSense Audit Fixes (10 Priorities Verification)', () 
       expect(nextCalled).toBe(true);
       expect(res.status).toBe(200);
     }
+  });
+
+  it('Priority 10 (H1): UrlShortenerTool has no /api/shorten call, discloses unavailability, and builds UTM + QR locally', async () => {
+    const toolSrc = fs.readFileSync(path.join(root, 'features/tools/UrlShortenerTool.tsx'), 'utf8');
+    expect(toolSrc).not.toContain('/api/shorten');
+    expect(toolSrc).not.toMatch(/\bfetch\s*\(/);
+    expect(toolSrc).toMatch(/not currently available/i);
+
+    // Invalid URLs rejected cleanly
+    expect(buildTrackedUrl('').isValid).toBe(false);
+    expect(buildTrackedUrl('javascript:alert(1)').isValid).toBe(false);
+    expect(buildTrackedUrl('http://localhost:3000/test').isValid).toBe(false);
+
+    // Valid URL + UTM parameters built cleanly
+    const built = buildTrackedUrl('https://toolverse.baby/tools/pdf-merge?ref=home', {
+      source: 'newsletter',
+      medium: 'email',
+      campaign: 'q4_launch',
+      term: 'pdf',
+      content: 'cta_top',
+    });
+    expect(built.isValid).toBe(true);
+    expect(built.url).toBe(
+      'https://toolverse.baby/tools/pdf-merge?ref=home&utm_source=newsletter&utm_medium=email&utm_campaign=q4_launch&utm_term=pdf&utm_content=cta_top'
+    );
+
+    // QR code generated locally without backend calls
+    const qrDataUrl = await generateQrCodeDataUrl(built.url!);
+    expect(qrDataUrl.startsWith('data:image/png;base64,')).toBe(true);
+  });
+
+  it('Priority 11 (M1): SEO title truncation never leaves dangling connectors (&, -, —, |, ,)', () => {
+    const previouslyDanglingPaths = [
+      '/blog',
+      '/blog/how-to-check-current-print-jobs-in-queue-windows',
+      '/blog/how-to-generate-barcodes-free-code-128-ean-upc',
+      '/blog/wifi-qr-code-guest-network-watch-party',
+      '/study/new-zealand',
+    ];
+
+    for (const p of previouslyDanglingPaths) {
+      const meta = getMetadataForPath(p);
+      expect(meta.title.length).toBeGreaterThan(15);
+      expect(meta.title.length).toBeLessThanOrEqual(60);
+      expect(meta.title).not.toMatch(/[&|—–\-,;:]\s*$/);
+    }
+
+    // Valid titles remain intact
+    expect(getMetadataForPath('/').title).toContain('ToolVerse');
+    expect(getMetadataForPath('/tools/pdf-merge').title.length).toBeLessThanOrEqual(60);
   });
 });
 
