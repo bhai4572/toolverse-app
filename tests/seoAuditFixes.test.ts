@@ -81,7 +81,8 @@ describe('ToolVerse SEO & AdSense Audit Fixes (10 Priorities Verification)', () 
       const seo = getToolPageContent(slug);
       expect(seo).toBeDefined();
       expect(seo?.seoTitle).toContain('Compress PDF');
-      expect(seo?.seoDescription.length).toBeLessThanOrEqual(165);
+      expect(seo?.seoDescription).toBeDefined();
+      expect((seo?.seoDescription ?? '').length).toBeLessThanOrEqual(165);
       expect(seo?.faqs.length).toBeGreaterThan(0);
     }
   });
@@ -132,6 +133,46 @@ describe('ToolVerse SEO & AdSense Audit Fixes (10 Priorities Verification)', () 
 
     const ogStats = fs.statSync(path.join(root, 'public/og-image.png'));
     expect(ogStats.size).toBeLessThan(200 * 1024);
+  });
+
+  it('Priority 9: replaces legacy ad-network service workers with safe kill-switch and no-cache headers', async () => {
+    const swFiles = ['public/sw.js', 'public/service-worker.js'];
+    for (const relPath of swFiles) {
+      const content = fs.readFileSync(path.join(root, relPath), 'utf8');
+      // No third-party script imports or remote fetches
+      expect(content).not.toMatch(/importScripts/i);
+      expect(content).not.toMatch(/https?:\/\//i);
+      expect(content).not.toMatch(/\bfetch\s*\(/i);
+      // No Monetag / PropellerAds / 5gvci references
+      expect(content).not.toMatch(/5gvci|monetag|propeller|zoneId|11965860|self\.lary/i);
+      // Must self-activate and self-unregister without deleting unrelated caches
+      expect(content).toContain('self.skipWaiting()');
+      expect(content).toContain('self.registration.unregister()');
+      expect(content).not.toContain('caches.delete');
+    }
+
+    // Both endpoints must have strict no-cache headers
+    const headersFile = fs.readFileSync(path.join(root, 'public/_headers'), 'utf8');
+    expect(headersFile).toMatch(/\/sw\.js\r?\n\s+Cache-Control:\s*no-cache, no-store, must-revalidate/);
+    expect(headersFile).toMatch(/\/service-worker\.js\r?\n\s+Cache-Control:\s*no-cache, no-store, must-revalidate/);
+
+    // Both endpoints must remain accessible as static JS (excluded by _routes.json and passed through middleware)
+    const routesJson = JSON.parse(fs.readFileSync(path.join(root, 'public/_routes.json'), 'utf8'));
+    expect(routesJson.exclude).toContain('/*.js');
+
+    for (const swUrl of ['https://toolverse.baby/sw.js', 'https://toolverse.baby/service-worker.js']) {
+      let nextCalled = false;
+      const res = await onRequest({
+        request: new Request(swUrl),
+        env: { ASSETS: { fetch: async () => new Response('HTML', { status: 200 }) } },
+        next: async () => {
+          nextCalled = true;
+          return new Response('// sw', { status: 200, headers: { 'content-type': 'application/javascript' } });
+        },
+      });
+      expect(nextCalled).toBe(true);
+      expect(res.status).toBe(200);
+    }
   });
 });
 
