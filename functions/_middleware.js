@@ -127,7 +127,8 @@ export async function onRequest(context) {
     pathname === '/llms.txt' ||
     pathname === '/ads.txt' ||
     pathname === '/404.html' ||
-    pathname.startsWith('/api/')
+    pathname.startsWith('/api/') ||
+    pathname.startsWith('/s/')
   ) {
     return context.next();
   }

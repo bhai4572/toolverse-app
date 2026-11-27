@@ -177,16 +177,15 @@ describe('ToolVerse SEO & AdSense Audit Fixes (10 Priorities Verification)', () 
     }
   });
 
-  it('Priority 10 (H1): UrlShortenerTool has no /api/shorten call, discloses unavailability, and builds UTM + QR locally', async () => {
-    const toolSrc = fs.readFileSync(path.join(root, 'features/tools/UrlShortenerTool.tsx'), 'utf8');
-    expect(toolSrc).not.toContain('/api/shorten');
-    expect(toolSrc).not.toMatch(/\bfetch\s*\(/);
-    expect(toolSrc).toMatch(/not currently available/i);
+  it('Priority 10 (H1): Real URL Shortener Cloudflare Pages Functions exist and client validates UTM + QR', async () => {
+    expect(fs.existsSync(path.join(root, 'functions/api/shorten.js'))).toBe(true);
+    expect(fs.existsSync(path.join(root, 'functions/s/[code].js'))).toBe(true);
 
     // Invalid URLs rejected cleanly
     expect(buildTrackedUrl('').isValid).toBe(false);
     expect(buildTrackedUrl('javascript:alert(1)').isValid).toBe(false);
     expect(buildTrackedUrl('http://localhost:3000/test').isValid).toBe(false);
+    expect(buildTrackedUrl('https://toolverse.baby/s/abc1234').isValid).toBe(false);
 
     // Valid URL + UTM parameters built cleanly
     const built = buildTrackedUrl('https://toolverse.baby/tools/pdf-merge?ref=home', {
