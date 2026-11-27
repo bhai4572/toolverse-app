@@ -1,10 +1,10 @@
 import { describe, it, expect } from 'vitest';
 import {
   findCategoryByQuery,
-  findBusinessBySlug,
-  findBusinessByBusinessId,
   INITIAL_BUSINESSES,
+  INITIAL_BUSINESS_REVIEWS,
 } from '../lib/business/registry';
+import type { Business } from '../lib/business/types';
 import {
   evaluateBusinessRisk,
   validateDocumentUpload,
@@ -16,7 +16,6 @@ import {
   formatRankingSnapshotLabel,
 } from '../lib/business/qrEngine';
 import {
-  getActiveSponsoredPositions,
   createOrUpdateBiddingCampaign,
 } from '../lib/business/biddingEngine';
 import {
@@ -25,28 +24,55 @@ import {
 } from '../lib/admin/authEngine';
 import {
   createBusinessReport,
-  getStoredBusinessReports,
-  updateReportStatus,
 } from '../lib/business/moderationEngine';
 import {
   getStoredBusinesses,
-  saveStoredBusinesses,
 } from '../lib/business/storageEngine';
 
-describe('Business Identity & Registry Engine Tests', () => {
-  it('resolves canonical business profile by slug', () => {
-    const biz = findBusinessBySlug('ali-barber-studio');
-    expect(biz).toBeDefined();
-    expect(biz?.id).toBe('TV-BIZ-8F4K2P');
-    expect(biz?.verificationLevel).toBe(3);
-    expect(biz?.isVerified).toBe(true);
-  });
+const TEST_BUSINESS_FIXTURE: Business = {
+  id: 'TV-BIZ-TEST01',
+  slug: 'test-engineering-studio',
+  name: 'Test Engineering Studio',
+  businessType: 'Local Business',
+  categorySlug: 'software-engineering-studios',
+  categoryName: 'Software Engineering & Web Studios',
+  description: 'Fixture record used strictly in unit tests.',
+  longDescription: 'In-memory fixture record used strictly to test verification, QR, and bidding engines.',
+  logoUrl: '',
+  photos: [],
+  websiteUrl: 'https://toolverse.baby',
+  email: 'support@toolverse.baby',
+  phone: '+1 555 0100',
+  address: '100 Main St',
+  city: 'Austin',
+  state: 'TX',
+  country: 'United States',
+  isGlobalOnline: true,
+  serviceArea: 'Global',
+  socialLinks: {},
+  businessHours: [],
+  services: [],
+  verificationLevel: 3,
+  isVerified: true,
+  ownerEmail: 'support@toolverse.baby',
+  riskStatus: 'LOW',
+  spamStatus: 'CLEAN',
+  rankingPosition: 1,
+  rankingSnapshotDate: '2026-10-08',
+  isSponsored: false,
+  upvotesCount: 10,
+  viewsCount: 100,
+  ratingAverage: 5,
+  reviewCount: 0,
+  status: 'APPROVED',
+  createdAt: '2026-10-01',
+  updatedAt: '2026-10-08',
+};
 
-  it('resolves canonical business profile by permanent Business ID (TV-BIZ-XXXXXX)', () => {
-    const biz = findBusinessByBusinessId('TV-BIZ-8F4K2P');
-    expect(biz).toBeDefined();
-    expect(biz?.slug).toBe('ali-barber-studio');
-    expect(biz?.name).toBe('Ali Barber Studio');
+describe('Business Identity & Registry Engine Tests', () => {
+  it('contains zero publicly hardcoded demo/sample businesses or fabricated reviews', () => {
+    expect(INITIAL_BUSINESSES.length).toBe(0);
+    expect(INITIAL_BUSINESS_REVIEWS.length).toBe(0);
   });
 
   it('performs category matching and resolves aliases', () => {
@@ -58,8 +84,7 @@ describe('Business Identity & Registry Engine Tests', () => {
 
 describe('Risk-Based Verification & Document Security Engine Tests', () => {
   it('calculates risk score accurately based on business signals', () => {
-    const biz = INITIAL_BUSINESSES[0];
-    const risk = evaluateBusinessRisk(biz);
+    const risk = evaluateBusinessRisk(TEST_BUSINESS_FIXTURE);
     expect(risk.riskStatus).toBe('LOW');
   });
 
@@ -75,35 +100,32 @@ describe('Risk-Based Verification & Document Security Engine Tests', () => {
   });
 
   it('creates verification requests for elevated risk businesses', () => {
-    const biz = INITIAL_BUSINESSES[0];
-    const req = saveVerificationRequest(biz, ['Business Registration Certificate']);
-    expect(req.businessId).toBe(biz.id);
+    const req = saveVerificationRequest(TEST_BUSINESS_FIXTURE, ['Business Registration Certificate']);
+    expect(req.businessId).toBe(TEST_BUSINESS_FIXTURE.id);
     expect(req.status).toBe('PENDING');
   });
 });
 
 describe('Permanent QR Engine Tests', () => {
   it('generates permanent QR resolution URL pointing to /b/:businessId', () => {
-    const url = getPermanentBusinessQRUrl('TV-BIZ-8F4K2P');
-    expect(url).toBe('https://toolverse.baby/b/TV-BIZ-8F4K2P');
+    const url = getPermanentBusinessQRUrl('TV-BIZ-TEST01');
+    expect(url).toBe('https://toolverse.baby/b/TV-BIZ-TEST01');
   });
 
   it('generates clean vector SVG QR badge markup with customizable template', () => {
-    const biz = INITIAL_BUSINESSES[0];
-    const svg = generateSVGQRBadge(biz, {
+    const svg = generateSVGQRBadge(TEST_BUSINESS_FIXTURE, {
       template: 'VERIFIED',
       showStatus: true,
       showCategory: true,
     });
 
     expect(svg).toContain('<svg');
-    expect(svg).toContain(biz.name);
+    expect(svg).toContain(TEST_BUSINESS_FIXTURE.name);
     expect(svg).toContain('toolverse.baby');
   });
 
   it('formats timestamped ranking snapshot labels to prevent misleading static prints', () => {
-    const biz = { ...INITIAL_BUSINESSES[0], rankingPosition: 1, rankingSnapshotDate: '2026-10-08' };
-    const label = formatRankingSnapshotLabel(biz);
+    const label = formatRankingSnapshotLabel(TEST_BUSINESS_FIXTURE);
     expect(label).toContain('#1 in');
     expect(label).toContain('Ranked on 2026-10-08');
   });
@@ -111,9 +133,7 @@ describe('Permanent QR Engine Tests', () => {
 
 describe('Top 3 Sponsored Bidding Auction Engine Tests', () => {
   it('creates and retrieves active sponsored bidding placement positions', () => {
-    const biz = INITIAL_BUSINESSES[0];
-    const campaign = createOrUpdateBiddingCampaign(biz, 1, 30, 15, 30, 'superadmin');
-
+    const campaign = createOrUpdateBiddingCampaign(TEST_BUSINESS_FIXTURE, 1, 30, 15, 30, 'superadmin');
     expect(campaign.status).toBe('ACTIVE');
     expect(campaign.position).toBe(1);
   });
@@ -142,23 +162,23 @@ describe('RBAC Admin Authentication & Permission Engine Tests', () => {
 describe('Trust & Safety Moderation Engine Tests', () => {
   it('receives user complaints and records report in moderation queue', () => {
     const report = createBusinessReport(
-      'TV-BIZ-8F4K2P',
-      'Ali Barber Studio',
-      'user@example.com',
+      TEST_BUSINESS_FIXTURE.id,
+      TEST_BUSINESS_FIXTURE.name,
+      'support@toolverse.baby',
       'WRONG_INFO',
       'The listed phone number is outdated.'
     );
 
     expect(report.id).toBeDefined();
     expect(report.status).toBe('NEW');
-    expect(report.businessId).toBe('TV-BIZ-8F4K2P');
+    expect(report.businessId).toBe(TEST_BUSINESS_FIXTURE.id);
     expect(report.reason).toBe('WRONG_INFO');
   });
 });
 
 describe('Storage Engine Persistence Tests', () => {
-  it('persists and retrieves businesses cleanly', () => {
+  it('retrieves stored businesses cleanly', () => {
     const businesses = getStoredBusinesses();
-    expect(businesses.length).toBeGreaterThan(0);
+    expect(Array.isArray(businesses)).toBe(true);
   });
 });

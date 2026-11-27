@@ -52,8 +52,8 @@ export async function onRequest(context) {
     '/resume-builder': '/cv-maker',
     '/free-cv-maker': '/cv-maker',
     '/tools/cv-maker': '/cv-maker',
-    '/tools/resume-builder': '/tools/cv-maker',
-    '/tools/free-cv-maker': '/tools/cv-maker',
+    '/tools/resume-builder': '/cv-maker',
+    '/tools/free-cv-maker': '/cv-maker',
     '/tools/email-finder': '/tools/b2b-email-finder',
     '/tools/email-scraper': '/tools/b2b-email-finder',
     // Short trust-page aliases (users and reviewers type these)

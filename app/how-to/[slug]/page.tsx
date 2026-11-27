@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import { HOW_TO_GUIDES } from '../page';
 
 interface HowToDetailPageProps {
@@ -11,20 +12,27 @@ export default function HowToGuideDetailPage({ params }: HowToDetailPageProps) {
   if (!guide) {
     return (
       <div className="p-12 text-center space-y-4 max-w-md mx-auto">
-        <h1 className="text-2xl font-bold text-slate-800">Guide Not Found</h1>
-        <p className="text-slate-500 text-sm">The requested guide does not exist.</p>
-        <a href="/how-to" className="inline-block text-indigo-600 font-bold hover:underline">
-          &larr; Back to How-To Guides
-        </a>
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Guide Not Found</h1>
+        <p className="text-slate-600 dark:text-slate-400 text-sm">
+          We moved our in-depth, hand-written tool tutorials to the main ToolVerse Guides &amp; Blog hub.
+        </p>
+        <div className="flex items-center justify-center gap-4 pt-2">
+          <Link href="/blog" className="text-brand-600 font-bold hover:underline">
+            Browse Tool Guides &rarr;
+          </Link>
+          <Link href="/tools" className="text-slate-600 dark:text-slate-300 font-semibold hover:underline">
+            All Tools
+          </Link>
+        </div>
       </div>
     );
   }
 
   return (
-    <article className="space-y-8 max-w-4xl mx-auto text-xs text-slate-700 dark:text-slate-300">
+    <article className="space-y-8 max-w-4xl mx-auto text-sm text-slate-700 dark:text-slate-300">
       <nav aria-label="Breadcrumb" className="text-xs text-slate-500 space-x-2">
-        <a href="/" className="hover:underline">Home</a> &gt;
-        <a href="/how-to" className="hover:underline">How-To</a> &gt;
+        <Link href="/" className="hover:underline">Home</Link> &gt;
+        <Link href="/how-to" className="hover:underline">How-To</Link> &gt;
         <span className="text-slate-800 dark:text-slate-200 font-semibold">{guide.title}</span>
       </nav>
 
@@ -36,18 +44,18 @@ export default function HowToGuideDetailPage({ params }: HowToDetailPageProps) {
         <p className="text-sm text-slate-600 dark:text-slate-300">{guide.description}</p>
       </header>
 
-      <section className="p-8 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl space-y-4 leading-relaxed text-sm">
-        <h2 className="text-xl font-bold text-slate-900 dark:text-white">Overview &amp; Practical Instructions</h2>
-        <p>
-          Toolverse provides every eligible business with a permanent digital identity code (`TV-BIZ-XXXXXX`). By registering your business profile, you establish a canonical presence that connects offline customers to online reviews and category rankings.
-        </p>
-        <h3 className="text-lg font-bold text-slate-900 dark:text-white">1. Registering Your Profile</h3>
-        <p>
-          Navigate to `/business/register` and complete the 4-step onboarding form. Provide your official website, physical address (or global online coverage), services, and operating hours.
-        </p>
-        <h3 className="text-lg font-bold text-slate-900 dark:text-white">2. Printing Your QR Badge</h3>
-        <p>
-          Visit `/business-qr`, choose your design template (Minimal, Premium, Dark, Verified), and download high-resolution vector SVG or PNG files suitable for 10x10cm window decals or countertop stands.
+      <section className="p-8 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl space-y-4 leading-relaxed">
+        <h2 className="text-xl font-bold text-slate-900 dark:text-white">About This Topic</h2>
+        <p>{guide.description}</p>
+        <p className="text-xs text-slate-500 dark:text-slate-400">
+          Looking for practical step-by-step tutorials for our PDF, image, CV, and calculator utilities? Visit the{' '}
+          <Link href="/blog" className="text-brand-600 font-semibold hover:underline">
+            ToolVerse Guides &amp; Blog
+          </Link>{' '}
+          or open any utility directly from the{' '}
+          <Link href="/tools" className="text-brand-600 font-semibold hover:underline">
+            Tools Hub
+          </Link>.
         </p>
       </section>
     </article>

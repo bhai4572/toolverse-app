@@ -103,11 +103,7 @@ export const LEGAL_PAGES: Record<string, { title: string; content: string }> = {
       <p class="leading-relaxed mt-3">We started ToolVerse because everyday converters and estimators were either (1) upload-first cloud products that treat documents as inventory, or (2) thin directory sites with broken buttons and identical AI blurbs. Our bet is simpler: ship tools that run, label limits honestly, and keep file processing in the browser whenever we can.</p>
 
       <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-6 mb-2">What we offer</h2>
-<<<<<<< HEAD
-      <p class="leading-relaxed">130+ free utilities across PDFs, images, writing helpers, developer/SEO utilities, and regional finance estimates — plus curated hubs for study abroad, immigration checklists, cars cost planning, and a job finder that links out to employers. Most file tools process data in your browser with Canvas, WebAssembly, and Web Crypto.</p>
-=======
       <p class="leading-relaxed">${LIVE_TOOL_COUNT}+ free utilities across PDFs, images, writing helpers, developer/SEO utilities, and regional finance estimates — plus curated hubs for study abroad, immigration checklists, cars cost planning, and a job finder that links out to employers. Most file tools process data in your browser with Canvas, WebAssembly, and Web Crypto.</p>
->>>>>>> origin/main
 
       <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-6 mb-2">What we are not</h2>
       <ul class="list-disc pl-5 space-y-1 my-2">

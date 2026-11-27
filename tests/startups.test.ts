@@ -1,46 +1,32 @@
 import { describe, it, expect } from 'vitest';
-import { 
-  getAllStartups, 
-  getStartupBySlug, 
-  submitStartup, 
-  upvoteStartup 
+import {
+  INITIAL_STARTUPS,
+  getAllStartups,
+  getStartupBySlug,
+  submitStartup,
+  upvoteStartup,
 } from '../lib/startups/registry';
-import { 
-  getAllPublishers, 
-  getPublisherBySlug, 
-  submitGuestPostPitch, 
-  getPitchesForApplicant 
+import {
+  SAMPLE_PUBLISHERS,
+  getAllPublishers,
+  getPublisherBySlug,
+  registerPublisherWebsite,
+  submitGuestPostPitch,
+  getPitchesForApplicant,
 } from '../lib/guestposts/registry';
-import { 
-  generateMetaTitle, 
-  generateMetaDescription, 
-  generateSlug 
+import {
+  generateMetaTitle,
+  generateMetaDescription,
+  generateSlug,
 } from '../lib/seotools/generators';
 
 describe('Toolverse Startup Launch & Guest Posting Platform - Core Test Suite', () => {
-
   describe('1. Startup Directory Registry & Launch Engine', () => {
-    it('should return initial startup listings', () => {
-      const startups = getAllStartups();
-      expect(startups.length).toBeGreaterThan(0);
+    it('ships zero hardcoded demo/sample startups on public pages', () => {
+      expect(INITIAL_STARTUPS.length).toBe(0);
     });
 
-    it('should filter startups by category and pricing model', () => {
-      const aiStartups = getAllStartups({ category: 'AI & Machine Learning' });
-      expect(aiStartups.length).toBeGreaterThan(0);
-      expect(aiStartups[0].category).toBe('AI & Machine Learning');
-
-      const freemiumStartups = getAllStartups({ pricingModel: 'FREEMIUM' });
-      expect(freemiumStartups.every(s => s.pricingModel === 'FREEMIUM')).toBe(true);
-    });
-
-    it('should retrieve a startup by slug', () => {
-      const startup = getStartupBySlug('nexus-ai-writer');
-      expect(startup).toBeDefined();
-      expect(startup?.name).toBe('Nexus AI Copywriter');
-    });
-
-    it('should handle startup submissions dynamically', () => {
+    it('handles dynamic startup submissions, filtering, retrieval, and upvoting', () => {
       const newStartup = submitStartup({
         name: 'VisiCode AI',
         tagline: 'AI Code Reviewer for TypeScript',
@@ -57,8 +43,8 @@ describe('Toolverse Startup Launch & Guest Posting Platform - Core Test Suite', 
         targetAudience: ['Developers'],
         keyFeatures: ['GitHub integration', 'Automated security checks'],
         platforms: ['WEB'],
-        founderName: 'Sarah Chen',
-        founderEmail: 'sarah@visicode.example.com'
+        founderName: 'Test Founder',
+        founderEmail: 'founder@visicode.example.com',
       });
 
       expect(newStartup.id).toBeDefined();
@@ -66,59 +52,58 @@ describe('Toolverse Startup Launch & Guest Posting Platform - Core Test Suite', 
 
       const retrieved = getStartupBySlug(newStartup.slug);
       expect(retrieved?.name).toBe('VisiCode AI');
-    });
 
-    it('should increment upvotes count on upvote action', () => {
-      const initial = getStartupBySlug('nexus-ai-writer')!;
-      const initialCount = initial.upvotesCount;
-      const updatedCount = upvoteStartup(initial.id);
+      const devStartups = getAllStartups({ category: 'Developer Tools' });
+      expect(devStartups.length).toBeGreaterThan(0);
+
+      const freemiumStartups = getAllStartups({ pricingModel: 'FREEMIUM' });
+      expect(freemiumStartups.every((s) => s.pricingModel === 'FREEMIUM')).toBe(true);
+
+      const initialCount = newStartup.upvotesCount;
+      const updatedCount = upvoteStartup(newStartup.id);
       expect(updatedCount).toBe(initialCount + 1);
     });
   });
 
   describe('2. Guest Posting & Publisher Marketplace', () => {
-    it('should return verified publisher websites', () => {
-      const publishers = getAllPublishers();
-      expect(publishers.length).toBeGreaterThan(0);
-      expect(publishers[0].verificationStatus).toBe('VERIFIED_OWNER');
+    it('ships zero hardcoded demo/sample publishers on public pages', () => {
+      expect(SAMPLE_PUBLISHERS.length).toBe(0);
     });
 
-    it('should filter publishers by niche and domain rating', () => {
-      const saasPubs = getAllPublishers({ niche: 'SaaS & Software' });
-      expect(saasPubs.length).toBeGreaterThan(0);
+    it('supports registering a publisher, filtering, and submitting an article pitch', () => {
+      const pub = registerPublisherWebsite({
+        websiteName: 'Engineering Notes',
+        websiteUrl: 'https://engineeringnotes.example.org',
+        niche: 'SaaS & Software',
+        domainRatingDR: 62,
+        domainAuthorityDA: 58,
+      });
 
-      const highDrPubs = getAllPublishers({ minDR: 60 });
-      expect(highDrPubs.every(p => p.domainRatingDR >= 60)).toBe(true);
-    });
+      expect(getPublisherBySlug(pub.slug)?.websiteName).toBe('Engineering Notes');
+      expect(getAllPublishers({ niche: 'SaaS & Software' }).length).toBeGreaterThan(0);
+      expect(getAllPublishers({ minDR: 60 }).every((p) => p.domainRatingDR >= 60)).toBe(true);
 
-    it('should retrieve a publisher by slug', () => {
-      const pub = getPublisherBySlug('tech-vision-journal');
-      expect(pub).toBeDefined();
-      expect(pub?.websiteName).toBe('TechVision Journal');
-    });
-
-    it('should allow submitting an article pitch to an editor', () => {
       const pitch = submitGuestPostPitch({
-        publisherId: 'pub-tech-journal',
-        publisherName: 'TechVision Journal',
-        applicantName: 'Alex Rivera',
-        applicantEmail: 'alex@nexusai.example.com',
-        applicantCompany: 'Nexus AI',
+        publisherId: pub.id,
+        publisherName: pub.websiteName,
+        applicantName: 'Test Author',
+        applicantEmail: 'author@example.com',
+        applicantCompany: 'Test Org',
         proposedTitle: 'Building Resilient SaaS Architectures',
         alternativeTitles: ['Scaling SaaS Backend Systems'],
         articleOutline: '1. Introduction\n2. Architecture\n3. Metrics',
         pitchMessage: 'Hi Editor, here is our pitch.',
-        targetUrl: 'https://nexusai.example.com',
-        desiredAnchorText: 'Nexus AI SaaS',
-        authorBio: 'CTO of Nexus AI',
-        sampleWritingUrls: ['https://nexusai.example.com']
+        targetUrl: 'https://example.com',
+        desiredAnchorText: 'SaaS architecture guide',
+        authorBio: 'Software Engineer',
+        sampleWritingUrls: ['https://example.com'],
       });
 
       expect(pitch.id).toBeDefined();
       expect(pitch.status).toBe('SUBMITTED');
 
-      const userPitches = getPitchesForApplicant('alex@nexusai.example.com');
-      expect(userPitches.some(p => p.proposedTitle === 'Building Resilient SaaS Architectures')).toBe(true);
+      const userPitches = getPitchesForApplicant('author@example.com');
+      expect(userPitches.some((p) => p.proposedTitle === 'Building Resilient SaaS Architectures')).toBe(true);
     });
   });
 

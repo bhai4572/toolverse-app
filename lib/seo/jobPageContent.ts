@@ -184,58 +184,6 @@ export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
     relatedToolSlugs: ['global-job-finder', 'pdf-merge', 'word-counter'],
     relatedBlogSlugs: ['top-high-paying-remote-jobs-worldwide'],
     remoteOnly: true,
-    featuredPostings: [
-      {
-        title: 'Senior Full Stack Software Engineer (Remote Worldwide)',
-        description:
-          'Global technology team seeking an experienced Full Stack Engineer. Responsibilities include building scalable web applications with TypeScript, React, and Node.js, designing cloud APIs, and collaborating with distributed teams.',
-        datePosted: '2026-10-01',
-        validThrough: '2027-12-31',
-        employmentType: 'FULL_TIME',
-        hiringOrganization: {
-          name: 'Distributed Cloud Technologies',
-        },
-        jobLocationType: 'TELECOMMUTE',
-        applicantLocationRequirements: 'Worldwide',
-        jobLocation: {
-          streetAddress: '100 Montgomery Street',
-          locality: 'San Francisco',
-          region: 'CA',
-          postalCode: '94104',
-          country: 'US',
-        },
-        salary: {
-          currency: 'USD',
-          value: 125000,
-          unitText: 'YEAR',
-        },
-      },
-      {
-        title: 'Customer Success & Tech Support Specialist (Remote)',
-        description:
-          'Fast-growing SaaS company hiring remote customer support specialists. Responsibilities include troubleshooting user questions, guiding software onboarding, and documenting technical workflows across time zones.',
-        datePosted: '2026-10-02',
-        validThrough: '2027-12-31',
-        employmentType: 'FULL_TIME',
-        hiringOrganization: {
-          name: 'Global Enterprise Support',
-        },
-        jobLocationType: 'TELECOMMUTE',
-        applicantLocationRequirements: 'Worldwide',
-        jobLocation: {
-          streetAddress: '350 5th Avenue',
-          locality: 'New York',
-          region: 'NY',
-          postalCode: '10118',
-          country: 'US',
-        },
-        salary: {
-          currency: 'USD',
-          value: 62000,
-          unitText: 'YEAR',
-        },
-      },
-    ],
   },
   'usa-jobs': {
     title: 'Jobs in the United States (USA)',
@@ -274,56 +222,6 @@ export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
       'how-to-merge-pdf-files-privately-without-uploading',
     ],
     initialCountry: 'United States',
-    featuredPostings: [
-      {
-        title: 'Cybersecurity Analyst & Systems Administrator (GS-12)',
-        description:
-          'Enterprise information security analyst position. Duties include network intrusion monitoring, vulnerability remediation, firewall rule auditing, and Federal cyber compliance documentation.',
-        datePosted: '2026-10-01',
-        validThrough: '2027-12-31',
-        employmentType: 'FULL_TIME',
-        hiringOrganization: {
-          name: 'Federal Systems & Technology Group',
-        },
-        jobLocation: {
-          streetAddress: '100 Constitution Ave NW',
-          locality: 'Washington',
-          region: 'DC',
-          postalCode: '20224',
-          country: 'US',
-        },
-        salary: {
-          currency: 'USD',
-          value: 115000,
-          unitText: 'YEAR',
-        },
-      },
-      {
-        title: 'Cloud DevOps Infrastructure Engineer (US Remote)',
-        description:
-          'US-based cloud infrastructure engineer. Responsible for Kubernetes cluster administration, AWS Terraform pipeline automation, and zero-downtime microservice deployments.',
-        datePosted: '2026-10-03',
-        validThrough: '2027-12-31',
-        employmentType: 'FULL_TIME',
-        hiringOrganization: {
-          name: 'Apex US Cloud Systems',
-        },
-        jobLocationType: 'TELECOMMUTE',
-        applicantLocationRequirements: 'United States',
-        jobLocation: {
-          streetAddress: '200 South Wacker Drive',
-          locality: 'Chicago',
-          region: 'IL',
-          postalCode: '60606',
-          country: 'US',
-        },
-        salary: {
-          currency: 'USD',
-          value: 140000,
-          unitText: 'YEAR',
-        },
-      },
-    ],
   },
   'software-engineer-jobs': {
     title: 'Software Developer & Engineer Jobs',
@@ -359,58 +257,6 @@ export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
     relatedToolSlugs: ['global-job-finder', 'json-formatter', 'word-counter'],
     relatedBlogSlugs: ['top-high-paying-remote-jobs-worldwide'],
     initialQuery: 'Developer',
-    featuredPostings: [
-      {
-        title: 'Lead Frontend Engineer (React, Next.js & TypeScript)',
-        description:
-          'High-performance product team seeking a Frontend Lead to architect web applications, optimize Web Vitals, and build interactive UI component systems.',
-        datePosted: '2026-10-01',
-        validThrough: '2027-12-31',
-        employmentType: 'FULL_TIME',
-        hiringOrganization: {
-          name: 'Modern Web Engineering Corp',
-        },
-        jobLocationType: 'TELECOMMUTE',
-        applicantLocationRequirements: 'Worldwide',
-        jobLocation: {
-          streetAddress: '500 Howard Street',
-          locality: 'San Francisco',
-          region: 'CA',
-          postalCode: '94105',
-          country: 'US',
-        },
-        salary: {
-          currency: 'USD',
-          value: 130000,
-          unitText: 'YEAR',
-        },
-      },
-      {
-        title: 'Backend Systems Architect (Go, Node.js & PostgreSQL)',
-        description:
-          'Design and maintain low-latency REST and gRPC microservices, implement database indexing strategies, and ensure 99.99% uptime for global transactional platforms.',
-        datePosted: '2026-10-02',
-        validThrough: '2027-12-31',
-        employmentType: 'FULL_TIME',
-        hiringOrganization: {
-          name: 'Core Backend Technologies',
-        },
-        jobLocationType: 'TELECOMMUTE',
-        applicantLocationRequirements: 'Worldwide',
-        jobLocation: {
-          streetAddress: '111 8th Avenue',
-          locality: 'New York',
-          region: 'NY',
-          postalCode: '10011',
-          country: 'US',
-        },
-        salary: {
-          currency: 'USD',
-          value: 145000,
-          unitText: 'YEAR',
-        },
-      },
-    ],
   },
   'data-entry-jobs': {
     title: 'Data Entry & Virtual Assistant Jobs',
@@ -449,33 +295,6 @@ export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
       'how-to-compress-image-to-target-size-under-50kb',
     ],
     initialQuery: 'Data Entry',
-    featuredPostings: [
-      {
-        title: 'Remote Data Entry Specialist & Records Coordinator',
-        description:
-          'Accurate data entry professional to manage spreadsheet records, customer profile updates, database indexing, and clerical verification. High typing speed and attention to detail required.',
-        datePosted: '2026-10-01',
-        validThrough: '2027-12-31',
-        employmentType: 'FULL_TIME',
-        hiringOrganization: {
-          name: 'Global Operations Admin Group',
-        },
-        jobLocationType: 'TELECOMMUTE',
-        applicantLocationRequirements: 'Worldwide',
-        jobLocation: {
-          streetAddress: '700 Louisiana Street',
-          locality: 'Houston',
-          region: 'TX',
-          postalCode: '77002',
-          country: 'US',
-        },
-        salary: {
-          currency: 'USD',
-          value: 45000,
-          unitText: 'YEAR',
-        },
-      },
-    ],
   },
   'pakistan-govt-jobs': {
     title: 'Government Jobs in Pakistan (PPSC, FPSC, NTS)',
@@ -518,55 +337,6 @@ export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
       'pakistan-salary-tax-calculator-slabs-guide',
     ],
     initialCountry: 'Pakistan',
-    featuredPostings: [
-      {
-        title: 'Assistant Director / Computer Specialist (BPS-17)',
-        description:
-          'Punjab Public Service Commission (PPSC) recruitment for BPS-17 officer. Duties include government departmental IT systems administration, database security, and civil digitization projects.',
-        datePosted: '2026-10-01',
-        validThrough: '2027-12-31',
-        employmentType: 'FULL_TIME',
-        hiringOrganization: {
-          name: 'Punjab Public Service Commission (PPSC)',
-          sameAs: 'https://www.ppsc.gop.pk/',
-        },
-        jobLocation: {
-          streetAddress: 'LDA Plaza, 7-Edgerton Road',
-          locality: 'Lahore',
-          region: 'Punjab',
-          postalCode: '54000',
-          country: 'PK',
-        },
-        salary: {
-          currency: 'PKR',
-          value: 120000,
-          unitText: 'MONTH',
-        },
-      },
-      {
-        title: 'Secondary School Teacher (SST Science & Math BPS-16)',
-        description:
-          'School Education Department recruitment via testing commission. Candidates will deliver high-school curriculum, supervise lab practicals, and manage student assessments.',
-        datePosted: '2026-10-02',
-        validThrough: '2027-12-31',
-        employmentType: 'FULL_TIME',
-        hiringOrganization: {
-          name: 'School Education Department Pakistan',
-        },
-        jobLocation: {
-          streetAddress: 'Sector G-8/4, Rohtas Road',
-          locality: 'Islamabad',
-          region: 'Islamabad Capital Territory',
-          postalCode: '44000',
-          country: 'PK',
-        },
-        salary: {
-          currency: 'PKR',
-          value: 85000,
-          unitText: 'MONTH',
-        },
-      },
-    ],
   },
   'government-jobs': {
     title: 'Government Jobs & Civil Service Vacancies (2026)',
@@ -609,56 +379,6 @@ export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
       'how-to-compress-image-to-target-size-under-50kb',
     ],
     initialQuery: 'Government',
-    featuredPostings: [
-      {
-        title: 'Civil Service Operations & Policy Analyst (Public Sector)',
-        description:
-          'Public administration role supporting policy research, inter-departmental communication, legislative analysis, and public stakeholder reporting. Strong writing and analytical credentials required.',
-        datePosted: '2026-10-01',
-        validThrough: '2027-12-31',
-        employmentType: 'FULL_TIME',
-        hiringOrganization: {
-          name: 'U.S. Office of Personnel Management (Civil Service)',
-          sameAs: 'https://www.opm.gov',
-        },
-        jobLocation: {
-          streetAddress: '1900 E Street NW',
-          locality: 'Washington',
-          region: 'DC',
-          postalCode: '20415',
-          country: 'US',
-        },
-        salary: {
-          currency: 'USD',
-          value: 78000,
-          unitText: 'YEAR',
-        },
-      },
-      {
-        title: 'Public Health Program Coordinator (Government Health Service)',
-        description:
-          'Coordinate regional healthcare delivery programs, community outreach initiatives, and health data tracking for government public health departments.',
-        datePosted: '2026-10-02',
-        validThrough: '2027-12-31',
-        employmentType: 'FULL_TIME',
-        hiringOrganization: {
-          name: 'U.S. Department of Health & Human Services',
-          sameAs: 'https://www.hhs.gov',
-        },
-        jobLocation: {
-          streetAddress: '200 Independence Avenue SW',
-          locality: 'Washington',
-          region: 'DC',
-          postalCode: '20201',
-          country: 'US',
-        },
-        salary: {
-          currency: 'USD',
-          value: 68000,
-          unitText: 'YEAR',
-        },
-      },
-    ],
   },
   'jobs-near-me': {
     title: 'Jobs Near Me — Local Hiring & Immediate Vacancies (2026)',
@@ -701,31 +421,6 @@ export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
       'best-free-privacy-first-online-tools-2026',
     ],
     initialQuery: '',
-    featuredPostings: [
-      {
-        title: 'Customer Service Representative (Immediate Hiring)',
-        description:
-          'Engage with local retail or office clients, assist with product inquiries, maintain accurate transaction records, and uphold high customer satisfaction.',
-        datePosted: '2026-10-01',
-        validThrough: '2027-12-31',
-        employmentType: 'FULL_TIME',
-        hiringOrganization: {
-          name: 'Metro Retail & Client Services',
-        },
-        jobLocation: {
-          streetAddress: '350 5th Avenue',
-          locality: 'New York',
-          region: 'NY',
-          postalCode: '10118',
-          country: 'US',
-        },
-        salary: {
-          currency: 'USD',
-          value: 42000,
-          unitText: 'YEAR',
-        },
-      },
-    ],
   },
   'nhs-jobs-uk': {
     title: 'NHS Jobs & Trac Jobs UK — Healthcare & Clinical Vacancies',
@@ -769,56 +464,6 @@ export const JOB_PAGE_CONTENT: Record<string, JobPageContent> = {
     ],
     initialCountry: 'United Kingdom',
     initialQuery: 'NHS',
-    featuredPostings: [
-      {
-        title: 'Registered Staff Nurse — Acute & Inpatient Care (Band 5)',
-        description:
-          'Join an NHS Trust hospital team providing patient care, administering medications, maintaining electronic care records, and collaborating with multidisciplinary clinical teams. NMC registration required.',
-        datePosted: '2026-10-01',
-        validThrough: '2027-12-31',
-        employmentType: 'FULL_TIME',
-        hiringOrganization: {
-          name: 'Guy\'s and St Thomas\' NHS Foundation Trust',
-          sameAs: 'https://www.guysandstthomas.nhs.uk',
-        },
-        jobLocation: {
-          streetAddress: 'Westminster Bridge Road',
-          locality: 'London',
-          region: 'Greater London',
-          postalCode: 'SE1 7EH',
-          country: 'GB',
-        },
-        salary: {
-          currency: 'GBP',
-          value: 34000,
-          unitText: 'YEAR',
-        },
-      },
-      {
-        title: 'NHS Medical Records & Clinic Administrator (Band 3 / 4)',
-        description:
-          'Coordinate patient appointment scheduling, maintain electronic healthcare records on NHS systems, handle clinic telephone enquiries, and ensure strict compliance with patient confidentiality (Caldicott principles).',
-        datePosted: '2026-10-02',
-        validThrough: '2027-12-31',
-        employmentType: 'FULL_TIME',
-        hiringOrganization: {
-          name: 'Leeds Teaching Hospitals NHS Trust',
-          sameAs: 'https://www.leedsth.nhs.uk',
-        },
-        jobLocation: {
-          streetAddress: 'Great George Street',
-          locality: 'Leeds',
-          region: 'West Yorkshire',
-          postalCode: 'LS1 3EX',
-          country: 'GB',
-        },
-        salary: {
-          currency: 'GBP',
-          value: 26500,
-          unitText: 'YEAR',
-        },
-      },
-    ],
   },
 };
 

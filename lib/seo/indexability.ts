@@ -1,16 +1,25 @@
 /**
- * Indexability rules for ToolVerse (SEO & AdSense Quality Compliance).
+ * Centralized Indexability Rules for ToolVerse (SEO & AdSense Quality Compliance).
+ *
  * Strategy:
- * - High-value core tools, hand-written guides, and rich regional hubs are fully indexed.
- * - Thin doorway shells (188 auto-generated /study/* country shells), auto-generated template how-to posts,
- *   SaaS directory stubs (/products/*), app utility surfaces (/dashboard, /workspace), and /pricing are marked NOINDEX
- *   to eliminate thin content penalties and ensure rapid AdSense approval.
+ * - INDEX: Homepage, all live canonical browser tools, 13 tool categories, CV Maker,
+ *   original hand-written blog/pillar guides, legal/trust pages, curated regional/topical hubs,
+ *   and the 7 rich study-abroad guides.
+ * - NOINDEX (noindex, nofollow): Private/app utility routes (/admin, /dashboard, /workspace, /pricing, /404)
+ *   and redirected duplicate aliases (/tools/cv-maker).
+ * - NOINDEX (noindex, follow): Thin, repetitive, empty, aggregated, or unrelated programmatic directories
+ *   (/how-to/*, /products/*, /payment-methods/*, /phones/*, /business/*, /startups/*, /guest-posts/*,
+ *   /publishers/*, /travel/*, /jobs/*, /news/*, /submit*, /claim, /badges, /leaderboard,
+ *   /alternatives/*, /compare/*, /collections/*, /questions/*, and 186 thin /study/* country shells).
+ *   URLs remain live for users, and link equity continues to flow to core tools and guides.
  */
 
 export const ROBOTS_INDEX =
   'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
 
 export const ROBOTS_NOINDEX = 'noindex, nofollow';
+
+export const ROBOTS_NOINDEX_FOLLOW = 'noindex, follow';
 
 /** Hand-written pillar guides that MUST be indexed (keep in sync with lib/blog/toolGuides.ts). */
 export const INDEXABLE_PILLAR_GUIDES = new Set<string>([
@@ -39,45 +48,44 @@ export const INDEXABLE_STUDY_SLUGS = new Set<string>([
   'germany',
 ]);
 
-/** Exactly matched thin surfaces disallowed from indexing. */
+/** Private / non-public app surfaces & redirected aliases (strict noindex, nofollow). */
 const NOINDEX_EXACT = new Set<string>([
   '/404',
   '/dashboard',
   '/workspace',
+  '/seo-dashboard',
   '/pricing',
-  '/news',
+  '/tools/cv-maker',
+  '/business/dashboard',
 ]);
 
-/** Prefixes disallowed from indexing. */
+/** Private prefixes (strict noindex, nofollow). */
 const NOINDEX_PREFIXES: string[] = [
   '/admin',
   '/admin/',
-  '/products',
-  '/products/',
-  '/badges',
-  '/claim',
+  '/workspace/',
+  '/seo-dashboard/',
 ];
 
 /**
- * Thin / programmatic sections kept live (URLs work, users can still use them) but
- * briefly de-indexed on 2026-11-17. Owner decision (same day): keep them INDEXED for traffic,
- * so THIN_NOINDEX_ENABLED = false. Flip to true (here AND in scripts/generate-sitemap.mjs)
- * to noindex + drop them from the sitemap again.
- * Uses "noindex, follow" so link equity still flows to tools/guides.
+ * Thin / empty / aggregated / programmatic sections kept live for users
+ * but marked noindex, follow and excluded from sitemap.xml to protect
+ * site-wide quality and AdSense compliance.
  */
-export const THIN_NOINDEX_ENABLED = false;
-
-export const ROBOTS_NOINDEX_FOLLOW = 'noindex, follow';
+export const THIN_NOINDEX_ENABLED = true;
 
 export const THIN_NOINDEX_EXACT = new Set<string>([
+  '/how-to',
   '/products',
+  '/payment-methods',
+  '/phones',
   '/leaderboard',
   '/submit',
   '/claim',
   '/badges',
-  '/study',
   '/travel',
   '/jobs',
+  '/news',
   '/tools/global-job-finder',
   '/tools/b2b-email-finder',
   '/business',
@@ -86,31 +94,57 @@ export const THIN_NOINDEX_EXACT = new Set<string>([
   '/submit-startup',
   '/guest-posts',
   '/become-a-publisher',
-  '/dashboard',
+  '/alternatives',
+  '/collections',
+  '/questions',
 ]);
 
 export const THIN_NOINDEX_PREFIXES: string[] = [
+  '/how-to/',
   '/products/',
-  '/study/',
+  '/payment-methods/',
+  '/phones/',
   '/travel/',
   '/jobs/',
+  '/news/',
   '/business/',
   '/b/',
   '/startups/',
   '/guest-posts/',
   '/publishers/',
+  '/alternatives/',
+  '/compare/',
+  '/collections/',
+  '/questions/',
 ];
 
 export function pathIsThinNoindex(pathname: string): boolean {
   if (!THIN_NOINDEX_ENABLED || !pathname) return false;
   const p = (pathname.replace(/\/$/, '') || '/').toLowerCase();
   if (THIN_NOINDEX_EXACT.has(p)) return true;
-  return THIN_NOINDEX_PREFIXES.some((prefix) => p.startsWith(prefix));
+  if (THIN_NOINDEX_PREFIXES.some((prefix) => p.startsWith(prefix))) return true;
+
+  // Filter thin /study/* countries: only keep verified Tier-1 rich guides
+  if (p.startsWith('/study/')) {
+    const slug = p.replace(/^\/study\//, '').split('/')[0];
+    if (slug && !INDEXABLE_STUDY_SLUGS.has(slug)) {
+      return true;
+    }
+  }
+
+  // Filter template /blog/how-to-* posts (keep hand-written pillar guides)
+  if (p.startsWith('/blog/how-to-')) {
+    const slug = p.replace(/^\/blog\//, '');
+    if (!INDEXABLE_PILLAR_GUIDES.has(slug)) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 /**
- * Path-level indexability check.
- * Enforces quality thresholds for Google Search Console and AdSense.
+ * Strict noindex, nofollow check for private/app/admin/duplicate routes.
  */
 export function pathShouldNoindex(pathname: string): boolean {
   if (!pathname) return false;
@@ -121,21 +155,8 @@ export function pathShouldNoindex(pathname: string): boolean {
     return true;
   }
 
-  // Filter thin /study/* countries: only keep verified Tier-1 rich guides
-  if (p.startsWith('/study/')) {
-    const slug = p.replace(/^\/study\//, '').split('/')[0];
-    if (slug && !INDEXABLE_STUDY_SLUGS.has(slug)) {
-      return true;
-    }
-  }
-
-  // Filter template /blog/how-to-* posts (keep hand-written guides)
-  if (p.startsWith('/blog/how-to-')) {
-    const slug = p.replace(/^\/blog\//, '');
-    if (!INDEXABLE_PILLAR_GUIDES.has(slug)) {
-      return true;
-    }
-  }
+  // Also return true for thin noindex paths when callers only check pathShouldNoindex
+  if (pathIsThinNoindex(p)) return true;
 
   return false;
 }

@@ -159,7 +159,7 @@ describe('ToolVerse Advanced Schema.org & Structured Data Architecture', () => {
     }
   });
 
-  it('job landing pages generate CollectionPage and valid JobPosting entities', () => {
+  it('job landing pages generate CollectionPage, FAQPage, and zero fabricated JobPosting entities', () => {
     const jobSlugs = [
       'remote-jobs',
       'usa-jobs',
@@ -171,7 +171,6 @@ describe('ToolVerse Advanced Schema.org & Structured Data Architecture', () => {
       'nhs-jobs-uk',
     ];
     for (const slug of jobSlugs) {
-      const canonical = `${SITE_URL}/jobs/${slug}`;
       const meta = getMetadataForPath(`/jobs/${slug}`);
       const graph = (meta.jsonLd![0]['@graph'] as Record<string, unknown>[]);
 
@@ -181,31 +180,8 @@ describe('ToolVerse Advanced Schema.org & Structured Data Architecture', () => {
       expect(meta.ogImage).toContain('/images/jobs/');
       expect(meta.twitterImage).toContain('/images/jobs/');
       expect(collection).toBeDefined();
-      expect(postings.length).toBeGreaterThan(0);
-
-      for (const posting of postings) {
-        expect(posting['@id']).toBeDefined();
-        expect(posting['title']).toBeDefined();
-        expect(posting['hiringOrganization']).toBeDefined();
-        expect(posting['directApply']).toBe(true);
-
-        expect(posting['jobLocation']).toBeDefined();
-        const loc = posting['jobLocation'] as Record<string, unknown>;
-        expect(loc['@type']).toBe('Place');
-        const address = loc['address'] as Record<string, unknown>;
-        expect(address).toBeDefined();
-        expect(address['@type']).toBe('PostalAddress');
-        expect(typeof address['streetAddress']).toBe('string');
-        expect((address['streetAddress'] as string).length).toBeGreaterThan(0);
-        expect(typeof address['addressLocality']).toBe('string');
-        expect((address['addressLocality'] as string).length).toBeGreaterThan(0);
-        expect(typeof address['addressRegion']).toBe('string');
-        expect((address['addressRegion'] as string).length).toBeGreaterThan(0);
-        expect(typeof address['postalCode']).toBe('string');
-        expect((address['postalCode'] as string).length).toBeGreaterThan(0);
-        expect(typeof address['addressCountry']).toBe('string');
-        expect((address['addressCountry'] as string).length).toBeGreaterThan(0);
-      }
+      // ToolVerse is a discovery guide, not an employer — never emit sample/placeholder JobPosting schema
+      expect(postings.length).toBe(0);
     }
   });
 
@@ -253,7 +229,7 @@ describe('ToolVerse Advanced Schema.org & Structured Data Architecture', () => {
     expect(target).toContain('/tools?q=');
 
     // Verify strict <= 60 character SEO title cap across all routes
-    for (const p of ['/', '/tools', '/study', '/study/germany', '/study/usa', '/tools/b2b-email-finder', '/tools/pdf-merge', '/blog']) {
+    for (const p of ['/', '/tools', '/study', '/study/germany', '/study/usa', '/tools/pdf-compress', '/tools/pdf-merge', '/blog']) {
       const m = getMetadataForPath(p);
       expect(m.title.length).toBeLessThanOrEqual(60);
       expect(m.canonicalUrl).toMatch(/^https:\/\/toolverse\.baby/);

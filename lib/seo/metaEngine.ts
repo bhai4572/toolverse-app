@@ -1769,14 +1769,8 @@ function buildMetadataForPath(pathname: string): PageMetadata {
       });
     }
 
-    if (job?.featuredPostings?.length) {
-      job.featuredPostings.forEach((posting, idx) => {
-        const postingSchema = buildJobPostingJsonLd(posting, canonicalUrl);
-        delete (postingSchema as Record<string, unknown>)['@context'];
-        (postingSchema as Record<string, unknown>)['@id'] = `${canonicalUrl}#job-${idx + 1}`;
-        graph.push(postingSchema);
-      });
-    }
+    // Note: Do not emit sample/placeholder JobPosting JSON-LD when ToolVerse is not the hiring employer.
+    // Job category pages remain honest discovery guides with CollectionPage + BreadcrumbList + FAQPage schema.
 
     return {
       title: pageTitle,

@@ -128,7 +128,7 @@ describe('ToolVerse SEO & AdSense Audit Fixes (10 Priorities Verification)', () 
   it('Priority 8: cleans privacy policy leftovers, syncs 130+ tool count, and verifies compressed og-image', () => {
     const legalPageSrc = fs.readFileSync(path.join(root, 'app/legal/[slug]/page.tsx'), 'utf8');
     expect(legalPageSrc).not.toContain('toolverse-app.pages.dev');
-    expect(legalPageSrc).toContain('130+ free utilities');
+    expect(legalPageSrc).toContain('${LIVE_TOOL_COUNT}+ free utilities');
 
     const ogStats = fs.statSync(path.join(root, 'public/og-image.png'));
     expect(ogStats.size).toBeLessThan(200 * 1024);

@@ -126,7 +126,7 @@ describe('Toolverse GSC Search Intelligence & Organic Traffic Growth System', ()
       ['/seo-dashboard', '/workspace'],
       ['/resume-builder', '/cv-maker'],
       ['/free-cv-maker', '/cv-maker'],
-      ['/tools/resume-builder', '/tools/cv-maker'],
+      ['/tools/resume-builder', '/cv-maker'],
       ['/tools/email-finder', '/tools/b2b-email-finder'],
       ['/tools/email-scraper', '/tools/b2b-email-finder'],
     ];

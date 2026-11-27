@@ -30,22 +30,18 @@ export function Footer() {
         {/* Link columns only — no per-column ads (ad-farm look) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-10">
           <div>
-            <h4 className="text-white font-semibold text-sm mb-4">Product</h4>
+            <h4 className="text-white font-semibold text-sm mb-4">Platform</h4>
             <ul className="space-y-2 text-xs">
-              <li><Link href="/products" className="hover:text-white transition-colors font-semibold text-indigo-400">Products &amp; SaaS</Link></li>
-              <li><Link href="/phones" className="hover:text-white transition-colors font-semibold text-sky-400">Mobile Specs &amp; Prices</Link></li>
-              <li><Link href="/payment-methods" className="hover:text-white transition-colors font-semibold text-emerald-400">Payment Methods (115+)</Link></li>
-              <li><Link href="/leaderboard" className="hover:text-white transition-colors font-semibold text-amber-400">Community Leaderboard 🏆</Link></li>
-              <li><Link href="/submit" className="hover:text-white transition-colors">Submit Your Product</Link></li>
-              <li><Link href="/startups" className="hover:text-white transition-colors">Startups Launchpad</Link></li>
-              <li><Link href="/business" className="hover:text-white transition-colors">Business Directory</Link></li>
-              <li><Link href="/tools" className="hover:text-white transition-colors">Tools hub</Link></li>
-              <li><Link href="/cv-maker" className="hover:text-white transition-colors">CV Maker</Link></li>
+              <li><Link href="/tools" className="hover:text-white transition-colors font-semibold text-white">All Tools Hub</Link></li>
+              <li><Link href="/cv-maker" className="hover:text-white transition-colors">Free CV Maker</Link></li>
               <li><Link href="/blog" className="hover:text-white transition-colors">Guides &amp; Blog</Link></li>
-              <li><Link href="/workspace" className="hover:text-white transition-colors">SEO Dashboard</Link></li>
-              <li><Link href="/immigration" className="hover:text-white transition-colors">Immigration</Link></li>
-              <li><Link href="/cars" className="hover:text-white transition-colors">Cars</Link></li>
-              <li><Link href="/pricing" className="hover:text-white transition-colors">Pricing</Link></li>
+              <li><Link href="/passport-photos" className="hover:text-white transition-colors">Passport Photo Specs</Link></li>
+              <li><Link href="/immigration" className="hover:text-white transition-colors">Immigration Checklists</Link></li>
+              <li><Link href="/cars" className="hover:text-white transition-colors">Cars &amp; Auto Calculators</Link></li>
+              <li><Link href="/us" className="hover:text-white transition-colors">US Tools</Link></li>
+              <li><Link href="/uk" className="hover:text-white transition-colors">UK Tools</Link></li>
+              <li><Link href="/ca" className="hover:text-white transition-colors">Canada Tools</Link></li>
+              <li><Link href="/au" className="hover:text-white transition-colors">Australia Tools</Link></li>
             </ul>
           </div>
 
@@ -72,7 +68,7 @@ export function Footer() {
               <li><Link href="/tools/uk-take-home-pay-calculator" className="hover:text-white transition-colors">UK Take-Home Pay</Link></li>
               <li><Link href="/tools/pakistan-salary-tax-estimator" className="hover:text-white transition-colors">Pakistan Salary Tax</Link></li>
               <li><Link href="/blog" className="hover:text-white transition-colors">Guides & Blog</Link></li>
-              <li><Link href="/news" className="hover:text-white transition-colors">News headlines</Link></li>
+              <li><Link href="/tools/heic-to-jpg" className="hover:text-white transition-colors">HEIC to JPG Converter</Link></li>
             </ul>
           </div>
 

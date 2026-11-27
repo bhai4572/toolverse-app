@@ -9,8 +9,8 @@ export const BUSINESS_CATEGORIES: BusinessCategory[] = [
     description: 'Professional grooming, haircuts, beard trimming, and salon styling services.',
     createdBy: 'system',
     status: 'canonical',
-    businessCount: 4,
-    usageCount: 120,
+    businessCount: 0,
+    usageCount: 0,
     qualityScore: 95,
     createdAt: '2025-01-01',
   },
@@ -22,8 +22,8 @@ export const BUSINESS_CATEGORIES: BusinessCategory[] = [
     description: 'Search engine optimization, PPC ads, social media strategy, and growth marketing.',
     createdBy: 'system',
     status: 'canonical',
-    businessCount: 6,
-    usageCount: 240,
+    businessCount: 0,
+    usageCount: 0,
     qualityScore: 98,
     createdAt: '2025-01-01',
   },
@@ -35,8 +35,8 @@ export const BUSINESS_CATEGORIES: BusinessCategory[] = [
     description: 'Artisanal coffee, espresso drinks, fresh pastries, and cafe seating.',
     createdBy: 'system',
     status: 'canonical',
-    businessCount: 3,
-    usageCount: 180,
+    businessCount: 0,
+    usageCount: 0,
     qualityScore: 92,
     createdAt: '2025-01-01',
   },
@@ -48,8 +48,8 @@ export const BUSINESS_CATEGORIES: BusinessCategory[] = [
     description: 'Web applications, cloud infrastructure, enterprise software, and productivity tools.',
     createdBy: 'system',
     status: 'canonical',
-    businessCount: 8,
-    usageCount: 520,
+    businessCount: 0,
+    usageCount: 0,
     qualityScore: 100,
     createdAt: '2025-01-01',
   },
@@ -61,228 +61,23 @@ export const BUSINESS_CATEGORIES: BusinessCategory[] = [
     description: 'Full-stack software engineering, mobile application development, and UI/UX engineering.',
     createdBy: 'system',
     status: 'canonical',
-    businessCount: 5,
-    usageCount: 310,
+    businessCount: 0,
+    usageCount: 0,
     qualityScore: 96,
     createdAt: '2025-01-01',
   },
 ];
 
-export const INITIAL_BUSINESSES: Business[] = [
-  {
-    id: 'TV-BIZ-8F4K2P',
-    slug: 'ali-barber-studio',
-    name: 'Ali Barber Studio',
-    businessType: 'Local Business',
-    categorySlug: 'barber-shops-salons',
-    categoryName: 'Barber Shops & Salons',
-    description: 'Premier men grooming studio specializing in modern hair styling, beard sculpting, and hot towel shaves.',
-    longDescription: 'Ali Barber Studio is a top-rated grooming space located in Gulberg, Lahore. Founded by master barber Ali Raza, the studio offers precision haircuts, beard trimming, scalp treatments, and bridal grooming packages using premium imported hair products.',
-    logoUrl: 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=128&h=128&fit=crop',
-    photos: [
-      'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=800&fit=crop',
-      'https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=800&fit=crop'
-    ],
-    websiteUrl: 'https://alibarberstudio.com',
-    email: 'contact@alibarberstudio.com',
-    phone: '+92 300 8472910',
-    address: 'Block M, Main Boulevard, Gulberg III',
-    city: 'Lahore',
-    state: 'Punjab',
-    country: 'Pakistan',
-    isGlobalOnline: false,
-    serviceArea: 'Lahore Metropolitan',
-    socialLinks: {
-      instagram: 'https://instagram.com/alibarberstudio',
-      facebook: 'https://facebook.com/alibarberstudio'
-    },
-    businessHours: [
-      { day: 'Monday', openTime: '10:00 AM', closeTime: '10:00 PM' },
-      { day: 'Tuesday', openTime: '10:00 AM', closeTime: '10:00 PM' },
-      { day: 'Wednesday', openTime: '10:00 AM', closeTime: '10:00 PM' },
-      { day: 'Thursday', openTime: '10:00 AM', closeTime: '10:00 PM' },
-      { day: 'Friday', openTime: '02:00 PM', closeTime: '11:00 PM' },
-      { day: 'Saturday', openTime: '10:00 AM', closeTime: '11:00 PM' },
-      { day: 'Sunday', openTime: '10:00 AM', closeTime: '10:00 PM' }
-    ],
-    services: [
-      { id: 's1', name: 'Executive Haircut & Wash', description: 'Precision haircut with scalp massage & blow dry', price: '$15' },
-      { id: 's2', name: 'Beard Sculpting & Hot Towel', description: 'Beard shaping, razor line-up, and herbal hot towel refresh', price: '$10' }
-    ],
-    verificationLevel: 3,
-    isVerified: true,
-    ownerEmail: 'ali@alibarberstudio.com',
-    riskStatus: 'LOW',
-    spamStatus: 'CLEAN',
-    rankingPosition: 1,
-    rankingSnapshotDate: '2026-10-01',
-    isSponsored: false,
-    upvotesCount: 340,
-    viewsCount: 12400,
-    qrScansCount: 1850,
-    ratingAverage: 4.9,
-    ratingCount: 84,
-    createdAt: '2025-02-15',
-    updatedAt: '2026-10-01'
-  },
-  {
-    id: 'TV-BIZ-3M9Q7L',
-    slug: 'apex-digital-marketing',
-    name: 'Apex Digital Marketing',
-    businessType: 'Agency',
-    categorySlug: 'digital-marketing-agencies',
-    categoryName: 'Digital Marketing Agencies',
-    description: 'Data-driven performance marketing agency specializing in technical SEO, Google Ads, and e-commerce growth.',
-    longDescription: 'Apex Digital Marketing is an award-winning growth agency based in London, UK. We help SaaS companies, e-commerce brands, and local enterprises acquire customers efficiently through Google Search, Meta Ads, and content authority engineering.',
-    logoUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=128&h=128&fit=crop',
-    photos: [
-      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&fit=crop'
-    ],
-    websiteUrl: 'https://apexdigitalmarketing.co.uk',
-    email: 'hello@apexdigitalmarketing.co.uk',
-    phone: '+44 20 7946 0912',
-    address: '71-75 Shelton Street, Covent Garden',
-    city: 'London',
-    state: 'England',
-    country: 'United Kingdom',
-    isGlobalOnline: true,
-    serviceArea: 'Worldwide',
-    socialLinks: {
-      linkedin: 'https://linkedin.com/company/apexdigital',
-      twitter: 'https://twitter.com/apexdigital'
-    },
-    businessHours: [
-      { day: 'Monday', openTime: '09:00 AM', closeTime: '06:00 PM' },
-      { day: 'Tuesday', openTime: '09:00 AM', closeTime: '06:00 PM' },
-      { day: 'Wednesday', openTime: '09:00 AM', closeTime: '06:00 PM' },
-      { day: 'Thursday', openTime: '09:00 AM', closeTime: '06:00 PM' },
-      { day: 'Friday', openTime: '09:00 AM', closeTime: '05:00 PM' }
-    ],
-    services: [
-      { id: 's1', name: 'Technical SEO Audit & Growth', description: 'Comprehensive site audit, schema markup, and keyword strategy', price: '$1500/mo' },
-      { id: 's2', name: 'PPC & Performance Ad Campaigns', description: 'Google Search & Social Media advertising management', price: '$2000/mo' }
-    ],
-    verificationLevel: 3,
-    isVerified: true,
-    ownerEmail: 'dirk@apexdigitalmarketing.co.uk',
-    riskStatus: 'LOW',
-    spamStatus: 'CLEAN',
-    rankingPosition: 1,
-    rankingSnapshotDate: '2026-10-02',
-    isSponsored: true,
-    sponsoredPosition: 1,
-    upvotesCount: 520,
-    viewsCount: 28900,
-    qrScansCount: 2100,
-    ratingAverage: 4.8,
-    ratingCount: 112,
-    createdAt: '2025-01-10',
-    updatedAt: '2026-10-02'
-  },
-  {
-    id: 'TV-BIZ-9X2V4W',
-    slug: 'artisan-coffee-roasters',
-    name: 'Artisan Coffee Roasters',
-    businessType: 'Restaurant',
-    categorySlug: 'coffee-shops-cafes',
-    categoryName: 'Coffee Shops & Cafes',
-    description: 'Specialty artisan coffee roastery serving single-origin pour-overs, handcrafted espresso drinks, and freshly roasted coffee beans.',
-    longDescription: 'Artisan Coffee Roasters sources single-origin green coffee beans directly from ethical farmers in Ethiopia, Colombia, and Guatemala. Roasted in small batches daily, our cafe provides a warm space for remote work, espresso lovers, and fresh sourdough breads. Check verified customer artisan coffee reviews, tasting notes, and pour-over brewing guides.',
-    logoUrl: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=128&h=128&fit=crop',
-    photos: [
-      'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=800&fit=crop'
-    ],
-    websiteUrl: 'https://artisancoffeeroasters.ca',
-    email: 'info@artisancoffeeroasters.ca',
-    phone: '+1 416 555 0184',
-    address: '492 Queen Street West',
-    city: 'Toronto',
-    state: 'Ontario',
-    country: 'Canada',
-    isGlobalOnline: false,
-    serviceArea: 'Greater Toronto Area',
-    socialLinks: {
-      instagram: 'https://instagram.com/artisancoffeeto'
-    },
-    businessHours: [
-      { day: 'Monday', openTime: '07:00 AM', closeTime: '07:00 PM' },
-      { day: 'Tuesday', openTime: '07:00 AM', closeTime: '07:00 PM' },
-      { day: 'Wednesday', openTime: '07:00 AM', closeTime: '07:00 PM' },
-      { day: 'Thursday', openTime: '07:00 AM', closeTime: '07:00 PM' },
-      { day: 'Friday', openTime: '07:00 AM', closeTime: '08:00 PM' },
-      { day: 'Saturday', openTime: '08:00 AM', closeTime: '08:00 PM' },
-      { day: 'Sunday', openTime: '08:00 AM', closeTime: '06:00 PM' }
-    ],
-    services: [
-      { id: 's1', name: 'Single Origin Artisan Pour Over', description: 'Freshly ground Ethiopian Yirgacheffe and Colombian artisan coffee', price: '$5.50' },
-      { id: 's2', name: 'Roasted Whole Bean Artisan Coffee 340g', description: 'Freshly roasted whole bean artisan coffee with roast dates stamped', price: '$18.00' },
-      { id: 's3', name: 'Cold Brew & Nitro Artisan Coffee', description: 'Slow-steeped 18-hour single-origin artisan coffee extract served cold', price: '$6.00' }
-    ],
-    verificationLevel: 2,
-    isVerified: true,
-    ownerEmail: 'clara@artisancoffeeroasters.ca',
-    riskStatus: 'LOW',
-    spamStatus: 'CLEAN',
-    rankingPosition: 1,
-    rankingSnapshotDate: '2026-10-04',
-    isSponsored: false,
-    upvotesCount: 290,
-    viewsCount: 14500,
-    qrScansCount: 980,
-    ratingAverage: 4.9,
-    ratingCount: 65,
-    createdAt: '2025-03-01',
-    updatedAt: '2026-10-04'
-  }
-];
+/**
+ * Only real, verified user-submitted businesses belong here.
+ * Demo/sample businesses and fabricated customer reviews have been removed
+ * to maintain editorial integrity and AdSense policy compliance.
+ */
+export const INITIAL_BUSINESSES: Business[] = [];
 
-export const INITIAL_REVIEWS: BusinessReview[] = [
-  {
-    id: 'brev-artisan-1',
-    businessId: 'TV-BIZ-9X2V4W',
-    businessSlug: 'artisan-coffee-roasters',
-    userId: 'u-coffee-fanatic',
-    userName: 'Elena Rostova',
-    rating: 5,
-    title: 'Best artisan coffee reviews in Toronto — Exceptional Ethiopian pour-over',
-    content: 'If you appreciate genuine artisan coffee, this cafe is unmatched. The baristas know the roast profile of every bean origin. The Ethiopian Yirgacheffe pour-over had incredible floral and citrus notes. Clean workspace with fast Wi-Fi as well.',
-    pros: ['Ethical single-origin beans', 'Masterful pour-over technique', 'Fresh pastries'],
-    cons: ['Limited seating during weekend rush'],
-    usageExperience: 'Visited in person multiple times',
-    isVerifiedCustomer: true,
-    createdAt: '2026-09-15'
-  },
-  {
-    id: 'brev-artisan-2',
-    businessId: 'TV-BIZ-9X2V4W',
-    businessSlug: 'artisan-coffee-roasters',
-    userId: 'u-coffee-roast',
-    userName: 'Marcus Chen',
-    rating: 5,
-    title: 'Outstanding artisan coffee beans and smooth espresso',
-    content: 'I buy my whole bean artisan coffee here every two weeks. Roasted in small batches with roast dates clearly stamped. Smooth acidity, rich crema on espresso, and friendly staff who gladly share brewing tips.',
-    pros: ['Fresh roast dates stamped on bags', 'Delicious flat white', 'Knowledgeable baristas'],
-    cons: ['None'],
-    usageExperience: 'Regular customer',
-    isVerifiedCustomer: true,
-    createdAt: '2026-10-02'
-  },
-  {
-    id: 'brev-artisan-3',
-    businessId: 'TV-BIZ-9X2V4W',
-    businessSlug: 'artisan-coffee-roasters',
-    userId: 'u-toronto-foodie',
-    userName: 'Sarah Jenkins',
-    rating: 5,
-    title: 'Real artisan coffee experience with cozy cafe atmosphere',
-    content: 'Read multiple artisan coffee reviews before visiting and it fully lived up to the hype. The Guatemala single-origin cappuccino was silky and rich. Love supporting ethical roasters.',
-    pros: ['Cozy atmosphere', 'High quality artisan coffee', 'Great sourdough pastries'],
-    cons: ['Street parking can be busy'],
-    usageExperience: 'Weekend brunch visit',
-    isVerifiedCustomer: true,
-    createdAt: '2026-10-18'
-  }
-];
+export const INITIAL_REVIEWS: BusinessReview[] = [];
+
+export const INITIAL_BUSINESS_REVIEWS: BusinessReview[] = INITIAL_REVIEWS;
 
 export function findCategoryByQuery(query: string): BusinessCategory | undefined {
   const q = query.trim().toLowerCase();
@@ -314,4 +109,3 @@ export function findBusinessBySlug(slug: string): Business | undefined {
 export function findBusinessByBusinessId(businessId: string): Business | undefined {
   return INITIAL_BUSINESSES.find((b) => b.businessId === businessId || b.id === businessId);
 }
-
