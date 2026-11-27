@@ -35,6 +35,7 @@ export const INDEXABLE_PILLAR_GUIDES = new Set<string>([
   'freelance-rate-calculator-guide-paypal-stripe-fees',
   'compress-pdf-for-visa-immigration-portal-guide',
   'us-uk-schengen-passport-photo-dimensions-guide',
+  'how-to-check-current-print-jobs-in-queue-windows',
 ]);
 
 /** Rich, hand-crafted study destinations. Thin doorway shells are noindexed. */

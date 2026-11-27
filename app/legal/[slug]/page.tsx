@@ -20,12 +20,14 @@ export const LEGAL_PAGES: Record<string, { title: string; content: string }> = {
       <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-6 mb-2">3. Local Storage & Browser Preferences</h2>
       <p class="leading-relaxed">We utilize your web browser's native LocalStorage to store non-sensitive user preferences such as your dark mode theme selection, recent tool history, and short link records generated via our URL shortener. This data resides solely on your device and can be cleared at any time via your browser settings.</p>
 
-      <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-6 mb-2">4. Advertising & Third-Party Disclosures</h2>
-      <p class="leading-relaxed">ToolVerse is supported by display advertising (and may include Google AdSense when approved). Advertising partners may use cookies to measure performance and, where permitted, personalize ads. We aim for content-first layouts: tools remain usable without ads covering controls.</p>
+      <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-6 mb-2">4. Analytics, Advertising &amp; Third-Party Disclosures</h2>
+      <p class="leading-relaxed">While client-side file tools (such as PDF merge/compress and image compression) process your documents locally in browser memory, ToolVerse uses standard website analytics and (when approved) display advertising to keep the platform free and improve usability:</p>
       <ul class="list-disc pl-5 space-y-1 my-2">
-        <li>Third-party vendors, including Google (when AdSense is live), may use cookies to serve ads based on prior visits.</li>
-        <li>Users may opt out of personalized advertising via <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" class="text-brand-600 underline">Google Ads Settings</a> or <a href="https://www.aboutads.info/" target="_blank" rel="noopener noreferrer" class="text-brand-600 underline">AboutAds.info</a>.</li>
-        <li>See also our <a href="/legal/cookie-policy" class="text-brand-600 underline">Cookie Policy</a>.</li>
+        <li><strong>Google Tag Manager (GTM):</strong> Used to manage site measurement tags cleanly without altering tool file-processing behavior.</li>
+        <li><strong>Microsoft Clarity:</strong> Used to understand aggregated page interactions (such as navigation patterns, scroll depth, and UI errors) so we can fix broken controls and improve mobile usability. Clarity does not receive the contents of files processed locally in client-side PDF or image tools.</li>
+        <li><strong>Network-dependent utilities:</strong> Certain tools (such as URL fetchers, SEO checks, or external job/news links) necessarily transmit the target URL or query to complete the request.</li>
+        <li><strong>Google AdSense (when approved):</strong> Third-party vendors, including Google, may use cookies to serve ads based on prior visits. Users may opt out of personalized advertising via <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" class="text-brand-600 underline">Google Ads Settings</a> or <a href="https://www.aboutads.info/" target="_blank" rel="noopener noreferrer" class="text-brand-600 underline">AboutAds.info</a>.</li>
+        <li>See also our <a href="/legal/cookie-policy" class="text-brand-600 underline">Cookie Policy</a> for browser-level opt-out controls.</li>
       </ul>
 
       <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-6 mb-2">5. GDPR & CCPA User Privacy Rights</h2>
@@ -78,8 +80,11 @@ export const LEGAL_PAGES: Record<string, { title: string; content: string }> = {
       <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-6 mb-2">1. Essential Local Storage Usage</h2>
       <p class="leading-relaxed">ToolVerse uses essential web browser LocalStorage to maintain basic site features such as remembering your dark mode theme preference, recent tool list, and short link history. LocalStorage data remains on your physical device.</p>
 
-      <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-6 mb-2">2. Third-Party Advertising Cookies</h2>
-      <p class="leading-relaxed">Google AdSense (when live) and other advertising partners may set cookies on your browser to measure ad performance and display personalized ads. You can manage or block advertising cookies via your browser security settings or through <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener noreferrer" class="text-brand-600 underline">AboutAds Choices</a>.</p>
+      <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-6 mb-2">2. Analytics Cookies (Google Tag Manager &amp; Microsoft Clarity)</h2>
+      <p class="leading-relaxed">ToolVerse uses Google Tag Manager and Microsoft Clarity to measure aggregated traffic, page performance, and interface usability. These services may set first- or third-party cookies or similar identifiers in your browser. You can disable or clear cookies at any time through your browser privacy settings or content blockers.</p>
+
+      <h2 class="text-xl font-bold text-slate-900 dark:text-white mt-6 mb-2">3. Third-Party Advertising Cookies</h2>
+      <p class="leading-relaxed">Google AdSense (when approved and active) and authorized advertising partners may set cookies on your browser to measure ad performance and display personalized or non-personalized ads. You can manage or block advertising cookies via your browser security settings, <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" class="text-brand-600 underline">Google Ads Settings</a>, or <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener noreferrer" class="text-brand-600 underline">AboutAds Choices</a>.</p>
     `,
   },
   'dmca': {

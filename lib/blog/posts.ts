@@ -436,7 +436,7 @@ Finding legitimate remote vacancies without scam listings can be challenging. On
     title: 'How to Check Current Print Jobs in Queue in Windows 10 & 11 (See Pending Jobs)',
     description: 'Learn how to check current print jobs in queue in Windows 10 & 11, how to see pending print jobs, manage print queue Windows 10, cancel stuck documents, and clear the spooler.',
     category: 'Developers & SEO',
-    author: 'Windows Systems Specialist',
+    author: 'ToolVerse Editorial Team',
     publishDate: '2026-10-21',
     readTimeMinutes: 7,
     featuredImage: 'https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?auto=format&fit=crop&w=1200&q=80',
